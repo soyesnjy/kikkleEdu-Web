@@ -282,8 +282,8 @@ export default function Login() {
           <LoginButton onClick={submitHandler}>{t('login_submit')}</LoginButton>
         </FormContainer>
         <OAuthWrap>
-          <KakaoOAuthBtn setUrl={setUrl} />
-          <GoogleOAuthBtn setUrl={setUrl} />
+          {/* <KakaoOAuthBtn setUrl={setUrl} />
+          <GoogleOAuthBtn setUrl={setUrl} /> */}
         </OAuthWrap>
       </FormWrap>
     </LoginPageContainer>

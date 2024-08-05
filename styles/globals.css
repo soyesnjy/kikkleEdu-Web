@@ -6,6 +6,32 @@
 }
 
 @font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Regular.woff') format('woff');
+  font-weight: 400; /* 일반체 */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Bold.woff') format('woff');
+  font-weight: 600; /* 볼드체 */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Black.woff') format('woff');
+  font-weight: 700; /* 볼드체 */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('/fonts/Nunito-Black.ttf');
+}
+
+@font-face {
   font-family: 'NanumSquareB';
   src: url('/fonts/NanumSquareB.ttf');
 }
@@ -23,6 +49,11 @@
 @font-face {
   font-family: 'AppleSDGothicNeoM00';
   src: url('/fonts/AppleSDGothicNeoM00.ttf');
+}
+
+@font-face {
+  font-family: 'Cafe24Ssurround';
+  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');

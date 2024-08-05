@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const loginAPI = async (url, post) => {
-  // console.log(url, post);
+  console.log(url, post);
   try {
     const res = await fetch(`${url}/login/ai`, {
       method: 'POST',

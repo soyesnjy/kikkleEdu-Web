@@ -1,51 +1,57 @@
 import styled from 'styled-components';
-import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
     <FooterContainer>
       <FooterInfo>
-        <FooterLogo
-          src="https://cdn.imweb.me/upload/S20221226685f12060967b/1beda80e5281f.png"
-          alt="SOYES KIDS"
-        />
-        <InfoText>
-          (주)소예키즈 | 주소 서울 마포구 상암로 330 DMC첨단산업센터 404-4호 |
-          전화번호 02-303-4420
-        </InfoText>
-        <InfoText>
-          사업자등록번호 371-86-01244 | 통신판매업등록번호 2022-서울마포-3834 |
-          개인정보관리책임자: (주)소예키즈
-        </InfoText>
+        <InfoText>Kids Class Edu</InfoText>
+        <SocialMediaLinks>
+          <SocialLink href="/">
+            <Image
+              src="/src/Footer_IMG/Footer_Icon_X_IMG.png"
+              alt={'X'}
+              width={24}
+              height={24}
+              style={{ maxWidth: '100%', height: 'auto' }}
+            />
+          </SocialLink>
+          <SocialLink href="/">
+            <Image
+              src="/src/Footer_IMG/Footer_Icon_IN_IMG.png"
+              alt={'X'}
+              width={24}
+              height={24}
+              style={{ maxWidth: '100%', height: 'auto' }}
+            />
+          </SocialLink>
+          <SocialLink href="/">
+            <Image
+              src="/src/Footer_IMG/Footer_Icon_FB_IMG.png"
+              alt={'X'}
+              width={24}
+              height={24}
+              style={{ maxWidth: '100%', height: 'auto' }}
+            />
+          </SocialLink>
+        </SocialMediaLinks>
       </FooterInfo>
-      <SocialMediaLinks>
-        {/* 이 부분은 실제 소셜 미디어 링크로 대체해야 합니다 */}
-        <SocialLink href="#">Instagram</SocialLink>
-        <SocialLink href="#">Blog</SocialLink>
-        <SocialLink href="#">Talk</SocialLink>
-        {/* ... 추가 소셜 미디어 아이콘 및 링크 */}
-      </SocialMediaLinks>
-      {/* <FooterLinks>
-        <Link href="/usage">
-          <FooterLink>이용약관</FooterLink>
-        </Link>
-        <Link href="/privacy">
-          <FooterLink>개인정보처리방침</FooterLink>
-        </Link>
-      </FooterLinks> */}
+      <CopyText>Copy Right 키클에듀 2024</CopyText>
     </FooterContainer>
   );
 }
 
 const FooterContainer = styled.footer`
   width: 100vw;
-  background-color: #303030;
+  background-color: #4cb0b2;
   color: #fff;
-  padding: 1.5rem 0;
+
+  padding: 1.5rem 4rem;
+
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
 
   @media (max-width: 768px) {
     display: none;
@@ -53,18 +59,31 @@ const FooterContainer = styled.footer`
 `;
 
 const FooterInfo = styled.div`
-  padding: 0 2rem;
-`;
+  width: 100%;
+  padding: 2rem;
 
-const FooterLogo = styled.img`
-  width: 150px; // 로고의 실제 크기에 맞게 조정하세요
-  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const InfoText = styled.p`
-  font-size: 14px;
+  font-size: 32px;
   line-height: 1.5;
-  margin: 5px 0;
+
+  font-family: Nunito;
+
+  @media (max-width: 768px) {
+    font-size: 0.7rem;
+  }
+`;
+
+const CopyText = styled.p`
+  font-size: 16px;
+  line-height: 1.5;
+
+  font-family: Pretendard, sans-serif;
+  font-weight: 600;
 
   @media (max-width: 768px) {
     font-size: 0.7rem;
@@ -72,7 +91,11 @@ const InfoText = styled.p`
 `;
 
 const SocialMediaLinks = styled.div`
-  padding: 0 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 1rem;
 `;
 
 const SocialLink = styled.a`
@@ -87,25 +110,5 @@ const SocialLink = styled.a`
 
   @media (max-width: 768px) {
     font-size: 1rem;
-  }
-`;
-
-const FooterLinks = styled.div`
-  padding: 0 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-top: 20px;
-  border-top: 1px solid #333;
-`;
-
-const FooterLink = styled.a`
-  color: #fff;
-  text-decoration: none;
-  margin-right: 20px;
-
-  &:hover {
-    text-decoration: underline;
   }
 `;

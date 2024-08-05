@@ -7,12 +7,8 @@ import { useEffect, useState } from 'react';
 // import ScrollUpIndicator from '@/component/Home_Component/ScrollUpIndicator';
 // import { motion } from "framer-motion";
 
-import Carousel from '@/component/Home_Component/Carousel';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-
-import AvartarCard from '@/component/Home_Component/AvartarCard';
-import ContentCard from '@/component/Home_Component/Content/ContentCard';
 
 // Home 페이지
 export default function Home() {
@@ -34,52 +30,9 @@ export default function Home() {
   return (
     <MasterContainer>
       <MainContainer>
-        {/* {!mobileFlag && (
-          <Image
-            src="/src/Home_IMG/Logo_소예키즈 로고2.png"
-            alt={'soyes_logo'}
-            width={359}
-            height={85}
-            style={{ maxWidth: '100%', height: 'auto' }}
-          />
-        )} */}
-        <Carousel />
-        <AvartarTitle>AI 상담 캐릭터</AvartarTitle>
-        <AvartarCard />
-        <ContentCard />
+        <h1>Main Page</h1>
       </MainContainer>
     </MasterContainer>
-
-    // <PageContainer>
-    //   <Section>
-    //     {/* 첫 번째 섹션 내용 */}
-    //     <MainContainer>
-    //       {mobile && loading && <Title>AI Avartar Project</Title>}
-    //       {!mobile && loading && <ScrollDownIndicator />}
-    //     </MainContainer>
-    //   </Section>
-    //   <Section style={{ backgroundColor: 'lightgreen' }}>
-    //     {/* 두 번째 섹션 내용 */}
-    //     <SubContainer>
-    //       {!mobile && <ScrollUpIndicator />}
-    //       <Title>AI Avartar Soyes</Title>
-    //       <Live2DViewerMain avartar="mao" />
-    //       {!mobile && <ScrollDownIndicator />}
-    //     </SubContainer>
-    //   </Section>
-    //   <Section style={{ backgroundColor: 'lightcoral' }}>
-    //     {/* 세 번째 섹션 내용 */}
-    //     <SubContainer>
-    //       {!mobile && <ScrollUpIndicator />}
-    //       <Title>AI Avartar Pupu</Title>
-    //       <Live2DViewerMain avartar="shizuku" />
-    //     </SubContainer>
-    //   </Section>
-    //   {/* Footer 섹션  */}
-    //   <FooterSection>
-    //     <Footer />
-    //   </FooterSection>
-    // </PageContainer>
   );
 }
 

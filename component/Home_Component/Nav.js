@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled, { keyframes } from 'styled-components';
 import Link from 'next/link';
-import LanguageSwitcher from './LanguageSwitcher';
+import NavList from './NavList';
+
 import { useRecoilState } from 'recoil';
 import { log, avarta, mobile, uid } from '../../store/state';
 import { useRouter } from 'next/router';
@@ -11,6 +12,53 @@ import { logoutAPI } from '@/fetchAPI';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
 
+const navList_info = [
+  {
+    title: '소예키즈 소개',
+    items: [
+      { href: '/', label: '회사연혁' },
+      { href: '/music', label: '소예키즈 콘텐츠' },
+      { href: '/', label: '특허 및 저작권' },
+      { href: '/', label: '파트너사' },
+      { href: '/', label: '대표이사' },
+      { href: '/', label: '주소 및 약도' },
+    ],
+  },
+  {
+    title: '기업 및 기관',
+    items: [
+      { href: '/', label: '유치원' },
+      { href: '/', label: '초등학교' },
+      { href: '/', label: '문화센터' },
+      { href: '/', label: '아파트센터' },
+      { href: '/', label: '기업' },
+    ],
+  },
+  {
+    title: '강사',
+    items: [],
+  },
+  {
+    title: '교육 프로그램',
+    items: [
+      { href: '/', label: '발레 교육' },
+      { href: '/', label: '댄스 교육' },
+      { href: '/', label: '요가 교육' },
+      { href: '/', label: '필라테스 교육' },
+      { href: '/', label: '마음챙김심리 교육' },
+      { href: '/', label: '음악 교육' },
+      { href: '/', label: '미술 교육' },
+    ],
+  },
+  {
+    title: '게시판',
+    items: [
+      { href: '/', label: '상점' },
+      { href: '/', label: '문의하기' },
+    ],
+  },
+];
+
 export default function Nav() {
   const router = useRouter();
   const { t } = useTranslation('nav');
@@ -18,7 +66,6 @@ export default function Nav() {
   const [login, setLogin] = useRecoilState(log);
   const [avartaAI, setAvartaAI] = useRecoilState(avarta);
   const [userId, setUserId] = useRecoilState(uid);
-  const [showMenu, setShowMenu] = useState(false); // currentPath !== '/' ? true : false
   const [showNavbar, setShowNavbar] = useState(false);
   // Resize 상태 처리
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
@@ -129,140 +176,71 @@ export default function Nav() {
     });
   }, [router, setLogin, setAvartaAI]);
 
-  // useMemo 적용
-  const menuItems = useMemo(
-    () => [
-      { href: '/music', label: 'music' },
-      { href: '/test_ebt', label: t('ebt') },
-      { href: '/test_pt', label: t('pt') },
-      { href: '/consult_intro', label: t('consult') },
-      { href: '/review', label: t('review') },
-      { href: '/meditation_intro', label: t('meditation_intro') },
-      { href: '/shop', label: t('shop') },
-      { href: '/mypage', label: t('mypage') },
-    ],
-    [t]
-  );
+  const menuItems = useMemo(() => [{ href: '/mypage', label: 'MY PAGE' }], [t]);
 
   return (
     <NavContainer show={showNavbar}>
       <Link href="/" passHref>
         <Image
-          src="/src/Login_IMG/Login_Logo_IMG.png"
+          src="/src/kikkle_logo.png"
           alt={'soyes_logo'}
-          width={220}
-          height={36}
+          width={131}
+          height={48}
           style={{ maxWidth: '100%', height: 'auto' }}
         />
       </Link>
+      <NavListContainer>
+        {navList_info.map((el, index) => {
+          const { title, items } = el;
+          return <NavList key={index} title={title} items={items} />;
+        })}
+      </NavListContainer>
+
       {login ? (
         <NavUl>
-          {/* <NavLi>
-            <Link href="/meditation_intro" passHref>
-              <NavBtn>meditation_intro</NavBtn>
-            </Link>
-          </NavLi> */}
-          {/* <NavLi>
-            <Link href="/" passHref>
-              <NavBtn>{t('main')}</NavBtn>
-            </Link>
-          </NavLi> */}
-          {/* <NavLi>
-            <Link href="/upload" passHref>
-              <NavBtn>Upload</NavBtn>
-            </Link>
-          </NavLi> */}
-          {/* <NavLi>
-            <Link href="/meditation" passHref>
-              <NavBtn>Meditation</NavBtn>
-            </Link>
-          </NavLi> */}
-          {mobileFlag ? (
-            <NavListContainer>
-              <NavBtn onClick={() => setShowMenu(!showMenu)}>
-                {showMenu ? '▲' : '▼'}
-              </NavBtn>
-              <NavMenuContainer>
-                {showMenu &&
-                  menuItems.map((item) => (
-                    <NavLiMenu key={item.href}>
-                      <Link href={item.href} passHref>
-                        <NavBtn
-                          selected={item.href === currentPath}
-                          onClick={() => setShowMenu(false)}
-                        >
-                          {item.label}
-                        </NavBtn>
-                      </Link>
-                    </NavLiMenu>
-                  ))}
-              </NavMenuContainer>
-            </NavListContainer>
-          ) : (
-            menuItems.map((item) => (
-              <NavLi key={item.href}>
-                <Link href={item.href} passHref>
-                  <NavBtn selected={item.href === currentPath}>
-                    {item.label}
-                  </NavBtn>
-                </Link>
-              </NavLi>
-            ))
-          )}
+          {menuItems.map((item) => (
+            <NavLi key={item.href}>
+              <Link href={item.href} passHref>
+                <NavBtn login={login} selected={item.href === currentPath}>
+                  {item.label}
+                </NavBtn>
+              </Link>
+            </NavLi>
+          ))}
           <NavLi>
-            <NavBtn onClick={logoutHandler}>{t('logout')}</NavBtn>
+            <NavBtn onClick={logoutHandler}>LOGOUT</NavBtn>
           </NavLi>
-          <LanguageSwitcher />
+          {/* <LanguageSwitcher /> */}
         </NavUl>
       ) : (
         <NavUl>
-          {/* <NavLi>
-            <Link href="/" passHref>
-              <NavBtn>{t('main')}</NavBtn>
-            </Link>
-          </NavLi> */}
           <NavLi>
             <Link href="/login" passHref>
-              <NavBtn>{t('login')}</NavBtn>
+              <NavBtn>LOGIN</NavBtn>
             </Link>
           </NavLi>
           <NavLi>
             <Link href="/signup" passHref>
-              <NavBtn>{t('signup')}</NavBtn>
+              <NavBtn>SIGN UP</NavBtn>
             </Link>
           </NavLi>
-          <LanguageSwitcher />
         </NavUl>
       )}
     </NavContainer>
   );
 }
 
-const slideDown = keyframes`
-    from {
-        top: -60px;
-    }
-    to {
-        top: 0;
-    }
-`;
-
 const NavContainer = styled.div`
   width: 100vw;
-  background-color: ${(props) =>
-    props.show ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0.01)'};
-  position: fixed;
-  /* ${(props) => (props.show ? 'sticky' : 'fixed')}; */
+  background-color: #ffffff;
+
   top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 1rem 18rem;
   height: auto;
   z-index: 1;
-
-  /* animation: ${(props) =>
-    props.show ? slideDown : 'none'} 0.3s ease-in-out; */
 
   @media (max-width: 1150px) {
     align-items: start;
@@ -309,51 +287,28 @@ const NavLi = styled.li`
   }
 `;
 
-const NavLiMenu = styled.li`
-  width: 100%;
-  display: flex;
-  @media (max-width: 768px) {
-    justify-content: center;
-  }
-`;
-
 const NavListContainer = styled.div`
-  width: 100%;
   position: relative;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   z-index: 1;
+
+  gap: 1.5rem;
 
   @media (max-width: 768px) {
     align-items: center;
   }
 `;
 
-const NavMenuContainer = styled.li`
-  position: absolute;
-  top: 100%;
-  display: flex;
-  flex-direction: column;
-
-  @media (max-width: 768px) {
-    justify-content: center;
-  }
-`;
-
 const NavBtn = styled.button`
-  background-color: ${(props) =>
-    props.selected ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 42, 255, 0.5)'};
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  background-color: ${(props) => (props.login ? '#45b26b' : 'white')};
+  color: ${(props) => (props.login ? 'white' : '#45b26b')};
+  font-family: Nunito;
 
-  color: white;
+  border: 1px solid #45b26b;
+  border-radius: 10px;
 
-  border: none;
-  border-radius: 15px;
-
-  margin: 4px 2px;
-  padding: 13px 23px;
+  padding: 0.7rem 3rem;
 
   text-align: center;
   text-decoration: none;
@@ -364,8 +319,7 @@ const NavBtn = styled.button`
   white-space: nowrap;
 
   &:hover {
-    ${(props) => (props.selected ? null : 'padding: 15px 25px;')}
-    background-color: rgba(0, 42, 255, 0.5);
+    background-color: #45b26b;
     color: white;
   }
 
