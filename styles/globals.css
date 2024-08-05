@@ -1,0 +1,57 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: 'times';
+}
+
+@font-face {
+  font-family: 'NanumSquareB';
+  src: url('/fonts/NanumSquareB.ttf');
+}
+
+@font-face {
+  font-family: 'times';
+  src: url('/fonts/times.ttf');
+}
+
+@font-face {
+  font-family: 'Cafe24Ssurround';
+  src: url('/fonts/Cafe24Ssurround-v2.0.woff');
+}
+
+@font-face {
+  font-family: 'AppleSDGothicNeoM00';
+  src: url('/fonts/AppleSDGothicNeoM00.ttf');
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+/* Add a background color to the chat screen */
+
+html,
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #282c34; /* 어두운 회색 */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.logo-container {
+  width: 100%;
+  text-align: center;
+}
+
+.codingnexus {
+  color: #fff;
+  margin-top: 15px;
+  font-size: 12px;
+}
+.codingnexus a {
+  color: #000;
+  text-decoration: none;
+}
+
+#loading {
+  font-size: 50px;
+}

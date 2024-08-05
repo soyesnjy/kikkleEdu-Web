@@ -1,0 +1,14 @@
+{
+  "main": "Main",
+  "login": "Login",
+  "signup": "SignUp",
+  "logout": "LogOut",
+  "ebt": "EBT Test",
+  "pt": "PT Test",
+  "consult": "Consulting",
+  "review": "Review",
+  "shop": "Shop",
+  "meditation_painting": "Painting Meditation",
+  "meditation_intro": "Meditation",
+  "mypage": "MyPage"
+}

@@ -1,0 +1,13 @@
+{
+  "login_title": "Login",
+  "login_id_placeholder": "ID",
+  "login_password_placeholder": "Password",
+  "login_submit": "Login",
+  "login_success_title": "Login Success!",
+  "login_success_text": "Move to Main Page",
+  "login_fail_title": "Login Fail",
+  "login_fail_text": "No Matching Input",
+  "login_input_empty_title": "Input is empty!",
+  "login_googleBtn_title": "Sign in with Google",
+  "login_kakaoBtn_title": "Sign in with Kakao"
+}

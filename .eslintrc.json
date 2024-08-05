@@ -1,0 +1,38 @@
+{
+  // 기본 추천 설정을 확장합니다.
+  "extends": [
+    "eslint:recommended", // ESLint의 기본 추천 규칙
+    "plugin:react/recommended", // React 관련 추천 규칙
+    "plugin:@typescript-eslint/recommended", // TypeScript 관련 추천 규칙
+    "next/core-web-vitals", // Next.js의 Core Web Vitals 관련 규칙
+    "plugin:prettier/recommended", // 추가
+    "prettier" // 이 줄을 추가하여 Prettier와 ESLint의 충돌을 방지합니다
+  ],
+  // TypeScript를 파싱하기 위한 파서 설정
+  "parser": "@typescript-eslint/parser",
+  // 사용되는 플러그인 목록
+  "plugins": [
+    "react", // React 관련 플러그인
+    "@typescript-eslint", // TypeScript 관련 플러그인
+    "prettier" // 추가
+  ],
+  // 코드가 실행되는 환경 설정
+  "env": {
+    "browser": true, // 브라우저 환경
+    "es2021": true, // ES2021 문법 지원
+    "node": true // Node.js 환경
+  },
+  // React 버전을 자동으로 감지하도록 설정
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  // 사용자 정의 규칙 설정
+  "rules": {
+    "react/prop-types": "off", // prop-types 사용 안 함
+    "@typescript-eslint/explicit-module-boundary-types": "off", // 명시적 모듈 경계 타입 사용 안 함
+    "prettier/prettier": "off", // Prettier 관련 에러 비활성화
+    "@typescript-eslint/no-unused-vars": "warn" // TypeScript 사용되지 않는 변수 경고
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "main": "메인",
+  "login": "로그인",
+  "signup": "회원가입",
+  "logout": "로그아웃",
+  "ebt": "정서행동검사",
+  "pt": "성격검사",
+  "consult": "상담",
+  "review": "리뷰",
+  "shop": "상점",
+  "meditation_painting": "그림명상",
+  "meditation_intro": "명상",
+  "mypage": "마이페이지"
+}
