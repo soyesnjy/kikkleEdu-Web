@@ -291,7 +291,7 @@ const NavListContainer = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-  z-index: 1;
+  z-index: 2;
 
   gap: 2rem;
 
