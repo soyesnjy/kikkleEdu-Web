@@ -34,7 +34,7 @@ const GoogleLoginButton = styled.div`
   border-radius: 20px;
   cursor: pointer;
 
-  font-size: 20px;
+  font-size: 1rem;
   font-weight: 400;
   text-align: center;
   font-family: Pretendard;
@@ -71,8 +71,8 @@ const GoogleIcon = styled.img.attrs({
   src: '/src/Login_IMG/Login_Google_Icon_IMG.png', // The path to your Google icon image file
   alt: 'Google sign-in',
 })`
-  width: 33px;
-  height: 38px;
+  width: 24px;
+  height: 24px;
 `;
 
 export default GoogleOAuthBtn;

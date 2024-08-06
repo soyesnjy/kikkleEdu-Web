@@ -292,6 +292,10 @@ export default function Login() {
               <GoogleOAuthBtn setUrl={setUrl} />
               <KakaoOAuthBtn setUrl={setUrl} />
             </OAuthWrap>
+            <H4>
+              아직 키클에듀 회원이 아니신가요?{' '}
+              <StyledLink href="/signup">회원가입</StyledLink>
+            </H4>
           </InputContainer>
         </FormContainer>
         <OAuthWrap>
@@ -312,23 +316,31 @@ export async function getStaticProps({ locale }) {
 }
 
 const LoginPageContainer = styled.main`
-  background-image: url('/src/Login_IMG/Login_Background_IMG.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  width: 100vw;
+  height: 56.25vw; /* 16:9 비율 유지 (100 / 16 * 9) */
+  position: relative;
 
   background-color: white;
 
-  width: 100vw;
-  height: 100vh;
-
-  /* padding-top: 5rem; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  gap: 2rem;
+  &::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    background-image: url('/src/Login_IMG/Login_Background_IMG.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 
   @media (max-width: 768px) {
     padding: 1rem;
@@ -417,6 +429,14 @@ const H3 = styled.h3`
   margin-bottom: 2rem;
 `;
 
+const H4 = styled.h4`
+  font-family: Pretendard;
+  font-weight: 400;
+  color: white;
+
+  margin-top: 3rem;
+`;
+
 const InputContainer = styled.div`
   /* background-color: rgba(255, 255, 255, 0.1); */
 
@@ -434,7 +454,7 @@ const InputContainer = styled.div`
 const LoginInput = styled.input`
   width: 360px;
 
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.01);
 
   color: white;
 
