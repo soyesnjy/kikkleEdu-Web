@@ -29,9 +29,8 @@ export default function Home() {
 
   return (
     <MasterContainer>
-      <MainContainer>
-        <h1>Main Page</h1>
-      </MainContainer>
+      <IntroContainer />
+      {/* <MainContainer></MainContainer> */}
     </MasterContainer>
   );
 }
@@ -59,6 +58,31 @@ const MainContainer = styled.div`
   min-height: 100vh;
   background-color: white;
   padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    background-image: url('/src/Background_IMG/Mobile/mobile_background_2.png');
+    justify-content: center;
+  }
+`;
+
+const IntroContainer = styled.div`
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+
+  background-image: url('/src/Home_IMG/Home_Intro_Background_IMG.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  background-color: white;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

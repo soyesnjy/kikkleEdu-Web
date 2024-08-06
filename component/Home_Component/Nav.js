@@ -238,7 +238,7 @@ const NavContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 18rem;
+  padding: 1rem 8rem;
   height: auto;
   z-index: 1;
 
@@ -293,7 +293,7 @@ const NavListContainer = styled.div`
   justify-content: center;
   z-index: 1;
 
-  gap: 1.5rem;
+  gap: 2rem;
 
   @media (max-width: 768px) {
     align-items: center;

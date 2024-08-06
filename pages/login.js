@@ -4,20 +4,21 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import {
   loginAPI,
-  // loginAPI_OAuth_Approve_Google,
-  // loginAPI_OAuth_Approve_Kakao,
+  loginAPI_OAuth_Approve_Google,
+  loginAPI_OAuth_Approve_Kakao,
 } from '@/fetchAPI';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { log, uid, mobile } from '../store/state';
 import Swal from 'sweetalert2';
 import { useSearchParams } from 'next/navigation';
-// import GoogleOAuthBtn from '@/component/Login_Componet/googleOAuthBtn';
-// import KakaoOAuthBtn from '@/component/Login_Componet/kakaoOAuthBtn';
+import GoogleOAuthBtn from '@/component/Login_Componet/googleOAuthBtn';
+import KakaoOAuthBtn from '@/component/Login_Componet/kakaoOAuthBtn';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const expireSetHourFunc = (hour) => {
   const today = new Date();
@@ -78,6 +79,7 @@ export default function Login() {
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   const router = useRouter();
+
   const searchParams = useSearchParams();
   const code = searchParams.get('code');
   const type = searchParams.get('type');
@@ -128,85 +130,85 @@ export default function Login() {
     }
   };
 
-  // const oauthGoogleHandler = async () => {
-  //   if (code) {
-  //     try {
-  //       const res = await loginAPI_OAuth_Approve_Google({ code });
+  const oauthGoogleHandler = async () => {
+    if (code) {
+      try {
+        const res = await loginAPI_OAuth_Approve_Google({ code });
 
-  //       if (res.status === 200) {
-  //         Swal.fire({
-  //           icon: 'success',
-  //           title: t('login_success_title'),
-  //           text: t('login_success_text'),
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         }).then(() => {
-  //           setLogin(true);
-  //           localStorage.setItem(
-  //             'log',
-  //             JSON.stringify({
-  //               expires: expireSetHourFunc(1),
-  //             })
-  //           );
-  //           localStorage.setItem('id', res.data.id);
-  //           setUserId(res.data.id);
-  //           router.push('/');
-  //         });
-  //       } else {
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: t('login_fail_title'),
-  //           text: t('login_fail_text'),
-  //         });
-  //       }
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
-  // };
+        if (res.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            title: t('login_success_title'),
+            text: t('login_success_text'),
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            setLogin(true);
+            localStorage.setItem(
+              'log',
+              JSON.stringify({
+                expires: expireSetHourFunc(1),
+              })
+            );
+            localStorage.setItem('id', res.data.id);
+            setUserId(res.data.id);
+            router.push('/');
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: t('login_fail_title'),
+            text: t('login_fail_text'),
+          });
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
 
-  // const oauthKakaoHandler = async () => {
-  //   if (code) {
-  //     try {
-  //       const res = await loginAPI_OAuth_Approve_Kakao({ code });
-  //       console.log(res.data);
+  const oauthKakaoHandler = async () => {
+    if (code) {
+      try {
+        const res = await loginAPI_OAuth_Approve_Kakao({ code });
+        console.log(res.data);
 
-  //       if (res.status === 200) {
-  //         Swal.fire({
-  //           icon: 'success',
-  //           title: t('login_success_title'),
-  //           text: t('login_success_text'),
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         }).then(() => {
-  //           setLogin(true);
-  //           localStorage.setItem(
-  //             'log',
-  //             JSON.stringify({
-  //               expires: expireSetHourFunc(1),
-  //             })
-  //           );
-  //           localStorage.setItem('id', res.data.id);
-  //           setUserId(res.data.id);
-  //           router.push('/');
-  //         });
-  //       } else {
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: t('login_fail_title'),
-  //           text: t('login_fail_text'),
-  //         });
-  //       }
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
-  // };
+        if (res.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            title: t('login_success_title'),
+            text: t('login_success_text'),
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            setLogin(true);
+            localStorage.setItem(
+              'log',
+              JSON.stringify({
+                expires: expireSetHourFunc(1),
+              })
+            );
+            localStorage.setItem('id', res.data.id);
+            setUserId(res.data.id);
+            router.push('/');
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: t('login_fail_title'),
+            text: t('login_fail_text'),
+          });
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
 
   useEffect(() => {
-    // if (window.Kakao && !window.Kakao.isInitialized()) {
-    //   window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
-    // }
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+    }
   }, []);
 
   useEffect(() => {
@@ -223,25 +225,15 @@ export default function Login() {
     }
   }, [url]);
 
-  // useEffect(() => {
-  //   if (type === 'kakao') oauthKakaoHandler();
-  //   else oauthGoogleHandler();
-  // }, [code]);
+  useEffect(() => {
+    if (type === 'kakao') oauthKakaoHandler();
+    else oauthGoogleHandler();
+  }, [code]);
 
   return (
     <LoginPageContainer>
-      {!mobileFlag && (
-        <Image
-          src="/src/Login_IMG/Login_Logo_IMG.png"
-          alt={'soyes_logo'}
-          width={412}
-          height={102}
-          style={{ maxWidth: '100%', height: 'auto' }}
-        />
-      )}
-
       <FormWrap>
-        {!mobileFlag &&
+        {/* {!mobileFlag &&
           AvartarIconArr.map((el, index) => {
             return (
               <AvartarIconWrap
@@ -260,25 +252,47 @@ export default function Login() {
                 />
               </AvartarIconWrap>
             );
-          })}
+          })} */}
+        <Image
+          src="/src/Login_IMG/Login_Vector_IMG.png"
+          alt={'soyes_logo'}
+          width={93}
+          height={12}
+          style={{ maxWidth: '100%', height: 'auto' }}
+        />
         <H1>{t('login_title')}</H1>
+        <H3>키클에듀에 오신 것을 환영합니다.</H3>
         <FormContainer>
           <InputContainer>
             <LoginInput
               color="black"
-              placeholder={t('login_id_placeholder')}
+              placeholder="이메일 주소"
               value={id}
               onChange={(e) => setId(e.target.value)}
             />
             <LoginInput
               color="black"
               type="password"
-              placeholder={t('login_password_placeholder')}
+              placeholder="비밀 번호"
               value={pwd}
               onChange={(e) => setPwd(e.target.value)}
             />
+            <LoginButton onClick={submitHandler}>
+              {t('login_submit')}
+            </LoginButton>
+            <StyledLink href="/signup">비밀번호를 잊으셨나요?</StyledLink>
+            <Image
+              src="/src/Login_IMG/Login_Divider_IMG.png"
+              alt={'soyes_logo'}
+              width={360}
+              height={17}
+              style={{ maxWidth: '100%', height: 'auto' }}
+            />
+            <OAuthWrap>
+              <GoogleOAuthBtn setUrl={setUrl} />
+              <KakaoOAuthBtn setUrl={setUrl} />
+            </OAuthWrap>
           </InputContainer>
-          <LoginButton onClick={submitHandler}>{t('login_submit')}</LoginButton>
         </FormContainer>
         <OAuthWrap>
           {/* <KakaoOAuthBtn setUrl={setUrl} />
@@ -302,6 +316,8 @@ const LoginPageContainer = styled.main`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  background-color: white;
 
   width: 100vw;
   height: 100vh;
@@ -330,9 +346,9 @@ const FormWrap = styled.div`
   padding: 3rem 5rem;
 
   border-radius: 40px;
-  background-color: #ffffff;
+  /* background-color: rgba(255, 255, 255, 0.01); */
 
-  border: 10px solid #007f74;
+  /* border: 10px solid #007f74; */
 
   position: relative;
 
@@ -342,13 +358,13 @@ const FormWrap = styled.div`
   }
 `;
 
-const AvartarIconWrap = styled.div`
-  position: absolute;
-  top: ${(props) => props.top || null};
-  bottom: ${(props) => props.bottom || null};
-  left: ${(props) => props.left || null};
-  right: ${(props) => props.right || null};
-`;
+// const AvartarIconWrap = styled.div`
+//   position: absolute;
+//   top: ${(props) => props.top || null};
+//   bottom: ${(props) => props.bottom || null};
+//   left: ${(props) => props.left || null};
+//   right: ${(props) => props.right || null};
+// `;
 
 const FormContainer = styled.form`
   display: flex;
@@ -357,7 +373,6 @@ const FormContainer = styled.form`
   gap: 2rem;
 
   border-radius: 40px;
-  background-color: #ffffff;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -367,13 +382,15 @@ const FormContainer = styled.form`
 `;
 
 const OAuthWrap = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
   padding: 2rem 2rem 0 2rem;
 
   border-radius: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 0.5rem;
 
   @media (max-width: 768px) {
     margin-top: 1rem;
@@ -385,17 +402,28 @@ const OAuthWrap = styled.div`
 
 const H1 = styled.h1`
   font-size: 40px;
-  font-family: Cafe24Ssurround;
-  color: black;
+  font-family: Pretendard;
+  font-weight: 600;
+  color: white;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+`;
+
+const H3 = styled.h3`
+  font-family: Pretendard;
+  font-weight: 400;
+  color: white;
 
   margin-bottom: 2rem;
 `;
 
 const InputContainer = styled.div`
+  /* background-color: rgba(255, 255, 255, 0.1); */
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -404,17 +432,18 @@ const InputContainer = styled.div`
 `;
 
 const LoginInput = styled.input`
-  width: 27rem;
-  height: 4.3rem;
-  background-color: #f9f9f9;
+  width: 360px;
 
-  color: ${(props) => (props.color ? props.color : 'white')};
+  background-color: rgba(255, 255, 255, 0.1);
 
-  padding: 13px 18px;
+  color: white;
 
-  border-radius: 20px;
-  font-size: 25px;
-  font-family: AppleSDGothicNeoL00;
+  padding: 1rem 18px;
+
+  border-radius: 15px;
+  font-size: 1.2rem;
+  font-family: Pretendard;
+  font-weight: 400;
   text-align: left;
 
   border: 1px solid #bfbfbf;
@@ -436,23 +465,22 @@ const LoginInput = styled.input`
 `;
 
 const LoginButton = styled.button`
-  color: white;
+  width: 360px;
 
-  width: 180px;
-  min-height: 153px;
-
-  background-color: #007f74;
+  background-color: #606c76;
   border: none;
   border-radius: 15px;
 
-  padding: 13px 23px;
+  padding: 1.3rem 23px;
+  margin-bottom: 1rem;
 
+  color: white;
   text-align: center;
   text-decoration: none;
 
-  font-size: 32px;
-  font-weight: bold;
-  font-family: AppleSDGothicNeoEB00;
+  font-size: 1.2rem;
+  font-weight: 400;
+  font-family: Pretendard;
 
   cursor: pointer;
   &:hover {
@@ -467,4 +495,11 @@ const LoginButton = styled.button`
     min-height: 53px;
     font-size: 20px;
   }
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #3870ff;
+
+  margin-bottom: 2rem;
 `;

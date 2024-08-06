@@ -20,16 +20,16 @@ const GoogleOAuthBtn = ({ setUrl }) => {
   return (
     <GoogleLoginButton value="google" onClick={handleLogin}>
       <GoogleIcon className="google-icon" />
-      {t('login_googleBtn_title')}
+      Google
     </GoogleLoginButton>
   );
 };
 
-const GoogleLoginButton = styled.button`
-  background-color: #ffffff; // Google Blue
-  color: black;
+const GoogleLoginButton = styled.div`
+  width: 172px;
+  color: white;
   padding: 1rem;
-  border: 1px solid #c9c9c9;
+  border: 1px solid white;
 
   border-radius: 20px;
   cursor: pointer;
@@ -37,7 +37,8 @@ const GoogleLoginButton = styled.button`
   font-size: 20px;
   font-weight: 400;
   text-align: center;
-  font-family: AppleSDGothicNeoL00;
+  font-family: Pretendard;
+
   transition: background-color 0.3s;
 
   &:hover {

@@ -25,18 +25,18 @@ const KakaoOAuthBtn = ({ setUrl }) => {
   };
 
   return (
-    <KakaoLoginButton value="google" onClick={handleLogin}>
-      <KakaoIcon className="google-icon" />
-      {t('login_kakaoBtn_title')}
+    <KakaoLoginButton value="kakao" onClick={handleLogin}>
+      <KakaoIcon className="kakao-icon" />
+      kakao
     </KakaoLoginButton>
   );
 };
 
-const KakaoLoginButton = styled.button`
-  background-color: #f9e000; // Google Blue
-  color: black;
+const KakaoLoginButton = styled.div`
+  width: 172px;
+  color: white;
   padding: 1rem;
-  border: 1px solid #c9c9c9;
+  border: 1px solid white;
 
   border-radius: 20px;
   cursor: pointer;
@@ -44,7 +44,7 @@ const KakaoLoginButton = styled.button`
   font-size: 20px;
   font-weight: 400;
   text-align: center;
-  font-family: AppleSDGothicNeoL00;
+  font-family: Pretendard;
   transition: background-color 0.3s;
 
   &:hover {
