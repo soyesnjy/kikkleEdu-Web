@@ -204,10 +204,9 @@ export default function Login() {
   // };
 
   useEffect(() => {
-    if (window.Kakao && !window.Kakao.isInitialized()) {
-      // console.log(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
-    }
+    // if (window.Kakao && !window.Kakao.isInitialized()) {
+    //   window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+    // }
   }, []);
 
   useEffect(() => {
