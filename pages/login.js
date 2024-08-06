@@ -4,16 +4,16 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import {
   loginAPI,
-  loginAPI_OAuth_Approve_Google,
-  loginAPI_OAuth_Approve_Kakao,
+  // loginAPI_OAuth_Approve_Google,
+  // loginAPI_OAuth_Approve_Kakao,
 } from '@/fetchAPI';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { log, uid, mobile } from '../store/state';
 import Swal from 'sweetalert2';
 import { useSearchParams } from 'next/navigation';
-import GoogleOAuthBtn from '@/component/Login_Componet/googleOAuthBtn';
-import KakaoOAuthBtn from '@/component/Login_Componet/kakaoOAuthBtn';
+// import GoogleOAuthBtn from '@/component/Login_Componet/googleOAuthBtn';
+// import KakaoOAuthBtn from '@/component/Login_Componet/kakaoOAuthBtn';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -128,80 +128,80 @@ export default function Login() {
     }
   };
 
-  const oauthGoogleHandler = async () => {
-    if (code) {
-      try {
-        const res = await loginAPI_OAuth_Approve_Google({ code });
+  // const oauthGoogleHandler = async () => {
+  //   if (code) {
+  //     try {
+  //       const res = await loginAPI_OAuth_Approve_Google({ code });
 
-        if (res.status === 200) {
-          Swal.fire({
-            icon: 'success',
-            title: t('login_success_title'),
-            text: t('login_success_text'),
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            setLogin(true);
-            localStorage.setItem(
-              'log',
-              JSON.stringify({
-                expires: expireSetHourFunc(1),
-              })
-            );
-            localStorage.setItem('id', res.data.id);
-            setUserId(res.data.id);
-            router.push('/');
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: t('login_fail_title'),
-            text: t('login_fail_text'),
-          });
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  };
+  //       if (res.status === 200) {
+  //         Swal.fire({
+  //           icon: 'success',
+  //           title: t('login_success_title'),
+  //           text: t('login_success_text'),
+  //           showConfirmButton: false,
+  //           timer: 1500,
+  //         }).then(() => {
+  //           setLogin(true);
+  //           localStorage.setItem(
+  //             'log',
+  //             JSON.stringify({
+  //               expires: expireSetHourFunc(1),
+  //             })
+  //           );
+  //           localStorage.setItem('id', res.data.id);
+  //           setUserId(res.data.id);
+  //           router.push('/');
+  //         });
+  //       } else {
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: t('login_fail_title'),
+  //           text: t('login_fail_text'),
+  //         });
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   }
+  // };
 
-  const oauthKakaoHandler = async () => {
-    if (code) {
-      try {
-        const res = await loginAPI_OAuth_Approve_Kakao({ code });
-        console.log(res.data);
+  // const oauthKakaoHandler = async () => {
+  //   if (code) {
+  //     try {
+  //       const res = await loginAPI_OAuth_Approve_Kakao({ code });
+  //       console.log(res.data);
 
-        if (res.status === 200) {
-          Swal.fire({
-            icon: 'success',
-            title: t('login_success_title'),
-            text: t('login_success_text'),
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            setLogin(true);
-            localStorage.setItem(
-              'log',
-              JSON.stringify({
-                expires: expireSetHourFunc(1),
-              })
-            );
-            localStorage.setItem('id', res.data.id);
-            setUserId(res.data.id);
-            router.push('/');
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: t('login_fail_title'),
-            text: t('login_fail_text'),
-          });
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  };
+  //       if (res.status === 200) {
+  //         Swal.fire({
+  //           icon: 'success',
+  //           title: t('login_success_title'),
+  //           text: t('login_success_text'),
+  //           showConfirmButton: false,
+  //           timer: 1500,
+  //         }).then(() => {
+  //           setLogin(true);
+  //           localStorage.setItem(
+  //             'log',
+  //             JSON.stringify({
+  //               expires: expireSetHourFunc(1),
+  //             })
+  //           );
+  //           localStorage.setItem('id', res.data.id);
+  //           setUserId(res.data.id);
+  //           router.push('/');
+  //         });
+  //       } else {
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: t('login_fail_title'),
+  //           text: t('login_fail_text'),
+  //         });
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
@@ -224,10 +224,10 @@ export default function Login() {
     }
   }, [url]);
 
-  useEffect(() => {
-    if (type === 'kakao') oauthKakaoHandler();
-    else oauthGoogleHandler();
-  }, [code]);
+  // useEffect(() => {
+  //   if (type === 'kakao') oauthKakaoHandler();
+  //   else oauthGoogleHandler();
+  // }, [code]);
 
   return (
     <LoginPageContainer>
