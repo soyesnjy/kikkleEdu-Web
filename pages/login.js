@@ -25,48 +25,48 @@ const expireSetHourFunc = (hour) => {
   return today.setHours(today.getHours() + hour);
 };
 
-const AvartarIconArr = [
-  {
-    src: '/src/Login_IMG/Login_Ella_Icon_IMG.png',
-    alt: 'Ella_Icon',
-    width: 246,
-    height: 156,
-    top: '-28%',
-    left: '-3%',
-  },
-  {
-    src: '/src/Login_IMG/Login_Pupu_Icon_IMG.png',
-    alt: 'Pupu_Icon',
-    width: 191,
-    height: 150,
-    top: '-5%',
-    left: '-15%',
-  },
-  {
-    src: '/src/Login_IMG/Login_Soyes_Icon_IMG.png',
-    alt: 'Soyes_Icon',
-    width: 153,
-    height: 171,
-    left: '-13%',
-    bottom: '5%',
-  },
-  {
-    src: '/src/Login_IMG/Login_Ubi_Icon_IMG.png',
-    alt: 'Ubi_Icon',
-    width: 194,
-    height: 190,
-    top: '-28%',
-    right: '0%',
-  },
-  {
-    src: '/src/Login_IMG/Login_North_Icon_IMG.png',
-    alt: 'North_Icon',
-    width: 169,
-    height: 173,
-    top: '-10%',
-    right: '-13%',
-  },
-];
+// const AvartarIconArr = [
+//   {
+//     src: '/src/Login_IMG/Login_Ella_Icon_IMG.png',
+//     alt: 'Ella_Icon',
+//     width: 246,
+//     height: 156,
+//     top: '-28%',
+//     left: '-3%',
+//   },
+//   {
+//     src: '/src/Login_IMG/Login_Pupu_Icon_IMG.png',
+//     alt: 'Pupu_Icon',
+//     width: 191,
+//     height: 150,
+//     top: '-5%',
+//     left: '-15%',
+//   },
+//   {
+//     src: '/src/Login_IMG/Login_Soyes_Icon_IMG.png',
+//     alt: 'Soyes_Icon',
+//     width: 153,
+//     height: 171,
+//     left: '-13%',
+//     bottom: '5%',
+//   },
+//   {
+//     src: '/src/Login_IMG/Login_Ubi_Icon_IMG.png',
+//     alt: 'Ubi_Icon',
+//     width: 194,
+//     height: 190,
+//     top: '-28%',
+//     right: '0%',
+//   },
+//   {
+//     src: '/src/Login_IMG/Login_North_Icon_IMG.png',
+//     alt: 'North_Icon',
+//     width: 169,
+//     height: 173,
+//     top: '-10%',
+//     right: '-13%',
+//   },
+// ];
 
 export default function Login() {
   const { t } = useTranslation('login');
@@ -298,10 +298,6 @@ export default function Login() {
             </H4>
           </InputContainer>
         </FormContainer>
-        <OAuthWrap>
-          {/* <KakaoOAuthBtn setUrl={setUrl} />
-          <GoogleOAuthBtn setUrl={setUrl} /> */}
-        </OAuthWrap>
       </FormWrap>
     </LoginPageContainer>
   );
