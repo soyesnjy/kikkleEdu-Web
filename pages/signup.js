@@ -118,6 +118,7 @@ export default function Signup() {
   };
 
   useEffect(() => {
+    // 로그인 시 메인 페이지로 이동
     const loginSession = JSON.parse(localStorage.getItem('log'));
     if (loginSession) {
       router.replace('/');
@@ -133,6 +134,31 @@ export default function Signup() {
       clearTimeout(debounce);
     };
   }, [pwd]);
+
+  // 첫 페이지 체크 메서드
+  const pageCheckFirst = () => {
+    if (!email) {
+      alert('이메일을 입력하세요');
+      return false;
+    }
+    if (!name) {
+      alert('이름을 입력하세요');
+      return false;
+    }
+    if (!phoneNumber) {
+      alert('전화번호를 입력하세요');
+      return false;
+    }
+    if (!checkPwd_1 || !checkPwd_2 || !checkPwd_3) {
+      alert('비밀번호 요구사항을 지켜주세요');
+      return false;
+    }
+    if (!checkTerms || !checkPrivacy) {
+      alert('동의항목을 체크해주세요');
+      return false;
+    }
+    return true;
+  };
 
   // 회원가입 형식 체크 메서드
   const formCheck = () => {
@@ -369,39 +395,12 @@ export default function Signup() {
             )}
             {pageNumber === 1 && (
               <PageContainer>
-                <SignUpInput
-                  id="email"
-                  placeholder="이메일"
-                  type="email"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                />
-                <SignUpInput
-                  id="name"
-                  placeholder="성함"
-                  type="text"
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                />
-                <StyledPhoneInput
-                  placeholder="전화 번호"
-                  value={phoneNumber}
-                  onChange={setPhoneNumber}
-                  defaultCountry="KR"
-                />
-                <SignUpInput
-                  id="password"
-                  placeholder="비밀번호"
-                  type="password"
-                  value={pwd}
-                  onChange={(e) => {
-                    setPwd(e.target.value);
-                  }}
-                />
+                <H1>2 페이지</H1>
+              </PageContainer>
+            )}
+            {pageNumber === 2 && (
+              <PageContainer>
+                <H1>3 페이지</H1>
               </PageContainer>
             )}
             {/* 이전 다음 버튼 관련 */}
@@ -419,6 +418,8 @@ export default function Signup() {
               <SignUpButton
                 onClick={(e) => {
                   e.preventDefault();
+                  // 첫 페이지 필수 항목 체크
+                  if (pageNumber === 0 && !pageCheckFirst()) return;
                   setPageNumber(pageNumber + 1);
                 }}
               >
@@ -774,4 +775,9 @@ const StyledCheckbox = styled.div`
 const TermsCheckLabel = styled.label`
   margin-left: 8px;
   color: ${(props) => (props.checked ? '#99cc99' : '#cccccc')};
+
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+  text-align: left;
 `;
