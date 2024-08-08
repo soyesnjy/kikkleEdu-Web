@@ -17,21 +17,21 @@ const navList_info = [
     title: '소예키즈 소개',
     items: [
       { href: '/introduce', label: '회사연혁' },
-      { href: '/music', label: '소예키즈 콘텐츠' },
-      { href: '/', label: '특허 및 저작권' },
-      { href: '/', label: '파트너사' },
-      { href: '/', label: '대표이사' },
-      { href: '/', label: '주소 및 약도' },
+      { href: '/introduce', label: '소예키즈 콘텐츠' },
+      { href: '/introduce', label: '특허 및 저작권' },
+      { href: '/introduce', label: '파트너사' },
+      { href: '/introduce', label: '대표이사' },
+      { href: '/introduce', label: '주소 및 약도' },
     ],
   },
   {
     title: '기업 및 기관',
     items: [
-      { href: '/', label: '유치원' },
-      { href: '/', label: '초등학교' },
-      { href: '/', label: '문화센터' },
-      { href: '/', label: '아파트센터' },
-      { href: '/', label: '기업' },
+      { href: '/agency', label: '유치원' },
+      { href: '/agency', label: '초등학교' },
+      { href: '/agency', label: '문화센터' },
+      { href: '/agency', label: '아파트센터' },
+      { href: '/agency', label: '기업' },
     ],
   },
   {
@@ -54,7 +54,7 @@ const navList_info = [
     title: '게시판',
     items: [
       { href: '/', label: '상점' },
-      { href: '/', label: '문의하기' },
+      { href: '/music', label: '문의하기' },
     ],
   },
 ];

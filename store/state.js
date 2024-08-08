@@ -24,4 +24,16 @@ const mobile = atom({
   default: false,
 });
 
-export { log, avarta, uid, mobile };
+// 유저 유형
+const userClass = atom({
+  key: 'userClass',
+  default: '',
+});
+
+// 기관 유형
+const agencyClass = atom({
+  key: 'agencyClass',
+  default: '',
+});
+
+export { log, avarta, uid, mobile, userClass, agencyClass };

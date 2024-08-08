@@ -31,7 +31,11 @@ export default function TopButton() {
   return (
     <TopButtonContainer>
       <TopButtonWrap>
-        {showButton && <Button onClick={handleScroll}>Top</Button>}
+        {showButton && (
+          <Button onClick={handleScroll}>
+            <span class="material-symbols-outlined">arrow_upward</span>
+          </Button>
+        )}
       </TopButtonWrap>
     </TopButtonContainer>
   );
@@ -58,8 +62,4 @@ const Button = styled.button`
   border-radius: 50%;
   cursor: pointer;
   transition: opacity 0.3s;
-
-  &:hover {
-    background-color: #0056b3;
-  }
 `;
