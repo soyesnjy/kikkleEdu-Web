@@ -176,7 +176,7 @@ export default function Nav() {
     });
   }, [router, setLogin, setAvartaAI]);
 
-  const menuItems = useMemo(() => [{ href: '/mypage', label: 'MY PAGE' }], [t]);
+  const menuItems = useMemo(() => [{ href: '/', label: 'MY PAGE' }], [t]);
 
   return (
     <NavContainer show={showNavbar}>

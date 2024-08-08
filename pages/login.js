@@ -301,7 +301,7 @@ export default function Login() {
             <LoginButton onClick={submitHandler}>
               {t('login_submit')}
             </LoginButton>
-            <StyledLink href="/signup">비밀번호를 잊으셨나요?</StyledLink>
+            <StyledLink href="#">비밀번호를 잊으셨나요?</StyledLink>
             {userClass === 'teacher' && (
               <Image
                 src="/src/Login_IMG/Login_Divider_IMG.png"
@@ -447,7 +447,7 @@ const UserClassButton = styled.button`
   border: 1px solid #45b26b;
   border-radius: 15px;
 
-  padding: 1.3rem 3rem;
+  padding: 1rem 4.4rem;
   margin-bottom: 1rem;
 
   color: white;
