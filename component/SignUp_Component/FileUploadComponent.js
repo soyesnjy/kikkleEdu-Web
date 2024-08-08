@@ -1,26 +1,24 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 
-const FileUploadComponent = ({ setFile }) => {
-  const [fileName, setFileName] = useState('');
+const FileUploadComponent = ({ file, setFile }) => {
   const fileInputRef = useRef(null);
 
+  // 버튼 클릭 핸들러 (해당 버튼 클릭 시 Input 태그를 클릭한 것으로 간주)
   const handleButtonClick = (e) => {
     e.preventDefault();
     fileInputRef.current.click();
   };
 
+  // 파일 변경 핸들러
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setFile(file);
-    if (file) {
-      setFileName(file.name);
-    }
   };
 
   return (
     <FileInputContainer>
-      <FileName>{fileName}</FileName>
+      <FileName>{file.name}</FileName>
       <CustomButton onClick={handleButtonClick}>첨부</CustomButton>
       <HiddenFileInput ref={fileInputRef} onChange={handleFileChange} />
     </FileInputContainer>
@@ -35,11 +33,14 @@ const FileInputContainer = styled.div`
 
   background-color: rgba(255, 255, 255, 0.01);
   width: 100%;
-  max-width: 600px;
-  margin: 1rem 0;
+  max-width: 740px;
+  margin: 0.5rem 0;
 `;
 
-const HiddenFileInput = styled.input.attrs({ type: 'file' })`
+const HiddenFileInput = styled.input.attrs({
+  type: 'file',
+  accept: '.zip',
+})`
   display: none;
 `;
 

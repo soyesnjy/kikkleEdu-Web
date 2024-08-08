@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
@@ -122,7 +123,7 @@ export default function Signup() {
     console.log(file?.type);
   }, [file]);
 
-  // 첫 페이지 체크 메서드
+  // First 페이지 체크 메서드
   const pageCheckFirst = () => {
     if (!email) {
       alert('이메일을 입력하세요');
@@ -147,7 +148,7 @@ export default function Signup() {
     return true;
   };
 
-  // 첫 페이지 체크 메서드
+  // Second 페이지 체크 메서드
   const pageCheckSecond = () => {
     if (!possClass.length) {
       alert('희망 수업을 선택하세요');
@@ -159,6 +160,23 @@ export default function Signup() {
     }
     if (!possDay.length) {
       alert('희망 날짜를 선택하세요');
+      return false;
+    }
+    return true;
+  };
+
+  // Third 페이지 체크 메서드
+  const pageCheckThird = () => {
+    if (!career) {
+      alert('경력을 입력하세요');
+      return false;
+    }
+    if (!education) {
+      alert('학력을 입력하세요');
+      return false;
+    }
+    if (!file) {
+      alert('파일을 선택하세요');
       return false;
     }
     return true;
@@ -232,6 +250,9 @@ export default function Signup() {
   const signupHandler = async (e) => {
     e.preventDefault();
     // 회원가입 형식 체크
+    if (pageNumber === 2 && !pageCheckThird()) return;
+    return alert('개발중...');
+
     if (!formCheck()) return;
 
     const flag = await signupAPI(process.env.NEXT_PUBLIC_URL, {
@@ -339,7 +360,7 @@ export default function Signup() {
                     }}
                   />
                   <PwdCheckContainer>
-                    <H4>비밀번호 요구사항</H4>
+                    <H5>비밀번호 요구사항</H5>
                     <PwdCheckText check={checkPwd_1}>
                       <span class="material-symbols-outlined">check</span> 8글자
                       이상
@@ -501,7 +522,20 @@ export default function Signup() {
                     />
                   </UserInfoRowContainer>
                   <H4>필수요청 서류 탭 (ZIP파일 제출)</H4>
-                  <FileUploadComponent setFile={setFile} />
+                  <FileUploadComponent setFile={setFile} file={file} />
+                  <H5>+ 필수 서류 확인하기</H5>
+                  <FileCheckText>
+                    <span class="material-symbols-outlined">check</span>
+                    이력서 / 신분증 사본 / 통장사본 / 보건
+                  </FileCheckText>
+                  <FileCheckText>
+                    <span class="material-symbols-outlined">check</span>
+                    졸업 증명서(재학증명서) / 경력 증명서
+                  </FileCheckText>
+                  <FileCheckText>
+                    <span class="material-symbols-outlined">check</span>
+                    성범죄 및 아동학전력회신
+                  </FileCheckText>
                 </PageContainer>
               )}
               <SignUpButtonContainer>
@@ -593,7 +627,7 @@ const FormWrap = styled.div`
   justify-content: center;
   align-items: center;
 
-  gap: 35rem;
+  gap: 30rem;
   padding: 3rem 5rem;
 
   border-radius: 40px;
@@ -663,6 +697,12 @@ const H1 = styled.h1`
 `;
 
 const H4 = styled.h4`
+  font-family: Pretendard;
+  font-weight: 400;
+  color: white;
+`;
+
+const H5 = styled.h5`
   font-family: Pretendard;
   font-weight: 400;
   color: white;
@@ -817,7 +857,7 @@ const UserClassButton = styled.button`
 `;
 
 const PwdCheckContainer = styled.div`
-  padding: 2rem;
+  padding: 1.5rem;
 
   display: flex;
   flex-direction: column;
@@ -842,7 +882,7 @@ const PwdCheckText = styled.div`
   text-align: center;
   text-decoration: none;
 
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 700;
   font-family: Pretendard;
 `;
@@ -904,7 +944,7 @@ const TermsCheckLabel = styled.label`
 const UserPossClassContainer = styled.div`
   display: grid;
   grid-template-columns: ${(props) =>
-    props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(5, 1fr)'};
+    props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(4, 1fr)'};
   grid-template-rows: ${(props) => `repeat(${props.rowCount}, 1fr)`};
 
   gap: 0.5rem;
@@ -918,7 +958,7 @@ const UserPossClassButton = styled.button`
   border: 1px solid #45b26b;
   border-radius: 15px;
 
-  padding: 1rem 2rem;
+  padding: 1.5rem 2rem;
   margin-bottom: 1rem;
 
   color: white;
@@ -950,32 +990,17 @@ const UserInfoRowContainer = styled.div`
   margin-bottom: 1rem;
 `;
 
-const FileInput = styled.input.attrs({ type: 'file' })`
-  width: 360px;
-  background-color: rgba(255, 255, 255, 0.01);
-  color: white;
-  padding: 1rem 18px;
+const FileCheckText = styled.div`
+  color: #00bba3;
 
-  border: 1px solid #bfbfbf;
-  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  font-size: 1.2rem;
+  text-align: center;
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 700;
   font-family: Pretendard;
-  font-weight: 400;
-  text-align: left;
-
-  transition: 0.5s;
-
-  input#file-upload-button {
-    background-color: black;
-  }
-
-  &::placeholder {
-    color: #b8b8b8;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    font-size: 1rem;
-  }
 `;
