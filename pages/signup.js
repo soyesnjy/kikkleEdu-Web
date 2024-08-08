@@ -16,67 +16,50 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
+import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
 
-// const AvartarIconArr = [
-//   {
-//     src: '/src/Login_IMG/Login_Ella_Icon_IMG.png',
-//     alt: 'Ella_Icon',
-//     width: 246,
-//     height: 156,
-//     top: '-28%',
-//     left: '-3%',
-//   },
-//   {
-//     src: '/src/Login_IMG/Login_Pupu_Icon_IMG.png',
-//     alt: 'Pupu_Icon',
-//     width: 191,
-//     height: 150,
-//     top: '-5%',
-//     left: '-15%',
-//   },
-//   {
-//     src: '/src/Login_IMG/Login_Soyes_Icon_IMG.png',
-//     alt: 'Soyes_Icon',
-//     width: 153,
-//     height: 171,
-//     left: '-13%',
-//     bottom: '5%',
-//   },
-//   {
-//     src: '/src/Login_IMG/Login_Ubi_Icon_IMG.png',
-//     alt: 'Ubi_Icon',
-//     width: 194,
-//     height: 190,
-//     top: '-28%',
-//     right: '0%',
-//   },
-//   {
-//     src: '/src/Login_IMG/Login_North_Icon_IMG.png',
-//     alt: 'North_Icon',
-//     width: 169,
-//     height: 173,
-//     top: '-10%',
-//     right: '-13%',
-//   },
-// ];
+// TODO# 추후 수업 Table Row를 조회하여 뿌려줄 필요가 있어보임.
+const possClassArr = [
+  '창의발레',
+  '세계발레',
+  '원데이클래스',
+  '발레작품반',
+  '댄스작품반',
+  'kpop 소예 방송댄스',
+  '성인요가',
+  '성인필라테스',
+];
+
+const possLocalArr = ['서울', '부산', '기타'];
+
+const possDayArr = ['월', '화', '수', '목', '금', '토', '일'];
 
 // SignUp 페이지
 export default function Signup() {
   const [userClass, setUserClass] = useState('teacher');
   const [pageNumber, setPageNumber] = useState(0);
-
+  // 비밀번호 관련 state
   const [checkPwd_1, setCheckPwd_1] = useState(false);
   const [checkPwd_2, setCheckPwd_2] = useState(false);
   const [checkPwd_3, setCheckPwd_3] = useState(false);
-
+  // 동의항목 관련 state
   const [checkTerms, setCheckTerms] = useState(false);
   const [checkPrivacy, setCheckPrivacy] = useState(false);
-
+  // First Page 가입정보 state
   const [id, setId] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [pwd, setPwd] = useState('');
+  // Second Page 가입정보 state
+  const [possClass, setPossClass] = useState([]); // 희망 수업
+  const [possLocal, setPossLocal] = useState(''); // 희망 지역
+  const [possDay, setPossDay] = useState([]); // 희망 지역
+  // Third Page 가입정보 state
+  const [career, setCareer] = useState(''); // 경력
+  const [education, setEducation] = useState(''); // 학력
+  const [file, setFile] = useState(null); // 첨부 파일(zip)
+
   const [login, setLogin] = useRecoilState(log);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
@@ -135,6 +118,10 @@ export default function Signup() {
     };
   }, [pwd]);
 
+  useEffect(() => {
+    console.log(file?.type);
+  }, [file]);
+
   // 첫 페이지 체크 메서드
   const pageCheckFirst = () => {
     if (!email) {
@@ -155,6 +142,23 @@ export default function Signup() {
     }
     if (!checkTerms || !checkPrivacy) {
       alert('동의항목을 체크해주세요');
+      return false;
+    }
+    return true;
+  };
+
+  // 첫 페이지 체크 메서드
+  const pageCheckSecond = () => {
+    if (!possClass.length) {
+      alert('희망 수업을 선택하세요');
+      return false;
+    }
+    if (!possLocal) {
+      alert('희망 지역을 선택하세요');
+      return false;
+    }
+    if (!possDay.length) {
+      alert('희망 날짜를 선택하세요');
       return false;
     }
     return true;
@@ -265,10 +269,10 @@ export default function Signup() {
     <SignUpPageContainer>
       <FormWrap>
         {/* <Image
-          src={el.src}
-          alt={el.alt}
-          width={el.width}
-          height={el.height}
+          src='image_path'
+          alt='image_text'
+          width={111}
+          height={52}
           style={{ maxWidth: '100%', height: 'auto' }}
         /> */}
         <div>
@@ -296,140 +300,247 @@ export default function Signup() {
           </UserClassButtonContainer>
         </div>
         <FormContainer>
-          <InputContainer>
-            {pageNumber === 0 && (
-              <PageContainer>
-                <SignUpInput
-                  id="email"
-                  placeholder="이메일"
-                  type="email"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                />
-                <SignUpInput
-                  id="name"
-                  placeholder="성함"
-                  type="text"
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                />
-                <StyledPhoneInput
-                  placeholder="전화 번호"
-                  value={phoneNumber}
-                  onChange={setPhoneNumber}
-                  defaultCountry="KR"
-                />
-                <SignUpInput
-                  id="password"
-                  placeholder="비밀번호"
-                  type="password"
-                  value={pwd}
-                  onChange={(e) => {
-                    setPwd(e.target.value);
-                  }}
-                />
-                <PwdCheckContainer>
-                  <H4>비밀번호 요구사항</H4>
-                  <PwdCheckText check={checkPwd_1}>
-                    <span class="material-symbols-outlined">check</span> 8글자
-                    이상
-                  </PwdCheckText>
-                  <PwdCheckText check={checkPwd_2}>
-                    <span class="material-symbols-outlined">check</span>{' '}
-                    영문,숫자,기호 중 2개 이상의 조합
-                  </PwdCheckText>
-                  <PwdCheckText check={checkPwd_3}>
-                    <span class="material-symbols-outlined">check</span> 이메일
-                    주소가 포함되면 안됩니다
-                  </PwdCheckText>
-                </PwdCheckContainer>
-                <TermsCheckboxContainer>
-                  <HiddenCheckbox
-                    id="checkTerms"
-                    checked={checkTerms}
+          {userClass === 'teacher' ? (
+            <InputContainer>
+              {/* 회원가입 First Page */}
+              {pageNumber === 0 && (
+                <PageContainer>
+                  <SignUpInput
+                    id="email"
+                    placeholder="이메일"
+                    type="email"
+                    value={email}
                     onChange={(e) => {
-                      setCheckTerms(e.target.checked);
+                      setEmail(e.target.value);
                     }}
                   />
-                  <StyledCheckbox
-                    checked={checkTerms}
-                    onClick={(e) => {
-                      setCheckTerms(!checkTerms);
-                    }}
-                  >
-                    <Icon viewBox="0 0 24 24">
-                      <polyline points="20 6 9 17 4 12" />
-                    </Icon>
-                  </StyledCheckbox>
-                  <TermsCheckLabel for="checkTerms">
-                    *이용약관에 동의합니다.
-                  </TermsCheckLabel>
-                </TermsCheckboxContainer>
-                <TermsCheckboxContainer>
-                  <HiddenCheckbox
-                    id="checkPrivacy"
-                    checked={checkPrivacy}
+                  <SignUpInput
+                    id="name"
+                    placeholder="성함"
+                    type="text"
+                    value={name}
                     onChange={(e) => {
-                      setCheckPrivacy(e.target.checked);
+                      setName(e.target.value);
                     }}
                   />
-                  <StyledCheckbox
-                    checked={checkPrivacy}
+                  <StyledPhoneInput
+                    placeholder="전화 번호"
+                    value={phoneNumber}
+                    onChange={setPhoneNumber}
+                    defaultCountry="KR"
+                  />
+                  <SignUpInput
+                    id="password"
+                    placeholder="비밀번호"
+                    type="password"
+                    value={pwd}
+                    onChange={(e) => {
+                      setPwd(e.target.value);
+                    }}
+                  />
+                  <PwdCheckContainer>
+                    <H4>비밀번호 요구사항</H4>
+                    <PwdCheckText check={checkPwd_1}>
+                      <span class="material-symbols-outlined">check</span> 8글자
+                      이상
+                    </PwdCheckText>
+                    <PwdCheckText check={checkPwd_2}>
+                      <span class="material-symbols-outlined">check</span>{' '}
+                      영문,숫자,기호 중 2개 이상의 조합
+                    </PwdCheckText>
+                    <PwdCheckText check={checkPwd_3}>
+                      <span class="material-symbols-outlined">check</span>{' '}
+                      이메일 주소가 포함되면 안됩니다
+                    </PwdCheckText>
+                  </PwdCheckContainer>
+                  <TermsCheckboxContainer>
+                    <HiddenCheckbox
+                      id="checkTerms"
+                      checked={checkTerms}
+                      onChange={(e) => {
+                        setCheckTerms(e.target.checked);
+                      }}
+                    />
+                    <StyledCheckbox
+                      checked={checkTerms}
+                      onClick={(e) => {
+                        setCheckTerms(!checkTerms);
+                      }}
+                    >
+                      <Icon viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12" />
+                      </Icon>
+                    </StyledCheckbox>
+                    <TermsCheckLabel for="checkTerms">
+                      *이용약관에 동의합니다.
+                    </TermsCheckLabel>
+                  </TermsCheckboxContainer>
+                  <TermsCheckboxContainer>
+                    <HiddenCheckbox
+                      id="checkPrivacy"
+                      checked={checkPrivacy}
+                      onChange={(e) => {
+                        setCheckPrivacy(e.target.checked);
+                      }}
+                    />
+                    <StyledCheckbox
+                      checked={checkPrivacy}
+                      onClick={(e) => {
+                        setCheckPrivacy(!checkPrivacy);
+                      }}
+                    >
+                      <Icon viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12" />
+                      </Icon>
+                    </StyledCheckbox>
+                    <TermsCheckLabel for="checkPrivacy">
+                      *개인정보 수집 및 이용에 동의합니다.
+                    </TermsCheckLabel>
+                  </TermsCheckboxContainer>
+                </PageContainer>
+              )}
+              {/* 회원가입 Second Page */}
+              {pageNumber === 1 && (
+                <PageContainer>
+                  <H4>희망 수업</H4>
+                  <UserPossClassContainer
+                    rowCount={Math.ceil(possClassArr.length / 5)}
+                  >
+                    {possClassArr.map((possClassName, index) => {
+                      return (
+                        <UserPossClassButton
+                          key={index}
+                          value={possClassName}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            // 선택 취소
+                            if (possClass.includes(possClassName))
+                              setPossClass([
+                                ...possClass.filter(
+                                  (el) => el !== possClassName
+                                ),
+                              ]);
+                            // 선택
+                            else setPossClass([...possClass, e.target.value]);
+                          }}
+                          selected={possClass.includes(possClassName)}
+                        >
+                          {possClassName}
+                        </UserPossClassButton>
+                      );
+                    })}
+                  </UserPossClassContainer>
+                  <H4>희망 지역</H4>
+                  <UserPossClassContainer
+                    rowCount={Math.ceil(possLocalArr.length / 5)}
+                  >
+                    {possLocalArr.map((possLocalName, index) => {
+                      return (
+                        <UserPossClassButton
+                          key={index}
+                          value={possLocalName}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            // 지역 선택
+                            setPossLocal(e.target.value);
+                          }}
+                          selected={possLocal === possLocalName}
+                        >
+                          {possLocalName}
+                        </UserPossClassButton>
+                      );
+                    })}
+                  </UserPossClassContainer>
+                  <H4>희망 날짜 </H4>
+                  <UserPossClassContainer rowCount={1} dayCheck={true}>
+                    {possDayArr.map((possDayName, index) => {
+                      return (
+                        <UserPossClassButton
+                          key={index}
+                          value={possDayName}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            // 선택 취소
+                            if (possDay.includes(possDayName))
+                              setPossDay([
+                                ...possDay.filter((el) => el !== possDayName),
+                              ]);
+                            // 선택
+                            else setPossDay([...possDay, e.target.value]);
+                          }}
+                          selected={possDay.includes(possDayName)}
+                        >
+                          {possDayName}
+                        </UserPossClassButton>
+                      );
+                    })}
+                  </UserPossClassContainer>
+                </PageContainer>
+              )}
+              {/* 회원가입 Third Page */}
+              {pageNumber === 2 && (
+                <PageContainer>
+                  <UserInfoRowContainer>
+                    <SignUpInput
+                      id="career"
+                      placeholder="경력"
+                      type="text"
+                      value={career}
+                      onChange={(e) => {
+                        setCareer(e.target.value);
+                      }}
+                    />
+                    <SignUpInput
+                      id="education"
+                      placeholder="학력"
+                      type="text"
+                      value={education}
+                      onChange={(e) => {
+                        setEducation(e.target.value);
+                      }}
+                    />
+                  </UserInfoRowContainer>
+                  <H4>필수요청 서류 탭 (ZIP파일 제출)</H4>
+                  <FileUploadComponent setFile={setFile} />
+                </PageContainer>
+              )}
+              <SignUpButtonContainer>
+                {/* 이전 버튼 */}
+                {pageNumber > 0 && (
+                  <SignUpButton
                     onClick={(e) => {
-                      setCheckPrivacy(!checkPrivacy);
+                      e.preventDefault();
+                      setPageNumber(pageNumber - 1);
                     }}
                   >
-                    <Icon viewBox="0 0 24 24">
-                      <polyline points="20 6 9 17 4 12" />
-                    </Icon>
-                  </StyledCheckbox>
-                  <TermsCheckLabel for="checkPrivacy">
-                    *개인정보 수집 및 이용에 동의합니다.
-                  </TermsCheckLabel>
-                </TermsCheckboxContainer>
-              </PageContainer>
-            )}
-            {pageNumber === 1 && (
-              <PageContainer>
-                <H1>2 페이지</H1>
-              </PageContainer>
-            )}
-            {pageNumber === 2 && (
-              <PageContainer>
-                <H1>3 페이지</H1>
-              </PageContainer>
-            )}
-            {/* 이전 다음 버튼 관련 */}
-            {pageNumber > 0 && (
-              <SignUpButton
-                onClick={(e) => {
-                  e.preventDefault();
-                  setPageNumber(pageNumber - 1);
-                }}
-              >
-                이전 단계
-              </SignUpButton>
-            )}
-            {pageNumber !== 2 && (
-              <SignUpButton
-                onClick={(e) => {
-                  e.preventDefault();
-                  // 첫 페이지 필수 항목 체크
-                  if (pageNumber === 0 && !pageCheckFirst()) return;
-                  setPageNumber(pageNumber + 1);
-                }}
-              >
-                다음 단계
-              </SignUpButton>
-            )}
-            {pageNumber === 2 && (
-              <SignUpButton onClick={signupHandler}>회원가입</SignUpButton>
-            )}
-          </InputContainer>
+                    이전 단계
+                  </SignUpButton>
+                )}
+                {/* 다음 버튼 */}
+                {pageNumber !== 2 && (
+                  <SignUpButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // 페이지별 필수 항목 체크
+                      // if (pageNumber === 0 && !pageCheckFirst()) return;
+                      // if (pageNumber === 1 && !pageCheckSecond()) return;
+                      setPageNumber(pageNumber + 1);
+                    }}
+                  >
+                    다음 단계
+                  </SignUpButton>
+                )}
+                {/* 가입 버튼 */}
+                {pageNumber === 2 && (
+                  <SignUpButton onClick={signupHandler}>회원가입</SignUpButton>
+                )}
+              </SignUpButtonContainer>
+            </InputContainer>
+          ) : (
+            <InputContainer>
+              <H1>개발중...</H1>
+            </InputContainer>
+          )}
         </FormContainer>
       </FormWrap>
     </SignUpPageContainer>
@@ -618,6 +729,15 @@ const StyledPhoneInput = styled(PhoneInput)`
   }
 `;
 
+const SignUpButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+
+  gap: 0.5rem;
+
+  margin-top: 1rem;
+`;
+
 const SignUpButton = styled.button`
   width: 360px;
 
@@ -650,6 +770,21 @@ const SignUpButton = styled.button`
   }
 `;
 
+const UserClassButtonContainer = styled.div`
+  margin-top: 2rem;
+
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+`;
+
 const UserClassButton = styled.button`
   background-color: ${(props) =>
     props.selected ? '#45b26b' : 'rgba(255, 255, 255, 0.01)'};
@@ -671,29 +806,13 @@ const UserClassButton = styled.button`
   &:hover {
     background-color: #45b26b;
   }
-
-  transition: 0.5s;
+  transition: 0.2s;
 
   @media (max-width: 768px) {
     width: 100%;
     min-height: fit-content;
     min-height: 53px;
     font-size: 20px;
-  }
-`;
-
-const UserClassButtonContainer = styled.div`
-  margin-top: 2rem;
-
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  gap: 0.5rem;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    flex-direction: column;
-    gap: 0.5rem;
   }
 `;
 
@@ -780,4 +899,83 @@ const TermsCheckLabel = styled.label`
   font-family: Pretendard;
   font-weight: 400;
   text-align: left;
+`;
+
+const UserPossClassContainer = styled.div`
+  display: grid;
+  grid-template-columns: ${(props) =>
+    props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(5, 1fr)'};
+  grid-template-rows: ${(props) => `repeat(${props.rowCount}, 1fr)`};
+
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
+const UserPossClassButton = styled.button`
+  background-color: ${(props) =>
+    props.selected ? '#45b26b' : 'rgba(255, 255, 255, 0.01)'};
+  border: 1px solid #45b26b;
+  border-radius: 15px;
+
+  padding: 1rem 2rem;
+  margin-bottom: 1rem;
+
+  color: white;
+  text-align: center;
+  text-decoration: none;
+
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: Pretendard;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-height: fit-content;
+    min-height: 53px;
+    font-size: 20px;
+  }
+`;
+
+const UserInfoRowContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 1rem;
+  margin-bottom: 1rem;
+`;
+
+const FileInput = styled.input.attrs({ type: 'file' })`
+  width: 360px;
+  background-color: rgba(255, 255, 255, 0.01);
+  color: white;
+  padding: 1rem 18px;
+
+  border: 1px solid #bfbfbf;
+  border-radius: 15px;
+
+  font-size: 1.2rem;
+  font-family: Pretendard;
+  font-weight: 400;
+  text-align: left;
+
+  transition: 0.5s;
+
+  input#file-upload-button {
+    background-color: black;
+  }
+
+  &::placeholder {
+    color: #b8b8b8;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    font-size: 1rem;
+  }
 `;
