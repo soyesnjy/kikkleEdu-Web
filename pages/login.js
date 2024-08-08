@@ -70,6 +70,7 @@ const expireSetHourFunc = (hour) => {
 
 export default function Login() {
   const { t } = useTranslation('login');
+  const [userClass, setUserClass] = useState('teacher');
 
   const [id, setId] = useState('');
   const [userId, setUserId] = useRecoilState(uid);
@@ -262,6 +263,26 @@ export default function Login() {
         />
         <H1>{t('login_title')}</H1>
         <H3>키클에듀에 오신 것을 환영합니다.</H3>
+        <UserClassButtonContainer>
+          <UserClassButton
+            selected={userClass === 'teacher'}
+            value="teacher"
+            onClick={(e) => {
+              setUserClass(e.target.value);
+            }}
+          >
+            강사
+          </UserClassButton>
+          <UserClassButton
+            selected={userClass === 'agency'}
+            value="agency"
+            onClick={(e) => {
+              setUserClass(e.target.value);
+            }}
+          >
+            기관
+          </UserClassButton>
+        </UserClassButtonContainer>
         <FormContainer>
           <InputContainer>
             <LoginInput
@@ -281,17 +302,23 @@ export default function Login() {
               {t('login_submit')}
             </LoginButton>
             <StyledLink href="/signup">비밀번호를 잊으셨나요?</StyledLink>
-            <Image
-              src="/src/Login_IMG/Login_Divider_IMG.png"
-              alt={'soyes_logo'}
-              width={360}
-              height={17}
-              style={{ maxWidth: '100%', height: 'auto' }}
-            />
-            <OAuthWrap>
-              <GoogleOAuthBtn setUrl={setUrl} />
-              <KakaoOAuthBtn setUrl={setUrl} />
-            </OAuthWrap>
+            {userClass === 'teacher' && (
+              <Image
+                src="/src/Login_IMG/Login_Divider_IMG.png"
+                alt={'soyes_logo'}
+                width={360}
+                height={17}
+                style={{ maxWidth: '100%', height: 'auto' }}
+              />
+            )}
+            {userClass === 'teacher' ? (
+              <OAuthWrap>
+                <GoogleOAuthBtn setUrl={setUrl} />
+                <KakaoOAuthBtn setUrl={setUrl} />
+              </OAuthWrap>
+            ) : (
+              ''
+            )}
             <H4>
               아직 키클에듀 회원이 아니신가요?{' '}
               <StyledLink href="/signup">회원가입</StyledLink>
@@ -366,14 +393,6 @@ const FormWrap = styled.div`
   }
 `;
 
-// const AvartarIconWrap = styled.div`
-//   position: absolute;
-//   top: ${(props) => props.top || null};
-//   bottom: ${(props) => props.bottom || null};
-//   left: ${(props) => props.left || null};
-//   right: ${(props) => props.right || null};
-// `;
-
 const FormContainer = styled.form`
   display: flex;
   justify-content: center;
@@ -405,6 +424,51 @@ const OAuthWrap = styled.div`
     width: 100%;
     flex-direction: column;
     padding: 0;
+  }
+`;
+
+const UserClassButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+`;
+
+const UserClassButton = styled.button`
+  width: 100%;
+  background-color: ${(props) =>
+    props.selected ? '#45b26b' : 'rgba(255, 255, 255, 0.01)'};
+  border: 1px solid #45b26b;
+  border-radius: 15px;
+
+  padding: 1.3rem 3rem;
+  margin-bottom: 1rem;
+
+  color: white;
+  text-align: center;
+  text-decoration: none;
+
+  font-size: 1.2rem;
+  font-weight: 400;
+  font-family: Pretendard;
+
+  cursor: pointer;
+  &:hover {
+    background-color: #45b26b;
+  }
+  transition: 0.2s;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-height: fit-content;
+    min-height: 53px;
+    font-size: 20px;
   }
 `;
 
