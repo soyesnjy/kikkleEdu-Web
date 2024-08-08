@@ -89,7 +89,6 @@ export default function Login() {
   // TODO# 일반 로그인
   const submitHandler = async (e) => {
     e.preventDefault();
-    return alert('개발중...');
     if (!id || !pwd) {
       Swal.fire({
         icon: 'error',
@@ -99,6 +98,7 @@ export default function Login() {
       });
       return;
     }
+    return alert('개발중...');
     const flag = await loginAPI(process.env.NEXT_PUBLIC_URL, {
       LoginData: {
         pUid: id,

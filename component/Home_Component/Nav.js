@@ -16,7 +16,7 @@ const navList_info = [
   {
     title: '소예키즈 소개',
     items: [
-      { href: '/', label: '회사연혁' },
+      { href: '/introduce', label: '회사연혁' },
       { href: '/music', label: '소예키즈 콘텐츠' },
       { href: '/', label: '특허 및 저작권' },
       { href: '/', label: '파트너사' },
