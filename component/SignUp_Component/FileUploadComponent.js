@@ -18,7 +18,7 @@ const FileUploadComponent = ({ file, setFile }) => {
 
   return (
     <FileInputContainer>
-      <FileName>{file.name}</FileName>
+      <FileName>{file?.name}</FileName>
       <CustomButton onClick={handleButtonClick}>첨부</CustomButton>
       <HiddenFileInput ref={fileInputRef} onChange={handleFileChange} />
     </FileInputContainer>
