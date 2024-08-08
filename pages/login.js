@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
@@ -85,8 +86,10 @@ export default function Login() {
   const code = searchParams.get('code');
   const type = searchParams.get('type');
 
+  // TODO# 일반 로그인
   const submitHandler = async (e) => {
     e.preventDefault();
+    return alert('개발중...');
     if (!id || !pwd) {
       Swal.fire({
         icon: 'error',
@@ -130,7 +133,7 @@ export default function Login() {
       });
     }
   };
-
+  // TODO# 구글 로그인
   const oauthGoogleHandler = async () => {
     if (code) {
       try {
@@ -167,7 +170,7 @@ export default function Login() {
       }
     }
   };
-
+  // TODO# 카카오 로그인
   const oauthKakaoHandler = async () => {
     if (code) {
       try {
@@ -227,6 +230,7 @@ export default function Login() {
   }, [url]);
 
   useEffect(() => {
+    if (!code) return;
     if (type === 'kakao') oauthKakaoHandler();
     else oauthGoogleHandler();
   }, [code]);

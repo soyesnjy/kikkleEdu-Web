@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 import styled from 'styled-components';
 import { loginAPI_OAuth_URL } from '@/fetchAPI';
 import { useTranslation } from 'next-i18next';
@@ -7,6 +8,7 @@ const GoogleOAuthBtn = ({ setUrl }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault(); // 새로고침 방지
+    return alert('개발중...');
     const data = await loginAPI_OAuth_URL();
     const directUrl = data.url;
 
