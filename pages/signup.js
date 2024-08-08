@@ -556,8 +556,8 @@ export default function Signup() {
                     onClick={(e) => {
                       e.preventDefault();
                       // 페이지별 필수 항목 체크
-                      // if (pageNumber === 0 && !pageCheckFirst()) return;
-                      // if (pageNumber === 1 && !pageCheckSecond()) return;
+                      if (pageNumber === 0 && !pageCheckFirst()) return;
+                      if (pageNumber === 1 && !pageCheckSecond()) return;
                       setPageNumber(pageNumber + 1);
                     }}
                   >
