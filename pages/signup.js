@@ -10,7 +10,7 @@ import { signupAPI } from '@/fetchAPI';
 // SweetAlert2
 import Swal from 'sweetalert2';
 import { useRecoilState } from 'recoil';
-import { log, mobile } from '../store/state';
+import { log, mobile } from '@/store/state';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';

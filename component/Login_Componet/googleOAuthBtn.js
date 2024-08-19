@@ -8,7 +8,7 @@ const GoogleOAuthBtn = ({ setUrl }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault(); // 새로고침 방지
-    return alert('개발중...');
+    // return alert('개발중...');
     const data = await loginAPI_OAuth_URL();
     const directUrl = data.url;
 

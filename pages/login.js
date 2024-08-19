@@ -98,14 +98,16 @@ export default function Login() {
       });
       return;
     }
-    return alert('개발중...');
-    const flag = await loginAPI(process.env.NEXT_PUBLIC_URL, {
-      LoginData: {
+
+    const res = await loginAPI({
+      data: {
         pUid: id,
-        passWard: pwd,
+        passWord: pwd,
+        type: userClass,
       },
     });
-    if (flag) {
+
+    if (res.status === 200) {
       Swal.fire({
         icon: 'success',
         title: t('login_success_title'),
@@ -120,10 +122,21 @@ export default function Login() {
             expires: expireSetHourFunc(1),
           })
         );
-        localStorage.setItem('id', id);
-        setUserId(id);
-        // router.push('/');
-        router.back(); // Guset 로그인 시 뒤로가기 발동
+        localStorage.setItem('id', res.data.id);
+        setUserId(res.data.id);
+        router.push('/');
+      });
+    } else if (res.status === 401) {
+      Swal.fire({
+        icon: 'info',
+        title: '생성 요청',
+        text: '계정 생성 요청이 완료되었습니다',
+      });
+    } else if (res.status === 402) {
+      Swal.fire({
+        icon: 'question',
+        title: '승인 대기',
+        text: '관리자에의해 승인 대기중인 계정입니다',
       });
     } else {
       Swal.fire({
@@ -138,7 +151,7 @@ export default function Login() {
     if (code) {
       try {
         const res = await loginAPI_OAuth_Approve_Google({ code });
-
+        console.log(res.status);
         if (res.status === 200) {
           Swal.fire({
             icon: 'success',
@@ -157,6 +170,18 @@ export default function Login() {
             localStorage.setItem('id', res.data.id);
             setUserId(res.data.id);
             router.push('/');
+          });
+        } else if (res.status === 401) {
+          Swal.fire({
+            icon: 'info',
+            title: '생성 요청',
+            text: '계정 생성 요청이 완료되었습니다',
+          });
+        } else if (res.status === 402) {
+          Swal.fire({
+            icon: 'question',
+            title: '승인 대기',
+            text: '관리자에의해 승인 대기중인 계정입니다',
           });
         } else {
           Swal.fire({
@@ -195,6 +220,18 @@ export default function Login() {
             localStorage.setItem('id', res.data.id);
             setUserId(res.data.id);
             router.push('/');
+          });
+        } else if (res.status === 401) {
+          Swal.fire({
+            icon: 'info',
+            title: '생성 요청',
+            text: '계정 생성 요청이 완료되었습니다',
+          });
+        } else if (res.status === 402) {
+          Swal.fire({
+            icon: 'question',
+            title: '승인 대기',
+            text: '관리자에의해 승인 대기중인 계정입니다',
           });
         } else {
           Swal.fire({

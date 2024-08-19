@@ -64,7 +64,6 @@ export default function Nav() {
   const { t } = useTranslation('nav');
   const currentPath = router.pathname;
   const [login, setLogin] = useRecoilState(log);
-  const [avartaAI, setAvartaAI] = useRecoilState(avarta);
   const [userId, setUserId] = useRecoilState(uid);
   const [showNavbar, setShowNavbar] = useState(false);
   // Resize 상태 처리
@@ -86,9 +85,6 @@ export default function Nav() {
         handleSessionExpired();
       }
     }
-    // 아바타 확인
-    const avarta = localStorage.getItem('avarta');
-    if (avarta) setAvartaAI(avarta);
     // Resize 상태 처리 (MobileFlag)
     const handleResize = () => {
       setWindowSize({
@@ -132,14 +128,14 @@ export default function Nav() {
       showConfirmButton: false,
       timer: 1500,
     }).then(() => {
-      logoutAPI(`${process.env.NEXT_PUBLIC_URL}`);
+      logoutAPI();
       setLogin(false);
       localStorage.removeItem('log');
       localStorage.removeItem('id');
       localStorage.removeItem('avarta');
       router.push('/');
     });
-  }, [router, setLogin, setAvartaAI]);
+  }, [router, setLogin]);
 
   const logoutHandler = useCallback(() => {
     Swal.fire({
@@ -149,7 +145,7 @@ export default function Nav() {
       denyButtonText: `No`,
     }).then((result) => {
       if (result.isConfirmed) {
-        logoutAPI(`${process.env.NEXT_PUBLIC_URL}`);
+        logoutAPI();
         // 히스토리 정보 삭제
         if (typeof window !== 'undefined') {
           window.history.pushState(
@@ -166,7 +162,6 @@ export default function Nav() {
           timer: 1500,
         }).then(() => {
           setLogin(false);
-          setAvartaAI('default');
           localStorage.removeItem('log');
           localStorage.removeItem('id');
           localStorage.removeItem('avarta');
@@ -174,7 +169,7 @@ export default function Nav() {
         });
       }
     });
-  }, [router, setLogin, setAvartaAI]);
+  }, [router, setLogin]);
 
   const menuItems = useMemo(() => [{ href: '/', label: 'MY PAGE' }], [t]);
 
