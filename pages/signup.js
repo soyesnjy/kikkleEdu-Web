@@ -12,6 +12,8 @@ import Swal from 'sweetalert2';
 import { useRecoilState } from 'recoil';
 import { log, mobile } from '@/store/state';
 
+import { handleClassGet } from '@/fetchAPI/classAPI';
+
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -19,24 +21,12 @@ import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
 
-// TODO# 추후 수업 Table Row를 조회하여 뿌려줄 필요가 있어보임.
-const possClassArr = [
-  '창의발레',
-  '세계발레',
-  '원데이클래스',
-  '발레작품반',
-  '댄스작품반',
-  'kpop 소예 방송댄스',
-  '성인요가',
-  '성인필라테스',
-];
-
 const possLocalArr = ['서울', '부산', '기타'];
-
 const possDayArr = ['월', '화', '수', '목', '금', '토', '일'];
 
 // SignUp 페이지
 export default function Signup() {
+  const [possClassArr, setPossClassArr] = useState([]);
   const [userClass, setUserClass] = useState('teacher');
   const [pageNumber, setPageNumber] = useState(0);
   // 비밀번호 관련 state
@@ -46,29 +36,31 @@ export default function Signup() {
   // 동의항목 관련 state
   const [checkTerms, setCheckTerms] = useState(false);
   const [checkPrivacy, setCheckPrivacy] = useState(false);
-  // First Page 가입정보 state
-  const [id, setId] = useState('');
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [pwd, setPwd] = useState('');
-  // Second Page 가입정보 state
-  const [possClass, setPossClass] = useState([]); // 희망 수업
-  const [possLocal, setPossLocal] = useState(''); // 희망 지역
-  const [possDay, setPossDay] = useState([]); // 희망 지역
-  // Third Page 가입정보 state
-  const [career, setCareer] = useState(''); // 경력
-  const [education, setEducation] = useState(''); // 학력
-  const [file, setFile] = useState(null); // 첨부 파일(zip)
 
+  // 강사 가입정보
+  // (First Page)
+  const [email, setEmail] = useState(''); // kk_teacher_uid
+  const [pwd, setPwd] = useState(''); // kk_teacher_pwd
+  const [name, setName] = useState(''); // kk_teacher_name
+  const [phoneNumber, setPhoneNumber] = useState(''); // kk_teacher_phoneNum
+  // (Second Page)
+  const [possLocal, setPossLocal] = useState(''); // kk_teacher_location
+  const [possClass, setPossClass] = useState([]); // 희망 수업
+  const [possDay, setPossDay] = useState([]); // kk_teacher_history
+  // (Third Page)
+  const [career, setCareer] = useState(''); // kk_teacher_history
+  const [education, setEducation] = useState(''); // kk_teacher_education
+  const [file, setFile] = useState(null); // kk_teacher_file_path
+
+  // Recoil 전역 변수
   const [login, setLogin] = useRecoilState(log);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   const router = useRouter();
 
-  const minlengthStd = 8;
-  const maxlengthStd = 15;
-  const regex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 및 한글 자모를 포함하는 정규 표현식
+  // const minlengthStd = 8;
+  // const maxlengthStd = 15;
+  // const regex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 및 한글 자모를 포함하는 정규 표현식
 
   // Pwd Check Method
   const checkPwd = () => {
@@ -101,6 +93,23 @@ export default function Signup() {
     else setCheckPwd_3(false);
   };
 
+  // 발레 수업 DB 조회
+  useEffect(() => {
+    if (!possClassArr.length) {
+      // Class Read API 호출 메서드
+      handleClassGet()
+        .then((res) => res.data.data)
+        .then((data) => {
+          console.log(data);
+          setPossClassArr([
+            ...data.map((el) => {
+              return { id: el.kk_class_idx, title: el.kk_class_title };
+            }),
+          ]);
+        });
+    }
+  }, []);
+
   useEffect(() => {
     // 로그인 시 메인 페이지로 이동
     const loginSession = JSON.parse(localStorage.getItem('log'));
@@ -110,6 +119,7 @@ export default function Signup() {
     }
   }, [login]);
 
+  // 비밀번호 입력 디바운싱
   useEffect(() => {
     const debounce = setTimeout(() => {
       return checkPwd();
@@ -118,10 +128,6 @@ export default function Signup() {
       clearTimeout(debounce);
     };
   }, [pwd]);
-
-  useEffect(() => {
-    console.log(file?.type);
-  }, [file]);
 
   // First 페이지 체크 메서드
   const pageCheckFirst = () => {
@@ -183,107 +189,126 @@ export default function Signup() {
   };
 
   // 회원가입 형식 체크 메서드
-  const formCheck = () => {
-    if (!id || !pwd) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Input is empty!',
-        showConfirmButton: false,
-        timer: 1000,
-      });
-      return false;
-    }
+  // const formCheck = () => {
+  //   if (!id || !pwd) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'Input is empty!',
+  //       showConfirmButton: false,
+  //       timer: 1000,
+  //     });
+  //     return false;
+  //   }
 
-    if (regex.test(id) || regex.test(pwd)) {
-      Swal.fire({
-        icon: 'error',
-        title: '한글 쓰지마!!',
-        showConfirmButton: false,
-        timer: 1000,
-      });
-      return false;
-    }
+  //   if (regex.test(id) || regex.test(pwd)) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: '한글 쓰지마!!',
+  //       showConfirmButton: false,
+  //       timer: 1000,
+  //     });
+  //     return false;
+  //   }
 
-    if (id.length < minlengthStd) {
-      Swal.fire({
-        icon: 'error',
-        title: `ID 길이 ${minlengthStd}글자 이상!`,
-        showConfirmButton: false,
-        timer: 1000,
-      });
-      return false;
-    }
+  //   if (id.length < minlengthStd) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: `ID 길이 ${minlengthStd}글자 이상!`,
+  //       showConfirmButton: false,
+  //       timer: 1000,
+  //     });
+  //     return false;
+  //   }
 
-    if (id.length > maxlengthStd) {
-      Swal.fire({
-        icon: 'error',
-        title: `ID 길이 ${maxlengthStd}글자 이하!`,
-        showConfirmButton: false,
-        timer: 1000,
-      });
-      return false;
-    }
+  //   if (id.length > maxlengthStd) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: `ID 길이 ${maxlengthStd}글자 이하!`,
+  //       showConfirmButton: false,
+  //       timer: 1000,
+  //     });
+  //     return false;
+  //   }
 
-    if (pwd.length < minlengthStd) {
-      Swal.fire({
-        icon: 'error',
-        title: `Password 길이 ${minlengthStd}글자 이상!`,
-        showConfirmButton: false,
-        timer: 1000,
-      });
-      return false;
-    }
+  //   if (pwd.length < minlengthStd) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: `Password 길이 ${minlengthStd}글자 이상!`,
+  //       showConfirmButton: false,
+  //       timer: 1000,
+  //     });
+  //     return false;
+  //   }
 
-    if (pwd.length > maxlengthStd) {
-      Swal.fire({
-        icon: 'error',
-        title: `Password 길이 ${maxlengthStd}글자 이하!`,
-        showConfirmButton: false,
-        timer: 1000,
-      });
-      return false;
-    }
+  //   if (pwd.length > maxlengthStd) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: `Password 길이 ${maxlengthStd}글자 이하!`,
+  //       showConfirmButton: false,
+  //       timer: 1000,
+  //     });
+  //     return false;
+  //   }
 
-    return true;
-  };
+  //   return true;
+  // };
 
   const signupHandler = async (e) => {
     e.preventDefault();
     // 회원가입 형식 체크
     if (pageNumber === 2 && !pageCheckThird()) return;
-    return alert('개발중...');
 
-    if (!formCheck()) return;
+    const reader = new FileReader();
 
-    const flag = await signupAPI(process.env.NEXT_PUBLIC_URL, {
-      SignUpData: {
-        pUid: id,
-        passWard: pwd,
-        Email: email,
-        // name : name,
-        // phoneNumber : phoneNumber
-      },
-    });
+    reader.onloadend = async () => {
+      const base64Data = reader.result;
+      console.log(base64Data);
 
-    // console.log(flag);
+      try {
+        const res = await signupAPI({
+          SignUpData: {
+            pUid: email,
+            type: userClass,
+            passWord: pwd,
+            name,
+            phoneNumber,
+            possLocal,
+            possClass,
+            possDay,
+            career,
+            education,
+            file: base64Data,
+          },
+        });
 
-    if (flag) {
-      Swal.fire({
-        icon: 'success',
-        title: 'Sign Up Success!',
-        text: 'Login Page로 이동합니다',
-        showConfirmButton: false,
-        timer: 1500,
-      }).then(() => {
-        // useRouter 인스턴스의 push 메서드를 통해 페이지 이동 가능
-        router.push('/login');
-      });
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Sign Up Fail',
-      });
-    }
+        if (res.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Sign Up Success!',
+            text: 'Login Page로 이동합니다',
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            // useRouter 인스턴스의 push 메서드를 통해 페이지 이동 가능
+            router.push('/login');
+          });
+        } else if (res.status === 403) {
+          Swal.fire({
+            icon: 'error',
+            title: '중복된 이메일입니다',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Sign Up Fail',
+          });
+        }
+      } catch (error) {
+        console.error('업로드 실패:', error);
+      }
+    };
+
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -427,26 +452,29 @@ export default function Signup() {
                   <UserPossClassContainer
                     rowCount={Math.ceil(possClassArr.length / 5)}
                   >
-                    {possClassArr.map((possClassName, index) => {
+                    {possClassArr.map((el, index) => {
+                      const { id, title } = el;
                       return (
                         <UserPossClassButton
                           key={index}
-                          value={possClassName}
+                          value={id}
                           onClick={(e) => {
                             e.preventDefault();
                             // 선택 취소
-                            if (possClass.includes(possClassName))
+                            if (possClass.includes(id))
                               setPossClass([
-                                ...possClass.filter(
-                                  (el) => el !== possClassName
-                                ),
+                                ...possClass.filter((el) => el !== id),
                               ]);
                             // 선택
-                            else setPossClass([...possClass, e.target.value]);
+                            else
+                              setPossClass([
+                                ...possClass,
+                                Number(e.target.value),
+                              ]);
                           }}
-                          selected={possClass.includes(possClassName)}
+                          selected={possClass.includes(id)}
                         >
-                          {possClassName}
+                          {title}
                         </UserPossClassButton>
                       );
                     })}
