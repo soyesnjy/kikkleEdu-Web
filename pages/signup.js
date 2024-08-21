@@ -20,15 +20,26 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
+import PostBtn from '@/component/SignUp_Component/PostBtn';
+import Page from '@/component/Motion_Paging/Page';
 
 const possLocalArr = ['서울', '부산', '기타'];
 const possDayArr = ['월', '화', '수', '목', '금', '토', '일'];
+const agencyTypeArr = [
+  '유치원',
+  '초등학교',
+  '문화센터',
+  '커뮤니티센터',
+  '아동(복지)센터',
+];
 
 // SignUp 페이지
 export default function Signup() {
   const [possClassArr, setPossClassArr] = useState([]);
   const [userClass, setUserClass] = useState('teacher');
-  const [pageNumber, setPageNumber] = useState(0);
+  const [pageNumber, setPageNumber] = useState(0); // 강사 페이지 번호
+  const [pageNumberA, setPageNumberA] = useState(0); // 기관 페이지 번호
+  const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
   // 비밀번호 관련 state
   const [checkPwd_1, setCheckPwd_1] = useState(false);
   const [checkPwd_2, setCheckPwd_2] = useState(false);
@@ -51,6 +62,15 @@ export default function Signup() {
   const [career, setCareer] = useState(''); // kk_teacher_history
   const [education, setEducation] = useState(''); // kk_teacher_education
   const [file, setFile] = useState(null); // kk_teacher_file_path
+
+  // 기관 가입정보
+  const [emailA, setEmailA] = useState('');
+  const [pwdA, setPwdA] = useState('');
+  const [nameA, setNameA] = useState('');
+  const [addressA, setAddressA] = useState('');
+  const [phoneNumberA, setPhoneNumberA] = useState('');
+  const [typeA, setTypeA] = useState('');
+  const [fileA, setFileA] = useState(null);
 
   // Recoil 전역 변수
   const [login, setLogin] = useRecoilState(log);
@@ -129,6 +149,7 @@ export default function Signup() {
     };
   }, [pwd]);
 
+  // 강사 페이지 체크
   // First 페이지 체크 메서드
   const pageCheckFirst = () => {
     if (!email) {
@@ -153,7 +174,6 @@ export default function Signup() {
     }
     return true;
   };
-
   // Second 페이지 체크 메서드
   const pageCheckSecond = () => {
     if (!possClass.length) {
@@ -170,7 +190,6 @@ export default function Signup() {
     }
     return true;
   };
-
   // Third 페이지 체크 메서드
   const pageCheckThird = () => {
     if (!career) {
@@ -182,6 +201,45 @@ export default function Signup() {
       return false;
     }
     if (!file) {
+      alert('파일을 선택하세요');
+      return false;
+    }
+    return true;
+  };
+
+  // 기관 페이지 체크
+  // First 페이지 체크 메서드
+  const agencyPageCheckFirst = () => {
+    if (!emailA) {
+      alert('이메일을 입력하세요');
+      return false;
+    }
+    if (!pwdA) {
+      alert('비밀번호를 입력하세요');
+      return false;
+    }
+    if (!nameA) {
+      alert('이름을 입력하세요');
+      return false;
+    }
+    if (!phoneNumberA) {
+      alert('전화번호를 입력하세요');
+      return false;
+    }
+    if (!addressA) {
+      alert('주소를 입력하세요');
+      return false;
+    }
+    return true;
+  };
+
+  // Second 페이지 체크 메서드
+  const agencyPageCheckSecond = () => {
+    if (!typeA) {
+      alert('기관 유형을 선택하세요');
+      return false;
+    }
+    if (!fileA) {
       alert('파일을 선택하세요');
       return false;
     }
@@ -253,31 +311,35 @@ export default function Signup() {
   //   return true;
   // };
 
+  // 강사 회원가입 핸들러
   const signupHandler = async (e) => {
     e.preventDefault();
     // 회원가입 형식 체크
     if (pageNumber === 2 && !pageCheckThird()) return;
+    // 회원가입 버튼 비활성화
+    setIsPending(true);
 
     const reader = new FileReader();
-
     reader.onloadend = async () => {
       const base64Data = reader.result;
-      console.log(base64Data);
-
       try {
         const res = await signupAPI({
           SignUpData: {
             pUid: email,
-            type: userClass,
+            userClass,
             passWord: pwd,
-            name,
-            phoneNumber,
+            name: name,
+            phoneNumber: phoneNumber,
             possLocal,
             possClass,
             possDay,
             career,
             education,
-            file: base64Data,
+            fileData: {
+              fileName: file.name,
+              fileType: file.type,
+              baseData: base64Data,
+            },
           },
         });
 
@@ -303,12 +365,75 @@ export default function Signup() {
             title: 'Sign Up Fail',
           });
         }
+        // 회원가입 버튼 활성화
+        setIsPending(false);
       } catch (error) {
         console.error('업로드 실패:', error);
       }
     };
 
     reader.readAsDataURL(file);
+  };
+
+  // 기관 회원가입 핸들러
+  const signupHandlerA = async (e) => {
+    e.preventDefault();
+    // 회원가입 형식 체크
+    if (pageNumberA === 1 && !agencyPageCheckSecond()) return;
+    // 회원가입 버튼 비활성화
+    setIsPending(true);
+
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64Data = reader.result;
+      try {
+        const res = await signupAPI({
+          SignUpData: {
+            pUid: emailA,
+            userClass,
+            passWord: pwdA,
+            name: nameA,
+            phoneNumber: phoneNumberA,
+            address: addressA,
+            typeA,
+            fileData: {
+              fileName: fileA.name,
+              fileType: fileA.type,
+              baseData: base64Data,
+            },
+          },
+        });
+
+        if (res.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Sign Up Success!',
+            text: 'Login Page로 이동합니다',
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            // useRouter 인스턴스의 push 메서드를 통해 페이지 이동 가능
+            router.push('/login');
+          });
+        } else if (res.status === 403) {
+          Swal.fire({
+            icon: 'error',
+            title: '중복된 이메일입니다',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Sign Up Fail',
+          });
+        }
+        // 회원가입 버튼 활성화
+        setIsPending(false);
+      } catch (error) {
+        console.error('업로드 실패:', error);
+      }
+    };
+
+    reader.readAsDataURL(fileA);
   };
 
   return (
@@ -594,13 +719,129 @@ export default function Signup() {
                 )}
                 {/* 가입 버튼 */}
                 {pageNumber === 2 && (
-                  <SignUpButton onClick={signupHandler}>회원가입</SignUpButton>
+                  <SignUpButton
+                    onClick={signupHandler}
+                    disabled={isPending}
+                    isPending={isPending}
+                  >
+                    {isPending ? '처리중...' : '회원가입'}
+                  </SignUpButton>
                 )}
               </SignUpButtonContainer>
             </InputContainer>
           ) : (
             <InputContainer>
-              <H1>개발중...</H1>
+              {pageNumberA === 0 && (
+                <PageContainer>
+                  <SignUpInput
+                    id="email"
+                    placeholder="이메일"
+                    type="email"
+                    value={emailA}
+                    onChange={(e) => {
+                      setEmailA(e.target.value);
+                    }}
+                  />
+                  <SignUpInput
+                    id="password"
+                    placeholder="비밀번호"
+                    type="password"
+                    value={pwdA}
+                    onChange={(e) => {
+                      setPwdA(e.target.value);
+                    }}
+                  />
+                  <SignUpInput
+                    id="name"
+                    placeholder="성함"
+                    type="text"
+                    value={nameA}
+                    onChange={(e) => {
+                      setNameA(e.target.value);
+                    }}
+                  />
+                  <StyledPhoneInput
+                    placeholder="전화 번호"
+                    value={phoneNumberA}
+                    onChange={setPhoneNumberA}
+                    defaultCountry="KR"
+                  />
+                  <SignUpInputAddressContainer>
+                    <SignUpInputAddress
+                      id="name"
+                      placeholder="주소"
+                      type="text"
+                      value={addressA}
+                      disabled={true}
+                    />
+                    <PostBtn setAddressA={setAddressA} />
+                  </SignUpInputAddressContainer>
+                </PageContainer>
+              )}
+              {pageNumberA === 1 && (
+                <PageContainer>
+                  <H4>기관 유형</H4>
+                  <UserPossClassContainer
+                    rowCount={Math.ceil(agencyTypeArr.length / 5)}
+                  >
+                    {agencyTypeArr.map((agencyTypeName, index) => {
+                      return (
+                        <UserPossClassButton
+                          key={index}
+                          value={agencyTypeName}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            // 지역 선택
+                            setTypeA(e.target.value);
+                          }}
+                          selected={typeA === agencyTypeName}
+                        >
+                          {agencyTypeName}
+                        </UserPossClassButton>
+                      );
+                    })}
+                  </UserPossClassContainer>
+                  <H4>필수요청 서류 탭 (ZIP파일 제출)</H4>
+                  <FileUploadComponent setFile={setFileA} file={fileA} />
+                </PageContainer>
+              )}
+
+              <SignUpButtonContainer>
+                {/* 이전 버튼 */}
+                {pageNumberA > 0 && (
+                  <SignUpButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setPageNumberA(pageNumberA - 1);
+                    }}
+                  >
+                    이전 단계
+                  </SignUpButton>
+                )}
+                {/* 다음 버튼 */}
+                {pageNumberA !== 1 && (
+                  <SignUpButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // 페이지별 필수 항목 체크
+                      if (pageNumberA === 0 && !agencyPageCheckFirst()) return;
+                      setPageNumberA(pageNumberA + 1);
+                    }}
+                  >
+                    다음 단계
+                  </SignUpButton>
+                )}
+                {/* 가입 버튼 */}
+                {pageNumberA === 1 && (
+                  <SignUpButton
+                    onClick={signupHandlerA}
+                    disabled={isPending}
+                    isPending={isPending}
+                  >
+                    {isPending ? '처리중...' : '회원가입'}
+                  </SignUpButton>
+                )}
+              </SignUpButtonContainer>
             </InputContainer>
           )}
         </FormContainer>
@@ -798,8 +1039,10 @@ const StyledPhoneInput = styled(PhoneInput)`
 `;
 
 const SignUpButtonContainer = styled.div`
+  width: 100%;
   display: flex;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
 
   gap: 0.5rem;
 
@@ -809,7 +1052,7 @@ const SignUpButtonContainer = styled.div`
 const SignUpButton = styled.button`
   width: 360px;
 
-  background-color: #606c76;
+  background-color: ${(props) => (props.isPending ? '#45b26b' : '#606c76')};
   border: none;
   border-radius: 15px;
 
@@ -825,7 +1068,7 @@ const SignUpButton = styled.button`
 
   cursor: pointer;
   &:hover {
-    opacity: 0.8;
+    opacity: ${(props) => (props.isPending ? '1' : '0.8')};
   }
 
   transition: 0.5s;
@@ -1031,4 +1274,38 @@ const FileCheckText = styled.div`
   font-size: 14px;
   font-weight: 700;
   font-family: Pretendard;
+`;
+
+const SignUpInputAddressContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 0.2rem;
+`;
+
+const SignUpInputAddress = styled.input`
+  min-width: 360px;
+  background-color: white;
+  color: black;
+  padding: 1rem 18px;
+
+  border: 1px solid #bfbfbf;
+  border-radius: 15px;
+
+  font-size: 1.2rem;
+  font-family: Pretendard;
+  font-weight: 400;
+  text-align: left;
+
+  transition: 0.5s;
+
+  &::placeholder {
+    color: #b8b8b8;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    font-size: 1rem;
+  }
 `;
