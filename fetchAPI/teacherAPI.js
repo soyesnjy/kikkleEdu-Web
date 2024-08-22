@@ -2,10 +2,10 @@ import axios from 'axios';
 
 // READ
 // 2024.08.22: 쿼리 삽입 기능 추가
-export const handleClassGet = async (query) => {
+export const handleTeacherGet = async (query) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/class?${query?.classType ? `classType=${query?.classType}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/teacher?${query?.classIdx ? `classIdx=${query?.classIdx}&` : ''}${query?.dayofweek ? `dayofweek=${query?.dayofweek}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -13,7 +13,7 @@ export const handleClassGet = async (query) => {
         withCredentials: true,
       }
     );
-    // console.log(response);
+    console.log(response.data);
     return response;
   } catch (err) {
     console.error(err);
@@ -22,11 +22,11 @@ export const handleClassGet = async (query) => {
     };
   }
 };
-// CREATE
-export const handleClassCreate = async (input) => {
+// TODO# CREATE
+export const handleTeacherCreate = async (input) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_URL}/review`,
+      `${process.env.NEXT_PUBLIC_URL}/teacher`,
       { ReviewData: input },
       {
         headers: {
@@ -45,8 +45,8 @@ export const handleClassCreate = async (input) => {
     };
   }
 };
-// DELETE
-export const handleClassDelete = async (uri) => {
+// TODO# DELETE
+export const handleTeacherDelete = async (uri) => {
   try {
     const response = await axios.delete(`${uri}`, {
       headers: {
@@ -63,11 +63,11 @@ export const handleClassDelete = async (uri) => {
     };
   }
 };
-// UPDATE
-export const handleClassUpdate = async (input) => {
+// TODO# UPDATE
+export const handleTeacherUpdate = async (input) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_URL}/review/update`,
+      `${process.env.NEXT_PUBLIC_URL}/teacher/update`,
       { ReviewData: input },
       {
         headers: {

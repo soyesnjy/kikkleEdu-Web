@@ -16,7 +16,8 @@ const HistoryPage = () => {
             Lorem ipsum dolor sit amet veli elitni legro int dolor.Lorem ipsum
             dolor sit amet veli elitni legro int dolor.
           </Description>
-          <StyledLink href={agency ? '/reservation' : '/login'}>
+          {/* <StyledLink href={agency ? '/reservation' : '/login'}> */}
+          <StyledLink href="/reservation">
             <ReservationButton>
               예약하기
               <span class="material-symbols-outlined">arrow_forward</span>

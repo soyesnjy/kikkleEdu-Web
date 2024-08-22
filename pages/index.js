@@ -44,7 +44,7 @@ export default function Home() {
             alt={'soyes_logo'}
             width={544}
             height={543}
-            style={{ maxWidth: '100%', height: 'auto', zIndex: 1 }}
+            style={{ maxWidth: '100%', height: 'auto' }}
           />
         </ImageContainer>
       </IntroContainer>
@@ -103,6 +103,8 @@ const IntroContainer = styled.div`
   &::before {
     content: '';
     display: block;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
 
@@ -111,8 +113,12 @@ const IntroContainer = styled.div`
     background-position: center;
     background-repeat: no-repeat;
     position: absolute;
-    top: 0;
-    left: 0;
+  }
+
+  @media (max-width: 1080px) {
+    height: 100%;
+    flex-direction: column;
+    padding: 2rem;
   }
 `;
 
@@ -130,6 +136,11 @@ const ReadContainer = styled.div`
 
   color: white;
   z-index: 1;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    padding: 0.3rem;
+  }
 `;
 
 const H1 = styled.h1`
@@ -139,6 +150,10 @@ const H1 = styled.h1`
 
   color: white;
   z-index: 1;
+
+  @media (max-width: 1080px) {
+    font-size: 60px;
+  }
 `;
 
 const H4 = styled.h4`
@@ -180,4 +195,10 @@ const ImageContainer = styled.div`
 
   color: white;
   z-index: 1;
+
+  @media (max-width: 1080px) {
+    margin-top: 5rem;
+    width: 100%;
+    padding: 0.5rem;
+  }
 `;

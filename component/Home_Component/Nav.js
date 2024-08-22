@@ -2,6 +2,7 @@
 import styled, { keyframes } from 'styled-components';
 import Link from 'next/link';
 import NavList from './NavList';
+import NavModal from './NavModal';
 
 import { useRecoilState } from 'recoil';
 import { log, avarta, mobile, uid } from '../../store/state';
@@ -174,68 +175,86 @@ export default function Nav() {
   const menuItems = useMemo(() => [{ href: '/', label: 'MY PAGE' }], [t]);
 
   return (
-    <NavContainer show={showNavbar}>
-      <Link href="/" passHref>
-        <Image
-          src="/src/kikkle_logo.png"
-          alt={'soyes_logo'}
-          width={131}
-          height={48}
-          style={{ maxWidth: '100%', height: 'auto' }}
-        />
-      </Link>
-      <NavListContainer>
-        {navList_info.map((el, index) => {
-          const { title, items } = el;
-          return <NavList key={index} title={title} items={items} />;
-        })}
-      </NavListContainer>
+    <>
+      {!mobileFlag ? (
+        <NavContainer show={showNavbar}>
+          <Link href="/" passHref>
+            <Image
+              src="/src/kikkle_logo.png"
+              alt={'soyes_logo'}
+              width={131}
+              height={48}
+              style={{ maxWidth: '100%', height: 'auto' }}
+            />
+          </Link>
+          <NavListContainer>
+            {navList_info.map((el, index) => {
+              const { title, items } = el;
+              return <NavList key={index} title={title} items={items} />;
+            })}
+          </NavListContainer>
 
-      {login ? (
-        <NavUl>
-          {menuItems.map((item) => (
-            <NavLi key={item.href}>
-              <Link href={item.href} passHref>
-                <NavBtn login={login} selected={item.href === currentPath}>
-                  {item.label}
-                </NavBtn>
-              </Link>
-            </NavLi>
-          ))}
-          <NavLi>
-            <NavBtn onClick={logoutHandler}>LOGOUT</NavBtn>
-          </NavLi>
-          {/* <LanguageSwitcher /> */}
-        </NavUl>
+          {login ? (
+            <NavUl>
+              {menuItems.map((item) => (
+                <NavLi key={item.href}>
+                  <Link href={item.href} passHref>
+                    <NavBtn login={login} selected={item.href === currentPath}>
+                      {item.label}
+                    </NavBtn>
+                  </Link>
+                </NavLi>
+              ))}
+              <NavLi>
+                <NavBtn onClick={logoutHandler}>LOGOUT</NavBtn>
+              </NavLi>
+              {/* <LanguageSwitcher /> */}
+            </NavUl>
+          ) : (
+            <NavUl>
+              <NavLi>
+                <Link href="/login" passHref>
+                  <NavBtn>LOGIN</NavBtn>
+                </Link>
+              </NavLi>
+              <NavLi>
+                <Link href="/signup" passHref>
+                  <NavBtn>SIGN UP</NavBtn>
+                </Link>
+              </NavLi>
+            </NavUl>
+          )}
+        </NavContainer>
       ) : (
-        <NavUl>
-          <NavLi>
-            <Link href="/login" passHref>
-              <NavBtn>LOGIN</NavBtn>
-            </Link>
-          </NavLi>
-          <NavLi>
-            <Link href="/signup" passHref>
-              <NavBtn>SIGN UP</NavBtn>
-            </Link>
-          </NavLi>
-        </NavUl>
+        <NavContainer show={showNavbar}>
+          <Link href="/" passHref>
+            <Image
+              src="/src/Home_IMG/Nav_IMG/Home_Nav_Logo_IMG.png"
+              alt={'soyes_logo'}
+              width={131}
+              height={48}
+              style={{ maxWidth: '100%', height: 'auto' }}
+            />
+          </Link>
+          <NavModal />
+        </NavContainer>
       )}
-    </NavContainer>
+    </>
   );
 }
 
 const NavContainer = styled.div`
   width: 100vw;
+  height: auto;
   background-color: #ffffff;
+  padding: 1rem 8rem;
 
   top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 8rem;
-  height: auto;
-  z-index: 1;
+
+  z-index: 2;
 
   @media (max-width: 1150px) {
     align-items: start;
@@ -244,7 +263,7 @@ const NavContainer = styled.div`
 
   @media (max-width: 768px) {
     align-items: start;
-    padding: 1rem 1rem 0rem 1rem;
+    padding: 0.5rem 2rem;
   }
 `;
 
@@ -339,6 +358,31 @@ const NavBtn = styled.button`
       background-color: rgba(0, 42, 255, 0.5);
     }
   }
+
+  cursor: pointer;
+
+  transition: 0.3s;
+`;
+
+const NavMobileBtn = styled.button`
+  background-color: ${(props) => (props.login ? '#45b26b' : 'white')};
+  color: ${(props) => (props.login ? 'white' : '#45b26b')};
+  font-family: Nunito;
+
+  border: 1px solid #45b26b;
+  border-radius: 10px;
+
+  padding: 1.2rem;
+
+  text-align: center;
+  text-decoration: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+
+  white-space: nowrap;
 
   cursor: pointer;
 
