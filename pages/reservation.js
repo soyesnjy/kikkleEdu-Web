@@ -31,30 +31,8 @@ const partTimeArr = [
 
 // SignUp 페이지
 export default function Signup() {
-  const [userClass, setUserClass] = useState('teacher');
   const [pageNumber, setPageNumber] = useState(0); // 강사 페이지 번호
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
-  // 비밀번호 관련 state
-  const [checkPwd_1, setCheckPwd_1] = useState(false);
-  const [checkPwd_2, setCheckPwd_2] = useState(false);
-  const [checkPwd_3, setCheckPwd_3] = useState(false);
-  // 동의항목 관련 state
-  const [checkTerms, setCheckTerms] = useState(false);
-  const [checkPrivacy, setCheckPrivacy] = useState(false);
-
-  // 강사 가입정보
-  // (First Page)
-  const [email, setEmail] = useState(''); // kk_teacher_uid
-  const [pwd, setPwd] = useState(''); // kk_teacher_pwd
-  const [name, setName] = useState(''); // kk_teacher_name
-  const [phoneNumber, setPhoneNumber] = useState(''); // kk_teacher_phoneNum
-  // (Second Page)
-  const [possLocal, setPossLocal] = useState(''); // kk_teacher_location
-  const [possDay, setPossDay] = useState([]); // kk_teacher_history
-  // (Third Page)
-  const [career, setCareer] = useState(''); // kk_teacher_history
-  const [education, setEducation] = useState(''); // kk_teacher_education
-  const [file, setFile] = useState(null); // kk_teacher_file_path
 
   // Recoil 전역 변수
   const [login, setLogin] = useRecoilState(log);
@@ -77,37 +55,6 @@ export default function Signup() {
   // const minlengthStd = 8;
   // const maxlengthStd = 15;
   // const regex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 및 한글 자모를 포함하는 정규 표현식
-
-  // Pwd Check Method
-  const checkPwd = () => {
-    if (!pwd) {
-      setCheckPwd_1(false);
-      setCheckPwd_2(false);
-      setCheckPwd_3(false);
-      return;
-    }
-    let count = 0;
-
-    const hasLetter = /[a-zA-Z]/.test(pwd);
-    const hasNumber = /\d/.test(pwd);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(pwd);
-
-    if (hasLetter) count++;
-    if (hasNumber) count++;
-    if (hasSpecialChar) count++;
-
-    if (pwd.length >= 8)
-      setCheckPwd_1(true); // 8글자 이상
-    else setCheckPwd_1(false);
-
-    if (count >= 2)
-      setCheckPwd_2(true); // 영문, 숫자, 기호 중 2개 이상의 조합
-    else setCheckPwd_2(false);
-
-    if (pwd !== email)
-      setCheckPwd_3(true); // 이메일 주소 포함X
-    else setCheckPwd_3(false);
-  };
 
   // 발레 수업 DB 조회
   useEffect(() => {
@@ -135,16 +82,6 @@ export default function Signup() {
     }
   }, [login]);
 
-  // 비밀번호 입력 디바운싱
-  useEffect(() => {
-    const debounce = setTimeout(() => {
-      return checkPwd();
-    }, 350);
-    return () => {
-      clearTimeout(debounce);
-    };
-  }, [pwd]);
-
   // pageNumber에 따른 navText값 변경
   useEffect(() => {
     if (pageNumber === 2) {
@@ -163,8 +100,6 @@ export default function Signup() {
           ]);
         })
         .catch(() => setPossTeacherArr([]));
-    } else {
-      setSelectedTeacher([]);
     }
     switch (pageNumber) {
       case 0:
@@ -182,67 +117,44 @@ export default function Signup() {
     }
   }, [pageNumber]);
 
+  // 선택한 수업 변경 시 기존 선택되었던 강사 목록 초기화
   useEffect(() => {
-    console.log(typeof selectedClass);
+    setSelectedTeacher([]);
   }, [selectedClass]);
+
+  // useEffect(() => {
+  //   console.log(selectedTeacher);
+  // }, [selectedTeacher]);
 
   // 강사 페이지 체크
   // First 페이지 체크 메서드
   const pageCheckFirst = () => {
-    if (!email) {
-      alert('이메일을 입력하세요');
-      return false;
-    }
-    if (!name) {
-      alert('이름을 입력하세요');
-      return false;
-    }
-    if (!phoneNumber) {
-      alert('전화번호를 입력하세요');
-      return false;
-    }
-    if (!checkPwd_1 || !checkPwd_2 || !checkPwd_3) {
-      alert('비밀번호 요구사항을 지켜주세요');
-      return false;
-    }
-    if (!checkTerms || !checkPrivacy) {
-      alert('동의항목을 체크해주세요');
+    if (!selectedClass) {
+      alert('수업을 선택해주세요');
       return false;
     }
     return true;
   };
-  // // Second 페이지 체크 메서드
-  // const pageCheckSecond = () => {
-  //   if (!possClass.length) {
-  //     alert('희망 수업을 선택하세요');
-  //     return false;
-  //   }
-  //   if (!possLocal) {
-  //     alert('희망 지역을 선택하세요');
-  //     return false;
-  //   }
-  //   if (!possDay.length) {
-  //     alert('희망 날짜를 선택하세요');
-  //     return false;
-  //   }
-  //   return true;
-  // };
-  // // Third 페이지 체크 메서드
-  // const pageCheckThird = () => {
-  //   if (!career) {
-  //     alert('경력을 입력하세요');
-  //     return false;
-  //   }
-  //   if (!education) {
-  //     alert('학력을 입력하세요');
-  //     return false;
-  //   }
-  //   if (!file) {
-  //     alert('파일을 선택하세요');
-  //     return false;
-  //   }
-  //   return true;
-  // };
+  // Second 페이지 체크 메서드
+  const pageCheckSecond = () => {
+    if (!dateArr.length) {
+      alert('날짜를 선택해주세요');
+      return false;
+    }
+    if (!partTime) {
+      alert('시간대를 선택하세요');
+      return false;
+    }
+    return true;
+  };
+  // Third 페이지 체크 메서드
+  const pageCheckThird = () => {
+    if (!selectedTeacher.length) {
+      alert('강사를 선택해주세요');
+      return false;
+    }
+    return true;
+  };
 
   // const signupHandler = async (e) => {
   //   e.preventDefault();
@@ -352,22 +264,26 @@ export default function Signup() {
                     onClick={(e) => {
                       e.preventDefault();
                       // 페이지별 필수 항목 체크
-                      // if (pageNumber === 0 && !pageCheckFirst()) return;
-                      // if (pageNumber === 1 && !pageCheckSecond()) return;
+                      if (pageNumber === 0 && !pageCheckFirst()) return;
+                      if (pageNumber === 1 && !pageCheckSecond()) return;
+                      if (pageNumber === 2 && !pageCheckThird()) return;
                       setPageNumber(pageNumber + 1);
                     }}
                   >
                     다음 단계
                   </ReservationButton>
                 )}
-                {/* 가입 버튼 */}
+                {/* 예약 버튼 */}
                 {pageNumber === 3 && (
                   <ReservationButton
-                    // onClick={signupHandler}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      alert('개발중...');
+                    }}
                     disabled={isPending}
                     isPending={isPending}
                   >
-                    {isPending ? '처리중...' : '회원가입'}
+                    {isPending ? '처리중...' : '예약 하기'}
                   </ReservationButton>
                 )}
               </ReservationButtonContainer>
@@ -455,11 +371,11 @@ export default function Signup() {
                             selected={selectedTeacher.includes(id)}
                           >
                             <ClassButtonTitle>{name}</ClassButtonTitle>
-                            {selectedTeacher.includes(id) && (
-                              <ClassButtonSubTitle>
-                                {introduce}
-                              </ClassButtonSubTitle>
-                            )}
+
+                            <ClassButtonSubTitle>
+                              {introduce ? introduce : '소개글이 없습니다'}
+                            </ClassButtonSubTitle>
+
                             <TeacherButton
                               value={id}
                               selected={selectedTeacher.includes(id)}
@@ -484,7 +400,9 @@ export default function Signup() {
                                   ]);
                               }}
                             >
-                              선택하기
+                              {selectedTeacher.includes(id)
+                                ? '취소하기'
+                                : '선택하기'}
                             </TeacherButton>
                           </ClassButtonContainer>
                         );
@@ -496,41 +414,38 @@ export default function Signup() {
             {/* 결제 */}
             {pageNumber === 3 && (
               <PageContainer>
-                <UserInfoRowContainer>
-                  <SignUpInput
-                    id="career"
-                    placeholder="경력"
-                    type="text"
-                    value={career}
-                    onChange={(e) => {
-                      setCareer(e.target.value);
+                <PayButtonContainer>
+                  <PayButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      alert('개발중...');
                     }}
-                  />
-                  <SignUpInput
-                    id="education"
-                    placeholder="학력"
-                    type="text"
-                    value={education}
-                    onChange={(e) => {
-                      setEducation(e.target.value);
+                  >
+                    <Image
+                      src="/src/Reservation_IMG/Icon/Reservation_Icon_Sell_IMG_.png"
+                      alt={'Sell_Img'}
+                      width={59}
+                      height={59}
+                      style={{ maxWidth: '100%', height: 'auto' }}
+                    />
+                    세금계산서 발급
+                  </PayButton>
+                  <PayButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      alert('개발중...');
                     }}
-                  />
-                </UserInfoRowContainer>
-                <StepText>필수요청 서류 탭 (ZIP파일 제출)</StepText>
-                <FileUploadComponent setFile={setFile} file={file} />
-                <H5>+ 필수 서류 확인하기</H5>
-                <FileCheckText>
-                  <span class="material-symbols-outlined">check</span>
-                  이력서 / 신분증 사본 / 통장사본 / 보건
-                </FileCheckText>
-                <FileCheckText>
-                  <span class="material-symbols-outlined">check</span>
-                  졸업 증명서(재학증명서) / 경력 증명서
-                </FileCheckText>
-                <FileCheckText>
-                  <span class="material-symbols-outlined">check</span>
-                  성범죄 및 아동학전력회신
-                </FileCheckText>
+                  >
+                    <Image
+                      src="/src/Reservation_IMG/Icon/Reservation_Icon_Card_IMG_.png"
+                      alt={'Card_Img'}
+                      width={59}
+                      height={59}
+                      style={{ maxWidth: '100%', height: 'auto' }}
+                    />
+                    카드 결제
+                  </PayButton>
+                </PayButtonContainer>
               </PageContainer>
             )}
           </InputContainer>
@@ -975,6 +890,50 @@ const PartTimeButton = styled.button`
   font-family: Pretendard;
 
   cursor: pointer;
+
+  transition: 0.2s;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-height: fit-content;
+    min-height: 53px;
+    font-size: 20px;
+  }
+`;
+
+const PayButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 1rem;
+`;
+
+const PayButton = styled.button`
+  padding: 2rem;
+  width: 507px;
+  height: 197px;
+  background-color: #45b26b;
+
+  border-radius: 25px;
+
+  border: 2px solid #45b26b;
+
+  color: white;
+  text-decoration: none;
+
+  font-size: 2.2rem;
+  font-weight: 700;
+  font-family: Pretendard;
+
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  gap: 2rem;
 
   transition: 0.2s;
 
