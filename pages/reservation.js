@@ -73,14 +73,15 @@ export default function Signup() {
     }
   }, []);
 
-  useEffect(() => {
-    // 로그인 시 메인 페이지로 이동
-    const loginSession = JSON.parse(localStorage.getItem('log'));
-    if (loginSession) {
-      router.replace('/');
-      return;
-    }
-  }, [login]);
+  // 기능 잠금
+  // useEffect(() => {
+  //   // 로그인 시 메인 페이지로 이동
+  //   const loginSession = JSON.parse(localStorage.getItem('log'));
+  //   if (!loginSession) {
+  //     router.replace('/login');
+  //     return;
+  //   }
+  // }, [login]);
 
   // pageNumber에 따른 navText값 변경
   useEffect(() => {
