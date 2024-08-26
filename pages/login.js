@@ -115,6 +115,7 @@ export default function Login() {
         showConfirmButton: false,
         timer: 1500,
       }).then(() => {
+        console.log(res.data);
         setLogin(true);
         localStorage.setItem(
           'log',
@@ -123,6 +124,7 @@ export default function Login() {
           })
         );
         localStorage.setItem('id', res.data.id);
+        localStorage.setItem('userIdx', res.data.userIdx);
         setUserId(res.data.id);
         router.push('/');
       });
