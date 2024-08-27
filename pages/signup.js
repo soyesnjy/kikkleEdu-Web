@@ -753,7 +753,7 @@ export default function Signup() {
                   />
                   <SignUpInput
                     id="name"
-                    placeholder="성함"
+                    placeholder="기관명"
                     type="text"
                     value={nameA}
                     onChange={(e) => {

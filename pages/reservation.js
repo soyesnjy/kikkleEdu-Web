@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/router';
-import { signupAPI } from '@/fetchAPI';
+import { handleReservationCreate } from '@/fetchAPI/reservationAPI';
 // SweetAlert2
 import Swal from 'sweetalert2';
 import { useRecoilState } from 'recoil';
@@ -20,7 +20,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
+// import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
 import Calendar from '@/component/MyPage_Component/Calendar';
 
 const partTimeArr = [
@@ -49,6 +49,8 @@ export default function Signup() {
   // (Third Page)
   const [possTeacherArr, setPossTeacherArr] = useState([]); // 수업 가능 강사 배열 State
   const [selectedTeacher, setSelectedTeacher] = useState([]); // 강사 선택 State
+  // (Fourth Page)
+  const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
 
@@ -74,14 +76,14 @@ export default function Signup() {
   }, []);
 
   // 기능 잠금
-  // useEffect(() => {
-  //   // 로그인 시 메인 페이지로 이동
-  //   const loginSession = JSON.parse(localStorage.getItem('log'));
-  //   if (!loginSession) {
-  //     router.replace('/login');
-  //     return;
-  //   }
-  // }, [login]);
+  useEffect(() => {
+    // 로그인 시 메인 페이지로 이동
+    const loginSession = JSON.parse(localStorage.getItem('log'));
+    if (!loginSession) {
+      router.replace('/login');
+      return;
+    }
+  }, [login]);
 
   // pageNumber에 따른 navText값 변경
   useEffect(() => {
@@ -156,69 +158,52 @@ export default function Signup() {
     }
     return true;
   };
+  // Fouth 페이지 모달 on/off 메서드
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
-  // const signupHandler = async (e) => {
-  //   e.preventDefault();
-  //   // 회원가입 형식 체크
-  //   if (pageNumber === 2 && !pageCheckThird()) return;
-  //   // 회원가입 버튼 비활성화
-  //   setIsPending(true);
+  const reservationHandler = async (e) => {
+    e.preventDefault();
 
-  //   const reader = new FileReader();
-  //   reader.onloadend = async () => {
-  //     const base64Data = reader.result;
-  //     try {
-  //       const res = await signupAPI({
-  //         SignUpData: {
-  //           pUid: email,
-  //           userClass,
-  //           passWord: pwd,
-  //           name: name,
-  //           phoneNumber: phoneNumber,
-  //           possLocal,
-  //           possClass,
-  //           possDay,
-  //           career,
-  //           education,
-  //           fileData: {
-  //             fileName: file.name,
-  //             fileType: file.type,
-  //             baseData: base64Data,
-  //           },
-  //         },
-  //       });
+    setIsPending(true);
 
-  //       if (res.status === 200) {
-  //         Swal.fire({
-  //           icon: 'success',
-  //           title: 'Sign Up Success!',
-  //           text: 'Login Page로 이동합니다',
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         }).then(() => {
-  //           // useRouter 인스턴스의 push 메서드를 통해 페이지 이동 가능
-  //           router.push('/login');
-  //         });
-  //       } else if (res.status === 403) {
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: '중복된 이메일입니다',
-  //         });
-  //       } else {
-  //         Swal.fire({
-  //           icon: 'error',
-  //           title: 'Sign Up Fail',
-  //         });
-  //       }
-  //       // 회원가입 버튼 활성화
-  //       setIsPending(false);
-  //     } catch (error) {
-  //       console.error('업로드 실패:', error);
-  //     }
-  //   };
+    try {
+      const res = await handleReservationCreate({
+        agencyIdx: localStorage.getItem('userIdx'), // default userIdx === dummy 계정
+        classIdx: selectedClass,
+        reservationDate: dateArr,
+        reservationTime: partTime,
+        reservationCand: selectedTeacher,
+      });
 
-  //   reader.readAsDataURL(file);
-  // };
+      if (res.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: '예약 성공!',
+          text: 'Main Page로 이동합니다',
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          router.push('/');
+        });
+      } else if (res.status === 403) {
+        Swal.fire({
+          icon: 'error',
+          title: '중복된 이메일입니다',
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: res.message,
+        });
+      }
+
+      setIsPending(false);
+    } catch (error) {
+      console.error('업로드 실패:', error);
+    }
+  };
 
   return (
     <ReservationPageContainer>
@@ -277,10 +262,7 @@ export default function Signup() {
                 {/* 예약 버튼 */}
                 {pageNumber === 3 && (
                   <ReservationButton
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert('개발중...');
-                    }}
+                    onClick={reservationHandler}
                     disabled={isPending}
                     isPending={isPending}
                   >
@@ -419,7 +401,8 @@ export default function Signup() {
                   <PayButton
                     onClick={(e) => {
                       e.preventDefault();
-                      alert('개발중...');
+                      // alert('개발중...');
+                      toggleMenu();
                     }}
                   >
                     <Image
@@ -431,7 +414,7 @@ export default function Signup() {
                     />
                     세금계산서 발급
                   </PayButton>
-                  <PayButton
+                  {/* <PayButton
                     onClick={(e) => {
                       e.preventDefault();
                       alert('개발중...');
@@ -445,8 +428,22 @@ export default function Signup() {
                       style={{ maxWidth: '100%', height: 'auto' }}
                     />
                     카드 결제
-                  </PayButton>
+                  </PayButton> */}
                 </PayButtonContainer>
+                <PayModalContainer
+                  isOpen={isOpen}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // alert('개발중...');
+                    toggleMenu();
+                  }}
+                >
+                  <PayModalContentContainer>
+                    <div>세금계산서 발급 - 담당자</div>
+                    <div>담당자 - 010-xxxx-xxxx</div>
+                    <button>담당자 전화 연결하기</button>
+                  </PayModalContentContainer>
+                </PayModalContainer>
               </PageContainer>
             )}
           </InputContainer>
@@ -946,60 +943,33 @@ const PayButton = styled.button`
   }
 `;
 
-const UserInfoRowContainer = styled.div`
-  display: flex;
+const PayModalContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background: #1717174d;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 2;
+
+  display: ${(props) => (props.isOpen ? 'flex' : 'none')};
   justify-content: center;
   align-items: center;
 
   gap: 1rem;
-  margin-bottom: 1rem;
 `;
 
-const FileCheckText = styled.div`
-  color: #00bba3;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  text-align: center;
-  text-decoration: none;
-
-  font-size: 14px;
-  font-weight: 700;
-  font-family: Pretendard;
-`;
-
-const SignUpInputAddressContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  gap: 0.2rem;
-`;
-
-const SignUpInputAddress = styled.input`
-  min-width: 360px;
+const PayModalContentContainer = styled.div`
+  width: 602px;
+  height: 268px;
   background-color: white;
-  color: black;
-  padding: 1rem 18px;
+  border-radius: 16px;
 
-  border: 1px solid #bfbfbf;
-  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-  font-size: 1.2rem;
-  font-family: Pretendard;
-  font-weight: 400;
-  text-align: left;
-
-  transition: 0.5s;
-
-  &::placeholder {
-    color: #b8b8b8;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    font-size: 1rem;
-  }
+  gap: 1rem;
 `;

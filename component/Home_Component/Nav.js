@@ -165,7 +165,8 @@ export default function Nav() {
           setLogin(false);
           localStorage.removeItem('log');
           localStorage.removeItem('id');
-          localStorage.removeItem('avarta');
+          localStorage.removeItem('userIdx');
+          localStorage.removeItem('agencyType');
           router.push('/');
         });
       }

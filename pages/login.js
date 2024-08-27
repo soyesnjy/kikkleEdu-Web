@@ -10,7 +10,7 @@ import {
 } from '@/fetchAPI';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import { log, uid, mobile } from '../store/state';
+import { log, uid, mobile, agencyClass } from '../store/state';
 import Swal from 'sweetalert2';
 import { useSearchParams } from 'next/navigation';
 import GoogleOAuthBtn from '@/component/Login_Componet/googleOAuthBtn';
@@ -78,6 +78,7 @@ export default function Login() {
   const [pwd, setPwd] = useState('');
   const [login, setLogin] = useRecoilState(log);
   const [url, setUrl] = useState('');
+  const [agencyType, setAgencyType] = useRecoilState(agencyClass);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   const router = useRouter();
@@ -125,6 +126,10 @@ export default function Login() {
         );
         localStorage.setItem('id', res.data.id);
         localStorage.setItem('userIdx', res.data.userIdx);
+        res.data.type
+          ? localStorage.setItem('agencyType', res.data.type)
+          : null; // 기관 로그인일 경우. 기관 타입 저장
+
         setUserId(res.data.id);
         router.push('/');
       });
