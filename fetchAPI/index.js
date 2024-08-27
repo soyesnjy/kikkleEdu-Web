@@ -44,49 +44,6 @@ export const logoutAPI = async () => {
   }
 };
 
-export const signupAPI = async (post) => {
-  try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_URL}/signup/kk`,
-      post,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-      }
-    );
-
-    // console.log(res);
-
-    return response;
-  } catch (err) {
-    // 에러시 false 반환
-    console.log(err);
-    return { status: err.response.status };
-  }
-  // // console.log(url, post);
-  // try {
-  //   const res = await fetch(`${url}/signup/ai`, {
-  //     method: 'POST',
-  //     // content-type을 명시하지 않으면 json 파일인지 인식하지 못함
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       // Authorization: document.cookies.accessToken,
-  //     },
-  //     body: JSON.stringify(post),
-  //   });
-
-  //   // console.log(res);
-
-  //   return res.ok;
-  // } catch (err) {
-  //   // 에러시 false 반환
-  //   console.log(err);
-  //   return false;
-  // }
-};
-
 export const loginAPI_OAuth_URL = async () => {
   try {
     const response = await axios.get(

@@ -124,13 +124,18 @@ export default function Login() {
             expires: expireSetHourFunc(1),
           })
         );
-        localStorage.setItem('id', res.data.id);
+        // ID 저장
+        if (res.data.id) {
+          localStorage.setItem('id', res.data.id);
+          setUserId(res.data.id);
+        }
         localStorage.setItem('userIdx', res.data.userIdx);
-        res.data.type
-          ? localStorage.setItem('agencyType', res.data.type)
-          : null; // 기관 로그인일 경우. 기관 타입 저장
+        // 기관 로그인일 경우. 기관 타입 저장
+        if (res.data.type) {
+          localStorage.setItem('agencyType', res.data.type);
+          setAgencyType(res.data.type);
+        }
 
-        setUserId(res.data.id);
         router.push('/');
       });
     } else if (res.status === 401) {

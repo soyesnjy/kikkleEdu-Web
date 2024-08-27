@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/router';
-import { signupAPI } from '@/fetchAPI';
+import { handleSignupCreate } from '@/fetchAPI/signupAPI';
 // SweetAlert2
 import Swal from 'sweetalert2';
 import { useRecoilState } from 'recoil';
@@ -323,7 +323,7 @@ export default function Signup() {
     reader.onloadend = async () => {
       const base64Data = reader.result;
       try {
-        const res = await signupAPI({
+        const res = await handleSignupCreate({
           SignUpData: {
             pUid: email,
             userClass,
@@ -387,7 +387,7 @@ export default function Signup() {
     reader.onloadend = async () => {
       const base64Data = reader.result;
       try {
-        const res = await signupAPI({
+        const res = await handleSignupCreate({
           SignUpData: {
             pUid: emailA,
             userClass,

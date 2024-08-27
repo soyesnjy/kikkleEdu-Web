@@ -5,7 +5,7 @@ import NavList from './NavList';
 import NavModal from './NavModal';
 
 import { useRecoilState } from 'recoil';
-import { log, avarta, mobile, uid } from '../../store/state';
+import { log, avarta, mobile, uid, agencyClass } from '../../store/state';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import { useEffect, useState, useCallback, useMemo } from 'react';
@@ -66,6 +66,8 @@ export default function Nav() {
   const currentPath = router.pathname;
   const [login, setLogin] = useRecoilState(log);
   const [userId, setUserId] = useRecoilState(uid);
+  const [agencyType, setAgencyType] = useRecoilState(agencyClass);
+
   const [showNavbar, setShowNavbar] = useState(false);
   // Resize 상태 처리
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
@@ -106,19 +108,16 @@ export default function Nav() {
     window.addEventListener('resize', handleResize);
     window.addEventListener('scroll', handleScroll);
 
+    // 새로고침 시, localStorage 값 recoil 전역변수에 갱신
     if (localStorage.getItem('id')) setUserId(localStorage.getItem('id'));
+    if (!agencyType && localStorage.getItem('agencyType'))
+      setAgencyType(localStorage.getItem('agencyType'));
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
-  // 모바일 전역 state 처리
-  useEffect(() => {
-    if (window.innerWidth < 768) setMobileFlag(true);
-    else setMobileFlag(false);
-  }, [windowSize]);
 
   // useCallback 적용. 불필요한 리렌더링 제거
   const handleSessionExpired = useCallback(() => {
@@ -162,18 +161,34 @@ export default function Nav() {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          setLogin(false);
           localStorage.removeItem('log');
+          setLogin(false);
           localStorage.removeItem('id');
-          localStorage.removeItem('userIdx');
+          setUserId('');
           localStorage.removeItem('agencyType');
+          setAgencyType('');
+          localStorage.removeItem('userIdx');
+
           router.push('/');
         });
       }
     });
   }, [router, setLogin]);
 
-  const menuItems = useMemo(() => [{ href: '/', label: 'MY PAGE' }], [t]);
+  const menuItems = useMemo(
+    () => [
+      {
+        href:
+          agencyType === 'admin'
+            ? '/administor'
+            : agencyType
+              ? '/mypage'
+              : '/mypage/teacher',
+        label: agencyType === 'admin' ? 'ADMIN PAGE' : 'MY PAGE',
+      },
+    ],
+    [t, agencyType]
+  );
 
   return (
     <>
@@ -209,7 +224,6 @@ export default function Nav() {
               <NavLi>
                 <NavBtn onClick={logoutHandler}>LOGOUT</NavBtn>
               </NavLi>
-              {/* <LanguageSwitcher /> */}
             </NavUl>
           ) : (
             <NavUl>
