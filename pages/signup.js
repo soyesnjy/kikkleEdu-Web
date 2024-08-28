@@ -21,7 +21,7 @@ import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
 import PostBtn from '@/component/SignUp_Component/PostBtn';
-import Page from '@/component/Motion_Paging/Page';
+// import Page from '@/component/Motion_Paging/Page';
 
 const possLocalArr = ['서울', '부산', '기타'];
 const possDayArr = ['월', '화', '수', '목', '금', '토', '일'];

@@ -32,7 +32,7 @@ const dummyTableData = [
 
 const Administor = () => {
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
-  const [activeTab, setActiveTab] = useState('teacher');
+  const [activeTab, setActiveTab] = useState('');
   const [tableData, setTableData] = useState(dummyTableData);
   const [name, setName] = useState('');
   const router = useRouter();
@@ -41,9 +41,16 @@ const Administor = () => {
     setActiveTab(tab);
   };
 
-  // useEffect(() => {
-  //   if (agencyType !== 'admin') router.push('/');
-  // }, []);
+  useEffect(() => {
+    // if (agencyType !== 'admin') router.push('/');
+    if (localStorage.getItem('activeTab'))
+      setActiveTab(localStorage.getItem('activeTab'));
+    else setActiveTab('teacher');
+
+    return () => {
+      localStorage.removeItem('activeTab');
+    };
+  }, []);
 
   useEffect(() => {
     if (activeTab === 'teacher') {
@@ -63,6 +70,7 @@ const Administor = () => {
     } else if (activeTab === 'reservation') {
       console.log(activeTab);
     }
+    localStorage.setItem('activeTab', activeTab);
   }, [activeTab]);
 
   useEffect(() => {
@@ -75,7 +83,7 @@ const Administor = () => {
             setTableData(data.data);
           });
       } else if (activeTab === 'agency') {
-        handleSignupGet({ userClass: activeTab })
+        handleSignupGet({ userClass: activeTab, name })
           .then((res) => res.data)
           .then((data) => {
             console.log(data.data);
@@ -114,7 +122,7 @@ const Administor = () => {
           <TabButton
             active={activeTab === 'agency'}
             onClick={() => {
-              return alert('개발중...');
+              // return alert('개발중...');
               handleTabClick('agency');
             }}
           >
@@ -155,12 +163,12 @@ const Administor = () => {
               <thead>
                 <tr>
                   <TableHeader>기관 번호</TableHeader>
+                  <TableHeader>기관 계정정보</TableHeader>
                   <TableHeader>기관명</TableHeader>
                   <TableHeader>강사 주소</TableHeader>
                   <TableHeader>연락처</TableHeader>
                   <TableHeader>기관 유형</TableHeader>
                   <TableHeader>기관 첨부자료</TableHeader>
-                  <TableHeader>경력</TableHeader>
                   <TableHeader>승인 여부</TableHeader>
                 </tr>
               </thead>
