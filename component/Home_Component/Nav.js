@@ -196,8 +196,8 @@ export default function Nav() {
         <NavContainer show={showNavbar}>
           <Link href="/" passHref>
             <Image
-              src="/src/kikkle_logo.png"
-              alt={'soyes_logo'}
+              src="/src/Home_IMG/Nav_IMG/Home_Nav_Logo_IMG.png"
+              alt={'kidsclass_logo'}
               width={131}
               height={48}
               style={{ maxWidth: '100%', height: 'auto' }}
