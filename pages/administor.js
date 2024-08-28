@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import { agencyClass } from '../store/state';
 import { useRouter } from 'next/router';
 import { handleSignupGet } from '@/fetchAPI/signupAPI';
+import { handleReservationGet } from '@/fetchAPI/reservationAPI';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -68,7 +69,12 @@ const Administor = () => {
           setTableData(data.data);
         });
     } else if (activeTab === 'reservation') {
-      console.log(activeTab);
+      handleReservationGet({ userClass: activeTab, date: name })
+        .then((res) => res.data)
+        .then((data) => {
+          console.log(data.data);
+          setTableData(data.data);
+        });
     }
     localStorage.setItem('activeTab', activeTab);
   }, [activeTab]);
@@ -90,7 +96,12 @@ const Administor = () => {
             setTableData(data.data);
           });
       } else if (activeTab === 'reservation') {
-        console.log(activeTab);
+        handleReservationGet({ userClass: activeTab, date: name })
+          .then((res) => res.data)
+          .then((data) => {
+            console.log(data.data);
+            setTableData(data.data);
+          });
       }
     }, 350);
 
@@ -131,7 +142,7 @@ const Administor = () => {
           <TabButton
             active={activeTab === 'reservation'}
             onClick={() => {
-              return alert('개발중...');
+              // return alert('개발중...');
               handleTabClick('reservation');
             }}
           >
@@ -156,6 +167,7 @@ const Administor = () => {
                   <TableHeader>학력</TableHeader>
                   <TableHeader>첨부 자료</TableHeader>
                   <TableHeader>승인 여부</TableHeader>
+                  <TableHeader>관리자 옵션</TableHeader>
                 </tr>
               </thead>
             )}
@@ -170,25 +182,22 @@ const Administor = () => {
                   <TableHeader>기관 유형</TableHeader>
                   <TableHeader>기관 첨부자료</TableHeader>
                   <TableHeader>승인 여부</TableHeader>
+                  <TableHeader>관리자 옵션</TableHeader>
                 </tr>
               </thead>
             )}
             {activeTab === 'reservation' && (
               <thead>
                 <tr>
-                  <TableHeader>수업 타이틀</TableHeader>
-                  <TableHeader>수업 강사</TableHeader>
+                  <TableHeader>예약번호</TableHeader>
+                  <TableHeader>기관명</TableHeader>
+                  <TableHeader>기관 연락처</TableHeader>
+                  <TableHeader>수업명</TableHeader>
                   <TableHeader>날짜</TableHeader>
-                  <TableHeader>
-                    {agencyType ? '연락처' : '출근 현황'}
-                  </TableHeader>
-                  <TableHeader>
-                    {agencyType
-                      ? activeTab === 'reservation'
-                        ? '결제 여부'
-                        : '진행 여부'
-                      : ''}
-                  </TableHeader>
+                  <TableHeader>수업 강사</TableHeader>
+                  <TableHeader>결제여부</TableHeader>
+                  <TableHeader>승인 여부</TableHeader>
+                  <TableHeader>관리자 옵션</TableHeader>
                 </tr>
               </thead>
             )}
@@ -208,7 +217,11 @@ const Administor = () => {
               </tbody>
             )}
             {activeTab === 'reservation' && (
-              <AdminTableReservationBody data={tableData} />
+              <tbody>
+                {tableData.map((data, index) => (
+                  <AdminTableReservationBody key={index} data={data} />
+                ))}
+              </tbody>
             )}
           </Table>
         </TableContainer>

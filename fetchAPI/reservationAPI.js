@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-// TODO# READ
+// READ
 export const handleReservationGet = async (query) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/class?${query?.classType ? `classType=${query?.classType}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/reservation/read?${query?.date ? `date=${query?.date}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -46,16 +46,19 @@ export const handleReservationCreate = async (input) => {
     };
   }
 };
-// TODO# DELETE
-export const handleReservationDelete = async (uri) => {
+// DELETE
+export const handleReservationDelete = async (query) => {
   try {
-    const response = await axios.delete(`${uri}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      withCredentials: true,
-    });
-    // console.log(response);
+    const response = await axios.delete(
+      `${process.env.NEXT_PUBLIC_URL}/reservation/delete?${query?.reservationIdx ? `reservationIdx=${query?.reservationIdx}&` : ''}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }
+    );
+    // console.log(response.data);
     return response;
   } catch (err) {
     console.error(err);
@@ -68,8 +71,8 @@ export const handleReservationDelete = async (uri) => {
 export const handleReservationUpdate = async (input) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_URL}/review/update`,
-      { ReviewData: input },
+      `${process.env.NEXT_PUBLIC_URL}/reservation/update`,
+      input,
       {
         headers: {
           'Content-Type': 'application/json',
