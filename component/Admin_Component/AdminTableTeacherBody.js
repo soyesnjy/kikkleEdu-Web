@@ -27,7 +27,7 @@ const AdminTableTeacherBody = ({ data }) => {
     setLocation(data.kk_teacher_location);
     setHistory(data.kk_teacher_history);
     setEducation(data.kk_teacher_education);
-    // setApproveStatus(data.kk_teacher_approve_status);
+    setApproveStatus(data.kk_teacher_approve_status);
   }, [data]);
 
   // useEffect(() => {
@@ -78,8 +78,8 @@ const AdminTableTeacherBody = ({ data }) => {
         if (res.status === 200) {
           Swal.fire({
             icon: 'success',
-            title: 'Sign Up Success!',
-            text: 'Login Page로 이동합니다',
+            title: 'Update Success!',
+            text: 'Page Reloading...',
             showConfirmButton: false,
             timer: 1500,
           }).then(() => {
@@ -94,7 +94,7 @@ const AdminTableTeacherBody = ({ data }) => {
         } else {
           Swal.fire({
             icon: 'error',
-            title: 'Sign Up Fail',
+            title: 'Update Fail',
           });
         }
         // 회원가입 버튼 활성화
@@ -146,7 +146,7 @@ const AdminTableTeacherBody = ({ data }) => {
         } else {
           Swal.fire({
             icon: 'error',
-            title: 'Sign Up Fail',
+            title: 'Update Up Fail',
           });
         }
         // 회원가입 버튼 활성화
@@ -197,7 +197,8 @@ const AdminTableTeacherBody = ({ data }) => {
         <TableRow>
           <TableCell>{data.kk_teacher_idx}</TableCell>
           <TableCell>
-            {data.kk_teacher_uid} / {data.kk_teacher_pwd}
+            <div>{data.kk_teacher_uid}</div>
+            <div>{data.kk_teacher_pwd}</div>
           </TableCell>
           <TableCell>{data.kk_teacher_name}</TableCell>
           <TableCell>{data.kk_teacher_introduction}</TableCell>
@@ -299,6 +300,7 @@ const AdminTableTeacherBody = ({ data }) => {
             </Status> */}
             <select
               id="pet-select"
+              value={approveStatus}
               onChange={(e) => setApproveStatus(Number(e.target.value))}
             >
               <option value="-1">선택</option>
