@@ -5,7 +5,7 @@ import axios from 'axios';
 export const handleSignupGet = async (query) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/signup/read?${query?.userClass ? `userClass=${query?.userClass}&` : ''}${query?.name ? `name=${query?.name}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/signup/read?${query?.userClass ? `userClass=${query?.userClass}&` : ''}${query?.name ? `name=${query?.name}&` : ''}${query?.pageNum ? `pageNum=${query?.pageNum}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',

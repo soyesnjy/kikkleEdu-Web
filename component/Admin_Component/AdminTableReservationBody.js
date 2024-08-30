@@ -16,7 +16,7 @@ const AdminTableReservationBody = ({ data }) => {
   const [phoneNum, setPhoneNum] = useState('');
   const [dateArr, setDateArr] = useState([]);
   const [teacherArr, setTeacherArr] = useState([]);
-  const [matchingTeacher, setMatchingTeacher] = useState(-1);
+  const [matchingTeacher, setMatchingTeacher] = useState(null);
   const [type, setType] = useState('');
   const [approveStatus, setApproveStatus] = useState(-1);
 
@@ -32,7 +32,7 @@ const AdminTableReservationBody = ({ data }) => {
           const [id_entry, name_entry] = el.split(',');
           const [id_key, id_value] = id_entry.split(':');
           const [name_key, name_value] = name_entry.split(':');
-          console.log({ idx: Number(id_value), name: name_value });
+          // console.log({ idx: Number(id_value), name: name_value });
           return { idx: Number(id_value), name: name_value };
         })
       );
@@ -42,6 +42,11 @@ const AdminTableReservationBody = ({ data }) => {
 
   const reservationUpdateHandler = async (e) => {
     e.preventDefault();
+
+    if (matchingTeacher === -1 || !matchingTeacher) {
+      alert('강사를 확정하세요');
+      return;
+    }
     // 수정 확인 버튼 비활성화
     if (approveStatus === -1) {
       alert('승인 여부를 선택하세요');

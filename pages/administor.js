@@ -12,6 +12,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import AdminTableTeacherBody from '@/component/Admin_Component/AdminTableTeacherBody';
 import AdminTableAgencyBody from '@/component/Admin_Component/AdminTableAgencyBody';
 import AdminTableReservationBody from '@/component/Admin_Component/AdminTableReservationBody';
+import Pagination from '@/component/Common_Component/Pagination';
 
 const dummyTableData = [
   {
@@ -32,11 +33,13 @@ const dummyTableData = [
 ];
 
 const Administor = () => {
-  const [agencyType, setAgencyType] = useRecoilState(agencyClass);
   const [activeTab, setActiveTab] = useState('');
   const [tableData, setTableData] = useState(dummyTableData);
   const [name, setName] = useState('');
-  const router = useRouter();
+  const [page, setPage] = useState(1);
+  const [lastPageNum, setLastPageNum] = useState(1);
+
+  // const router = useRouter();
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -55,34 +58,38 @@ const Administor = () => {
 
   useEffect(() => {
     if (activeTab === 'teacher') {
-      handleSignupGet({ userClass: activeTab, name })
+      handleSignupGet({ userClass: activeTab, name, pageNum: page })
         .then((res) => res.data)
         .then((data) => {
-          console.log(data.data);
+          console.log(data);
           setTableData(data.data);
+          setLastPageNum(data.lastPageNum);
         });
     } else if (activeTab === 'agency') {
-      handleSignupGet({ userClass: activeTab })
+      handleSignupGet({ userClass: activeTab, pageNum: page })
         .then((res) => res.data)
         .then((data) => {
-          console.log(data.data);
+          console.log(data);
           setTableData(data.data);
+          setLastPageNum(data.lastPageNum);
         });
     } else if (activeTab === 'reservation') {
-      handleReservationGet({ userClass: activeTab, date: name })
+      handleReservationGet({ userClass: activeTab, date: name, pageNum: page })
         .then((res) => res.data)
         .then((data) => {
-          console.log(data.data);
+          console.log(data);
           setTableData(data.data);
+          setLastPageNum(data.lastPageNum);
         });
     }
+    if (localStorage.getItem('activeTab') !== activeTab) setPage(1); // 탭 변경 시 페이지 초기화
     localStorage.setItem('activeTab', activeTab);
-  }, [activeTab]);
+  }, [activeTab, page]);
 
   useEffect(() => {
     const debounce = setTimeout(() => {
       if (activeTab === 'teacher') {
-        handleSignupGet({ userClass: activeTab, name })
+        handleSignupGet({ userClass: activeTab, name, pageNum: page })
           .then((res) => res.data)
           .then((data) => {
             console.log(data.data);
@@ -225,6 +232,7 @@ const Administor = () => {
             )}
           </Table>
         </TableContainer>
+        <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
       </MyPageContainer>
     </MasterContainer>
   );

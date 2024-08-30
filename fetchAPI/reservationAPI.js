@@ -4,7 +4,7 @@ import axios from 'axios';
 export const handleReservationGet = async (query) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/reservation/read?${query?.date ? `date=${query?.date}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/reservation/read?${query?.date ? `date=${query?.date}&` : ''}${query?.pageNum ? `pageNum=${query?.pageNum}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',

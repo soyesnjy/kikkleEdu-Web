@@ -365,11 +365,11 @@ export default function Signup() {
             title: 'Sign Up Fail',
           });
         }
-        // 회원가입 버튼 활성화
-        setIsPending(false);
       } catch (error) {
         console.error('업로드 실패:', error);
       }
+      // 회원가입 버튼 활성화
+      setIsPending(false);
     };
 
     reader.readAsDataURL(file);
@@ -426,11 +426,11 @@ export default function Signup() {
             title: 'Sign Up Fail',
           });
         }
-        // 회원가입 버튼 활성화
-        setIsPending(false);
       } catch (error) {
         console.error('업로드 실패:', error);
       }
+      // 회원가입 버튼 활성화
+      setIsPending(false);
     };
 
     reader.readAsDataURL(fileA);
