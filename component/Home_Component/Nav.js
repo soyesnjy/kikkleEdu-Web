@@ -127,12 +127,16 @@ export default function Nav() {
       text: 'Main Page로 이동합니다',
       showConfirmButton: false,
       timer: 1500,
-    }).then(() => {
-      logoutAPI();
+    }).then(async () => {
+      await logoutAPI();
       setLogin(false);
       localStorage.removeItem('log');
+      setLogin(false);
       localStorage.removeItem('id');
-      localStorage.removeItem('avarta');
+      setUserId('');
+      localStorage.removeItem('agencyType');
+      setAgencyType('');
+      localStorage.removeItem('userIdx');
       router.push('/');
     });
   }, [router, setLogin]);
@@ -146,7 +150,7 @@ export default function Nav() {
     }).then((result) => {
       if (result.isConfirmed) {
         logoutAPI();
-        // 히스토리 정보 삭제
+        // 히스토리 정보 삭제 - 잘 안되네...
         if (typeof window !== 'undefined') {
           window.history.pushState(
             {},

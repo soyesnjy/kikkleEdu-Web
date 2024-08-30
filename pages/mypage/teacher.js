@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { agencyClass } from '@/store/state';
-import { handleMypageGet } from '@/fetchAPI/mypageAPI';
+import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
 import { useRouter } from 'next/router';
 
 import { useTranslation } from 'next-i18next';
@@ -37,6 +37,7 @@ const MyPage = () => {
 
   const router = useRouter();
 
+  // 기관 로그인 시 진입 제한
   useEffect(() => {
     if (agencyType) router.push('/mypage');
   }, [agencyType]);
@@ -54,7 +55,7 @@ const MyPage = () => {
   // 일반 조회 (탭 || 페이지)
   useEffect(() => {
     if (activeTab === 'attend') {
-      handleMypageGet({
+      handleMypageTeacherAttendGet({
         userIdx: localStorage.getItem('userIdx'),
         pageNum: page,
       })
@@ -218,22 +219,6 @@ const TableHeader = styled.th`
   font-family: Pretendard;
   font-weight: 600;
   text-align: left;
-`;
-
-const TableRow = styled.tr`
-  &:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-`;
-
-const TableCell = styled.td`
-  padding: 1rem;
-  border-bottom: 1px solid #ddd;
-`;
-
-const PaymentStatus = styled.span`
-  color: ${({ status }) => (status === '결제 완료' ? '#61b15a' : 'red')};
-  font-weight: bold;
 `;
 
 export default MyPage;

@@ -3,10 +3,16 @@ import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { agencyClass } from '../../store/state';
 import { useRouter } from 'next/router';
+import {
+  handleMypageAgencyReservationGet,
+  handleMypageTeacherAttendGet,
+} from '@/fetchAPI/mypageAPI';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import TableBody from '@/component/MyPage_Component/TableBody'; // TableBody 컴포넌트를 불러옵니다.
+import AgencyTableReservationBody from '@/component/MyPage_Component/Agency/AgencyTableReservationBody';
+import AgencyTableAttendBody from '@/component/MyPage_Component/Agency/AgencyTableAttendBody';
+import Pagination from '@/component/Common_Component/Pagination';
 
 const dummyTableData = [
   {
@@ -28,14 +34,56 @@ const dummyTableData = [
 
 const MyPage = () => {
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
-  const [activeTab, setActiveTab] = useState('reservation');
+  const [activeTab, setActiveTab] = useState('attend');
   const [tableData, setTableData] = useState(dummyTableData);
+  const [page, setPage] = useState(1);
+  const [lastPageNum, setLastPageNum] = useState(1);
 
   const router = useRouter();
 
+  // 강사 로그인 시 진입 제한
+  // useEffect(() => {
+  //   if (!agencyType) router.push('/mypage/teacher');
+  // }, [agencyType]);
+
   useEffect(() => {
-    if (!agencyType) router.push('/mypage/teacher');
-  }, [agencyType]);
+    if (localStorage.getItem('activeTab'))
+      setActiveTab(localStorage.getItem('activeTab'));
+    else setActiveTab('reservation');
+
+    return () => {
+      localStorage.removeItem('activeTab');
+    };
+  }, []);
+
+  // 일반 조회 (탭 || 페이지)
+  useEffect(() => {
+    if (activeTab === 'reservation') {
+      handleMypageAgencyReservationGet({
+        userIdx: localStorage.getItem('userIdx'),
+        pageNum: page,
+      })
+        .then((res) => res.data)
+        .then((data) => {
+          console.log(data);
+          setTableData(data.data);
+          setLastPageNum(data.lastPageNum);
+        });
+    } else if (activeTab === 'instructor') {
+      handleMypageTeacherAttendGet({
+        agencyIdx: localStorage.getItem('userIdx'),
+        pageNum: page,
+      })
+        .then((res) => res.data)
+        .then((data) => {
+          console.log(data);
+          setTableData(data.data);
+          setLastPageNum(data.lastPageNum);
+        });
+    }
+    if (localStorage.getItem('activeTab') !== activeTab) setPage(1); // 탭 변경 시 페이지 초기화
+    localStorage.setItem('activeTab', activeTab);
+  }, [activeTab, page]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -61,24 +109,47 @@ const MyPage = () => {
         </Tabs>
         <TableContainer>
           <Table>
-            <thead>
-              <tr>
-                <TableHeader>수업 타이틀</TableHeader>
-                <TableHeader>수업 강사</TableHeader>
-                <TableHeader>날짜</TableHeader>
-                <TableHeader>{agencyType ? '연락처' : '출근 현황'}</TableHeader>
-                <TableHeader>
-                  {agencyType
-                    ? activeTab === 'reservation'
-                      ? '결제 여부'
-                      : '진행 여부'
-                    : ''}
-                </TableHeader>
-              </tr>
-            </thead>
-            <TableBody data={tableData} /> {/* TableBody 컴포넌트를 사용 */}
+            {activeTab === 'reservation' && (
+              <thead>
+                <tr>
+                  <TableHeader>수업 타이틀</TableHeader>
+                  <TableHeader>수업 강사</TableHeader>
+                  <TableHeader>날짜</TableHeader>
+                  <TableHeader>연락처</TableHeader>
+                  <TableHeader>승인 여부</TableHeader>
+                  <TableHeader>결제 여부</TableHeader>
+                </tr>
+              </thead>
+            )}
+            {activeTab === 'instructor' && (
+              <thead>
+                <tr>
+                  <TableHeader>수업 타이틀</TableHeader>
+                  <TableHeader>수업 강사</TableHeader>
+                  <TableHeader>날짜</TableHeader>
+                  <TableHeader>연락처</TableHeader>
+                  <TableHeader>승인 여부</TableHeader>
+                </tr>
+              </thead>
+            )}
+            {activeTab === 'reservation' && (
+              <tbody>
+                {tableData.map((data, index) => (
+                  <AgencyTableReservationBody key={index} data={data} />
+                ))}
+              </tbody>
+            )}
+            {activeTab === 'instructor' && (
+              <tbody>
+                {tableData.map((data, index) => (
+                  <AgencyTableAttendBody key={index} data={data} />
+                ))}
+              </tbody>
+            )}
           </Table>
         </TableContainer>
+
+        <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
       </MyPageContainer>
     </MasterContainer>
   );
