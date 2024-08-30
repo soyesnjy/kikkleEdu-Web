@@ -2,6 +2,7 @@ import styled, { keyframes } from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { agencyClass } from '../../store/state';
+import { useRouter } from 'next/router';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -30,6 +31,12 @@ const MyPage = () => {
   const [activeTab, setActiveTab] = useState('reservation');
   const [tableData, setTableData] = useState(dummyTableData);
 
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!agencyType) router.push('/mypage/teacher');
+  }, [agencyType]);
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
@@ -37,7 +44,7 @@ const MyPage = () => {
   return (
     <MasterContainer>
       <MyPageContainer>
-        <Header>마이페이지</Header>
+        <Header>마이페이지 - 기관</Header>
         <Tabs>
           <TabButton
             active={activeTab === 'reservation'}

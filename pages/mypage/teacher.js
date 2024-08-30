@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { agencyClass } from '@/store/state';
 import { handleMypageGet } from '@/fetchAPI/mypageAPI';
+import { useRouter } from 'next/router';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -28,10 +29,17 @@ const dummyTableData = [
 ];
 
 const MyPage = () => {
+  const [agencyType, setAgencyType] = useRecoilState(agencyClass);
   const [activeTab, setActiveTab] = useState('attend');
   const [tableData, setTableData] = useState(dummyTableData);
   const [page, setPage] = useState(1);
   const [lastPageNum, setLastPageNum] = useState(1);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (agencyType) router.push('/mypage');
+  }, [agencyType]);
 
   useEffect(() => {
     if (localStorage.getItem('activeTab'))
@@ -68,7 +76,7 @@ const MyPage = () => {
   return (
     <MasterContainer>
       <MyPageContainer>
-        <Header>마이페이지</Header>
+        <Header>마이페이지 - 강사</Header>
         <Tabs>
           <TabButton
             active={activeTab === 'attend'}
