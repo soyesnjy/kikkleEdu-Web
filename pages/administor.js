@@ -56,6 +56,7 @@ const Administor = () => {
     };
   }, []);
 
+  // 일반 조회 (탭 || 페이지)
   useEffect(() => {
     if (activeTab === 'teacher') {
       handleSignupGet({ userClass: activeTab, name, pageNum: page })
@@ -86,6 +87,7 @@ const Administor = () => {
     localStorage.setItem('activeTab', activeTab);
   }, [activeTab, page]);
 
+  // 검색 조회 (디바운싱 적용)
   useEffect(() => {
     const debounce = setTimeout(() => {
       if (activeTab === 'teacher') {
@@ -96,14 +98,18 @@ const Administor = () => {
             setTableData(data.data);
           });
       } else if (activeTab === 'agency') {
-        handleSignupGet({ userClass: activeTab, name })
+        handleSignupGet({ userClass: activeTab, name, pageNum: page })
           .then((res) => res.data)
           .then((data) => {
             console.log(data.data);
             setTableData(data.data);
           });
       } else if (activeTab === 'reservation') {
-        handleReservationGet({ userClass: activeTab, date: name })
+        handleReservationGet({
+          userClass: activeTab,
+          date: name,
+          pageNum: page,
+        })
           .then((res) => res.data)
           .then((data) => {
             console.log(data.data);
@@ -117,44 +123,31 @@ const Administor = () => {
     };
   }, [name]);
 
-  // useEffect(() => {
-  //   const debounce = setTimeout(() => {
-  //     return checkPwd();
-  //   }, 350);
-  //   return () => {
-  //     clearTimeout(debounce);
-  //   };
-  // }, [name]);
-
   return (
     <MasterContainer>
       <MyPageContainer>
         <Header>관리자 페이지</Header>
         <Tabs>
-          <TabButton
-            active={activeTab === 'teacher'}
-            onClick={() => handleTabClick('teacher')}
-          >
-            강사 승인 요청 관리
-          </TabButton>
-          <TabButton
-            active={activeTab === 'agency'}
-            onClick={() => {
-              // return alert('개발중...');
-              handleTabClick('agency');
-            }}
-          >
-            기관 승인 요청 관리
-          </TabButton>
-          <TabButton
-            active={activeTab === 'reservation'}
-            onClick={() => {
-              // return alert('개발중...');
-              handleTabClick('reservation');
-            }}
-          >
-            기관 예약 요청 관리
-          </TabButton>
+          <div>
+            <TabButton
+              active={activeTab === 'teacher'}
+              onClick={() => handleTabClick('teacher')}
+            >
+              강사 승인 요청 관리
+            </TabButton>
+            <TabButton
+              active={activeTab === 'agency'}
+              onClick={() => handleTabClick('agency')}
+            >
+              기관 승인 요청 관리
+            </TabButton>
+            <TabButton
+              active={activeTab === 'reservation'}
+              onClick={() => handleTabClick('reservation')}
+            >
+              기관 예약 요청 관리
+            </TabButton>
+          </div>
           <input value={name} onChange={(e) => setName(e.target.value)} />
         </Tabs>
         <TableContainer>
@@ -277,6 +270,7 @@ const Header = styled.div`
 
 const Tabs = styled.div`
   display: flex;
+  justify-content: space-between;
   margin-top: 1.5rem;
 `;
 
