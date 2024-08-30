@@ -10,10 +10,14 @@
     "deploy": "next build && next export && aws s3 sync ./out s3://soyes.toy.com"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@fullcalendar/core": "^6.1.14",
     "@fullcalendar/daygrid": "^6.1.14",
     "@fullcalendar/interaction": "^6.1.14",
     "@fullcalendar/react": "^6.1.14",
+    "@mui/icons-material": "^6.0.1",
+    "@mui/material": "^6.0.1",
     "axios": "^1.6.7",
     "babel-preset-next": "^1.4.0",
     "chart.js": "^4.4.3",

@@ -18,10 +18,12 @@ const HistoryPage = () => {
           </Description>
           {/* <StyledLink href={agency ? '/reservation' : '/login'}> */}
           <StyledLink href="/reservation">
-            <ReservationButton>
-              예약하기
-              <span class="material-symbols-outlined">arrow_forward</span>
-            </ReservationButton>
+            {agency ? (
+              <ReservationButton>
+                예약하기
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </ReservationButton>
+            ) : null}
           </StyledLink>
         </HeaderContent>
       </HeaderSection>

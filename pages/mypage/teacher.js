@@ -1,11 +1,13 @@
 import styled, { keyframes } from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { agencyClass } from '../../store/state';
+import { agencyClass } from '@/store/state';
+import { handleMypageGet } from '@/fetchAPI/mypageAPI';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import TableBody from '@/component/MyPage_Component/TableBody'; // TableBody 컴포넌트를 불러옵니다.
+import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
+import Pagination from '@/component/Common_Component/Pagination';
 
 const dummyTableData = [
   {
@@ -28,6 +30,36 @@ const dummyTableData = [
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('attend');
   const [tableData, setTableData] = useState(dummyTableData);
+  const [page, setPage] = useState(1);
+  const [lastPageNum, setLastPageNum] = useState(1);
+
+  useEffect(() => {
+    if (localStorage.getItem('activeTab'))
+      setActiveTab(localStorage.getItem('activeTab'));
+    else setActiveTab('attend');
+
+    return () => {
+      localStorage.removeItem('activeTab');
+    };
+  }, []);
+
+  // 일반 조회 (탭 || 페이지)
+  useEffect(() => {
+    if (activeTab === 'attend') {
+      handleMypageGet({
+        userIdx: localStorage.getItem('userIdx'),
+        pageNum: page,
+      })
+        .then((res) => res.data)
+        .then((data) => {
+          console.log(data);
+          setTableData(data.data);
+          setLastPageNum(data.lastPageNum);
+        });
+    }
+    if (localStorage.getItem('activeTab') !== activeTab) setPage(1); // 탭 변경 시 페이지 초기화
+    localStorage.setItem('activeTab', activeTab);
+  }, [activeTab, page]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -65,18 +97,30 @@ const MyPage = () => {
         </Tabs>
         <TableContainer>
           <Table>
-            <thead>
-              <tr>
-                <TableHeader>수업 타이틀</TableHeader>
-                <TableHeader>수업 강사</TableHeader>
-                <TableHeader>날짜</TableHeader>
-                <TableHeader>출근 현황</TableHeader>
-                <TableHeader></TableHeader>
-              </tr>
-            </thead>
-            <TableBody data={tableData} /> {/* TableBody 컴포넌트를 사용 */}
+            {activeTab === 'attend' && (
+              <thead>
+                <tr>
+                  <TableHeader>수업 타이틀</TableHeader>
+                  <TableHeader>기관명</TableHeader>
+                  <TableHeader>수업 강사</TableHeader>
+                  <TableHeader>날짜</TableHeader>
+                  <TableHeader>출근 현황</TableHeader>
+                  <TableHeader></TableHeader>
+                </tr>
+              </thead>
+            )}
+            {activeTab === 'attend' && (
+              <tbody>
+                {tableData.map((data, index) => (
+                  <TeacherTableAttendBody key={index} data={data} />
+                ))}
+              </tbody>
+            )}
           </Table>
         </TableContainer>
+        {activeTab === 'attend' && (
+          <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
+        )}
       </MyPageContainer>
     </MasterContainer>
   );
@@ -104,6 +148,7 @@ const MyPageContainer = styled.div`
   width: 85%;
   margin: 0 auto;
   padding-top: 2rem;
+  padding-bottom: 2rem;
 `;
 
 const Header = styled.div`
