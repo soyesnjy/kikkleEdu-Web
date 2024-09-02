@@ -128,7 +128,7 @@ const MyPage = () => {
                   <TableHeader>수업 강사</TableHeader>
                   <TableHeader>날짜</TableHeader>
                   <TableHeader>연락처</TableHeader>
-                  <TableHeader>승인 여부</TableHeader>
+                  <TableHeader>출석 여부</TableHeader>
                 </tr>
               </thead>
             )}

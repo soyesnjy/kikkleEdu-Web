@@ -25,6 +25,11 @@ import PostBtn from '@/component/SignUp_Component/PostBtn';
 
 const possLocalArr = ['서울', '부산', '기타'];
 const possDayArr = ['월', '화', '수', '목', '금', '토', '일'];
+const partTimeArr = [
+  { title: '오전 (10:00~12:00)', value: '오전' },
+  { title: '오후 (1:00~5:00)', value: '오후' },
+  { title: '야간 (5:00~10:00)', value: '야간' },
+];
 const agencyTypeArr = [
   '유치원',
   '초등학교',
@@ -58,6 +63,7 @@ export default function Signup() {
   const [possLocal, setPossLocal] = useState(''); // kk_teacher_location
   const [possClass, setPossClass] = useState([]); // 희망 수업
   const [possDay, setPossDay] = useState([]); // kk_teacher_history
+  const [possTime, setPossTime] = useState(''); // kk_teacher_time
   // (Third Page)
   const [career, setCareer] = useState(''); // kk_teacher_history
   const [education, setEducation] = useState(''); // kk_teacher_education
@@ -186,6 +192,10 @@ export default function Signup() {
     }
     if (!possDay.length) {
       alert('희망 날짜를 선택하세요');
+      return false;
+    }
+    if (!possTime.length) {
+      alert('희망 시간대를 선택하세요');
       return false;
     }
     return true;
@@ -333,6 +343,7 @@ export default function Signup() {
             possLocal,
             possClass,
             possDay,
+            possTime,
             career,
             education,
             fileData: {
@@ -649,6 +660,25 @@ export default function Signup() {
                       );
                     })}
                   </UserPossClassContainer>
+                  <H4>희망 시간대 </H4>
+                  <UserPossClassContainer rowCount={1} dayCheck={true}>
+                    {partTimeArr.map((partTime, index) => {
+                      return (
+                        <UserPossClassButton
+                          key={index}
+                          value={partTime.value}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            // 지역 선택
+                            setPossTime(e.target.value);
+                          }}
+                          selected={possTime === partTime.value}
+                        >
+                          {partTime.title}
+                        </UserPossClassButton>
+                      );
+                    })}
+                  </UserPossClassContainer>
                 </PageContainer>
               )}
               {/* 회원가입 Third Page */}
@@ -657,7 +687,7 @@ export default function Signup() {
                   <UserInfoRowContainer>
                     <SignUpInput
                       id="career"
-                      placeholder="경력"
+                      placeholder="경력 (교육경력)"
                       type="text"
                       value={career}
                       onChange={(e) => {
