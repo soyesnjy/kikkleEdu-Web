@@ -90,6 +90,8 @@ export default function Nav() {
     }
     // Resize 상태 처리 (MobileFlag)
     const handleResize = () => {
+      // 모바일 반응형 처리
+      window.innerWidth <= 412 ? setMobileFlag(true) : setMobileFlag(false);
       setWindowSize({
         width: window.innerWidth,
         height: window.innerHeight,
@@ -255,7 +257,7 @@ export default function Nav() {
               style={{ maxWidth: '100%', height: 'auto' }}
             />
           </Link>
-          <NavModal />
+          <NavModal login={login} logoutHandler={logoutHandler} />
         </NavContainer>
       )}
     </>

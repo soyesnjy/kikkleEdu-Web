@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
+import Link from 'next/link';
+
 // import { useSession } from "next-auth/react";
 
-const NavModal = () => {
+const NavModal = ({ login, logoutHandler }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -28,13 +30,29 @@ const NavModal = () => {
           <CloseIcon />
         </CloseButton>
         <MenuList>
-          <MenuItem>소예기즈 소개</MenuItem>
-          <MenuItem>기업 및 기관</MenuItem>
-          <MenuItem>강사</MenuItem>
-          <MenuItem>교육 프로그램</MenuItem>
-          <MenuItem>게시판</MenuItem>
+          <Link href="/introduce" passHref>
+            <MenuItem onClick={toggleMenu}>소예기즈 소개</MenuItem>
+          </Link>
+          <Link href="/agency" passHref>
+            <MenuItem onClick={toggleMenu}>기업 및 기관</MenuItem>
+          </Link>
+          <Link href="/" passHref>
+            <MenuItem onClick={toggleMenu}>강사</MenuItem>
+          </Link>
+          <Link href="/" passHref>
+            <MenuItem onClick={toggleMenu}>교육 프로그램</MenuItem>
+          </Link>
+          <Link href="/" passHref>
+            <MenuItem onClick={toggleMenu}>게시판</MenuItem>
+          </Link>
         </MenuList>
-        <LoginButton>LOGIN</LoginButton>
+        {login ? (
+          <LoginButton onClick={logoutHandler}>LOGOUT</LoginButton>
+        ) : (
+          <Link href="/login" passHref>
+            <LoginButton onClick={toggleMenu}>LOGIN</LoginButton>
+          </Link>
+        )}
       </SideMenu>
     </NavMenuContainer>
   );
