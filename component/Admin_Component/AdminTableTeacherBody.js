@@ -159,33 +159,35 @@ const AdminTableTeacherBody = ({ data }) => {
 
   const signupDeleteHandler = async () => {
     try {
-      const res = await handleSignupDelete({
-        userClass: 'teacher',
-        userIdx: teacherIdx,
-      });
+      if (confirm('삭제 하시겠습니까?') === true) {
+        const res = await handleSignupDelete({
+          userClass: 'teacher',
+          userIdx: teacherIdx,
+        });
 
-      if (res.status === 200) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Delete Success!',
-          text: 'Page Reloading...',
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          // 화면 새로고침
-          window.location.reload();
-        });
-      } else if (res.status === 403) {
-        Swal.fire({
-          icon: 'error',
-          title: '중복된 이메일입니다',
-        });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Sign Up Fail',
-        });
-      }
+        if (res.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Delete Success!',
+            text: 'Page Reloading...',
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            // 화면 새로고침
+            window.location.reload();
+          });
+        } else if (res.status === 403) {
+          Swal.fire({
+            icon: 'error',
+            title: '중복된 이메일입니다',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Sign Up Fail',
+          });
+        }
+      } else return;
     } catch (error) {
       console.error(error);
     }
@@ -213,6 +215,7 @@ const AdminTableTeacherBody = ({ data }) => {
             )}
           </TableCell>
           <TableCell>{data.kk_teacher_location}</TableCell>
+          <TableCell>{data.kk_teacher_dayofweek}</TableCell>
           <TableCell>{data.kk_teacher_history}</TableCell>
           <TableCell>{data.kk_teacher_education}</TableCell>
           <TableCell>
@@ -279,6 +282,7 @@ const AdminTableTeacherBody = ({ data }) => {
               <option value="부산">기타</option>
             </select>
           </TableCell>
+          <TableCell>{data.kk_teacher_dayofweek}</TableCell>
           <TableCell>
             <StyledInput
               value={history}
@@ -292,7 +296,9 @@ const AdminTableTeacherBody = ({ data }) => {
             />
           </TableCell>
           <TableCell>
-            <a href={data.kk_teacher_file_path}>Download</a>
+            <a href={data.kk_teacher_file_path} target="_blank">
+              Download
+            </a>
           </TableCell>
           <TableCell>
             {/* <Status status={data.kk_teacher_approve_status}>

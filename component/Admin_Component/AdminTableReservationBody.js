@@ -119,32 +119,34 @@ const AdminTableReservationBody = ({ data }) => {
 
   const reservationDeleteHandler = async () => {
     try {
-      const res = await handleReservationDelete({
-        reservationIdx,
-      });
+      if (confirm('삭제 하시겠습니까?') === true) {
+        const res = await handleReservationDelete({
+          reservationIdx,
+        });
 
-      if (res.status === 200) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Reservation Delete Success!',
-          text: 'Page Reloading...',
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          // 화면 새로고침
-          window.location.reload();
-        });
-      } else if (res.status === 403) {
-        Swal.fire({
-          icon: 'error',
-          title: '중복된 이메일입니다',
-        });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Reservation Delete Fail',
-        });
-      }
+        if (res.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Reservation Delete Success!',
+            text: 'Page Reloading...',
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            // 화면 새로고침
+            window.location.reload();
+          });
+        } else if (res.status === 403) {
+          Swal.fire({
+            icon: 'error',
+            title: '중복된 이메일입니다',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Reservation Delete Fail',
+          });
+        }
+      } else return;
     } catch (error) {
       console.error(error);
     }

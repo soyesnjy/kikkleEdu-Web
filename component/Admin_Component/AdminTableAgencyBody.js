@@ -88,33 +88,35 @@ const AdminTableAgencyBody = ({ data }) => {
 
   const signupDeleteHandler = async () => {
     try {
-      const res = await handleSignupDelete({
-        userClass: 'agency',
-        userIdx: agencyIdx,
-      });
+      if (confirm('삭제 하시겠습니까?') === true) {
+        const res = await handleSignupDelete({
+          userClass: 'agency',
+          userIdx: agencyIdx,
+        });
 
-      if (res.status === 200) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Delete Success!',
-          text: 'Page Reloading...',
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          // 화면 새로고침
-          window.location.reload();
-        });
-      } else if (res.status === 403) {
-        Swal.fire({
-          icon: 'error',
-          title: '중복된 이메일입니다',
-        });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Sign Up Fail',
-        });
-      }
+        if (res.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Delete Success!',
+            text: 'Page Reloading...',
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            // 화면 새로고침
+            window.location.reload();
+          });
+        } else if (res.status === 403) {
+          Swal.fire({
+            icon: 'error',
+            title: '중복된 이메일입니다',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Sign Up Fail',
+          });
+        }
+      } else return;
     } catch (error) {
       console.error(error);
     }
