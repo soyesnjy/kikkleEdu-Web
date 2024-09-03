@@ -195,6 +195,7 @@ const Administor = () => {
                   <TableHeader>수업명</TableHeader>
                   <TableHeader>날짜</TableHeader>
                   <TableHeader>수업 강사</TableHeader>
+                  <TableHeader>수업 요일</TableHeader>
                   <TableHeader>결제여부</TableHeader>
                   <TableHeader>승인 여부</TableHeader>
                   <TableHeader>관리자 옵션</TableHeader>

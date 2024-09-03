@@ -6,18 +6,33 @@ import {
 } from '@/fetchAPI/reservationAPI';
 import Swal from 'sweetalert2';
 
+const getUniqueWeekdays = (dateArr) => {
+  // 요일 배열
+  const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+
+  // 날짜 배열을 순회하면서 요일로 변환하고 중복을 제거
+  const uniqueWeekdays = new Set(
+    dateArr.map((dateString) => {
+      const date = new Date(dateString);
+      return weekdays[date.getDay()]; // 요일 번호를 이용해 요일 문자열로 변환
+    })
+  );
+
+  // Set을 배열로 변환하여 반환
+  return Array.from(uniqueWeekdays);
+};
+
 const AdminTableReservationBody = ({ data }) => {
   const [updateFlag, setUpdateFlag] = useState(false);
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
 
   const [reservationIdx, setReservationIdx] = useState(0);
   const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
   const [phoneNum, setPhoneNum] = useState('');
   const [dateArr, setDateArr] = useState([]);
+  const [datArr, setDayArr] = useState([]);
   const [teacherArr, setTeacherArr] = useState([]);
   const [matchingTeacher, setMatchingTeacher] = useState(null);
-  const [type, setType] = useState('');
   const [approveStatus, setApproveStatus] = useState(-1);
 
   useEffect(() => {
@@ -39,6 +54,12 @@ const AdminTableReservationBody = ({ data }) => {
     setMatchingTeacher(data.kk_teacher_idx);
     setApproveStatus(data.kk_reservation_approve_status);
   }, [data]);
+
+  useEffect(() => {
+    if (dateArr.length) {
+      setDayArr([...getUniqueWeekdays(dateArr)]);
+    }
+  }, [dateArr]);
 
   const reservationUpdateHandler = async (e) => {
     e.preventDefault();
@@ -144,6 +165,7 @@ const AdminTableReservationBody = ({ data }) => {
                   ?.name
               : 'Non Matching'}
           </TableCell>
+          <TableCell>{datArr.join('/')}</TableCell>
           <TableCell>개발중...</TableCell>
           <TableCell>
             <Status status={data.kk_reservation_approve_status}>
