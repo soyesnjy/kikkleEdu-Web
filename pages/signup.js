@@ -63,7 +63,7 @@ export default function Signup() {
   const [possLocal, setPossLocal] = useState(''); // kk_teacher_location
   const [possClass, setPossClass] = useState([]); // 희망 수업
   const [possDay, setPossDay] = useState([]); // kk_teacher_history
-  const [possTime, setPossTime] = useState(''); // kk_teacher_time
+  const [possTime, setPossTime] = useState([]); // kk_teacher_time
   // (Third Page)
   const [career, setCareer] = useState(''); // kk_teacher_history
   const [education, setEducation] = useState(''); // kk_teacher_education
@@ -669,10 +669,20 @@ export default function Signup() {
                           value={partTime.value}
                           onClick={(e) => {
                             e.preventDefault();
-                            // 지역 선택
-                            setPossTime(e.target.value);
+                            // 시간대 선택
+                            // setPossTime(e.target.value);
+
+                            if (possTime.includes(partTime.value))
+                              setPossTime([
+                                ...possTime.filter(
+                                  (el) => el !== partTime.value
+                                ),
+                              ]);
+                            // 선택
+                            else setPossTime([...possTime, e.target.value]);
                           }}
-                          selected={possTime === partTime.value}
+                          // selected={possTime === partTime.value}
+                          selected={possTime.includes(partTime.value)}
                         >
                           {partTime.title}
                         </UserPossClassButton>
