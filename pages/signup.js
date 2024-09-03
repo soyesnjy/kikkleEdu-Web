@@ -926,8 +926,10 @@ const SignUpPageContainer = styled.main`
   }
 
   @media (max-width: 768px) {
-    padding: 1rem;
-    justify-content: center;
+    height: 100%;
+    min-height: 100vh;
+    flex-direction: column;
+    padding: 2rem;
   }
 `;
 
@@ -948,7 +950,10 @@ const FormWrap = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    padding: 2rem 3rem;
+    flex-direction: column;
+    padding: 1rem;
+
+    gap: 2rem;
   }
 `;
 
@@ -1131,7 +1136,6 @@ const UserClassButtonContainer = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    flex-direction: column;
     gap: 0.5rem;
   }
 `;
@@ -1161,9 +1165,11 @@ const UserClassButton = styled.button`
 
   @media (max-width: 768px) {
     width: 100%;
-    min-height: fit-content;
-    min-height: 53px;
-    font-size: 20px;
+    font-size: 1rem;
+    padding: 1rem;
+    margin-bottom: 0;
+
+    margin-bottom: 0;
   }
 `;
 
@@ -1286,9 +1292,8 @@ const UserPossClassButton = styled.button`
 
   @media (max-width: 768px) {
     width: 100%;
-    min-height: fit-content;
-    min-height: 53px;
-    font-size: 20px;
+    padding: 0.5rem;
+    font-size: 1rem;
   }
 `;
 
@@ -1322,10 +1327,13 @@ const SignUpInputAddressContainer = styled.div`
   align-items: center;
 
   gap: 0.2rem;
+
+  @media (max-width: 768px) {
+  }
 `;
 
 const SignUpInputAddress = styled.input`
-  min-width: 360px;
+  width: 360px;
   background-color: white;
   color: black;
   padding: 1rem 18px;
@@ -1346,6 +1354,7 @@ const SignUpInputAddress = styled.input`
 
   @media (max-width: 768px) {
     width: 100%;
+    padding: 1rem 18px;
     font-size: 1rem;
   }
 `;

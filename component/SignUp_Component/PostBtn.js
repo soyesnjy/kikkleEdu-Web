@@ -58,10 +58,9 @@ const Button = styled.button`
   transition: 0.2s;
 
   @media (max-width: 768px) {
-    width: 100%;
-    min-height: fit-content;
-    min-height: 53px;
-    font-size: 20px;
+    width: 30%;
+    font-size: 1rem;
+    padding: 1rem;
   }
 `;
 
