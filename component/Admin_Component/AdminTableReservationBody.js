@@ -31,6 +31,7 @@ const AdminTableReservationBody = ({ data }) => {
   const [phoneNum, setPhoneNum] = useState('');
   const [dateArr, setDateArr] = useState([]);
   const [datArr, setDayArr] = useState([]);
+  const [partTime, setPartTime] = useState('');
   const [teacherArr, setTeacherArr] = useState([]);
   const [matchingTeacher, setMatchingTeacher] = useState(null);
   const [approveStatus, setApproveStatus] = useState(-1);
@@ -51,6 +52,7 @@ const AdminTableReservationBody = ({ data }) => {
           return { idx: Number(id_value), name: name_value };
         })
       );
+    setPartTime(data.kk_reservation_time);
     setMatchingTeacher(data.kk_teacher_idx);
     setApproveStatus(data.kk_reservation_approve_status);
   }, [data]);
@@ -166,6 +168,7 @@ const AdminTableReservationBody = ({ data }) => {
               : 'Non Matching'}
           </TableCell>
           <TableCell>{datArr.join('/')}</TableCell>
+          <TableCell>{data.kk_reservation_time}</TableCell>
           <TableCell>개발중...</TableCell>
           <TableCell>
             <Status status={data.kk_reservation_approve_status}>
@@ -210,6 +213,8 @@ const AdminTableReservationBody = ({ data }) => {
               })}
             </select>
           </TableCell>
+          <TableCell>{datArr.join('/')}</TableCell>
+          <TableCell>{data.kk_reservation_time}</TableCell>
           <TableCell>개발중...</TableCell>
           <TableCell>
             <select
