@@ -29,6 +29,23 @@ const partTimeArr = [
   { title: '야간 (5:00~10:00)', value: '야간' },
 ];
 
+// 날짜 -> 요일 변환 메서드
+const getUniqueWeekdays = (dateArr) => {
+  // 요일 배열
+  const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+
+  // 날짜 배열을 순회하면서 요일로 변환하고 중복을 제거
+  const uniqueWeekdays = new Set(
+    dateArr.map((dateString) => {
+      const date = new Date(dateString);
+      return weekdays[date.getDay()]; // 요일 번호를 이용해 요일 문자열로 변환
+    })
+  );
+
+  // Set을 배열로 변환하여 반환
+  return Array.from(uniqueWeekdays);
+};
+
 // SignUp 페이지
 export default function Signup() {
   const [pageNumber, setPageNumber] = useState(0); // 강사 페이지 번호
@@ -88,8 +105,9 @@ export default function Signup() {
   // pageNumber에 따른 navText값 변경
   useEffect(() => {
     if (pageNumber === 2) {
+      const dayArr = getUniqueWeekdays(dateArr);
       // Class Read API 호출 메서드
-      handleTeacherGet({ classIdx: selectedClass, dayofweek: '' }) // 추후 기관 타입 recoil 전역변수 넣기
+      handleTeacherGet({ classIdx: selectedClass, dayofweek: dayArr, partTime }) // 추후 기관 타입 recoil 전역변수 넣기
         .then((res) => res.data.data)
         .then((data) => {
           setPossTeacherArr([
