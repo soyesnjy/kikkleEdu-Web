@@ -287,26 +287,6 @@ export default function Login() {
   return (
     <LoginPageContainer>
       <FormWrap>
-        {/* {!mobileFlag &&
-          AvartarIconArr.map((el, index) => {
-            return (
-              <AvartarIconWrap
-                key={index}
-                top={el.top}
-                left={el.left}
-                bottom={el.bottom}
-                right={el.right}
-              >
-                <Image
-                  src={el.src}
-                  alt={el.alt}
-                  width={el.width}
-                  height={el.height}
-                  style={{ maxWidth: '100%', height: 'auto' }}
-                />
-              </AvartarIconWrap>
-            );
-          })} */}
         <Image
           src="/src/Login_IMG/Login_Vector_IMG.png"
           alt={'soyes_logo'}
@@ -419,8 +399,10 @@ const LoginPageContainer = styled.main`
   }
 
   @media (max-width: 768px) {
-    padding: 1rem;
-    justify-content: center;
+    height: 100%;
+    min-height: 100vh;
+    flex-direction: column;
+    padding: 2rem;
   }
 `;
 
@@ -488,8 +470,6 @@ const UserClassButtonContainer = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    flex-direction: column;
-    gap: 0.5rem;
   }
 `;
 
@@ -519,9 +499,9 @@ const UserClassButton = styled.button`
 
   @media (max-width: 768px) {
     width: 100%;
-    min-height: fit-content;
-    min-height: 53px;
-    font-size: 20px;
+    font-size: 1rem;
+    padding: 1rem;
+    margin-bottom: 0;
   }
 `;
 
