@@ -6,14 +6,16 @@ import { agencyClass } from '../store/state';
 import { useRouter } from 'next/router';
 import { handleSignupGet } from '@/fetchAPI/signupAPI';
 import { handleReservationGet } from '@/fetchAPI/reservationAPI';
-import Directory from '@/component/Music_Component/Directory';
 import { handleDirectoryRead } from '@/fetchAPI/directory';
+import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import Directory from '@/component/Music_Component/Directory';
 import AdminTableTeacherBody from '@/component/Admin_Component/AdminTableTeacherBody';
 import AdminTableAgencyBody from '@/component/Admin_Component/AdminTableAgencyBody';
 import AdminTableReservationBody from '@/component/Admin_Component/AdminTableReservationBody';
+import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
 import Pagination from '@/component/Common_Component/Pagination';
 
 const dummyTableData = [
@@ -67,7 +69,7 @@ const Administor = () => {
     // if (agencyType !== 'admin') router.push('/');
     if (localStorage.getItem('activeTab'))
       setActiveTab(localStorage.getItem('activeTab'));
-    else setActiveTab('teacher');
+    else setActiveTab('attend');
 
     return () => {
       localStorage.removeItem('activeTab');
@@ -94,6 +96,18 @@ const Administor = () => {
       handleReservationGet({ userClass: activeTab, date: name, pageNum: page })
         .then((res) => res.data)
         .then((data) => {
+          setTableData(data.data);
+          setLastPageNum(data.lastPageNum);
+        });
+    } else if (activeTab === 'attend') {
+      handleMypageTeacherAttendGet({
+        // adminIdx: localStorage.getItem('userIdx'),
+        name,
+        pageNum: page,
+      })
+        .then((res) => res.data)
+        .then((data) => {
+          console.log(data);
           setTableData(data.data);
           setLastPageNum(data.lastPageNum);
         });
@@ -128,6 +142,18 @@ const Administor = () => {
             console.log(data);
             setTableData(data.data);
           });
+      } else if (activeTab === 'attend') {
+        handleMypageTeacherAttendGet({
+          // userIdx: localStorage.getItem('userIdx'),
+          name,
+          pageNum: page,
+        })
+          .then((res) => res.data)
+          .then((data) => {
+            console.log(data);
+            setTableData(data.data);
+            setLastPageNum(data.lastPageNum);
+          });
       }
     }, 350);
 
@@ -142,6 +168,12 @@ const Administor = () => {
         <Header>관리자 페이지</Header>
         <Tabs>
           <div>
+            <TabButton
+              active={activeTab === 'attend'}
+              onClick={() => handleTabClick('attend')}
+            >
+              출석 확인
+            </TabButton>
             <TabButton
               active={activeTab === 'teacher'}
               onClick={() => handleTabClick('teacher')}
@@ -236,6 +268,20 @@ const Administor = () => {
                 </tr>
               </thead>
             )}
+            {activeTab === 'attend' && (
+              <thead>
+                <tr>
+                  <TableHeader>수업 타이틀</TableHeader>
+                  <TableHeader>기관명</TableHeader>
+                  <TableHeader>수업 강사</TableHeader>
+                  <TableHeader>날짜</TableHeader>
+                  <TableHeader>수업 요일</TableHeader>
+                  <TableHeader>수업 시간대</TableHeader>
+                  <TableHeader>출근 현황</TableHeader>
+                  <TableHeader></TableHeader>
+                </tr>
+              </thead>
+            )}
             {/* Table Body */}
             {activeTab === 'teacher' && (
               <tbody>
@@ -255,6 +301,13 @@ const Administor = () => {
               <tbody>
                 {tableData.map((data, index) => (
                   <AdminTableReservationBody key={index} data={data} />
+                ))}
+              </tbody>
+            )}
+            {activeTab === 'attend' && (
+              <tbody>
+                {tableData.map((data, index) => (
+                  <TeacherTableAttendBody key={index} data={data} />
                 ))}
               </tbody>
             )}

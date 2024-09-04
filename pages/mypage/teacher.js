@@ -54,6 +54,7 @@ const MyPage = () => {
     }));
     setData([...formattedData]);
   };
+
   // 기관 로그인 시 진입 제한
   useEffect(() => {
     if (agencyType) router.push('/mypage');
@@ -130,6 +131,8 @@ const MyPage = () => {
                   <TableHeader>기관명</TableHeader>
                   <TableHeader>수업 강사</TableHeader>
                   <TableHeader>날짜</TableHeader>
+                  <TableHeader>수업 요일</TableHeader>
+                  <TableHeader>수업 시간대</TableHeader>
                   <TableHeader>출근 현황</TableHeader>
                   <TableHeader></TableHeader>
                 </tr>
