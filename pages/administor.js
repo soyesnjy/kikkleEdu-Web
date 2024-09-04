@@ -172,7 +172,7 @@ const Administor = () => {
               active={activeTab === 'attend'}
               onClick={() => handleTabClick('attend')}
             >
-              출석 확인
+              강사 출석 현황
             </TabButton>
             <TabButton
               active={activeTab === 'teacher'}
