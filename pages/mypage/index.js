@@ -127,6 +127,8 @@ const MyPage = () => {
                   <TableHeader>수업 타이틀</TableHeader>
                   <TableHeader>수업 강사</TableHeader>
                   <TableHeader>날짜</TableHeader>
+                  <TableHeader>수업 요일</TableHeader>
+                  <TableHeader>수업 시간대</TableHeader>
                   <TableHeader>연락처</TableHeader>
                   <TableHeader>출석 여부</TableHeader>
                 </tr>
