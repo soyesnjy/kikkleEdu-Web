@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import MusicDirectory from '../../component/Music_Component/MusicDirectory';
-import { handleDirectoryGet } from '@/fetchAPI/directory';
+import { handleDirectoryRead } from '@/fetchAPI/directory';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function MusicHome() {
@@ -9,12 +9,14 @@ export default function MusicHome() {
 
   // 음원 디렉토리 구조 초기화 메서드
   const initMusicDirectory = async () => {
-    const data = await handleDirectoryGet();
+    const data = await handleDirectoryRead();
     const formattedData = data.directories.map((dir) => ({
       ...dir,
       url:
-        dir.type === 'file'
-          ? data.tracks.find((track) => track.directory_id === dir.id)?.url
+        dir.kk_directory_type === 'file'
+          ? data.tracks.find(
+              (track) => track.kk_directory_idx === dir.kk_directory_idx
+            )?.kk_file_path
           : null,
     }));
     setData([...formattedData]);
@@ -27,7 +29,7 @@ export default function MusicHome() {
   return (
     <MainContainer>
       <Title>Music Test Page</Title>
-      {data.length > 0 && <MusicDirectory data={data} />}
+      <MusicDirectory data={data} />
     </MainContainer>
   );
 }

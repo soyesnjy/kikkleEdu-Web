@@ -13,21 +13,27 @@ const UploadFormDir = ({ directories }) => {
   const [directoryName, setDirectoryName] = useState('');
 
   const router = useRouter();
-
   useEffect(() => {
     const buildTreeData = (dirs) => {
       const map = {};
       const roots = [];
 
       dirs.forEach((dir) => {
-        map[dir.id] = { ...dir, label: dir.name, value: dir.id, children: [] };
+        map[dir.kk_directory_idx] = {
+          ...dir,
+          label: dir.kk_directory_name,
+          value: dir.kk_directory_idx,
+          children: [],
+        };
       });
 
       dirs.forEach((dir) => {
-        if (dir.parent_id === null) {
-          roots.push(map[dir.id]);
+        if (dir.kk_directory_parent_idx === null) {
+          roots.push(map[dir.kk_directory_idx]);
         } else {
-          map[dir.parent_id].children.push(map[dir.id]);
+          map[dir.kk_directory_parent_idx].children.push(
+            map[dir.kk_directory_idx]
+          );
         }
       });
 
@@ -49,7 +55,7 @@ const UploadFormDir = ({ directories }) => {
 
     const formData = {
       type: 'directory',
-      directoryId: selectedDirectory.id,
+      directoryId: selectedDirectory.kk_directory_idx,
       directoryName,
     };
 
@@ -84,7 +90,8 @@ const UploadFormDir = ({ directories }) => {
           <Label htmlFor="directory">Directory</Label>
           <DropdownTreeSelect
             texts={{
-              placeholder: selectedDirectory?.name || 'Choose a directory',
+              placeholder:
+                selectedDirectory?.kk_directory_name || 'Choose a directory',
               noMatches: 'No matches found',
             }}
             data={treeData}

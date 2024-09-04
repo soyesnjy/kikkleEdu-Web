@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // READ
-export const handleDirectoryGet = async () => {
+export const handleDirectoryRead = async () => {
   try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_URL}/directory`,
@@ -23,7 +23,6 @@ export const handleDirectoryGet = async () => {
   }
 };
 
-// 미구현
 // CREATE
 export const handleDirectoryCreate = async (input) => {
   try {
@@ -47,22 +46,28 @@ export const handleDirectoryCreate = async (input) => {
     };
   }
 };
-// DELETE
-export const handleReviewDelete = async (uri) => {
+
+// TODO# DELETE
+export const handleReviewDelete = async (input) => {
   try {
-    const response = await axios.delete(`${uri}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      withCredentials: true,
-    });
+    const response = await axios.delete(
+      `${process.env.NEXT_PUBLIC_URL}/directory/create`,
+      { data: input },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }
+    );
     // console.log(response);
     return response;
   } catch (err) {
     console.error(err);
   }
 };
-// UPDATE
+
+// TODO# UPDATE
 export const handleReviewUpdate = async (input) => {
   try {
     const response = await axios.post(

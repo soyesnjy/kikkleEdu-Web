@@ -216,6 +216,7 @@ const AdminTableTeacherBody = ({ data }) => {
           </TableCell>
           <TableCell>{data.kk_teacher_location}</TableCell>
           <TableCell>{data.kk_teacher_dayofweek}</TableCell>
+          <TableCell>{data.kk_teacher_time}</TableCell>
           <TableCell>{data.kk_teacher_history}</TableCell>
           <TableCell>{data.kk_teacher_education}</TableCell>
           <TableCell>
@@ -283,6 +284,7 @@ const AdminTableTeacherBody = ({ data }) => {
             </select>
           </TableCell>
           <TableCell>{data.kk_teacher_dayofweek}</TableCell>
+          <TableCell>{data.kk_teacher_time}</TableCell>
           <TableCell>
             <StyledInput
               value={history}

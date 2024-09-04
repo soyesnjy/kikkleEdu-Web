@@ -164,6 +164,7 @@ const Administor = () => {
                   <TableHeader>프로필 사진</TableHeader>
                   <TableHeader>희망 지역</TableHeader>
                   <TableHeader>희망 요일</TableHeader>
+                  <TableHeader>희망 시간대</TableHeader>
                   <TableHeader>경력</TableHeader>
                   <TableHeader>학력</TableHeader>
                   <TableHeader>첨부 자료</TableHeader>

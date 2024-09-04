@@ -5,6 +5,8 @@ import { agencyClass } from '@/store/state';
 import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
 import { useRouter } from 'next/router';
 
+import MusicDirectory from '@/component/Music_Component/MusicDirectory';
+import { handleDirectoryRead } from '@/fetchAPI/directory';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
@@ -34,8 +36,24 @@ const MyPage = () => {
   const [tableData, setTableData] = useState(dummyTableData);
   const [page, setPage] = useState(1);
   const [lastPageNum, setLastPageNum] = useState(1);
+  const [data, setData] = useState([]); // 파일 데이터
 
   const router = useRouter();
+
+  // 음원 디렉토리 구조 초기화 메서드
+  const initMusicDirectory = async () => {
+    const data = await handleDirectoryRead();
+    const formattedData = data.directories.map((dir) => ({
+      ...dir,
+      url:
+        dir.kk_directory_type === 'file'
+          ? data.tracks.find(
+              (track) => track.kk_directory_idx === dir.kk_directory_idx
+            )?.kk_file_path
+          : null,
+    }));
+    setData([...formattedData]);
+  };
 
   // 기관 로그인 시 진입 제한
   useEffect(() => {
@@ -66,6 +84,7 @@ const MyPage = () => {
           setLastPageNum(data.lastPageNum);
         });
     }
+    if (activeTab === 'music') initMusicDirectory();
     if (localStorage.getItem('activeTab') !== activeTab) setPage(1); // 탭 변경 시 페이지 초기화
     localStorage.setItem('activeTab', activeTab);
   }, [activeTab, page]);
@@ -126,6 +145,7 @@ const MyPage = () => {
               </tbody>
             )}
           </Table>
+          {activeTab === 'music' && <MusicDirectory data={data} />}
         </TableContainer>
         {activeTab === 'attend' && (
           <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />

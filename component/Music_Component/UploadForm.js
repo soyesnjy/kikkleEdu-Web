@@ -19,19 +19,45 @@ const UploadForm = ({ directories }) => {
       const roots = [];
 
       dirs.forEach((dir) => {
-        map[dir.id] = { ...dir, label: dir.name, value: dir.id, children: [] };
+        map[dir.kk_directory_idx] = {
+          ...dir,
+          label: dir.kk_directory_name,
+          value: dir.kk_directory_idx,
+          children: [],
+        };
       });
 
       dirs.forEach((dir) => {
-        if (dir.parent_id === null) {
-          roots.push(map[dir.id]);
+        if (dir.kk_directory_parent_idx === null) {
+          roots.push(map[dir.kk_directory_idx]);
         } else {
-          map[dir.parent_id].children.push(map[dir.id]);
+          map[dir.kk_directory_parent_idx].children.push(
+            map[dir.kk_directory_idx]
+          );
         }
       });
 
       return roots;
     };
+
+    // const buildTreeData = (dirs) => {
+    //   const map = {};
+    //   const roots = [];
+
+    //   dirs.forEach((dir) => {
+    //     map[dir.id] = { ...dir, label: dir.name, value: dir.id, children: [] };
+    //   });
+
+    //   dirs.forEach((dir) => {
+    //     if (dir.parent_id === null) {
+    //       roots.push(map[dir.id]);
+    //     } else {
+    //       map[dir.parent_id].children.push(map[dir.id]);
+    //     }
+    //   });
+
+    //   return roots;
+    // };
 
     setTreeData(buildTreeData(directories));
   }, [directories]);
@@ -56,9 +82,11 @@ const UploadForm = ({ directories }) => {
 
       const formData = {
         type: 'file',
-        trackName: file.name,
-        mimeType: file.type,
-        trackData: `data:${file.type};base64,${base64String}`,
+        fileData: {
+          fileName: file.name,
+          mimeType: file.type,
+          baseData: `data:${file.type};base64,${base64String}`,
+        },
         directoryId: selectedDirectory.value,
       };
 
@@ -94,7 +122,8 @@ const UploadForm = ({ directories }) => {
           <Label htmlFor="directory">Directory</Label>
           <DropdownTreeSelect
             texts={{
-              placeholder: selectedDirectory?.name || 'Choose a directory',
+              placeholder:
+                selectedDirectory?.kk_directory_name || 'Choose a directory',
               noMatches: 'No matches found',
             }}
             data={treeData}
@@ -108,6 +137,7 @@ const UploadForm = ({ directories }) => {
           <Input
             type="file"
             id="file"
+            accept=".mp3, .wav, .aac, .ogg, .flac, .m4a"
             onChange={(e) => setFile(e.target.files[0])}
           />
         </FormGroup>
