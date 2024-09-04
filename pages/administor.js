@@ -6,6 +6,8 @@ import { agencyClass } from '../store/state';
 import { useRouter } from 'next/router';
 import { handleSignupGet } from '@/fetchAPI/signupAPI';
 import { handleReservationGet } from '@/fetchAPI/reservationAPI';
+import Directory from '@/component/Music_Component/Directory';
+import { handleDirectoryRead } from '@/fetchAPI/directory';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -38,11 +40,27 @@ const Administor = () => {
   const [name, setName] = useState('');
   const [page, setPage] = useState(1);
   const [lastPageNum, setLastPageNum] = useState(1);
+  const [data, setData] = useState([]); // 파일 데이터
 
   // const router = useRouter();
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+  };
+
+  // 음원 디렉토리 구조 초기화 메서드
+  const initMusicDirectory = async (form) => {
+    const data = await handleDirectoryRead({ form });
+    const formattedData = data.directories.map((dir) => ({
+      ...dir,
+      url:
+        dir.kk_directory_type === 'file'
+          ? data.tracks.find(
+              (track) => track.kk_directory_idx === dir.kk_directory_idx
+            )?.kk_file_path
+          : null,
+    }));
+    setData([...formattedData]);
   };
 
   useEffect(() => {
@@ -62,7 +80,6 @@ const Administor = () => {
       handleSignupGet({ userClass: activeTab, name, pageNum: page })
         .then((res) => res.data)
         .then((data) => {
-          console.log(data);
           setTableData(data.data);
           setLastPageNum(data.lastPageNum);
         });
@@ -70,7 +87,6 @@ const Administor = () => {
       handleSignupGet({ userClass: activeTab, pageNum: page })
         .then((res) => res.data)
         .then((data) => {
-          console.log(data);
           setTableData(data.data);
           setLastPageNum(data.lastPageNum);
         });
@@ -78,11 +94,10 @@ const Administor = () => {
       handleReservationGet({ userClass: activeTab, date: name, pageNum: page })
         .then((res) => res.data)
         .then((data) => {
-          console.log(data);
           setTableData(data.data);
           setLastPageNum(data.lastPageNum);
         });
-    }
+    } else initMusicDirectory(activeTab);
     if (localStorage.getItem('activeTab') !== activeTab) setPage(1); // 탭 변경 시 페이지 초기화
     localStorage.setItem('activeTab', activeTab);
   }, [activeTab, page]);
@@ -94,14 +109,12 @@ const Administor = () => {
         handleSignupGet({ userClass: activeTab, name, pageNum: page })
           .then((res) => res.data)
           .then((data) => {
-            console.log(data.data);
             setTableData(data.data);
           });
       } else if (activeTab === 'agency') {
         handleSignupGet({ userClass: activeTab, name, pageNum: page })
           .then((res) => res.data)
           .then((data) => {
-            console.log(data.data);
             setTableData(data.data);
           });
       } else if (activeTab === 'reservation') {
@@ -112,7 +125,7 @@ const Administor = () => {
         })
           .then((res) => res.data)
           .then((data) => {
-            console.log(data.data);
+            console.log(data);
             setTableData(data.data);
           });
       }
@@ -146,6 +159,24 @@ const Administor = () => {
               onClick={() => handleTabClick('reservation')}
             >
               기관 예약 요청 관리
+            </TabButton>
+            <TabButton
+              active={activeTab === 'music'}
+              onClick={() => handleTabClick('music')}
+            >
+              강사 음원 자료 관리
+            </TabButton>
+            <TabButton
+              active={activeTab === 'video'}
+              onClick={() => handleTabClick('video')}
+            >
+              강사 영상 자료 관리
+            </TabButton>
+            <TabButton
+              active={activeTab === 'class'}
+              onClick={() => handleTabClick('class')}
+            >
+              강의계획서 관리
             </TabButton>
           </div>
           <input value={name} onChange={(e) => setName(e.target.value)} />
@@ -228,6 +259,9 @@ const Administor = () => {
               </tbody>
             )}
           </Table>
+          {activeTab === 'music' && <Directory data={data} form={activeTab} />}
+          {activeTab === 'video' && <Directory data={data} form={activeTab} />}
+          {activeTab === 'class' && <Directory data={data} form={activeTab} />}
         </TableContainer>
         <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
       </MyPageContainer>
@@ -302,6 +336,9 @@ const TabButton = styled.button`
 
 const TableContainer = styled.div`
   margin-top: 2rem;
+
+  display: flex;
+  flex-direction: column;
 `;
 
 const Table = styled.table`

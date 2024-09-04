@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import MusicDirectory from '../../component/Music_Component/MusicDirectory';
+import Directory from '../../component/Music_Component/Directory';
 import { handleDirectoryRead } from '@/fetchAPI/directory';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -29,7 +29,7 @@ export default function MusicHome() {
   return (
     <MainContainer>
       <Title>Music Test Page</Title>
-      <MusicDirectory data={data} />
+      <Directory data={data} />
     </MainContainer>
   );
 }

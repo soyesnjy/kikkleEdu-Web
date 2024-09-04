@@ -6,7 +6,13 @@ import Swal from 'sweetalert2';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 import 'react-dropdown-tree-select/dist/styles.css';
 
-const UploadForm = ({ directories }) => {
+const acceptMap = {
+  music: '.mp3, .wav, .aac, .ogg, .flac, .m4a',
+  video: '.zip, .mp4',
+  class: '.zip',
+};
+
+const UploadForm = ({ directories, form }) => {
   const [treeData, setTreeData] = useState([]);
   const [selectedDirectory, setSelectedDirectory] = useState(null);
   const [isPending, setIsPending] = useState(false);
@@ -82,6 +88,7 @@ const UploadForm = ({ directories }) => {
 
       const formData = {
         type: 'file',
+        form,
         fileData: {
           fileName: file.name,
           mimeType: file.type,
@@ -137,7 +144,7 @@ const UploadForm = ({ directories }) => {
           <Input
             type="file"
             id="file"
-            accept=".mp3, .wav, .aac, .ogg, .flac, .m4a"
+            accept={acceptMap[form]}
             onChange={(e) => setFile(e.target.files[0])}
           />
         </FormGroup>

@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 // READ
-export const handleDirectoryRead = async () => {
+export const handleDirectoryRead = async (query) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/directory`,
+      `${process.env.NEXT_PUBLIC_URL}/directory?${query?.form ? `form=${query?.form}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -47,12 +47,11 @@ export const handleDirectoryCreate = async (input) => {
   }
 };
 
-// TODO# DELETE
-export const handleReviewDelete = async (input) => {
+// DELETE
+export const handleDirectoryDelete = async (query) => {
   try {
     const response = await axios.delete(
-      `${process.env.NEXT_PUBLIC_URL}/directory/create`,
-      { data: input },
+      `${process.env.NEXT_PUBLIC_URL}/directory/delete?${query?.directoryIdx ? `directoryIdx=${query?.directoryIdx}&` : ''}${query?.type ? `type=${query?.type}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',

@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { handleDirectoryCreate } from '@/fetchAPI/directory';
+import { handleDirectoryDelete } from '@/fetchAPI/directory';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 import 'react-dropdown-tree-select/dist/styles.css';
 
-const UploadFormDir = ({ directories, form }) => {
+const DeleteForm = ({ directories }) => {
   const [treeData, setTreeData] = useState([]);
   const [selectedDirectory, setSelectedDirectory] = useState('');
   const [isPending, setIsPending] = useState(false);
-  const [directoryName, setDirectoryName] = useState('');
 
   const router = useRouter();
   useEffect(() => {
@@ -23,6 +22,7 @@ const UploadFormDir = ({ directories, form }) => {
           ...dir,
           label: dir.kk_directory_name,
           value: dir.kk_directory_idx,
+          type: dir.kk_directory_type,
           children: [],
         };
       });
@@ -43,29 +43,24 @@ const UploadFormDir = ({ directories, form }) => {
     setTreeData(buildTreeData(directories));
   }, [directories]);
 
+  // useEffect(() => {
+  //   console.log(selectedDirectory);
+  // }, [selectedDirectory]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!directoryName) {
-      alert('디렉토리명 입력 ㄱㄱ');
-      return;
-    }
-
     setIsPending(true);
 
-    const formData = {
-      type: 'directory',
-      form,
-      directoryId: selectedDirectory.kk_directory_idx,
-      directoryName,
-    };
-
-    const response = await handleDirectoryCreate(formData);
+    const response = await handleDirectoryDelete({
+      directoryIdx: selectedDirectory.kk_directory_idx,
+      type: selectedDirectory.kk_directory_type,
+    });
 
     if (response.status === 200) {
       Swal.fire({
         icon: 'success',
-        title: 'Directory Upload Success!',
+        title: 'Delete Success!',
         text: 'Page Reload',
         showConfirmButton: false,
         timer: 1500,
@@ -74,7 +69,7 @@ const UploadFormDir = ({ directories, form }) => {
         router.reload();
       });
     } else {
-      console.error('Directory Upload failed');
+      console.error('Delete failed');
       alert('Directory Upload failed');
     }
   };
@@ -85,7 +80,7 @@ const UploadFormDir = ({ directories, form }) => {
 
   return (
     <FormContainer>
-      <h3>Directory Create Form</h3>
+      <h3>Directory Delete Form</h3>
       <form onSubmit={handleSubmit}>
         <FormGroup>
           <Label htmlFor="directory">Directory</Label>
@@ -102,16 +97,10 @@ const UploadFormDir = ({ directories, form }) => {
           />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="directoryName">Directory Name</Label>
-          <Input
-            value={directoryName}
-            type="text"
-            id="directoryName"
-            onChange={(e) => setDirectoryName(e.target.value)}
-          />
+          <Label htmlFor="directory">Delete subfolder</Label>
         </FormGroup>
         <Button type="submit" disabled={isPending}>
-          {isPending ? 'Uploading...' : 'Upload'}
+          {isPending ? 'Deleting...' : 'Delete'}
         </Button>
       </form>
     </FormContainer>
@@ -119,6 +108,7 @@ const UploadFormDir = ({ directories, form }) => {
 };
 
 const FormContainer = styled.div`
+  min-height: 250px;
   margin: 20px;
   padding: 1rem;
   border: 1px solid green;
@@ -152,4 +142,4 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-export default UploadFormDir;
+export default DeleteForm;

@@ -2,10 +2,17 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import UploadForm from './UploadForm'; // 새로운 업로드 폼 컴포넌트
 import UploadFormDir from './UploadFormDir';
+import DeleteForm from './DeleteForm';
 import { useRecoilState } from 'recoil';
 import { agencyClass } from '@/store/state';
 
-const MusicDirectory = ({ data }) => {
+const titleMap = {
+  music: 'Music',
+  video: 'Video',
+  class: 'Class',
+};
+
+const Directory = ({ data, form }) => {
   const [path, setPath] = useState([null]); // root path with null
   const [items, setItems] = useState([]);
   const [isRoot, setIsRoot] = useState(true);
@@ -29,8 +36,6 @@ const MusicDirectory = ({ data }) => {
     } else {
       setTrackData(item);
       setAudioKey((prevKey) => prevKey + 1); // change key to re-render AudioPlayer
-      console.log(`Playing URL: ${item.kk_file_path}`);
-      console.log(item);
     }
   };
 
@@ -41,18 +46,22 @@ const MusicDirectory = ({ data }) => {
 
   return (
     <Container>
+      <Title>{titleMap[form]}</Title>
       {agencyType === 'admin' && (
         <UploadContainer>
           <UploadForm
             directories={data.filter(
               (item) => item.kk_directory_type === 'directory'
             )}
+            form={form}
           />
           <UploadFormDir
             directories={data.filter(
               (item) => item.kk_directory_type === 'directory'
             )}
+            form={form}
           />
+          <DeleteForm directories={data} />
         </UploadContainer>
       )}
       <List>
@@ -72,12 +81,18 @@ const MusicDirectory = ({ data }) => {
             {/* <AudioPlayer key={audioKey} controls autoPlay>
               <source src={trackData.url} type="audio/mp3" />
             </AudioPlayer> */}
-            <iframe
-              key={audioKey}
-              src={trackData.url}
-              width="350"
-              height="70"
-            />
+            {form === 'video' ? (
+              <a href={trackData.url} target="_blank">
+                Download
+              </a>
+            ) : (
+              <iframe
+                key={audioKey}
+                src={trackData.url}
+                width="350"
+                height="70"
+              />
+            )}
           </TrackContainer>
         )}
       </List>
@@ -87,9 +102,12 @@ const MusicDirectory = ({ data }) => {
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 1rem;
+
+  gap: 1rem;
 `;
 
 const UploadContainer = styled.div`
@@ -158,9 +176,24 @@ const TrackContainer = styled.div`
   }
 `;
 
+const Title = styled.h1`
+  width: 500px;
+  background-color: #378e56;
+  color: white;
+
+  padding: 1rem;
+
+  border-radius: 20px;
+
+  font-size: 2rem;
+  font-family: Pretendard;
+  font-weight: 600;
+  text-align: center;
+`;
+
 // const AudioPlayer = styled.audio`
 //   width: 100%;
 //   margin-top: 20px;
 // `;
 
-export default MusicDirectory;
+export default Directory;

@@ -5,7 +5,7 @@ import { agencyClass } from '@/store/state';
 import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
 import { useRouter } from 'next/router';
 
-import MusicDirectory from '@/component/Music_Component/MusicDirectory';
+import Directory from '@/component/Music_Component/Directory';
 import { handleDirectoryRead } from '@/fetchAPI/directory';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -41,8 +41,8 @@ const MyPage = () => {
   const router = useRouter();
 
   // 음원 디렉토리 구조 초기화 메서드
-  const initMusicDirectory = async () => {
-    const data = await handleDirectoryRead();
+  const initMusicDirectory = async (form) => {
+    const data = await handleDirectoryRead({ form });
     const formattedData = data.directories.map((dir) => ({
       ...dir,
       url:
@@ -54,7 +54,6 @@ const MyPage = () => {
     }));
     setData([...formattedData]);
   };
-
   // 기관 로그인 시 진입 제한
   useEffect(() => {
     if (agencyType) router.push('/mypage');
@@ -83,8 +82,7 @@ const MyPage = () => {
           setTableData(data.data);
           setLastPageNum(data.lastPageNum);
         });
-    }
-    if (activeTab === 'music') initMusicDirectory();
+    } else initMusicDirectory(activeTab);
     if (localStorage.getItem('activeTab') !== activeTab) setPage(1); // 탭 변경 시 페이지 초기화
     localStorage.setItem('activeTab', activeTab);
   }, [activeTab, page]);
@@ -117,8 +115,8 @@ const MyPage = () => {
             영상 자료
           </TabButton>
           <TabButton
-            active={activeTab === 'file'}
-            onClick={() => handleTabClick('file')}
+            active={activeTab === 'class'}
+            onClick={() => handleTabClick('class')}
           >
             강의 계획서
           </TabButton>
@@ -145,7 +143,9 @@ const MyPage = () => {
               </tbody>
             )}
           </Table>
-          {activeTab === 'music' && <MusicDirectory data={data} />}
+          {activeTab === 'music' && <Directory data={data} form={activeTab} />}
+          {activeTab === 'video' && <Directory data={data} form={activeTab} />}
+          {activeTab === 'class' && <Directory data={data} form={activeTab} />}
         </TableContainer>
         {activeTab === 'attend' && (
           <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
@@ -222,6 +222,10 @@ const TabButton = styled.button`
 
 const TableContainer = styled.div`
   margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Table = styled.table`
@@ -239,6 +243,15 @@ const TableHeader = styled.th`
   font-family: Pretendard;
   font-weight: 600;
   text-align: left;
+`;
+
+const Title = styled.h1`
+  width: 500px;
+  background-color: #4caf50;
+  color: white;
+
+  padding: 1rem;
+  text-align: center;
 `;
 
 export default MyPage;
