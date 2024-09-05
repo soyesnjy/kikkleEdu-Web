@@ -51,13 +51,13 @@ const navList_info = [
       { href: '/', label: '미술 교육' },
     ],
   },
-  // {
-  //   title: '게시판',
-  //   items: [
-  //     { href: '/', label: '상점' },
-  //     { href: '/music', label: '문의하기' },
-  //   ],
-  // },
+  {
+    title: '게시판',
+    items: [
+      { href: '/', label: '상점' },
+      { href: '/board', label: '문의하기' },
+    ],
+  },
 ];
 
 export default function Nav() {

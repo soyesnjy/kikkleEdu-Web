@@ -26,7 +26,7 @@ import Calendar from '@/component/MyPage_Component/Calendar';
 const partTimeArr = [
   { title: '오전 (10:00~12:00)', value: '오전' },
   { title: '오후 (1:00~5:00)', value: '오후' },
-  { title: '야간 (5:00~10:00)', value: '야간' },
+  { title: '야간 (6:00~10:00)', value: '야간' },
 ];
 
 // 날짜 -> 요일 변환 메서드
