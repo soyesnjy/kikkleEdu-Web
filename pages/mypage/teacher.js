@@ -180,7 +180,6 @@ const MyPageContainer = styled.div`
   width: 85%;
   margin: 0 auto;
   padding-top: 2rem;
-  padding-bottom: 2rem;
 `;
 
 const Header = styled.div`

@@ -65,6 +65,7 @@ export default function Signup() {
   const [possDay, setPossDay] = useState([]); // kk_teacher_history
   const [possTime, setPossTime] = useState([]); // kk_teacher_time
   // (Third Page)
+  const [introduce, setIntroduce] = useState(''); // kk_teacher_history
   const [career, setCareer] = useState(''); // kk_teacher_history
   const [education, setEducation] = useState(''); // kk_teacher_education
   const [file, setFile] = useState(null); // kk_teacher_file_path
@@ -344,6 +345,7 @@ export default function Signup() {
             possClass,
             possDay,
             possTime,
+            introduce,
             career,
             education,
             fileData: {
@@ -694,6 +696,19 @@ export default function Signup() {
               {/* 회원가입 Third Page */}
               {pageNumber === 2 && (
                 <PageContainer>
+                  <H4>강사 소개 (본인 소개글)</H4>
+                  <UserInfoRowContainer>
+                    <SignUpInput
+                      id="introduce"
+                      placeholder="강사 소개글"
+                      type="text"
+                      value={introduce}
+                      onChange={(e) => {
+                        setIntroduce(e.target.value);
+                      }}
+                    />
+                  </UserInfoRowContainer>
+                  <H4>경력 & 학력</H4>
                   <UserInfoRowContainer>
                     <SignUpInput
                       id="career"
@@ -728,6 +743,10 @@ export default function Signup() {
                   <FileCheckText>
                     <span class="material-symbols-outlined">check</span>
                     성범죄 및 아동학전력회신
+                  </FileCheckText>
+                  <FileCheckText>
+                    <span class="material-symbols-outlined">check</span>
+                    프로필 사진
                   </FileCheckText>
                 </PageContainer>
               )}
