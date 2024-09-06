@@ -87,19 +87,41 @@ const BoardDetail = () => {
       <DetailContainer>
         <DetailHeader>
           <Title>
-            {!post.isPrivate || agencyType === 'admin' ? post.title : '비공개'}
+            {!post.isPrivate || agencyType === 'admin' ? (
+              post.title
+            ) : (
+              <PrivateLabel>비공개</PrivateLabel>
+            )}
+            {post.isPrivate &&
+            post.authorIdx === Number(localStorage.getItem('userIdx'))
+              ? post.title
+              : null}
           </Title>
           <MetaData>
             <Author>
-              {!post.isPrivate || agencyType === 'admin'
+              {!post.isPrivate || agencyType === 'admin' ? (
+                post.author
+              ) : (
+                <PrivateLabel>비공개</PrivateLabel>
+              )}
+              {post.isPrivate &&
+              post.authorIdx === Number(localStorage.getItem('userIdx'))
                 ? post.author
-                : '비공개'}
+                : null}
             </Author>
             <Date>{post.date.split('T')[0]}</Date>
           </MetaData>
         </DetailHeader>
         <Content>
-          {!post.isPrivate || agencyType === 'admin' ? post.content : '비공개'}
+          {!post.isPrivate || agencyType === 'admin' ? (
+            post.content
+          ) : (
+            <PrivateLabel>비공개</PrivateLabel>
+          )}
+          {post.isPrivate &&
+          post.authorIdx === Number(localStorage.getItem('userIdx'))
+            ? post.content
+            : null}
         </Content>
         {/* 댓글 섹션 */}
         {agencyType === 'admin' && (
@@ -236,6 +258,15 @@ const Author = styled.span`
 
 const Date = styled.span`
   color: #666;
+`;
+
+const PrivateLabel = styled.span`
+  display: inline-block;
+  background-color: #eaeff7;
+  color: #007bff;
+  border-radius: 5px;
+  padding: 0.2rem 0.5rem;
+  margin-right: 0.5rem;
 `;
 
 const Content = styled.div`

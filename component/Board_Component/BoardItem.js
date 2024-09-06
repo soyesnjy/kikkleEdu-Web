@@ -14,10 +14,18 @@ const BoardItem = ({ post, onClick }) => {
           ) : (
             post.title
           )}
+          {post.isPrivate &&
+          post.authorIdx === Number(localStorage.getItem('userIdx'))
+            ? post.title
+            : null}
         </Title>
       </TableCell>
       <TableCell>
         {post.isPrivate ? <PrivateLabel>비공개</PrivateLabel> : post.author}
+        {post.isPrivate &&
+        post.authorIdx === Number(localStorage.getItem('userIdx'))
+          ? post.author
+          : null}
       </TableCell>
       <TableCell>{post.date.split('T')[0]}</TableCell>
     </TableRow>
