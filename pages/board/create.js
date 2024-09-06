@@ -8,65 +8,18 @@ import { useEffect, useState, useCallback } from 'react';
 // 아바타 관련 전역 변수
 import { useRecoilState } from 'recoil';
 import { log } from '../../store/state';
-import Swal from 'sweetalert2';
-
-import { handleBoardGet } from '@/fetchAPI/boardAPI';
 
 import { useRouter } from 'next/router';
 
-import BoardItem from '@/component/Board_Component/BoardItem';
-import Pagination from '@/component/Common_Component/Pagination';
+import BoardCreate from '@/component/Board_Component/BoardCreate';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-const dummyPosts = [
-  {
-    number: 0,
-    title: '공지입니다',
-    author: '소예키즈',
-    date: '2020-12-15',
-    isNotice: true,
-    isPrivate: false,
-  },
-  {
-    number: 1,
-    title: '공지2입니다',
-    author: '소예키즈',
-    date: '2020-12-15',
-    isNotice: true,
-    isPrivate: false,
-  },
-  {
-    number: 0,
-    title: '[MBC 뉴스 24] 프로그램 제발 좀 다시 신설해 주세요~~~',
-    author: '노지용',
-    date: '2024-09-04',
-    isNotice: false,
-    isPrivate: true,
-  },
-];
-
-export default function BoardList() {
+export default function BoardCreatePage() {
   const [login, setLogin] = useRecoilState(log);
-  const [posts, setPosts] = useState([]);
-  const [page, setPage] = useState(1);
-  const [lastPageNum, setLastPageNum] = useState(1);
 
   const router = useRouter();
-
-  const handleItemClick = (id) => {
-    router.push(`/board/${id}`); // 게시글 ID로 이동
-  };
-
-  useEffect(() => {
-    handleBoardGet({ pageNum: page })
-      .then((res) => res.data)
-      .then((data) => {
-        setPosts(data.data);
-        setLastPageNum(data.lastPageNum);
-      });
-  }, [page]);
 
   // 로그인 권한이 없는 상태에서의 접근 시 login 페이지로 redirect
   useEffect(() => {
@@ -91,36 +44,7 @@ export default function BoardList() {
           </HeaderIntroDiv>
         </HeaderContent>
       </HeaderSection>
-      {/* 게시판 */}
-      <FlexContainer
-        justify="flex-start"
-        align="center"
-        dir="col"
-        width="100vw"
-      >
-        <BoardContainer>
-          <Table>
-            <thead>
-              <TableRow>
-                <TableHeader>번호</TableHeader>
-                <TableHeader>제목</TableHeader>
-                <TableHeader>작성자</TableHeader>
-                <TableHeader>작성일</TableHeader>
-              </TableRow>
-            </thead>
-            <tbody>
-              {posts.map((post) => (
-                <BoardItem
-                  key={post.number}
-                  post={post}
-                  onClick={() => handleItemClick(post.number)}
-                />
-              ))}
-            </tbody>
-          </Table>
-        </BoardContainer>
-        <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
-      </FlexContainer>
+      <BoardCreate />
     </MainContainer>
   );
 }
@@ -135,11 +59,14 @@ export async function getStaticProps({ locale }) {
 
 const MainContainer = styled.div`
   width: 100%;
+  min-height: 100vh;
   padding: 1rem;
   background-color: white;
 
   display: flex;
   flex-direction: column;
+
+  gap: 2rem;
 
   align-items: center;
 `;

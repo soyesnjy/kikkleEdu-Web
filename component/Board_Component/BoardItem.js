@@ -3,12 +3,12 @@ import styled from 'styled-components';
 
 const BoardItem = ({ post, onClick }) => {
   return (
-    <TableRow onClick={onClick} isNotice={post.isNotice}>
+    <TableRow isNotice={post.isNotice}>
       <TableCell>
         {post.isNotice ? <NoticeLabel>공지</NoticeLabel> : post.number}
       </TableCell>
       <TableCell>
-        <Title>
+        <Title onClick={onClick}>
           {post.isPrivate ? (
             <PrivateLabel>비공개 게시글입니다</PrivateLabel>
           ) : (
@@ -16,7 +16,9 @@ const BoardItem = ({ post, onClick }) => {
           )}
         </Title>
       </TableCell>
-      <TableCell>{post.author}</TableCell>
+      <TableCell>
+        {post.isPrivate ? <PrivateLabel>비공개</PrivateLabel> : post.author}
+      </TableCell>
       <TableCell>{post.date.split('T')[0]}</TableCell>
     </TableRow>
   );

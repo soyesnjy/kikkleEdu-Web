@@ -1,9 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unreachable */
 import styled, { keyframes } from 'styled-components';
 import { useEffect, useState } from 'react';
+
 import { useRecoilState } from 'recoil';
 import { agencyClass } from '../store/state';
 import { useRouter } from 'next/router';
+
 import { handleSignupGet } from '@/fetchAPI/signupAPI';
 import { handleReservationGet } from '@/fetchAPI/reservationAPI';
 import { handleDirectoryRead } from '@/fetchAPI/directory';
@@ -16,6 +19,8 @@ import AdminTableTeacherBody from '@/component/Admin_Component/AdminTableTeacher
 import AdminTableAgencyBody from '@/component/Admin_Component/AdminTableAgencyBody';
 import AdminTableReservationBody from '@/component/Admin_Component/AdminTableReservationBody';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
+import BoardCreate from '@/component/Board_Component/BoardCreate';
+
 import Pagination from '@/component/Common_Component/Pagination';
 
 const dummyTableData = [
@@ -210,6 +215,12 @@ const Administor = () => {
             >
               강의계획서 관리
             </TabButton>
+            <TabButton
+              active={activeTab === 'notice'}
+              onClick={() => handleTabClick('notice')}
+            >
+              공지사항 관리
+            </TabButton>
           </div>
           <input value={name} onChange={(e) => setName(e.target.value)} />
         </Tabs>
@@ -315,8 +326,14 @@ const Administor = () => {
           {activeTab === 'music' && <Directory data={data} form={activeTab} />}
           {activeTab === 'video' && <Directory data={data} form={activeTab} />}
           {activeTab === 'class' && <Directory data={data} form={activeTab} />}
+          {activeTab === 'notice' && <BoardCreate />}
         </TableContainer>
-        <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
+        {(activeTab === 'teacher' ||
+          activeTab === 'agency' ||
+          activeTab === 'reservation' ||
+          activeTab === 'attend') && (
+          <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
+        )}
       </MyPageContainer>
     </MasterContainer>
   );

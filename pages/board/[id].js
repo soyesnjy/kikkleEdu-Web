@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { agencyClass } from '../../store/state';
 import { handleBoardGet } from '@/fetchAPI/boardAPI';
+import { handleBoardDelete } from '@/fetchAPI/boardAPI';
+import Swal from 'sweetalert2';
 
 const dummyData = {
   title: 'dummy Title',
@@ -15,7 +17,7 @@ const dummyData = {
 const BoardDetail = () => {
   const router = useRouter();
   const { id } = router.query; // URL의 동적 파라미터를 가져옴
-  const [post, setPost] = useState(null);
+  const [post, setPost] = useState(dummyData);
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
 
   useEffect(() => {
@@ -32,9 +34,40 @@ const BoardDetail = () => {
     router.push('/board'); // 목록 페이지로 이동
   };
 
-  if (!post) {
-    return <div>Loading...</div>; // 데이터 로딩 중 표시
-  }
+  const boardDeleteHandler = async () => {
+    try {
+      if (confirm('삭제 하시겠습니까?') === true) {
+        const res = await handleBoardDelete({
+          boardIdx: id,
+        });
+
+        if (res.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Board Delete Success!',
+            text: 'Page Reloading...',
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            // 게시글 페이지로 이동
+            router.push('/board');
+          });
+        } else if (res.status === 403) {
+          Swal.fire({
+            icon: 'error',
+            title: '중복된 이메일입니다',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Board Delete Fail',
+          });
+        }
+      } else return;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <MasterContainer>
@@ -53,24 +86,36 @@ const BoardDetail = () => {
       </HeaderSection>
       <DetailContainer>
         <DetailHeader>
-          <Title>{post.title}</Title>
+          <Title>
+            {!post.isPrivate || agencyType === 'admin' ? post.title : '비공개'}
+          </Title>
           <MetaData>
-            <Author>{post.author}</Author>
+            <Author>
+              {!post.isPrivate || agencyType === 'admin'
+                ? post.author
+                : '비공개'}
+            </Author>
             <Date>{post.date.split('T')[0]}</Date>
           </MetaData>
         </DetailHeader>
-        <Content>{post.content}</Content>
-        <ButtonContainer>
-          <Button onClick={handleGoBack}>목록</Button>
-        </ButtonContainer>
+        <Content>
+          {!post.isPrivate || agencyType === 'admin' ? post.content : '비공개'}
+        </Content>
         {/* 댓글 섹션 */}
         {agencyType === 'admin' && (
           <CommentSection>
             <CommentTitle>관리자용 답글 입력창</CommentTitle>
-            <CommentInput placeholder="관리자용 답글 입력창" disabled />
+            <CommentInput placeholder="개발중인 기능입니다" disabled />
             <Button>등록</Button>
           </CommentSection>
         )}
+        <ButtonContainer>
+          <Button onClick={handleGoBack}>목록</Button>
+          {/* 삭제 섹션 */}
+          {agencyType === 'admin' && (
+            <Button onClick={boardDeleteHandler}>삭제</Button>
+          )}
+        </ButtonContainer>
       </DetailContainer>
     </MasterContainer>
   );
@@ -204,6 +249,8 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 2rem;
+
+  gap: 0.5rem;
 `;
 
 const Button = styled.button`
@@ -221,7 +268,6 @@ const Button = styled.button`
 
 const CommentSection = styled.div`
   padding: 1rem;
-  border-top: 1px solid #ddd;
   margin-top: 2rem;
 `;
 

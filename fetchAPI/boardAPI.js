@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// TODO# READ
+// READ
 export const handleBoardGet = async (query) => {
   try {
     const response = await axios.get(
@@ -21,9 +21,9 @@ export const handleBoardGet = async (query) => {
     };
   }
 };
-// TODO# CREATE
+// CREATE
 export const handleBoardCreate = async (input) => {
-  console.log(input);
+  // console.log(input);
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_URL}/board/create`,
@@ -46,11 +46,11 @@ export const handleBoardCreate = async (input) => {
     };
   }
 };
-// TODO# DELETE
+// DELETE
 export const handleBoardDelete = async (query) => {
   try {
     const response = await axios.delete(
-      `${process.env.NEXT_PUBLIC_URL}/board/delete?${query?.reservationIdx ? `reservationIdx=${query?.reservationIdx}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/board/delete?${query?.boardIdx ? `boardIdx=${query?.boardIdx}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
