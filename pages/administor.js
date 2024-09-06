@@ -42,6 +42,7 @@ const dummyTableData = [
 ];
 
 const Administor = () => {
+  const [agencyType, setAgencyType] = useRecoilState(agencyClass);
   const [activeTab, setActiveTab] = useState('');
   const [tableData, setTableData] = useState(dummyTableData);
   const [name, setName] = useState('');
@@ -49,7 +50,7 @@ const Administor = () => {
   const [lastPageNum, setLastPageNum] = useState(1);
   const [data, setData] = useState([]); // 파일 데이터
 
-  // const router = useRouter();
+  const router = useRouter();
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -80,6 +81,11 @@ const Administor = () => {
       localStorage.removeItem('activeTab');
     };
   }, []);
+
+  // 관리자 권한이 없을 경우 메인페이지로 이동
+  useEffect(() => {
+    if (agencyType !== 'admin') router.push('/');
+  }, [agencyType]);
 
   // 일반 조회 (탭 || 페이지)
   useEffect(() => {
