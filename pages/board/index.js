@@ -60,13 +60,15 @@ export default function BoardList() {
   };
 
   useEffect(() => {
-    handleBoardGet({ pageNum: page })
-      .then((res) => res.data)
-      .then((data) => {
-        setPosts(data.data);
-        setLastPageNum(data.lastPageNum);
-      });
-  }, [page]);
+    if (login) {
+      handleBoardGet({ pageNum: page })
+        .then((res) => res.data)
+        .then((data) => {
+          setPosts(data.data);
+          setLastPageNum(data.lastPageNum);
+        });
+    }
+  }, [page, login]);
 
   // 로그인 권한이 없는 상태에서의 접근 시 login 페이지로 redirect
   useEffect(() => {
