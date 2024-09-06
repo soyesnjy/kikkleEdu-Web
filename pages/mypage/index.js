@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled, { keyframes } from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
@@ -32,6 +33,14 @@ const dummyTableData = [
   // 추가 데이터
 ];
 
+const agencyTypeArr = [
+  '유치원',
+  '초등학교',
+  '문화센터',
+  '커뮤니티센터',
+  '아동(복지)센터',
+];
+
 const MyPage = () => {
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
   const [activeTab, setActiveTab] = useState('attend');
@@ -42,9 +51,9 @@ const MyPage = () => {
   const router = useRouter();
 
   // 강사 로그인 시 진입 제한
-  // useEffect(() => {
-  //   if (!agencyType) router.push('/mypage/teacher');
-  // }, [agencyType]);
+  useEffect(() => {
+    if (!agencyTypeArr.includes(agencyType)) router.push('/mypage/teacher');
+  }, [agencyType]);
 
   useEffect(() => {
     if (localStorage.getItem('activeTab'))
