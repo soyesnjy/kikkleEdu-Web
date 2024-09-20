@@ -31,13 +31,13 @@ const navList_info = [
       { href: '/agency', label: '유치원' },
       { href: '/agency', label: '초등학교' },
       { href: '/agency', label: '문화센터' },
-      { href: '/agency', label: '아파트센터' },
-      { href: '/agency', label: '기업' },
+      { href: '/agency', label: '커뮤니티센터' },
+      { href: '/agency', label: '아동(복지)센터' },
     ],
   },
   {
     title: '강사',
-    items: [],
+    items: [{ href: '/teacher', label: '강사 소개' }],
   },
   {
     title: '교육 프로그램',
