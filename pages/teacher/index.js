@@ -4,7 +4,7 @@ import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { useRouter } from 'next/router';
 
 const TeacherListPage = () => {
-  const [teacherClass, setTeacherClass] = useState('');
+  const [teacherClass, setTeacherClass] = useState('ballet');
   const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
 
   const router = useRouter();
@@ -30,7 +30,7 @@ const TeacherListPage = () => {
     }
   }, []);
 
-  // 강사 List 조회
+  // 강사 태그 조회
   useEffect(() => {
     if (teacherClass) {
       handleTeacherGet({ classTag: teacherClass })
@@ -136,6 +136,7 @@ const TeacherListPage = () => {
                     key={index}
                     onClick={() => {
                       console.log(id);
+                      router.push(`/teacher/${id}`);
                     }}
                   >
                     <TeacherButtonTitle>{name}</TeacherButtonTitle>
