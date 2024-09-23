@@ -1,42 +1,54 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
-
-const dummyData = [
-  { id: 1, name: '노지용', introduce: 'ㅎㅇㅎㅇ' },
-  { id: 2, name: '노지용2', introduce: 'ㅎㅇㅎㅇ' },
-  { id: 3, name: '노지용3', introduce: 'ㅎㅇㅎㅇ' },
-  { id: 4, name: '노지용4', introduce: 'ㅎㅇㅎㅇ' },
-  { id: 5, name: '노지용5', introduce: 'ㅎㅇㅎㅇ' },
-  { id: 6, name: '노지용6', introduce: 'ㅎㅇㅎㅇ' },
-  { id: 7, name: '노지용7', introduce: 'ㅎㅇㅎㅇ' },
-  { id: 8, name: '노지용8', introduce: 'ㅎㅇㅎㅇ' },
-];
+import { useRouter } from 'next/router';
 
 const TeacherListPage = () => {
-  const [teacherClass, setTeacherClass] = useState('ballet');
+  const [teacherClass, setTeacherClass] = useState('');
   const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
 
-  // 발레 수업 DB 조회
+  const router = useRouter();
+
+  // 강사 List 조회
   useEffect(() => {
     if (!teacherDataArr.length) {
       // Class Read API 호출 메서드
-      handleTeacherGet({ classType: '' }) // 추후 기관 타입 recoil 전역변수 넣기
+      handleTeacherGet({ classTag: teacherClass }) // 추후 기관 타입 recoil 전역변수 넣기
         .then((res) => res.data.data)
         .then((data) => {
           setTeacherDataArr([
             ...data.map((el) => {
               return {
                 id: el.kk_teacher_idx,
-                title: el.kk_teacher_name,
-                introduce: el.kk_teacher_introduce,
+                name: el.kk_teacher_name,
+                introduce: el.kk_teacher_introduction,
               };
             }),
           ]);
         })
-        .catch(() => setTeacherDataArr(dummyData));
+        .catch((err) => console.error(err));
     }
   }, []);
+
+  // 강사 List 조회
+  useEffect(() => {
+    if (teacherClass) {
+      handleTeacherGet({ classTag: teacherClass })
+        .then((res) => res.data.data)
+        .then((data) => {
+          setTeacherDataArr([
+            ...data.map((el) => {
+              return {
+                id: el.kk_teacher_idx,
+                name: el.kk_teacher_name,
+                introduce: el.kk_teacher_introduction,
+              };
+            }),
+          ]);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, [teacherClass]);
 
   return (
     <MainContainer>
@@ -45,7 +57,6 @@ const TeacherListPage = () => {
         <HeaderContent>
           <Title>Kids Class edu</Title>
           <Subtitle>강사</Subtitle>
-
           <HeaderIntroDiv>
             소예키즈 소개 - <GreenColorSpan>강사</GreenColorSpan>
           </HeaderIntroDiv>
@@ -207,6 +218,11 @@ const TeacherButtonContainer = styled.div`
   & :nth-child(2) {
     display: none;
   }
+
+  @media (max-width: 768px) {
+    width: 148px;
+    height: 140px;
+  }
 `;
 
 const TeacherButtonTitle = styled.div`
@@ -232,6 +248,8 @@ const MainContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  gap: 3rem;
 `;
 
 const HeaderSection = styled.section`
@@ -315,6 +333,13 @@ const MiddleSection = styled.section`
   align-items: center;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 100vw;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+  }
 `;
 
 const MiddleContainer = styled.section`
