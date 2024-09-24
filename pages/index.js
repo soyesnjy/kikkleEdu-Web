@@ -6,9 +6,31 @@ import { useEffect, useState } from 'react';
 // import ScrollDownIndicator from '@/component/Home_Component/ScrollDownIndicator';
 // import ScrollUpIndicator from '@/component/Home_Component/ScrollUpIndicator';
 // import { motion } from "framer-motion";
+import EducationCard from '@/component/Home_Component/EducationCard';
+import EduArtComponent from '@/component/Home_Component/EduArtComponent';
+import EduArtClassSection from '@/component/Home_Component/EduArtClassSection';
+import TeacherCarousel from '@/component/Home_Component/TeacherCarousel';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
+const section_1_Arr = [
+  {
+    imgPath: '/src/Home_IMG/Icon_IMG/Home_Icon_1_IMG.png',
+    title: 'Kids education',
+    content: 'Lorem ipsum dolor sit amet velit, elitni legro int dolor.',
+  },
+  {
+    imgPath: '/src/Home_IMG/Icon_IMG/Home_Icon_2_IMG.png',
+    title: 'Culture Class',
+    content: 'Lorem ipsum dolor sit amet velit, elitni legro int dolor.',
+  },
+  {
+    imgPath: '/src/Home_IMG/Icon_IMG/Home_Icon_3_IMG.png',
+    title: 'Full-Time',
+    content: 'Lorem ipsum dolor sit amet velit, elitni legro int dolor.',
+  },
+];
 
 // Home 페이지
 export default function Home() {
@@ -18,18 +40,10 @@ export default function Home() {
   // console.log('Test 주석');
   // 스크롤 이벤트 리스너 추가 및 제거
 
-  useEffect(() => {
-    // Loading (1 sec)
-    // const timer = setTimeout(() => {
-    //   setLoading(true);
-    // }, 1000);
-    // 모바일 width 확인
-    return () => {};
-  }, []);
-
   return (
     <MasterContainer>
-      <IntroContainer>
+      {/* 인트로 섹션 */}
+      <IntroSection>
         <ReadContainer>
           <H1>Kids Class Edu</H1>
           <H4>
@@ -41,14 +55,39 @@ export default function Home() {
         <ImageContainer>
           <Image
             src="/src/Home_IMG/Home_Intro_Picture_IMG.png"
-            alt={'soyes_logo'}
+            alt="Home_Intro_Picture_IMG"
             width={544}
             height={543}
             style={{ maxWidth: '100%', height: 'auto' }}
           />
         </ImageContainer>
-      </IntroContainer>
-      {/* <MainContainer></MainContainer> */}
+      </IntroSection>
+      {/* 섹션1 */}
+      <SectionFirst>
+        {section_1_Arr.map((el, index) => {
+          const { imgPath, title, content } = el;
+          return (
+            <EducationCard
+              key={index}
+              imgPath={imgPath}
+              title={title}
+              content={content}
+            />
+          );
+        })}
+      </SectionFirst>
+      {/* 섹션2 */}
+      <SectionSecond>
+        <EduArtComponent />
+      </SectionSecond>
+      {/* 섹션3 */}
+      <SectionThird>
+        <EduArtClassSection />
+      </SectionThird>
+      {/* 섹션8 */}
+      <SectionEighth>
+        <TeacherCarousel />
+      </SectionEighth>
     </MasterContainer>
   );
 }
@@ -87,7 +126,7 @@ const MainContainer = styled.div`
   }
 `;
 
-const IntroContainer = styled.div`
+const IntroSection = styled.section`
   width: 100vw;
   height: 56.25vw; /* 16:9 비율 유지 (100 / 16 * 9) */
   position: relative;
@@ -200,5 +239,79 @@ const ImageContainer = styled.div`
     margin-top: 5rem;
     width: 100%;
     padding: 0.5rem;
+  }
+`;
+
+const SectionFirst = styled.section`
+  width: 100vw;
+  min-height: 262px;
+
+  background-color: white;
+  padding: 3rem;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+  }
+`;
+
+const SectionSecond = styled.section`
+  width: 100vw;
+  min-height: 100vh;
+
+  background-color: white;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  @media (max-width: 1080px) {
+    height: 100%;
+    flex-direction: column;
+    padding: 2rem;
+  }
+`;
+
+const SectionThird = styled.section`
+  width: 100vw;
+  min-height: 50vh;
+
+  background-color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 1080px) {
+    height: 100%;
+    flex-direction: column;
+    padding: 2rem;
+  }
+`;
+
+const SectionEighth = styled.section`
+  width: 100vw;
+  height: 67vw;
+  background-color: white;
+
+  background-image: url('/src/Home_IMG/Home_Section_8_Background_IMG.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 728px) {
+    height: 100%;
+    flex-direction: column;
+    padding: 2rem;
   }
 `;
