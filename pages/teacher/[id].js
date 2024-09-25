@@ -48,10 +48,11 @@ const TeacherDetailPage = () => {
                 : `강사 ${data.kk_teacher_name}입니다!`}
             </MiddleDescription>
           </MiddleTextContainer>
-          <MiddleTextContainer>
+
+          {/* <MiddleTextContainer>
             <MiddleSubtitleSmall>연락처</MiddleSubtitleSmall>
             <MiddleDescription>{data.kk_teacher_phoneNum}</MiddleDescription>
-          </MiddleTextContainer>
+          </MiddleTextContainer> */}
 
           <MiddleTextContainer>
             <MiddleSubtitleSmall>경력 및 학력</MiddleSubtitleSmall>
@@ -81,7 +82,10 @@ const TeacherDetailPage = () => {
         </MiddleContainer>
         <MiddleProfileImgContainer>
           <Image
-            src={data.kk_teacher_profileImg_path}
+            src={
+              data.kk_teacher_profileImg_path ||
+              '/src/Loading_IMG/Loading_Soyes_Logo_IMG.png'
+            }
             alt=""
             width={390}
             height={418}
