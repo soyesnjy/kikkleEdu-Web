@@ -1,91 +1,84 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
+import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 
 const profiles = [
   {
-    id: 1,
+    id: 60,
     name: '이름?',
-    description: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
+    introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
   },
   {
-    id: 2,
+    id: 60,
     name: '이름?',
-    description: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
+    introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
   },
   {
-    id: 3,
+    id: 60,
     name: '이름?',
-    description: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
+    introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
   },
   {
-    id: 4,
+    id: 60,
     name: '이름?',
-    description: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
+    introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
   },
   {
-    id: 5,
+    id: 60,
     name: '이름?',
-    description: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
+    introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
   },
 ];
 
 const TeacherCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(1); // 중앙 카드를 시작점으로
-  const [isDragging, setIsDragging] = useState(false);
-  const [startPosition, setStartPosition] = useState(0);
-  const [currentTranslate, setCurrentTranslate] = useState(0);
-  const [prevTranslate, setPrevTranslate] = useState(0);
-  const carouselRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(1); // 가운데 카드로 시작
+  const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
+
+  const router = useRouter();
+
+  // 강사 List 조회
+  useEffect(() => {
+    if (!teacherDataArr.length) {
+      // Class Read API 호출 메서드
+      handleTeacherGet({ main: true }) // 추후 기관 타입 recoil 전역변수 넣기
+        .then((res) => res.data.data)
+        .then((data) => {
+          setTeacherDataArr([
+            ...data.map((el) => {
+              return {
+                id: el.kk_teacher_idx,
+                name: el.kk_teacher_name,
+                introduce: el.kk_teacher_introduction,
+              };
+            }),
+          ]);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, []);
 
   const handlePrevClick = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? profiles.length - 1 : prevIndex - 1
+      prevIndex === 0 ? teacherDataArr.length - 1 : prevIndex - 1
     );
   };
 
   const handleNextClick = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === profiles.length - 1 ? 0 : prevIndex + 1
+      prevIndex === teacherDataArr.length - 1 ? 0 : prevIndex + 1
     );
   };
 
-  const touchStart = (index) => (event) => {
-    setIsDragging(true);
-    setStartPosition(getPositionX(event));
-    setPrevTranslate(currentTranslate);
-  };
-
-  const touchMove = (event) => {
-    if (isDragging) {
-      const currentPosition = getPositionX(event);
-      const moveDistance = currentPosition - startPosition;
-      setCurrentTranslate(prevTranslate + moveDistance);
-    }
-  };
-
-  const touchEnd = () => {
-    setIsDragging(false);
-    const movedBy = currentTranslate - prevTranslate;
-
-    if (movedBy < -50 && currentIndex < profiles.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
-
-    if (movedBy > 50 && currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-
-    setCurrentTranslate(0); // Reset translate after dragging
-  };
-
-  const getPositionX = (event) => {
-    return event.type.includes('mouse')
-      ? event.pageX
-      : event.touches[0].clientX;
+  const handleDotClick = (index) => {
+    setCurrentIndex(index);
   };
 
   const getTranslateStyle = () => {
-    return `translateX(calc(-${(currentIndex - 1) * (100 / 3)}% + ${currentTranslate}px))`;
+    if (currentIndex < Math.ceil(teacherDataArr.length / 2))
+      return `translateX(calc(0%))`;
+    else if (currentIndex >= Math.ceil(teacherDataArr.length / 2))
+      return `translateX(calc(-${Math.ceil(teacherDataArr.length / 2) * (100 / 3)}%))`;
   };
 
   return (
@@ -93,41 +86,47 @@ const TeacherCarousel = () => {
       <Title>강사 프로필</Title>
       <Description>
         Lorem ipsum dolor sit amet veli elitni legro int dolor.Lorem ipsum dolor
-        sit amet veli elitni legro int dolor.
+        sit amet veli elitni legro int dolor.Lorem ipsum dolor sit amet veli
+        elitni legro int dolor.
       </Description>
       <CarouselContainer>
-        <Button onClick={handlePrevClick}>◀</Button>
-        <CarouselWrapper
-          ref={carouselRef}
-          onMouseDown={touchStart(currentIndex)}
-          onMouseMove={touchMove}
-          onMouseUp={touchEnd}
-          onMouseLeave={touchEnd}
-          onTouchStart={touchStart(currentIndex)}
-          onTouchMove={touchMove}
-          onTouchEnd={touchEnd}
-        >
+        <Button onClick={handlePrevClick}>
+          <span class="material-symbols-outlined">arrow_back</span>
+        </Button>
+        <CarouselWrapper>
           <ProfilesContainer
             style={{
               transform: getTranslateStyle(),
-              transition: isDragging ? 'none' : 'transform 0.5s ease-in-out',
+              transition: 'transform 0.5s ease-in-out',
             }}
           >
-            {profiles.map((profile) => (
-              <ProfileCard key={profile.id}>
+            {teacherDataArr.map((profile, index) => (
+              <ProfileCard key={profile.id} active={index === currentIndex}>
                 <ProfilePicture />
                 <ProfileName>{profile.name}</ProfileName>
-                <ProfileDescription>{profile.description}</ProfileDescription>
-                <ReadMoreButton>Read More</ReadMoreButton>
+                <ProfileDescription>
+                  {profile.introduce || `강사 ${profile.name}입니다!`}
+                </ProfileDescription>
+                <ReadMoreButton
+                  onClick={() => router.push(`/teacher/${profile.id}`)}
+                >
+                  Read More
+                </ReadMoreButton>
               </ProfileCard>
             ))}
           </ProfilesContainer>
         </CarouselWrapper>
-        <Button onClick={handleNextClick}>▶</Button>
+        <Button onClick={handleNextClick}>
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </Button>
       </CarouselContainer>
       <Dots>
-        {profiles.map((_, index) => (
-          <Dot key={index} active={index === currentIndex} />
+        {teacherDataArr.map((_, index) => (
+          <Dot
+            key={index}
+            active={index === currentIndex}
+            onClick={() => handleDotClick(index)}
+          />
         ))}
       </Dots>
     </Section>
@@ -141,19 +140,26 @@ export default TeacherCarousel;
 const Section = styled.section`
   text-align: center;
   padding: 3rem;
-  background-color: #4ac3d7;
   border-radius: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Title = styled.h2`
   font-size: 2.5rem;
-  font-weight: bold;
+  font-weight: 700;
+  font-family: Pretendard;
   color: white;
   margin-bottom: 1rem;
 `;
 
 const Description = styled.p`
+  width: 70%;
   font-size: 1rem;
+  font-family: Pretendard;
   color: white;
   margin-bottom: 2rem;
 `;
@@ -167,29 +173,40 @@ const CarouselContainer = styled.div`
 `;
 
 const CarouselWrapper = styled.div`
-  width: 1000px; /* 한 번에 3개의 카드를 보여주기 위해 900px로 설정 */
+  width: 1000px;
   overflow: hidden;
 `;
 
 const ProfilesContainer = styled.div`
   display: flex;
   transition: transform 0.5s ease-in-out;
-  user-select: none;
+
+  min-height: 300px;
 `;
 
 const ProfileCard = styled.div`
-  width: 300px; /* 한 카드의 너비 */
-  background-color: white;
+  width: 300px;
+  background-color: ${(props) => (props.active ? 'white' : 'transparent')};
+  border: ${(props) => (props.active ? 'none' : '3px solid white')};
   border-radius: 20px;
   padding: 2rem;
   margin: 0 1rem;
   flex-shrink: 0;
   text-align: left;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: ${(props) =>
+    props.active ? '0px 4px 6px rgba(0, 0, 0, 0.1)' : 'none'};
+  transition:
+    background-color 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
 
-  &:active {
-    background-color: grey;
-  }
+  user-select: none;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  gap: 1rem;
 `;
 
 const ProfilePicture = styled.div`
@@ -203,36 +220,58 @@ const ProfilePicture = styled.div`
 const ProfileName = styled.h3`
   font-size: 1.2rem;
   font-weight: bold;
+  font-family: Nunito;
   margin-bottom: 0.5rem;
 `;
 
 const ProfileDescription = styled.p`
   font-size: 1rem;
+  font-family: Pretendard;
   color: #555;
   margin-bottom: 1.5rem;
 `;
 
 const ReadMoreButton = styled.button`
-  background-color: orange;
+  background-color: #ff8500;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: Pretendard;
+
   cursor: pointer;
+
   &:hover {
     background-color: darkorange;
   }
 `;
 
 const Button = styled.button`
-  background-color: transparent;
+  width: 56px;
+  height: 56px;
+
+  background-color: white;
   border: none;
-  font-size: 2rem;
-  color: white;
+  border-radius: 100%;
+  color: #a3a3a3;
+
+  padding: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    font-size: 2.2rem;
+  }
+
   cursor: pointer;
   z-index: 10;
+
   &:hover {
-    color: #ffcc00;
+    background-color: #ff8500;
+    color: white;
   }
 `;
 
@@ -249,4 +288,5 @@ const Dot = styled.div`
   background-color: ${({ active }) => (active ? 'orange' : '#ddd')};
   margin: 0 5px;
   transition: background-color 0.3s;
+  cursor: pointer;
 `;

@@ -11,8 +11,8 @@ import EduArtComponent from '@/component/Home_Component/EduArtComponent';
 import EduArtClassSection from '@/component/Home_Component/EduArtClassSection';
 import TeacherCarousel from '@/component/Home_Component/TeacherCarousel';
 
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// import { useTranslation } from 'next-i18next';
+// import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const section_1_Arr = [
   {
@@ -92,14 +92,14 @@ export default function Home() {
   );
 }
 
-// Translation 파일 적용
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common', 'nav'])), // 파일 다중 적용 가능
-    },
-  };
-}
+// // Translation 파일 적용
+// export async function getStaticProps({ locale }) {
+//   return {
+//     props: {
+//       ...(await serverSideTranslations(locale, ['common', 'nav'])), // 파일 다중 적용 가능
+//     },
+//   };
+// }
 
 const MasterContainer = styled.div`
   display: flex;

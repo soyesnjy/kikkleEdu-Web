@@ -5,7 +5,7 @@ import axios from 'axios';
 export const handleTeacherGet = async (query) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/teacher?${query?.teacherIdx ? `teacherIdx=${query?.teacherIdx}&` : ''}${query?.classIdx ? `classIdx=${query?.classIdx}&` : ''}${query?.dayofweek ? `dayofweek=${query?.dayofweek}&` : ''}${query?.partTime ? `partTime=${query?.partTime}&` : ''}${query?.classTag ? `classTag=${query?.classTag}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/teacher?${query?.main ? `main=${query?.main}&` : ''}${query?.teacherIdx ? `teacherIdx=${query?.teacherIdx}&` : ''}${query?.classIdx ? `classIdx=${query?.classIdx}&` : ''}${query?.dayofweek ? `dayofweek=${query?.dayofweek}&` : ''}${query?.partTime ? `partTime=${query?.partTime}&` : ''}${query?.classTag ? `classTag=${query?.classTag}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
