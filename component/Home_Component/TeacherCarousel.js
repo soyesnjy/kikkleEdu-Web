@@ -2,32 +2,20 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
+import Image from 'next/image';
 
 const profiles = [
   {
     id: 60,
     name: '이름?',
     introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
+    profileImg: '',
   },
   {
     id: 60,
     name: '이름?',
     introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
-  },
-  {
-    id: 60,
-    name: '이름?',
-    introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
-  },
-  {
-    id: 60,
-    name: '이름?',
-    introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
-  },
-  {
-    id: 60,
-    name: '이름?',
-    introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
+    profileImg: '',
   },
 ];
 
@@ -40,8 +28,8 @@ const TeacherCarousel = () => {
   // 강사 List 조회
   useEffect(() => {
     if (!teacherDataArr.length) {
-      // Class Read API 호출 메서드
-      handleTeacherGet({ main: true }) // 추후 기관 타입 recoil 전역변수 넣기
+      // 강사 Read API 호출 메서드
+      handleTeacherGet({ main: true })
         .then((res) => res.data.data)
         .then((data) => {
           setTeacherDataArr([
@@ -50,6 +38,7 @@ const TeacherCarousel = () => {
                 id: el.kk_teacher_idx,
                 name: el.kk_teacher_name,
                 introduce: el.kk_teacher_introduction,
+                profileImg: el.kk_teacher_profileImg_path,
               };
             }),
           ]);
@@ -102,7 +91,18 @@ const TeacherCarousel = () => {
           >
             {teacherDataArr.map((profile, index) => (
               <ProfileCard key={profile.id} active={index === currentIndex}>
-                <ProfilePicture />
+                <Image
+                  src={
+                    profile.profileImg ||
+                    '/src/Home_IMG/Icon_IMG/Home_Icon_2_IMG.png'
+                  }
+                  alt="profile_IMG"
+                  width={84}
+                  height={84}
+                  style={{
+                    borderRadius: '50%',
+                  }}
+                />
                 <ProfileName>{profile.name}</ProfileName>
                 <ProfileDescription>
                   {profile.introduce || `강사 ${profile.name}입니다!`}
@@ -188,7 +188,8 @@ const ProfileCard = styled.div`
   width: 300px;
   background-color: ${(props) => (props.active ? 'white' : 'transparent')};
   border: ${(props) => (props.active ? 'none' : '3px solid white')};
-  border-radius: 20px;
+
+  border-radius: 50px;
   padding: 2rem;
   margin: 0 1rem;
   flex-shrink: 0;
@@ -207,14 +208,14 @@ const ProfileCard = styled.div`
   align-items: flex-start;
 
   gap: 1rem;
-`;
 
-const ProfilePicture = styled.div`
-  width: 80px;
-  height: 80px;
-  background-color: #eee;
-  border-radius: 50%;
-  margin-bottom: 1rem;
+  h3,
+  p {
+    color: ${(props) => (props.active ? 'black' : 'white')};
+  }
+
+  /* 사다리꼴 모양을 만들기 위한 clip-path */
+  /* clip-path: polygon(0% 10%, 100% -5%, 100% 100%, 0% 100%); */
 `;
 
 const ProfileName = styled.h3`

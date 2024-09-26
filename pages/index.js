@@ -10,6 +10,7 @@ import EducationCard from '@/component/Home_Component/EducationCard';
 import EduArtComponent from '@/component/Home_Component/EduArtComponent';
 import EduArtClassSection from '@/component/Home_Component/EduArtClassSection';
 import TeacherCarousel from '@/component/Home_Component/TeacherCarousel';
+import InfoSection from '@/component/Home_Component/InfoSection';
 
 // import { useTranslation } from 'next-i18next';
 // import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -84,6 +85,10 @@ export default function Home() {
       <SectionThird>
         <EduArtClassSection />
       </SectionThird>
+      {/* 섹션4 */}
+      <SectionFourth>
+        <InfoSection />
+      </SectionFourth>
       {/* 섹션8 */}
       <SectionEighth>
         <TeacherCarousel />
@@ -279,6 +284,23 @@ const SectionSecond = styled.section`
 `;
 
 const SectionThird = styled.section`
+  width: 100vw;
+  min-height: 50vh;
+
+  background-color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 1080px) {
+    height: 100%;
+    flex-direction: column;
+    padding: 2rem;
+  }
+`;
+
+const SectionFourth = styled.section`
   width: 100vw;
   min-height: 50vh;
 
