@@ -62,7 +62,7 @@ const ContentContainer = styled.div`
 
 const Text = styled.p`
   font-size: 3rem;
-  font-weight: bold;
+  font-weight: 600;
   font-family: Nunito;
   color: #171717;
   line-height: 1.6;

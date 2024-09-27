@@ -1,16 +1,15 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
-import Image from 'next/image';
 import styled, { keyframes } from 'styled-components';
-import { useEffect, useState } from 'react';
-// import Live2DViewerMain from '@/component/Live2D_Component/Live2DViewerMain';
-// import ScrollDownIndicator from '@/component/Home_Component/ScrollDownIndicator';
-// import ScrollUpIndicator from '@/component/Home_Component/ScrollUpIndicator';
-// import { motion } from "framer-motion";
+
 import EducationCard from '@/component/Home_Component/EducationCard';
 import EduArtComponent from '@/component/Home_Component/EduArtComponent';
-import EduArtClassSection from '@/component/Home_Component/EduArtClassSection';
-import TeacherCarousel from '@/component/Home_Component/TeacherCarousel';
+// import EduArtClassSection from '@/component/Home_Component/EduArtClassSection';
 import InfoSection from '@/component/Home_Component/InfoSection';
+import TeacherCarousel from '@/component/Home_Component/TeacherCarousel';
+// import PartnerCarousel from '@/component/Home_Component/PartnerCarousel';
+import LessonLeftSection from '@/component/Home_Component/LessonLeftSection';
+import LessonRightSection from '@/component/Home_Component/LessonRightSection';
 
 // import { useTranslation } from 'next-i18next';
 // import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -30,6 +29,32 @@ const section_1_Arr = [
     imgPath: '/src/Home_IMG/Icon_IMG/Home_Icon_3_IMG.png',
     title: 'Full-Time',
     content: 'Lorem ipsum dolor sit amet velit, elitni legro int dolor.',
+  },
+];
+
+const section_5to9_Arr = [
+  {
+    title: '유치원 수업',
+    subtitle:
+      '유치원 기관에 맞는 다양한 프로그램과 연령대에 맞춘 소예키즈 프로그램을 제공합니다.',
+    imgUrl: '/src/Home_IMG/Home_Section_5_Background_IMG.png',
+  },
+  {
+    title: '초등학교 수업',
+    subtitle:
+      '초등학교 기관에 맞는 맞춤형 프로그램과 연령에 맞춘 다양한 프로그램을 제공합니다.',
+    imgUrl: '/src/Home_IMG/Home_Section_6_Background_IMG.png',
+  },
+  {
+    title: '문화센터 수업',
+    subtitle:
+      '유아, 초등, 성인들을 대상으로 하는 다양한 연령대의 프로그램을 제공합니다.',
+    imgUrl: '/src/Home_IMG/Home_Section_7_Background_IMG.png',
+  },
+  {
+    title: '아파트 커뮤니티 센터 수업',
+    subtitle: '아파트 커뮤니티센터에 적절한 프로그램을 제공합니다.',
+    imgUrl: '/src/Home_IMG/Home_Section_8_Background_IMG.png',
   },
 ];
 
@@ -53,15 +78,6 @@ export default function Home() {
           </H4>
           <Button>Read More</Button>
         </ReadContainer>
-        <ImageContainer>
-          <Image
-            src="/src/Home_IMG/Home_Intro_Picture_IMG.png"
-            alt="Home_Intro_Picture_IMG"
-            width={544}
-            height={543}
-            style={{ maxWidth: '100%', height: 'auto' }}
-          />
-        </ImageContainer>
       </IntroSection>
       {/* 섹션1 */}
       <SectionFirst>
@@ -81,18 +97,60 @@ export default function Home() {
       <SectionSecond>
         <EduArtComponent />
       </SectionSecond>
-      {/* 섹션3 */}
-      <SectionThird>
-        <EduArtClassSection />
-      </SectionThird>
       {/* 섹션4 */}
       <SectionFourth>
         <InfoSection />
       </SectionFourth>
+      {/* 섹션5 */}
+      <SectionFifthtoNineth>
+        <LessonLeftSection
+          title={section_5to9_Arr[0].title}
+          subtitle={section_5to9_Arr[0].subtitle}
+          imgUrl={section_5to9_Arr[0].imgUrl}
+        />
+      </SectionFifthtoNineth>
+      {/* 섹션6 */}
+      <SectionFifthtoNineth>
+        <LessonRightSection
+          title={section_5to9_Arr[1].title}
+          subtitle={section_5to9_Arr[1].subtitle}
+          imgUrl={section_5to9_Arr[1].imgUrl}
+        />
+      </SectionFifthtoNineth>
+      {/* 섹션7 */}
+      <SectionFifthtoNineth>
+        <LessonLeftSection
+          title={section_5to9_Arr[2].title}
+          subtitle={section_5to9_Arr[2].subtitle}
+          imgUrl={section_5to9_Arr[2].imgUrl}
+        />
+      </SectionFifthtoNineth>
       {/* 섹션8 */}
-      <SectionEighth>
+      <SectionFifthtoNineth>
+        <LessonRightSection
+          title={section_5to9_Arr[3].title}
+          subtitle={section_5to9_Arr[3].subtitle}
+          imgUrl={section_5to9_Arr[3].imgUrl}
+        />
+      </SectionFifthtoNineth>
+
+      {/* 섹션10 */}
+      <SectionTenth>
         <TeacherCarousel />
-      </SectionEighth>
+      </SectionTenth>
+      {/* 엔드 섹션 */}
+      <EndSection>
+        <EndTitle>For our child's healthy body and heart happiness</EndTitle>
+        <Button>콘텐츠 소개</Button>
+      </EndSection>
+      {/* 섹션3 */}
+      {/* <SectionThird>
+        <EduArtClassSection />
+      </SectionThird> */}
+      {/* 섹션9 */}
+      {/* <SectionNineth>
+        <PartnerCarousel />
+      </SectionNineth> */}
     </MasterContainer>
   );
 }
@@ -133,10 +191,15 @@ const MainContainer = styled.div`
 
 const IntroSection = styled.section`
   width: 100vw;
-  height: 56.25vw; /* 16:9 비율 유지 (100 / 16 * 9) */
+  height: 67vw; /* 16:9 비율 유지 (100 / 16 * 9) */
   position: relative;
 
   background-color: white;
+  background-image: url('/src/Home_IMG/Home_Intro_Background_IMG.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
   padding: 3rem;
   display: flex;
   justify-content: space-between;
@@ -144,7 +207,7 @@ const IntroSection = styled.section`
 
   gap: 1rem;
 
-  &::before {
+  /* &::before {
     content: '';
     display: block;
     top: 0;
@@ -157,7 +220,7 @@ const IntroSection = styled.section`
     background-position: center;
     background-repeat: no-repeat;
     position: absolute;
-  }
+  } */
 
   @media (max-width: 1080px) {
     height: 100%;
@@ -192,7 +255,7 @@ const H1 = styled.h1`
   font-weight: bold;
   font-family: Nunito;
 
-  color: white;
+  color: #2e6c6d;
   z-index: 1;
 
   @media (max-width: 1080px) {
@@ -202,10 +265,10 @@ const H1 = styled.h1`
 
 const H4 = styled.h4`
   font-size: 20px;
-  font-weight: 400;
-  font-family: Nunito;
+  font-weight: 300;
+  font-family: Pretendard;
 
-  color: white;
+  color: #2e6c6d;
   z-index: 1;
 `;
 
@@ -317,12 +380,29 @@ const SectionFourth = styled.section`
   }
 `;
 
-const SectionEighth = styled.section`
+const SectionFifthtoNineth = styled.section`
+  width: 100vw;
+  min-height: 50vh;
+
+  background-color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 1080px) {
+    height: 100%;
+    flex-direction: column;
+    padding: 2rem;
+  }
+`;
+
+const SectionTenth = styled.section`
   width: 100vw;
   height: 67vw;
   background-color: white;
 
-  background-image: url('/src/Home_IMG/Home_Section_8_Background_IMG.png');
+  background-image: url('/src/Home_IMG/Home_Section_10_Background_IMG.png');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -336,4 +416,52 @@ const SectionEighth = styled.section`
     flex-direction: column;
     padding: 2rem;
   }
+`;
+
+const SectionNineth = styled.section`
+  width: 100vw;
+  min-height: 456px;
+  background-color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 728px) {
+    height: 100%;
+    flex-direction: column;
+    padding: 2rem;
+  }
+`;
+
+const EndSection = styled.section`
+  width: 100vw;
+  min-height: 100vh;
+  background-color: white;
+  position: relative;
+
+  background-image: url('/src/Home_IMG/Home_Last_Background_IMG.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 728px) {
+    height: 100%;
+    flex-direction: column;
+    padding: 2rem;
+  }
+`;
+
+const EndTitle = styled.h1`
+  width: 70%;
+  text-align: center;
+  font-size: 3rem;
+  font-family: Nunito;
+  font-weight: 600;
+  color: #171717;
 `;

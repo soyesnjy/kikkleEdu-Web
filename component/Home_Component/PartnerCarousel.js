@@ -4,58 +4,76 @@ import { useRouter } from 'next/router';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import Image from 'next/image';
 
-const profiles = [
+const partnerDataArr = [
   {
     id: 60,
-    name: '이름?',
-    introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
+    name: 'Partner',
+    introduce: 'Lorem',
     profileImg: '',
   },
   {
     id: 60,
-    name: '이름?',
-    introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
+    name: 'Partner',
+    introduce: 'Lorem',
+    profileImg: '',
+  },
+  {
+    id: 60,
+    name: 'Partner',
+    introduce: 'Lorem',
+    profileImg: '',
+  },
+  {
+    id: 60,
+    name: 'Partner',
+    introduce: 'Lorem',
+    profileImg: '',
+  },
+  {
+    id: 60,
+    name: 'Partner',
+    introduce: 'Lorem',
+    profileImg: '',
+  },
+  {
+    id: 60,
+    name: 'Partner',
+    introduce: 'Lorem',
+    profileImg: '',
+  },
+  {
+    id: 60,
+    name: 'Partner',
+    introduce: 'Lorem',
+    profileImg: '',
+  },
+  {
+    id: 60,
+    name: 'Partner',
+    introduce: 'Lorem',
+    profileImg: '',
+  },
+  {
+    id: 60,
+    name: 'Partner',
+    introduce: 'Lorem',
     profileImg: '',
   },
 ];
-
-const TeacherCarousel = () => {
+const PartnerCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(1); // 가운데 카드로 시작
-  const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
 
   const router = useRouter();
 
-  // 강사 List 조회
-  useEffect(() => {
-    if (!teacherDataArr.length) {
-      // 강사 Read API 호출 메서드
-      handleTeacherGet({ main: true })
-        .then((res) => res.data.data)
-        .then((data) => {
-          setTeacherDataArr([
-            ...data.map((el) => {
-              return {
-                id: el.kk_teacher_idx,
-                name: el.kk_teacher_name,
-                introduce: el.kk_teacher_introduction,
-                profileImg: el.kk_teacher_profileImg_path,
-              };
-            }),
-          ]);
-        })
-        .catch((err) => console.error(err));
-    }
-  }, []);
-
   const handlePrevClick = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? teacherDataArr.length - 1 : prevIndex - 1
+      prevIndex === 0 ? partnerDataArr.length - 1 : prevIndex - 1
     );
   };
 
   const handleNextClick = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === teacherDataArr.length - 1 ? 0 : prevIndex + 1
+      prevIndex === partnerDataArr.length - 1 ? 0 : prevIndex + 1
     );
   };
 
@@ -64,15 +82,15 @@ const TeacherCarousel = () => {
   };
 
   const getTranslateStyle = () => {
-    if (currentIndex < Math.ceil(teacherDataArr.length / 2))
+    if (currentIndex < Math.ceil(partnerDataArr.length / 2))
       return `translateX(calc(0%))`;
-    else if (currentIndex >= Math.ceil(teacherDataArr.length / 2))
-      return `translateX(calc(-${Math.ceil(teacherDataArr.length / 2) * (100 / 3)}%))`;
+    else if (currentIndex >= Math.ceil(partnerDataArr.length / 2))
+      return `translateX(calc(-100%))`;
   };
 
   return (
     <Section>
-      <Title>강사 프로필</Title>
+      <Title>Happy Partner</Title>
       <Description>
         Lorem ipsum dolor sit amet veli elitni legro int dolor.Lorem ipsum dolor
         sit amet veli elitni legro int dolor.Lorem ipsum dolor sit amet veli
@@ -89,29 +107,24 @@ const TeacherCarousel = () => {
               transition: 'transform 0.5s ease-in-out',
             }}
           >
-            {teacherDataArr.map((profile, index) => (
+            {partnerDataArr.map((profile, index) => (
               <ProfileCard key={profile.id} active={index === currentIndex}>
                 <Image
                   src={
                     profile.profileImg ||
-                    '/src/Home_IMG/Icon_IMG/Home_Icon_1_IMG.png'
+                    '/src/Home_IMG/Icon_IMG/Home_Icon_2_IMG.png'
                   }
                   alt="profile_IMG"
-                  width={103}
-                  height={103}
+                  width={73}
+                  height={73}
                   style={{
                     borderRadius: '50%',
                   }}
                 />
-                <ProfileName>{profile.name}</ProfileName>
-                <ProfileDescription>
-                  {profile.introduce || `강사 ${profile.name}입니다!`}
-                </ProfileDescription>
-                <ReadMoreButton
-                  onClick={() => router.push(`/teacher/${profile.id}`)}
-                >
-                  Read More
-                </ReadMoreButton>
+                <ProfilesTextContainer>
+                  <ProfileName>{profile.name}</ProfileName>
+                  <ProfileDescription>{profile.introduce}</ProfileDescription>
+                </ProfilesTextContainer>
               </ProfileCard>
             ))}
           </ProfilesContainer>
@@ -121,7 +134,7 @@ const TeacherCarousel = () => {
         </Button>
       </CarouselContainer>
       <Dots>
-        {teacherDataArr.map((_, index) => (
+        {partnerDataArr.map((_, index) => (
           <Dot
             key={index}
             active={index === currentIndex}
@@ -133,7 +146,7 @@ const TeacherCarousel = () => {
   );
 };
 
-export default TeacherCarousel;
+export default PartnerCarousel;
 
 // Styled Components
 
@@ -152,7 +165,7 @@ const Title = styled.h2`
   font-size: 2.5rem;
   font-weight: 700;
   font-family: Pretendard;
-  color: white;
+  color: black;
   margin-bottom: 1rem;
 `;
 
@@ -160,7 +173,7 @@ const Description = styled.p`
   width: 70%;
   font-size: 1rem;
   font-family: Pretendard;
-  color: white;
+  color: black;
   margin-bottom: 2rem;
 `;
 
@@ -173,30 +186,28 @@ const CarouselContainer = styled.div`
 `;
 
 const CarouselWrapper = styled.div`
-  width: 1240px;
+  width: 1500px;
   overflow: hidden;
 `;
 
 const ProfilesContainer = styled.div`
   display: flex;
   transition: transform 0.5s ease-in-out;
-
-  min-height: 300px;
 `;
 
 const ProfileCard = styled.div`
-  width: 379px;
-  min-height: 487px;
+  width: 300px;
   background-color: ${(props) => (props.active ? 'white' : 'transparent')};
-  border: ${(props) => (props.active ? 'none' : '3px solid white')};
 
   border-radius: 50px;
-  padding: 2rem;
-  margin: 0 1rem;
+  padding: 1rem;
+
   flex-shrink: 0;
   text-align: left;
+
   box-shadow: ${(props) =>
     props.active ? '0px 4px 6px rgba(0, 0, 0, 0.1)' : 'none'};
+
   transition:
     background-color 0.3s ease-in-out,
     box-shadow 0.3s ease-in-out;
@@ -204,34 +215,40 @@ const ProfileCard = styled.div`
   user-select: none;
 
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 
   gap: 1rem;
 
   h3,
   p {
-    color: ${(props) => (props.active ? 'black' : 'white')};
+    color: ${(props) => (props.active ? 'black' : 'gray')};
   }
 
   /* 사다리꼴 모양을 만들기 위한 clip-path */
   /* clip-path: polygon(0% 10%, 100% -5%, 100% 100%, 0% 100%); */
 `;
 
+const ProfilesTextContainer = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  gap: 0.5rem;
+`;
+
 const ProfileName = styled.h3`
   font-size: 1.2rem;
   font-weight: bold;
   font-family: Nunito;
-  margin-bottom: 0.5rem;
 `;
 
 const ProfileDescription = styled.p`
-  min-height: 6rem;
   font-size: 1rem;
   font-family: Pretendard;
   color: #555;
-  margin-bottom: 1.5rem;
 `;
 
 const ReadMoreButton = styled.button`
