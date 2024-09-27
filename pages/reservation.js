@@ -29,6 +29,13 @@ const partTimeArr = [
   { title: '야간 (6:00~10:00)', value: '야간' },
 ];
 
+const pageTitleArr = [
+  '1. 수업 선택하기',
+  '2. 날짜/시간 선택하기',
+  '3. 강사 선택하기',
+  '4. 결제',
+];
+
 // 날짜 -> 요일 변환 메서드
 const getUniqueWeekdays = (dateArr) => {
   // 요일 배열
@@ -227,18 +234,27 @@ export default function Signup() {
     <ReservationPageContainer>
       <FormWrap>
         <LeftContainer>
-          <ProfileContainer>
-            <div>Profile name</div>
-            <div>name@naver.com</div>
-          </ProfileContainer>
-          <StepContainer>
-            <StepText seleced={pageNumber === 0}>1. 수업 선택하기</StepText>
-            <StepText seleced={pageNumber === 1}>
-              2. 날짜/시간 선택하기
-            </StepText>
-            <StepText seleced={pageNumber === 2}>3. 강사 선택하기</StepText>
-            <StepText seleced={pageNumber === 3}>4. 결제</StepText>
-          </StepContainer>
+          {!mobileFlag && (
+            <ProfileContainer>
+              <div>Profile name</div>
+              <div>name@naver.com</div>
+            </ProfileContainer>
+          )}
+          {!mobileFlag ? (
+            <StepContainer>
+              {pageTitleArr.map((el, index) => {
+                return (
+                  <StepText key={index} seleced={pageNumber === index}>
+                    {el}
+                  </StepText>
+                );
+              })}
+            </StepContainer>
+          ) : (
+            <StepContainer>
+              <StepText seleced={true}>1. 수업 선택하기</StepText>
+            </StepContainer>
+          )}
         </LeftContainer>
         <RightFormContainer>
           <InputContainer>
@@ -504,13 +520,13 @@ const FormWrap = styled.div`
   gap: 3rem;
 
   /* background-color: rgba(255, 255, 255, 0.01); */
-
   /* border: 10px solid #007f74; */
 
   position: relative;
 
   @media (max-width: 768px) {
     width: 100%;
+    flex-direction: column;
     padding: 2rem 3rem;
   }
 `;
@@ -531,6 +547,7 @@ const LeftContainer = styled.div`
     width: 100%;
     flex-direction: column;
     gap: 0.5rem;
+    min-height: 0;
   }
 `;
 
@@ -569,8 +586,11 @@ const StepContainer = styled.form`
 
   @media (max-width: 768px) {
     width: 100%;
+    padding: 1rem;
+
     flex-direction: column;
-    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -686,89 +706,6 @@ const PageContainer = styled.div`
     width: 100%;
     gap: 0.5rem;
   }
-`;
-
-// const H1 = styled.h1`
-//   font-size: 40px;
-//   font-family: Pretendard;
-//   font-weight: 600;
-//   color: white;
-
-//   margin-top: 1rem;
-//   margin-bottom: 3rem;
-// `;
-
-const H5 = styled.h5`
-  font-family: Pretendard;
-  font-weight: 400;
-  color: white;
-`;
-
-const SignUpInput = styled.input`
-  width: 360px;
-  background-color: rgba(255, 255, 255, 0.01);
-  color: white;
-  padding: 1rem 18px;
-
-  border: 1px solid #bfbfbf;
-  border-radius: 15px;
-
-  font-size: 1.2rem;
-  font-family: Pretendard;
-  font-weight: 400;
-  text-align: left;
-
-  transition: 0.5s;
-
-  &::placeholder {
-    color: #b8b8b8;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    font-size: 1rem;
-  }
-`;
-
-const StyledPhoneInput = styled(PhoneInput)`
-  width: 360px;
-
-  border: 1px solid #bfbfbf;
-  border-radius: 15px;
-
-  .PhoneInputCountry {
-    display: none;
-  }
-  input {
-    border-radius: 15px;
-    background-color: rgba(255, 255, 255, 0.01);
-    color: white;
-
-    font-size: 1.2rem;
-    font-family: Pretendard;
-    font-weight: 400;
-    text-align: left;
-
-    padding: 1rem 18px;
-    border: none;
-
-    transition: 0.5s;
-
-    &::placeholder {
-      color: #b8b8b8;
-    }
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    font-size: 1rem;
-  }
-`;
-
-const Icon = styled.svg`
-  fill: none;
-  stroke: white;
-  stroke-width: 3px;
 `;
 
 const ClassContainer = styled.div`
