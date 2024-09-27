@@ -54,7 +54,7 @@ const FooterContainer = styled.footer`
   align-items: center;
 
   @media (max-width: 768px) {
-    display: none;
+    padding: 1.5rem 2rem;
   }
 `;
 
@@ -65,6 +65,15 @@ const FooterInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 1rem 0;
+
+    gap: 1rem;
+  }
 `;
 
 const InfoText = styled.p`
@@ -74,7 +83,6 @@ const InfoText = styled.p`
   font-family: Nunito;
 
   @media (max-width: 768px) {
-    font-size: 0.7rem;
   }
 `;
 
@@ -86,7 +94,9 @@ const CopyText = styled.p`
   font-weight: 600;
 
   @media (max-width: 768px) {
-    font-size: 0.7rem;
+    padding: 1rem;
+    font-size: 16px;
+    font-weight: 400;
   }
 `;
 

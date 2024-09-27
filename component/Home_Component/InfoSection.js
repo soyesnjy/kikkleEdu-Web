@@ -7,10 +7,7 @@ const InfoSection = () => {
       <ContentContainer>
         <RhinoIcon />
         <Text>
-          소예키즈는 어린이들의
-          <br />
-          창의성발달, 신체발달, 사회성 발달, 정서발달에
-          <br />
+          소예키즈는 어린이들의 창의성발달, 신체발달, 사회성 발달, 정서발달에
           가치실현을 목표로 하고 있습니다.
         </Text>
         <Button>소예키즈 소개</Button>
@@ -32,6 +29,10 @@ const SectionContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   text-align: center;
+
+  @media (max-width: 1080px) {
+    height: auto;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -57,7 +58,12 @@ const ContentContainer = styled.div`
 
   gap: 2rem;
 
-  z-index: 1;
+  @media (max-width: 1080px) {
+    width: 90%;
+    height: 40%;
+
+    margin: 0;
+  }
 `;
 
 const Text = styled.p`
@@ -66,6 +72,10 @@ const Text = styled.p`
   font-family: Nunito;
   color: #171717;
   line-height: 1.6;
+
+  @media (max-width: 1080px) {
+    font-size: 24px;
+  }
 `;
 
 const Button = styled.button`
@@ -95,6 +105,13 @@ const RhinoIcon = styled.div`
   background-image: url('/src/Home_IMG/Icon_IMG/Home_Icon_Rhino_IMG.png');
   background-size: contain;
   background-repeat: no-repeat;
+
+  @media (max-width: 1080px) {
+    width: 140px;
+    height: 77px;
+    top: -65px;
+    right: 50px;
+  }
 `;
 
 const CactusIcon = styled.div`
@@ -108,4 +125,11 @@ const CactusIcon = styled.div`
   background-image: url('/src/Home_IMG/Icon_IMG/Home_Icon_Catus_IMG.png');
   background-size: contain;
   background-repeat: no-repeat;
+
+  @media (max-width: 1080px) {
+    width: 80px;
+    height: 115px;
+    bottom: 0px;
+    left: -10px;
+  }
 `;

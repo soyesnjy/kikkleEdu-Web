@@ -45,18 +45,30 @@ const SectionContainer = styled.div`
   padding: 2rem;
 
   gap: 15rem;
+
+  @media (max-width: 1080px) {
+    gap: 1rem;
+    flex-direction: column;
+    padding: 0;
+  }
 `;
 
 const ContentContainer = styled.div`
   text-align: left;
-  max-width: 500px;
+  max-width: 400px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
 
-  gap: 1rem;
+  gap: 2rem;
+
+  @media (max-width: 1080px) {
+    max-width: 100%;
+    gap: 1rem;
+    flex-direction: column;
+  }
 `;
 
 const Title = styled.h2`
@@ -64,14 +76,12 @@ const Title = styled.h2`
   font-family: Pretendard;
   font-weight: bold;
   color: #333;
-  margin-bottom: 1rem;
 `;
 
 const Subtitle = styled.p`
   font-size: 1.2rem;
   font-family: Pretendard;
   line-height: 1.6;
-  margin-bottom: 2rem;
   color: #555;
 `;
 
@@ -79,7 +89,6 @@ const InfoText = styled.p`
   font-size: 24px;
   font-family: Nunito;
   font-weight: bold;
-  margin: 0.5rem 0;
   color: #444;
 `;
 
@@ -88,7 +97,6 @@ const Description = styled.p`
   font-family: Pretendard;
   color: #666;
   line-height: 1.4;
-  margin-bottom: 1.5rem;
 `;
 
 const Button = styled.button`
@@ -111,6 +119,10 @@ const ImageContainer = styled.div`
   position: relative;
   max-width: 600px;
   height: auto;
+
+  @media (max-width: 1080px) {
+    max-width: 100%;
+  }
 `;
 
 const Overlay = styled.div`

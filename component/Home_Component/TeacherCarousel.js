@@ -4,24 +4,13 @@ import { useRouter } from 'next/router';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import Image from 'next/image';
 
-const profiles = [
-  {
-    id: 60,
-    name: '이름?',
-    introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
-    profileImg: '',
-  },
-  {
-    id: 60,
-    name: '이름?',
-    introduce: 'Lorem ipsum dolor sit amet veli elitni legro int dolor.',
-    profileImg: '',
-  },
-];
+import { useRecoilState } from 'recoil';
+import { mobile } from '@/store/state';
 
 const TeacherCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(1); // 가운데 카드로 시작
+  const [currentIndex, setCurrentIndex] = useState(0); // 가운데 카드로 시작
   const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
+  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   const router = useRouter();
 
@@ -70,6 +59,10 @@ const TeacherCarousel = () => {
       return `translateX(calc(-${Math.ceil(teacherDataArr.length / 2) * (100 / 3)}%))`;
   };
 
+  const getTranslateStyle_Mobile = () => {
+    return `translateX(calc(-${currentIndex * 33.2}%))`;
+  };
+
   return (
     <Section>
       <Title>강사 프로필</Title>
@@ -79,13 +72,17 @@ const TeacherCarousel = () => {
         elitni legro int dolor.
       </Description>
       <CarouselContainer>
-        <Button onClick={handlePrevClick}>
-          <span class="material-symbols-outlined">arrow_back</span>
-        </Button>
+        {!mobileFlag && (
+          <Button onClick={handlePrevClick}>
+            <span class="material-symbols-outlined">arrow_back</span>
+          </Button>
+        )}
         <CarouselWrapper>
           <ProfilesContainer
             style={{
-              transform: getTranslateStyle(),
+              transform: mobileFlag
+                ? getTranslateStyle_Mobile()
+                : getTranslateStyle(),
               transition: 'transform 0.5s ease-in-out',
             }}
           >
@@ -116,9 +113,11 @@ const TeacherCarousel = () => {
             ))}
           </ProfilesContainer>
         </CarouselWrapper>
-        <Button onClick={handleNextClick}>
-          <span class="material-symbols-outlined">arrow_forward</span>
-        </Button>
+        {!mobileFlag && (
+          <Button onClick={handleNextClick}>
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </Button>
+        )}
       </CarouselContainer>
       <Dots>
         {teacherDataArr.map((_, index) => (
@@ -170,6 +169,11 @@ const CarouselContainer = styled.div`
   justify-content: center;
   position: relative;
   width: 100%;
+
+  @media (max-width: 728px) {
+    justify-content: flex-start;
+    transform: translateX(33.5%);
+  }
 `;
 
 const CarouselWrapper = styled.div`

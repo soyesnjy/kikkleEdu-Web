@@ -8,9 +8,9 @@ import EduArtComponent from '@/component/Home_Component/EduArtComponent';
 import InfoSection from '@/component/Home_Component/InfoSection';
 import TeacherCarousel from '@/component/Home_Component/TeacherCarousel';
 // import PartnerCarousel from '@/component/Home_Component/PartnerCarousel';
-import LessonLeftSection from '@/component/Home_Component/LessonLeftSection';
-import LessonRightSection from '@/component/Home_Component/LessonRightSection';
-
+import LessonSection from '@/component/Home_Component/LessonSection';
+import { useRecoilState } from 'recoil';
+import { mobile } from '@/store/state';
 // import { useTranslation } from 'next-i18next';
 // import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -60,11 +60,7 @@ const section_5to9_Arr = [
 
 // Home 페이지
 export default function Home() {
-  // const [loading, setLoading] = useState(false);
-
-  // const { t } = useTranslation("nav");
-  // console.log('Test 주석');
-  // 스크롤 이벤트 리스너 추가 및 제거
+  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   return (
     <MasterContainer>
@@ -101,39 +97,19 @@ export default function Home() {
       <SectionFourth>
         <InfoSection />
       </SectionFourth>
-      {/* 섹션5 */}
-      <SectionFifthtoNineth>
-        <LessonLeftSection
-          title={section_5to9_Arr[0].title}
-          subtitle={section_5to9_Arr[0].subtitle}
-          imgUrl={section_5to9_Arr[0].imgUrl}
-        />
-      </SectionFifthtoNineth>
-      {/* 섹션6 */}
-      <SectionFifthtoNineth>
-        <LessonRightSection
-          title={section_5to9_Arr[1].title}
-          subtitle={section_5to9_Arr[1].subtitle}
-          imgUrl={section_5to9_Arr[1].imgUrl}
-        />
-      </SectionFifthtoNineth>
-      {/* 섹션7 */}
-      <SectionFifthtoNineth>
-        <LessonLeftSection
-          title={section_5to9_Arr[2].title}
-          subtitle={section_5to9_Arr[2].subtitle}
-          imgUrl={section_5to9_Arr[2].imgUrl}
-        />
-      </SectionFifthtoNineth>
-      {/* 섹션8 */}
-      <SectionFifthtoNineth>
-        <LessonRightSection
-          title={section_5to9_Arr[3].title}
-          subtitle={section_5to9_Arr[3].subtitle}
-          imgUrl={section_5to9_Arr[3].imgUrl}
-        />
-      </SectionFifthtoNineth>
-
+      {/* 섹션5~8 */}
+      {section_5to9_Arr.map((el, index) => {
+        return (
+          <SectionFifthtoNineth key={index}>
+            <LessonSection
+              title={el.title}
+              subtitle={el.subtitle}
+              imgUrl={el.imgUrl}
+              type={mobileFlag ? 'mobile' : index % 2 ? 'right' : 'left'}
+            />
+          </SectionFifthtoNineth>
+        );
+      })}
       {/* 섹션10 */}
       <SectionTenth>
         <TeacherCarousel />
@@ -196,7 +172,7 @@ const IntroSection = styled.section`
 
   background-color: white;
   background-image: url('/src/Home_IMG/Home_Intro_Background_IMG.png');
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
@@ -225,7 +201,7 @@ const IntroSection = styled.section`
   @media (max-width: 1080px) {
     height: 100%;
     flex-direction: column;
-    padding: 2rem;
+    padding: 0rem;
   }
 `;
 
@@ -415,28 +391,13 @@ const SectionTenth = styled.section`
     height: 100%;
     flex-direction: column;
     padding: 2rem;
-  }
-`;
-
-const SectionNineth = styled.section`
-  width: 100vw;
-  min-height: 456px;
-  background-color: white;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  @media (max-width: 728px) {
-    height: 100%;
-    flex-direction: column;
-    padding: 2rem;
+    background-size: cover;
   }
 `;
 
 const EndSection = styled.section`
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   background-color: white;
   position: relative;
 
@@ -451,9 +412,8 @@ const EndSection = styled.section`
   align-items: center;
 
   @media (max-width: 728px) {
-    height: 100%;
-    flex-direction: column;
-    padding: 2rem;
+    width: 100%;
+    background-size: cover;
   }
 `;
 
@@ -464,4 +424,8 @@ const EndTitle = styled.h1`
   font-family: Nunito;
   font-weight: 600;
   color: #171717;
+
+  @media (max-width: 1080px) {
+    font-size: 24px;
+  }
 `;

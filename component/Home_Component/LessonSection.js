@@ -2,37 +2,67 @@ import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 
-const LessonLeftSection = ({ title, subtitle, imgUrl }) => {
+const LessonSection = ({ title, subtitle, imgUrl, type }) => {
   return (
     <SectionContainer>
-      <ContentContainer>
-        <Title>{`${title}`}</Title>
-        <Subtitle>{`${subtitle}`}</Subtitle>
-        <InfoText>Loren..</InfoText>
-        <Description>
-          Lorem ipsum dolor sit amet veli elitni legro int dolor.
-        </Description>
-        <InfoText>Loren..</InfoText>
-        <Description>
-          Lorem ipsum dolor sit amet veli elitni legro int dolor.
-        </Description>
-        <Button>바로 가기</Button>
-      </ContentContainer>
-      <ImageContainer>
-        <Overlay />
-        <Image
-          src={imgUrl}
-          alt={'lesson_img'}
-          width={600}
-          height={660}
-          style={{ maxWidth: '100%', height: 'auto' }}
-        />
-      </ImageContainer>
+      {type === 'left' ? (
+        <>
+          <ContentContainer>
+            <Title>{`${title}`}</Title>
+            <Subtitle>{`${subtitle}`}</Subtitle>
+            <InfoText>Loren..</InfoText>
+            <Description>
+              Lorem ipsum dolor sit amet veli elitni legro int dolor.
+            </Description>
+            <InfoText>Loren..</InfoText>
+            <Description>
+              Lorem ipsum dolor sit amet veli elitni legro int dolor.
+            </Description>
+            <Button>바로 가기</Button>
+          </ContentContainer>
+          <ImageContainer>
+            <Overlay />
+            <Image
+              src={imgUrl}
+              alt={'lesson_img'}
+              width={600}
+              height={660}
+              style={{ maxWidth: '100%', height: 'auto' }}
+            />
+          </ImageContainer>{' '}
+        </>
+      ) : (
+        <>
+          <ImageContainer>
+            <Overlay />
+            <Image
+              src={imgUrl}
+              alt={'lesson_img'}
+              width={600}
+              height={660}
+              style={{ maxWidth: '100%', height: 'auto' }}
+            />
+          </ImageContainer>
+          <ContentContainer>
+            <Title>{`${title}`}</Title>
+            <Subtitle>{`${subtitle}`}</Subtitle>
+            <InfoText>Loren..</InfoText>
+            <Description>
+              Lorem ipsum dolor sit amet veli elitni legro int dolor.
+            </Description>
+            <InfoText>Loren..</InfoText>
+            <Description>
+              Lorem ipsum dolor sit amet veli elitni legro int dolor.
+            </Description>
+            <Button>바로 가기</Button>
+          </ContentContainer>
+        </>
+      )}
     </SectionContainer>
   );
 };
 
-export default LessonLeftSection;
+export default LessonSection;
 
 // Styled Components
 const SectionContainer = styled.div`
