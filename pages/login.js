@@ -136,7 +136,7 @@ export default function Login() {
           setAgencyType(res.data.type);
         }
 
-        router.push('/');
+        router.back(); // 뒤로가기
       });
     } else if (res.status === 401) {
       Swal.fire({

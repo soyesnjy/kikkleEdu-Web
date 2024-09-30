@@ -849,8 +849,9 @@ const PartTimeButtonContainer = styled.div`
   gap: 1rem;
 
   @media (max-width: 768px) {
+    flex-direction: column;
     justify-content: center;
-    gap: 0.2rem;
+    gap: 0rem;
   }
 `;
 

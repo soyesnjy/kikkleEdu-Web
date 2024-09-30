@@ -2,10 +2,90 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { agencyClass } from '@/store/state';
 import { useRecoilState } from 'recoil';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-const HistoryPage = () => {
-  // 기관 유형 (로그인 시 받아오는 값)
+import AgencyProgramCard from '@/component/Home_Component/AgencyProgramCard';
+import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
+
+import Image from 'next/image';
+
+const section_1_Arr = [
+  {
+    imgPath: '/src/Agency_IMG/Icon/Agency_Icon_0_IMG.png',
+    title: 'Feature tt',
+    content:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna',
+  },
+  {
+    imgPath: '/src/Agency_IMG/Icon/Agency_Icon_1_IMG.png',
+    title: 'Feature tt',
+    content:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna',
+  },
+  {
+    imgPath: '/src/Agency_IMG/Icon/Agency_Icon_2_IMG.png',
+    title: 'Feature tt',
+    content:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna',
+  },
+];
+
+const section_2_Arr = [
+  {
+    imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_1_Background_IMG.png',
+    title: '스토리발레(창의발레)',
+    routePath: '/',
+  },
+  {
+    imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_2_Background_IMG.png',
+    title: '체험형 원데이 프로그램',
+    routePath: '/',
+  },
+  {
+    imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_3_Background_IMG.png',
+    title: '발표회 프로그램',
+    routePath: '/',
+  },
+  {
+    imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_4_Background_IMG.png',
+    title: 'KPOP 방송댄스 프로그램',
+    routePath: '/',
+  },
+  {
+    imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_5_Background_IMG.png',
+    title: '세계의 춤 프로그램',
+    routePath: '/',
+  },
+];
+
+const KindergartenPage = () => {
   const [agency, setAgency] = useRecoilState(agencyClass);
+  const [teacherDataArr, setTeacherDataArr] = useState([]);
+  const router = useRouter();
+
+  // 강사 List 조회
+  useEffect(() => {
+    if (!teacherDataArr.length) {
+      // 강사 Read API 호출 메서드
+      handleTeacherGet({ classType: '유치원' })
+        .then((res) => res.data.data)
+        .then((data) => {
+          setTeacherDataArr([
+            ...data.map((el) => {
+              return {
+                id: el.kk_teacher_idx,
+                name: el.kk_teacher_name,
+                introduce: el.kk_teacher_introduction,
+                profileImg: el.kk_teacher_profileImg_path,
+              };
+            }),
+          ]);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, []);
+
   return (
     <MainContainer>
       {/* 헤더 섹션 */}
@@ -27,14 +107,111 @@ const HistoryPage = () => {
           </StyledLink>
         </HeaderContent>
       </HeaderSection>
-      {/* 미들 섹션 */}
+      {/* 미들 섹션 - 1 */}
+      <MiddleSectionFirst>
+        {section_1_Arr.map((el, index) => {
+          const { imgPath, title, content } = el;
+          return (
+            <AgencyProgramCard
+              key={index}
+              imgPath={imgPath}
+              title={title}
+              content={content}
+            />
+          );
+        })}
+      </MiddleSectionFirst>
+      {/* 미들 섹션 - 예약하기 */}
+      {agency ? (
+        <MiddleSectionReservation>
+          <ReservationButtonContainer>
+            <ReservationTextContainer>
+              <ReservationButtonTitle>
+                유치원 수업 예약하기
+              </ReservationButtonTitle>
+              <ReservationButtonSubTitle>
+                손쉽게 수업을 예약해보세요.
+              </ReservationButtonSubTitle>
+            </ReservationTextContainer>
+            <StyledLink href="/reservation">
+              <Image
+                src="/src/Agency_IMG/Agency_Reservation_Icon_IMG.png"
+                alt="Icon"
+                width={102}
+                height={102}
+                style={{ maxWidth: '100%', height: 'auto' }}
+              />
+            </StyledLink>
+          </ReservationButtonContainer>
+        </MiddleSectionReservation>
+      ) : null}
 
-      {/* TODO# 달력 섹션 */}
-      <h1>유치원 수업 영상</h1>
-      {/* TODO# 달력 섹션 */}
-      <h1>유치원 프로그램</h1>
-      {/* TODO# 달력 섹션 */}
-      <h1>수업 강사</h1>
+      {/* 미들 섹션 - 수업 영상 */}
+      <MiddleSectionSecond>
+        <MiddleSectionSubtitle>Our Program Video</MiddleSectionSubtitle>
+        <MiddleSectionTitle>유치원 수업 영상</MiddleSectionTitle>
+        <VideoContent>
+          <iframe
+            src="//www.youtube.com/embed/DTJUfa0kKzY" // 수업 영상 유튜브 링크
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          />
+        </VideoContent>
+      </MiddleSectionSecond>
+      {/* 미들 섹션 - 수업 프로그램 */}
+      <MiddleSectionThird>
+        <MiddleSectionSubtitle>Our Program Video</MiddleSectionSubtitle>
+        <MiddleSectionTitle>유치원 프로그램</MiddleSectionTitle>
+        <Description>
+          Lorem ipsum dolor sit amet veli elitni legro int dolor.Lorem ipsum
+          dolor sit amet veli elitni legro int dolor.
+        </Description>
+        <ProgramContainer>
+          {section_2_Arr.map((el, index) => {
+            const { title, imgPath, routePath } = el;
+            return (
+              <ProgramContentContainer
+                key={index}
+                imgPath={imgPath}
+                onClick={() => router.push(routePath)}
+              >
+                <ProgramTitle>{title}</ProgramTitle>
+              </ProgramContentContainer>
+            );
+          })}
+        </ProgramContainer>
+      </MiddleSectionThird>
+      {/* 미들 섹션 - 수업 강사 */}
+      <MiddleSectionFourth>
+        <MiddleSectionSubtitle>Our Program Video</MiddleSectionSubtitle>
+        <MiddleSectionTitle>수업강사</MiddleSectionTitle>
+        <Description>
+          Lorem ipsum dolor sit amet veli elitni legro int dolor.Lorem ipsum
+          dolor sit amet veli elitni legro int dolor.
+        </Description>
+        <TeacherContainer rowCount={Math.ceil(teacherDataArr.length / 4)}>
+          {teacherDataArr.length > 0
+            ? teacherDataArr.map((el, index) => {
+                const { id, name, introduce } = el;
+                return (
+                  <TeacherButtonContainer
+                    key={index}
+                    onClick={() => router.push(`/teacher/${id}`)}
+                  >
+                    <TeacherTextContainer>
+                      <TeacherButtonTitle>{name}</TeacherButtonTitle>
+                      <TeacherButtonSubTitle>
+                        {introduce ? introduce : `강사 ${name}입니다`}
+                      </TeacherButtonSubTitle>
+                    </TeacherTextContainer>
+                  </TeacherButtonContainer>
+                );
+              })
+            : ''}
+        </TeacherContainer>
+      </MiddleSectionFourth>
       {/* 엔드 섹션 */}
       <EndSection>
         <EndTitle>
@@ -47,7 +224,7 @@ const HistoryPage = () => {
   );
 };
 
-export default HistoryPage;
+export default KindergartenPage;
 
 const MainContainer = styled.div`
   width: 100%;
@@ -67,11 +244,10 @@ const HeaderSection = styled.section`
   height: 52.65vw;
   position: relative;
 
-  background-image: url('/src/Agency_IMG/유치원/Agency_kindergarden_Header_Background_IMG.png');
+  background-image: url('/src/Agency_IMG/Agency_kindergarden_Header_Background_IMG.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #f4eee5;
 
   padding: 0 4rem 0 4rem;
 
@@ -80,6 +256,12 @@ const HeaderSection = styled.section`
   align-items: center;
 
   gap: 1rem;
+
+  @media (max-width: 1080px) {
+    height: 100%;
+    padding: 1rem;
+    justify-content: center;
+  }
 `;
 
 const HeaderContent = styled.div`
@@ -98,6 +280,16 @@ const HeaderContent = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 0.5rem;
+
+  @media (max-width: 1080px) {
+    padding: 1.5rem;
+    width: 90%;
+    position: inherit;
+
+    align-items: center;
+
+    border-radius: 2rem;
+  }
 `;
 
 const Subtitle = styled.h2`
@@ -106,6 +298,10 @@ const Subtitle = styled.h2`
   font-size: 4rem;
   font-family: Nunito;
   font-weight: 700;
+
+  @media (max-width: 1080px) {
+    font-size: 1.9rem;
+  }
 `;
 
 const Description = styled.p`
@@ -143,81 +339,254 @@ const ReservationButton = styled.button`
   z-index: 1;
 `;
 
-const HeaderIntroDiv = styled.div`
-  width: fit-content;
-  padding: 1rem 1.5rem;
-
-  position: absolute;
-  bottom: 0;
-  right: 3rem;
+const MiddleSectionFirst = styled.section`
+  width: 100vw;
+  min-height: 262px;
 
   background-color: white;
-  border-radius: 25px 25px 0 0;
+  padding: 3rem;
 
-  font-size: 1.1rem;
-  font-family: Pretendard;
-  font-weight: 600;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+  }
 `;
 
-const GreenColorSpan = styled.span`
-  color: #45b26b;
-  font-size: 1.1rem;
-  font-family: Pretendard;
-  font-weight: 600;
+const MiddleSectionReservation = styled.section`
+  width: 100vw;
+  min-height: 262px;
+
+  background-color: white;
+  padding: 3rem;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+  }
 `;
 
-const MiddleSection = styled.section`
-  width: 80vw;
-  min-height: 327px;
-  position: relative;
+const ReservationButtonContainer = styled.div`
+  width: 80%;
+  min-height: 216px;
+  border-radius: 32px;
 
-  padding: 0 4rem 0 4rem;
-  border-radius: 24px;
+  padding: 4rem;
+  background-color: #45b26b;
 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    align-items: center;
+    padding: 2rem;
+  }
+`;
+
+const ReservationTextContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-content: flex-start;
+
+  gap: 3rem;
+
+  @media (max-width: 1080px) {
+    gap: 1.5rem;
+  }
+`;
+const ReservationButtonTitle = styled.div`
+  font-size: 2rem;
+  font-family: Pretendard;
+  font-weight: 700;
+
+  color: white;
+`;
+const ReservationButtonSubTitle = styled.div`
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+
+  color: white;
+`;
+
+const MiddleSectionSecond = styled.section`
+  width: 100vw;
+  min-height: 262px;
+
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 
   gap: 1rem;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+  }
 `;
 
-const MiddleTitle = styled.h1`
-  font-size: 1rem;
-  font-family: Nunito;
-  font-weight: 600;
-  color: #d97904;
-`;
+const MiddleSectionTitle = styled.h2`
+  color: #333;
 
-const MiddleSubtitle = styled.h2`
   font-size: 3rem;
   font-family: Pretendard;
   font-weight: 700;
+
+  @media (max-width: 1080px) {
+    font-size: 1.9rem;
+  }
 `;
 
-const MiddleDescription = styled.p`
-  font-size: 1.1rem;
-  font-family: Pretendard;
-  font-weight: 400;
-  color: #737373;
+const MiddleSectionSubtitle = styled.h2`
+  color: #7067aa;
 
-  margin-top: 0.5rem;
+  font-size: 18px;
+  font-family: Nunito;
+  font-weight: 700;
 
-  line-height: 1.5;
+  @media (max-width: 1080px) {
+    font-size: 1.9rem;
+  }
 `;
 
-const EndSection = styled.section`
+const VideoContent = styled.div`
   width: 100%;
-  min-height: 650px;
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  background-image: url('/src/Introduce_IMG/Introduce_End_Background_IMG.png');
-  background-size: cover;
+  margin-top: 2rem;
+
+  iframe {
+    width: 900px;
+    height: 528px;
+  }
+  min-height: 360px;
+  z-index: 1;
+
+  @media (max-width: 1080px) {
+    iframe {
+      width: 100%;
+      height: 328px;
+    }
+  }
+`;
+
+const MiddleSectionThird = styled.section`
+  width: 100vw;
+  min-height: 262px;
+
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  gap: 1rem;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+  }
+`;
+
+const ProgramContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 1fr;
+
+  gap: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+  }
+`;
+
+const ProgramContentContainer = styled.div`
+  width: 280px;
+  height: 280px;
+
+  /* 배경 이미지와 그라데이션을 함께 설정 */
+  background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 1) 10%,
+      rgba(0, 0, 0, 0) 30%
+    ),
+    url(${(props) => props.imgPath || 'none'});
+  background-size: cover; /* 이미지 크기 조정 */
   background-position: center;
   background-repeat: no-repeat;
 
-  padding: 0 4rem 0 4rem;
-  border-radius: 24px;
+  /* 배경 이미지 위에 그라데이션 효과를 덧씌우기 */
+  background-blend-mode: normal;
+
+  padding: 1rem;
+
+  border-radius: 15px;
+
+  /* 선택 여부에 따른 테두리 */
+  border: ${(props) => (props.selected ? '5px solid #45b26b' : 'none')};
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+
+  gap: 1rem;
+
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  /* 반응형 크기 조정 */
+  @media (max-width: 768px) {
+    width: 155px;
+    height: 202px;
+  }
+`;
+
+const ProgramTitle = styled.div`
+  font-family: Pretendard;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: white;
+
+  z-index: 1;
+`;
+
+const MiddleSectionFourth = styled.section`
+  width: 100vw;
+  min-height: 262px;
+
+  background-color: #beb6f2;
 
   display: flex;
   flex-direction: column;
@@ -225,6 +594,113 @@ const EndSection = styled.section`
   align-items: center;
 
   gap: 1rem;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    flex-direction: column;
+    padding: 2rem;
+  }
+`;
+
+const TeacherContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const TeacherButtonContainer = styled.div`
+  width: 280px;
+  height: 280px;
+  background: ${(props) =>
+    props.selected
+      ? 'linear-gradient(#cacaca 80%, black)'
+      : 'linear-gradient(#cacaca 100%, black)'};
+
+  border-radius: 24px;
+
+  border: ${(props) => (props.selected ? '5px solid #45b26b' : 'none')};
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+
+  gap: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    height: 280px;
+  }
+`;
+
+const TeacherTextContainer = styled.div`
+  width: 100%;
+  height: 30%;
+  background-color: white;
+  color: black;
+
+  padding: 1rem;
+
+  border-radius: 0 0 15px 15px;
+
+  border: ${(props) => (props.selected ? '5px solid #45b26b' : 'none')};
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    height: 30%;
+  }
+`;
+
+const TeacherButtonTitle = styled.div`
+  font-family: Pretendard;
+  font-weight: 600;
+  font-size: 16px;
+`;
+
+const TeacherButtonSubTitle = styled.div`
+  font-family: Pretendard;
+  font-weight: 400;
+  font-size: 12px;
+`;
+
+const EndSection = styled.section`
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  position: relative;
+
+  background-image: url('/src/Home_IMG/Home_Last_Background_IMG.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 728px) {
+    background-size: cover;
+  }
 `;
 
 const EndTitle = styled.h1`
@@ -234,6 +710,10 @@ const EndTitle = styled.h1`
   font-family: Nunito;
   font-weight: 600;
   color: #171717;
+
+  @media (max-width: 1080px) {
+    font-size: 24px;
+  }
 `;
 
 const Button = styled.button`
