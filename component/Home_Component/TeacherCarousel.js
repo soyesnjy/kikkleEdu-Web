@@ -286,6 +286,10 @@ const Dots = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 1rem;
+
+  @media (max-width: 1080px) {
+    gap: 0.5rem;
+  }
 `;
 
 const Dot = styled.div`
@@ -296,4 +300,9 @@ const Dot = styled.div`
   margin: 0 5px;
   transition: background-color 0.3s;
   cursor: pointer;
+
+  @media (max-width: 1080px) {
+    width: 15px;
+    height: 15px;
+  }
 `;

@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction'; // dateClick 사용을 위한 플러그인
+
+import { useRecoilState } from 'recoil';
+import { mobile } from '@/store/state';
+
 // import { koreanLocale } from '@fullcalendar/core/locales/ko'; // 추가된 한국어 로케일
-import styled from 'styled-components';
 
-const events = [{ title: 'Meeting', start: new Date() }];
+// const events = [{ title: 'Meeting', start: new Date() }];
 
-const renderEventContent = (eventInfo) => (
-  <>
-    <b>{eventInfo.timeText}</b>
-    <i>{eventInfo.event.title}</i>
-  </>
-);
+// const renderEventContent = (eventInfo) => (
+//   <>
+//     <b>{eventInfo.timeText}</b>
+//     <i>{eventInfo.event.title}</i>
+//   </>
+// );
 // const renderDayCell = (arg) => {
 //   return arg.date.getDate(); // 날짜만 표시하도록 설정
 // };
 
 const Calendar = ({ setDate, date }) => {
   const [tmpDateArr, setTmpDateArr] = useState([]);
+  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   // 렌더링 시 date 갱신
   useEffect(() => {
@@ -223,7 +229,10 @@ const CalendarContainer = styled.div`
   }
 
   @media (max-width: 768px) {
+    padding: 0;
+
     .fc {
+      width: 90vw;
       height: 26rem;
     }
 
@@ -240,13 +249,18 @@ const CalendarContainer = styled.div`
     }
 
     .fc-daygrid-day-number {
+      width: 60px;
+      height: 60px;
+
       font-size: 1rem;
       font-family: AppleSDGothicNeoB00;
       font-weight: 600;
     }
 
     .fc-daygrid-day-frame {
-      padding: 5px;
+    }
+
+    .fc-daygrid-day-frame .highlighted-date-range {
     }
   }
 `;

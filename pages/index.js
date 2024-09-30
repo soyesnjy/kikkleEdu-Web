@@ -1,14 +1,13 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 import EducationCard from '@/component/Home_Component/EducationCard';
 import EduArtComponent from '@/component/Home_Component/EduArtComponent';
-// import EduArtClassSection from '@/component/Home_Component/EduArtClassSection';
 import InfoSection from '@/component/Home_Component/InfoSection';
 import TeacherCarousel from '@/component/Home_Component/TeacherCarousel';
-// import PartnerCarousel from '@/component/Home_Component/PartnerCarousel';
 import LessonSection from '@/component/Home_Component/LessonSection';
+
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
 // import { useTranslation } from 'next-i18next';
@@ -141,6 +140,8 @@ export default function Home() {
 // }
 
 const MasterContainer = styled.div`
+  background-color: white;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -199,9 +200,9 @@ const IntroSection = styled.section`
   } */
 
   @media (max-width: 1080px) {
-    height: 100%;
     flex-direction: column;
-    padding: 0rem;
+    padding: 1rem;
+    padding-bottom: 5rem;
   }
 `;
 
@@ -222,7 +223,7 @@ const ReadContainer = styled.div`
 
   @media (max-width: 1080px) {
     width: 100%;
-    padding: 0.3rem;
+    padding: 0;
   }
 `;
 
@@ -235,7 +236,8 @@ const H1 = styled.h1`
   z-index: 1;
 
   @media (max-width: 1080px) {
-    font-size: 60px;
+    font-size: 40px;
+    width: 70%;
   }
 `;
 
@@ -246,6 +248,9 @@ const H4 = styled.h4`
 
   color: #2e6c6d;
   z-index: 1;
+
+  @media (max-width: 1080px) {
+  }
 `;
 
 const Button = styled.button`

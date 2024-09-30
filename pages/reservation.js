@@ -15,8 +15,8 @@ import { log, mobile } from '@/store/state';
 import { handleClassGet } from '@/fetchAPI/classAPI';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// import { useTranslation } from 'next-i18next';
+// import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
@@ -53,8 +53,8 @@ const getUniqueWeekdays = (dateArr) => {
   return Array.from(uniqueWeekdays);
 };
 
-// SignUp 페이지
-export default function Signup() {
+// Reservation 페이지
+export default function Reservation() {
   const [pageNumber, setPageNumber] = useState(0); // 강사 페이지 번호
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
 
@@ -252,7 +252,7 @@ export default function Signup() {
             </StepContainer>
           ) : (
             <StepContainer>
-              <StepText seleced={true}>1. 수업 선택하기</StepText>
+              <StepText seleced={true}>{pageTitleArr[pageNumber]}</StepText>
             </StepContainer>
           )}
         </LeftContainer>
@@ -487,13 +487,13 @@ export default function Signup() {
   );
 }
 
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['signup', 'nav'])),
-    },
-  };
-}
+// export async function getStaticProps({ locale }) {
+//   return {
+//     props: {
+//       ...(await serverSideTranslations(locale, ['signup', 'nav'])),
+//     },
+//   };
+// }
 
 const ReservationPageContainer = styled.main`
   width: 100vw;
@@ -527,7 +527,7 @@ const FormWrap = styled.div`
   @media (max-width: 768px) {
     width: 100%;
     flex-direction: column;
-    padding: 2rem 3rem;
+    padding: 1rem;
   }
 `;
 
@@ -607,6 +607,11 @@ const ReservationNavContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    flex-direction: column;
+  }
 `;
 
 const ReservationNavText = styled.div`
@@ -624,6 +629,12 @@ const ReservationButtonContainer = styled.div`
   gap: 0.5rem;
 
   margin-top: 1rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const ReservationButton = styled.button`
@@ -655,6 +666,8 @@ const ReservationButton = styled.button`
     min-height: fit-content;
     min-height: 53px;
     font-size: 20px;
+
+    padding: 1rem 1.5rem;
   }
 `;
 
@@ -717,6 +730,12 @@ const ClassContainer = styled.div`
   gap: 0.5rem;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: ${(props) =>
+      props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(2, 1fr)'};
+    grid-template-rows: ${(props) => `repeat(${props.rowCount}, 1fr)`};
+  }
 `;
 
 const ClassButtonContainer = styled.div`
@@ -740,6 +759,11 @@ const ClassButtonContainer = styled.div`
   align-items: flex-start;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 155px;
+    height: 202px;
+  }
 `;
 
 const ClassButtonTitle = styled.div`
@@ -780,9 +804,8 @@ const ClassButton = styled.button`
 
   @media (max-width: 768px) {
     width: 100%;
-    min-height: fit-content;
-    min-height: 53px;
-    font-size: 20px;
+    font-size: 1rem;
+    margin-bottom: 0rem;
   }
 `;
 
@@ -817,11 +840,18 @@ const TeacherButton = styled.button`
 `;
 
 const PartTimeButtonContainer = styled.div`
+  width: 100%;
+
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: flex-start;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    gap: 0.2rem;
+  }
 `;
 
 const PartTimeButton = styled.button`
@@ -848,9 +878,8 @@ const PartTimeButton = styled.button`
 
   @media (max-width: 768px) {
     width: 100%;
-    min-height: fit-content;
     min-height: 53px;
-    font-size: 20px;
+    font-size: 1rem;
   }
 `;
 
