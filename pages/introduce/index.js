@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import Image from 'next/image';
+import IntroductionCarousel from '@/component/Introduction_Component/IntroductionCarousel';
 
 const HistoryPage = () => {
   return (
@@ -8,9 +10,7 @@ const HistoryPage = () => {
         <HeaderContent>
           <Title>Kids Class edu</Title>
           <Subtitle>회사 연혁</Subtitle>
-          <Description>
-            Lorem ipsum dolor sit amet veli elitni legro int dolor.
-          </Description>
+          <Description>우리아이의 건강한 마음과 행복을 위해</Description>
           <HeaderIntroDiv>
             소예키즈 소개 - <GreenColorSpan>회사 연혁</GreenColorSpan>
           </HeaderIntroDiv>
@@ -18,18 +18,20 @@ const HistoryPage = () => {
       </HeaderSection>
       {/* 미들 섹션 */}
       <MiddleSection>
-        <MiddleTitle>KC EDU - History</MiddleTitle>
-        <MiddleSubtitle>회사 연혁</MiddleSubtitle>
-        <MiddleDescription>
-          Lorem ipsum dolor sit amet veli elitni legro int dolor.
-          <br />
-          Lorem ipsum dolor sit amet veli elitni legro int dolor.
-          <br />
-          Lorem ipsum dolor sit amet veli elitni legro int dolor.
-        </MiddleDescription>
+        <Image
+          src="/src/Introduce_IMG/Introduce_Middle_Icon_IMG.png"
+          alt="Icon"
+          width={178}
+          height={213}
+          style={{ maxWidth: '100%', height: 'auto' }}
+        />
+        <MiddleContainer>
+          <MiddleTitle>KC EDU - History</MiddleTitle>
+          <MiddleSubtitle>회사 연혁</MiddleSubtitle>
+        </MiddleContainer>
       </MiddleSection>
-      {/* TODO# 달력 섹션 */}
-      <h1>달력 섹션</h1>
+      {/* 달력 섹션 */}
+      <IntroductionCarousel />
       {/* 엔드 섹션 */}
       <EndSection>
         <EndTitle>
@@ -57,13 +59,13 @@ const MainContainer = styled.div`
 
 const HeaderSection = styled.section`
   width: 80vw;
-  min-height: 327px;
+  min-height: 21vw;
   position: relative;
 
-  background-image: url('/src/Introduce_IMG/Introduce_Header_Background_IMG.png');
-  background-size: contain;
+  background-image: url('/src/Introduce_IMG/Introduce_Header_Background2_IMG.png');
+  background-size: cover;
   background-position: center;
-  /* background-repeat: no-repeat; */
+  background-repeat: no-repeat;
   background-color: #f4eee5;
 
   padding: 0 4rem 0 4rem;
@@ -85,7 +87,7 @@ const HeaderContent = styled.div`
 `;
 
 const Title = styled.h1`
-  color: #333;
+  color: white;
 
   font-size: 1rem;
   font-family: Nunito;
@@ -93,7 +95,7 @@ const Title = styled.h1`
 `;
 
 const Subtitle = styled.h2`
-  color: #333;
+  color: white;
 
   font-size: 2.2rem;
   font-family: Pretendard;
@@ -101,7 +103,7 @@ const Subtitle = styled.h2`
 `;
 
 const Description = styled.p`
-  color: #666;
+  color: white;
 
   font-size: 1.1rem;
   font-family: Pretendard;
@@ -114,7 +116,7 @@ const HeaderIntroDiv = styled.div`
 
   position: absolute;
   bottom: 0;
-  right: 3rem;
+  right: 10%;
 
   background-color: white;
   border-radius: 25px 25px 0 0;
@@ -136,8 +138,18 @@ const MiddleSection = styled.section`
   min-height: 327px;
   position: relative;
 
-  padding: 0 4rem 0 4rem;
+  padding: 0 2rem 0 2rem;
   border-radius: 24px;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  gap: 4rem;
+`;
+
+const MiddleContainer = styled.section`
+  padding-top: 5rem;
 
   display: flex;
   flex-direction: column;
@@ -160,36 +172,26 @@ const MiddleSubtitle = styled.h2`
   font-weight: 700;
 `;
 
-const MiddleDescription = styled.p`
-  font-size: 1.1rem;
-  font-family: Pretendard;
-  font-weight: 400;
-  color: #737373;
-
-  margin-top: 0.5rem;
-
-  line-height: 1.5;
-`;
-
 const EndSection = styled.section`
-  width: 100%;
-  min-height: 650px;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
   position: relative;
 
-  background-image: url('/src/Introduce_IMG/Introduce_End_Background_IMG.png');
-  background-size: cover;
+  background-image: url('/src/Home_IMG/Home_Last_Background_IMG.png');
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-
-  padding: 0 4rem 0 4rem;
-  border-radius: 24px;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  gap: 1rem;
+  @media (max-width: 728px) {
+    width: 100%;
+    background-size: cover;
+  }
 `;
 
 const EndTitle = styled.h1`
@@ -199,6 +201,10 @@ const EndTitle = styled.h1`
   font-family: Nunito;
   font-weight: 600;
   color: #171717;
+
+  @media (max-width: 1080px) {
+    font-size: 24px;
+  }
 `;
 
 const Button = styled.button`
