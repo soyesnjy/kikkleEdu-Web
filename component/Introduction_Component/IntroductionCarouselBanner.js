@@ -28,7 +28,7 @@ const BannerContainer = styled.div`
   background-color: white;
 
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: flex-start;
 
   overflow: hidden;

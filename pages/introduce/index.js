@@ -35,8 +35,7 @@ const HistoryPage = () => {
       {/* 엔드 섹션 */}
       <EndSection>
         <EndTitle>
-          Loren iqsum dolor sit...Loren iqsum dolor sit... Loren iqsum dolor
-          sit...
+          우리아이의 성장 소예키즈와 함께 몸과 마음을 성장시켜요
         </EndTitle>
         <Button>콘텐츠 소개</Button>
       </EndSection>
