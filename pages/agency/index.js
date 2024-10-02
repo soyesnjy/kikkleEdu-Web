@@ -187,10 +187,6 @@ const KindergartenPage = () => {
       <MiddleSectionFourth>
         <MiddleSectionSubtitle>Our Program Video</MiddleSectionSubtitle>
         <MiddleSectionTitle>수업강사</MiddleSectionTitle>
-        <Description>
-          Lorem ipsum dolor sit amet veli elitni legro int dolor.Lorem ipsum
-          dolor sit amet veli elitni legro int dolor.
-        </Description>
         <TeacherContainer rowCount={Math.ceil(teacherDataArr.length / 4)}>
           {teacherDataArr.length > 0
             ? teacherDataArr.map((el, index) => {
@@ -584,9 +580,14 @@ const ProgramTitle = styled.div`
 
 const MiddleSectionFourth = styled.section`
   width: 100vw;
-  min-height: 262px;
+  min-height: 100vh;
 
-  background-color: #beb6f2;
+  background-color: white;
+
+  background-image: url('/src/Agency_IMG/Agency_kindergarden_Teacher_Background_IMG.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
   display: flex;
   flex-direction: column;
@@ -608,8 +609,7 @@ const TeacherContainer = styled.div`
   align-items: center;
 
   gap: 1rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+  margin-top: 3rem;
 
   @media (max-width: 768px) {
     flex-direction: column;

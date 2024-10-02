@@ -1,11 +1,12 @@
 import axios from 'axios';
 
 // READ
-// 2024.08.22: 쿼리 삽입 기능 추가
+// 2024.08.22: classType 쿼리 추가
+// 2024.10.02: classTag 쿼리 추가
 export const handleClassGet = async (query) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/class?${query?.classType ? `classType=${query?.classType}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/class?${query?.classTag ? `classTag=${query?.classTag}&` : ''}${query?.classType ? `classType=${query?.classType}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -13,7 +14,7 @@ export const handleClassGet = async (query) => {
         withCredentials: true,
       }
     );
-    // console.log(response);
+    // console.log(response.data);
     return response;
   } catch (err) {
     console.error(err);

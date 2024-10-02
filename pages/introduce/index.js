@@ -61,7 +61,7 @@ const HeaderSection = styled.section`
   min-height: 21vw;
   position: relative;
 
-  background-image: url('/src/Introduce_IMG/Introduce_Header_Background2_IMG.png');
+  background-image: url('/src/Introduce_IMG/Introduce_CompanyIntro_Header_Background_IMG.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
