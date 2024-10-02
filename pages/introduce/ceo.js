@@ -54,11 +54,17 @@ const HeaderSection = styled.section`
   min-height: 21vw;
   position: relative;
 
-  background-image: url('');
-  background-size: cover;
+  /* linear-gradient와 이미지 URL을 background 속성으로 조합 */
+  background: linear-gradient(
+      90deg,
+      rgba(76, 176, 178, 0.8) 0%,
+      /* 시작 색상, 투명도 0.8 */ rgba(76, 176, 178, 0) 60.5%
+        /* 중간에서 투명해짐 */
+    ),
+    url('');
+  background-size: cover; /* 배경 이미지 크기 조정 */
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #f4eee5;
 
   padding: 0 4rem 0 4rem;
   border-radius: 24px;
