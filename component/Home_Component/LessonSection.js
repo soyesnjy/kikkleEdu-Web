@@ -85,7 +85,7 @@ const SectionContainer = styled.div`
 
 const ContentContainer = styled.div`
   text-align: left;
-  max-width: 400px;
+  max-width: 500px;
 
   display: flex;
   flex-direction: column;

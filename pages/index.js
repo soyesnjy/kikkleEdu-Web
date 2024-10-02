@@ -31,6 +31,14 @@ const section_1_Arr = [
   },
 ];
 
+const section_2_Data = {
+  title: 'EDU ART',
+  content:
+    'Lorem ipsum dolor sit amet velitLorem ipsum dolor sit amet velit, elitni legro int dolor. elitni legro int dolor.',
+  features: ['FEATURES', 'FEATURES', 'FEATURES', 'self-confidence'],
+  imgPath: '/src/Home_IMG/Home_Section_2_IMG.png',
+};
+
 const section_5to9_Arr = [
   {
     title: '유치원 수업',
@@ -90,7 +98,7 @@ export default function Home() {
       </SectionFirst>
       {/* 섹션2 */}
       <SectionSecond>
-        <EduArtComponent />
+        <EduArtComponent sectionData={section_2_Data} />
       </SectionSecond>
       {/* 섹션4 */}
       <SectionFourth>

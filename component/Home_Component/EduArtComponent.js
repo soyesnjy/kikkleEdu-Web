@@ -1,16 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const section_2_Data = {
-  title: 'EDU ART',
-  content:
-    'Lorem ipsum dolor sit amet velitLorem ipsum dolor sit amet velit, elitni legro int dolor. elitni legro int dolor.',
-  features: ['FEATURES', 'FEATURES', 'FEATURES', 'self-confidence'],
-  imgPath: '/src/Home_IMG/Home_Section_2_IMG.png',
-};
-
-const EduArtComponent = () => {
-  const { title, content, features, imgPath } = section_2_Data;
+const EduArtComponent = ({ sectionData }) => {
+  const { title, content, features, imgPath } = sectionData;
   return (
     <Container>
       <LeftSection>

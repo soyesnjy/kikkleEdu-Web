@@ -42,13 +42,13 @@ const navList_info = [
   {
     title: '교육 프로그램',
     items: [
-      { href: '/', label: '발레 교육' },
-      { href: '/', label: '댄스 교육' },
-      { href: '/', label: '요가 교육' },
-      { href: '/', label: '필라테스 교육' },
-      { href: '/', label: '마음챙김심리 교육' },
-      { href: '/', label: '음악 교육' },
-      { href: '/', label: '미술 교육' },
+      { href: '/program', label: '발레 교육' },
+      { href: '/program', label: '댄스 교육' },
+      { href: '/program', label: '요가 교육' },
+      { href: '/program', label: '필라테스 교육' },
+      { href: '/program', label: '마음챙김심리 교육' },
+      { href: '/program', label: '음악 교육' },
+      { href: '/program', label: '미술 교육' },
     ],
   },
   {
