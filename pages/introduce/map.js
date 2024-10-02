@@ -1,24 +1,30 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 
-const PatentPage = () => {
+const CeoPage = () => {
   return (
     <MainContainer>
       {/* 헤더 섹션 */}
       <HeaderSection>
         <HeaderContent>
           <Title>Kids Class edu</Title>
-          <Subtitle>특허 및 저작권</Subtitle>
+          <Subtitle>주소 및 약도</Subtitle>
           <HeaderIntroDiv>
-            소예키즈 소개 - <GreenColorSpan>특허 및 저작권</GreenColorSpan>
+            소예키즈 소개 - <GreenColorSpan>주소 및 약도</GreenColorSpan>
           </HeaderIntroDiv>
         </HeaderContent>
       </HeaderSection>
       {/* 미들 섹션 */}
       <MiddleSection>
         <MiddleContainer>
-          <MiddleTitle>KC EDU - Patent</MiddleTitle>
-          <MiddleSubtitle>특허 및 상표권</MiddleSubtitle>
+          <MiddleTitle>CONNECT WITH US !</MiddleTitle>
+          <MiddleSubtitle>주소 및 약도</MiddleSubtitle>
+          <Description>
+            주소 : 서울시 마포구 성암로 330 DMC첨단산업센터 404-4
+          </Description>
+          <Description>
+            오시는 길 : 가까운 지하철역 수색역 / 디지털미디어시티역
+          </Description>
         </MiddleContainer>
       </MiddleSection>
       {/* 특허 섹션 */}
@@ -26,7 +32,8 @@ const PatentPage = () => {
       {/* 엔드 섹션 */}
       <EndSection>
         <EndTitle>
-          우리아이의 성장 소예키즈와 함께 몸과 마음을 성장시켜요
+          Loren iqsum dolor sit...Loren iqsum dolor sit...Loren iqsum dolor
+          sit...
         </EndTitle>
         <Button>콘텐츠 소개</Button>
       </EndSection>
@@ -34,7 +41,7 @@ const PatentPage = () => {
   );
 };
 
-export default PatentPage;
+export default CeoPage;
 
 const MainContainer = styled.div`
   width: 100%;
@@ -52,7 +59,7 @@ const HeaderSection = styled.section`
   min-height: 21vw;
   position: relative;
 
-  background-image: url('/src/Introduce_IMG/Introduce_CompanyIntro_Header_Background_IMG.png');
+  background-image: url('');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -93,7 +100,7 @@ const Subtitle = styled.h2`
 `;
 
 const Description = styled.p`
-  color: white;
+  color: black;
 
   font-size: 1.1rem;
   font-family: Pretendard;

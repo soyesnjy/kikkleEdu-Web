@@ -8,17 +8,18 @@ const CeoPage = () => {
       <HeaderSection>
         <HeaderContent>
           <Title>Kids Class edu</Title>
-          <Subtitle>특허 및 저작권</Subtitle>
+          <Subtitle>대표이사 경력 및 소개</Subtitle>
           <HeaderIntroDiv>
-            소예키즈 소개 - <GreenColorSpan>특허 및 저작권</GreenColorSpan>
+            소예키즈 소개 -{' '}
+            <GreenColorSpan>대표이사 경력 및 소개</GreenColorSpan>
           </HeaderIntroDiv>
         </HeaderContent>
       </HeaderSection>
       {/* 미들 섹션 */}
       <MiddleSection>
         <MiddleContainer>
-          <MiddleTitle>KC EDU - Patent</MiddleTitle>
-          <MiddleSubtitle>특허 및 상표권</MiddleSubtitle>
+          <MiddleTitle>KC EDU - CEO</MiddleTitle>
+          <MiddleSubtitle>대표이사 경력 및 소개</MiddleSubtitle>
         </MiddleContainer>
       </MiddleSection>
       {/* 특허 섹션 */}
@@ -26,7 +27,8 @@ const CeoPage = () => {
       {/* 엔드 섹션 */}
       <EndSection>
         <EndTitle>
-          우리아이의 성장 소예키즈와 함께 몸과 마음을 성장시켜요
+          Loren iqsum dolor sit...Loren iqsum dolor sit...Loren iqsum dolor
+          sit...
         </EndTitle>
         <Button>콘텐츠 소개</Button>
       </EndSection>
@@ -52,7 +54,7 @@ const HeaderSection = styled.section`
   min-height: 21vw;
   position: relative;
 
-  background-image: url('/src/Introduce_IMG/Introduce_CompanyIntro_Header_Background_IMG.png');
+  background-image: url('');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

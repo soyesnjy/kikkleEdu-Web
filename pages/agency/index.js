@@ -162,7 +162,7 @@ const KindergartenPage = () => {
       </MiddleSectionSecond>
       {/* 미들 섹션 - 수업 프로그램 */}
       <MiddleSectionThird>
-        <MiddleSectionSubtitle>Our Program Video</MiddleSectionSubtitle>
+        <MiddleSectionSubtitle>Our Program Image</MiddleSectionSubtitle>
         <MiddleSectionTitle>유치원 프로그램</MiddleSectionTitle>
         <Description>
           Lorem ipsum dolor sit amet veli elitni legro int dolor.Lorem ipsum
@@ -185,8 +185,8 @@ const KindergartenPage = () => {
       </MiddleSectionThird>
       {/* 미들 섹션 - 수업 강사 */}
       <MiddleSectionFourth>
-        <MiddleSectionSubtitle>Our Program Video</MiddleSectionSubtitle>
-        <MiddleSectionTitle>수업강사</MiddleSectionTitle>
+        <MiddleSectionSubtitle>OUR PROGRAM CLASS</MiddleSectionSubtitle>
+        <MiddleSectionTitle>수업 강사</MiddleSectionTitle>
         <TeacherContainer rowCount={Math.ceil(teacherDataArr.length / 4)}>
           {teacherDataArr.length > 0
             ? teacherDataArr.map((el, index) => {
@@ -441,7 +441,7 @@ const MiddleSectionSecond = styled.section`
 `;
 
 const MiddleSectionTitle = styled.h2`
-  color: #333;
+  color: #313131;
 
   font-size: 3rem;
   font-family: Pretendard;
