@@ -159,87 +159,6 @@ const TeacherListPage = () => {
   );
 };
 
-const PageContainer = styled.div`
-  padding: 1rem;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-
-  gap: 1rem;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    gap: 0.5rem;
-  }
-`;
-
-const TeacherContainer = styled.div`
-  display: grid;
-  grid-template-columns: ${(props) =>
-    props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(4, 1fr)'};
-  grid-template-rows: ${(props) => `repeat(${props.rowCount}, 1fr)`};
-
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-`;
-
-const TeacherButtonContainer = styled.div`
-  width: 288px;
-  height: 280px;
-  background: linear-gradient(#cacaca 80%, black);
-
-  padding: 1rem;
-
-  border-radius: 15px;
-
-  border: none;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-
-  cursor: pointer;
-  gap: 1rem;
-
-  /* 부모가 hover 되었을 때, 두 번째 자식 요소를 타겟팅 */
-  &:hover {
-    background: linear-gradient(#cacaca 100%, black);
-
-    /* 두 번째 자식 요소 선택 */
-    & :nth-child(2) {
-      display: block;
-    }
-  }
-
-  /* 초기 상태에서 두 번째 자식 요소 숨김 */
-  & :nth-child(2) {
-    display: none;
-  }
-
-  @media (max-width: 768px) {
-    width: 148px;
-    height: 140px;
-  }
-`;
-
-const TeacherButtonTitle = styled.div`
-  font-family: Pretendard;
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: white;
-`;
-
-const TeacherButtonSubTitle = styled.div`
-  font-family: Pretendard;
-  font-weight: 400;
-  font-size: 0.7rem;
-  color: white;
-`;
-
 const MainContainer = styled.div`
   width: 100%;
   padding: 1rem;
@@ -251,6 +170,10 @@ const MainContainer = styled.div`
   align-items: center;
 
   gap: 3rem;
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `;
 
 const HeaderSection = styled.section`
@@ -340,6 +263,8 @@ const MiddleSection = styled.section`
     flex-direction: column;
     justify-content: center;
     gap: 0;
+
+    padding: 2rem;
   }
 `;
 
@@ -354,6 +279,12 @@ const MiddleContainer = styled.section`
   align-items: flex-start;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-top: 3rem;
+    gap: 0.5rem;
+  }
 `;
 
 const SearchContainer = styled.section`
@@ -365,6 +296,12 @@ const SearchContainer = styled.section`
   justify-content: center;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    justify-content: space-around;
+    margin-top: 1rem;
+    gap: 0.5rem;
+  }
 `;
 
 const TagButton = styled.button`
@@ -388,15 +325,104 @@ const TagButton = styled.button`
     background-color: #378e56;
     color: white;
   }
+
   transition: 0.2s;
 
   @media (max-width: 768px) {
-    width: 100%;
     font-size: 1rem;
-    padding: 1rem;
+    padding: 0.8rem;
     margin-bottom: 0;
+    border-radius: 1rem;
   }
 `;
+
+const PageContainer = styled.div`
+  padding: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    gap: 0.5rem;
+    align-items: center;
+  }
+`;
+
+const TeacherContainer = styled.div`
+  display: grid;
+  grid-template-columns: ${(props) =>
+    props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(4, 1fr)'};
+  grid-template-rows: ${(props) => `repeat(${props.rowCount}, 1fr)`};
+
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 0rem;
+  }
+`;
+
+const TeacherButtonContainer = styled.div`
+  width: 288px;
+  height: 280px;
+  background: linear-gradient(#cacaca 80%, black);
+
+  padding: 1rem;
+
+  border-radius: 15px;
+
+  border: none;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+
+  cursor: pointer;
+  gap: 1rem;
+
+  /* 부모가 hover 되었을 때, 두 번째 자식 요소를 타겟팅 */
+  &:hover {
+    background: linear-gradient(#cacaca 100%, black);
+
+    /* 두 번째 자식 요소 선택 */
+    & :nth-child(2) {
+      display: block;
+    }
+  }
+
+  /* 초기 상태에서 두 번째 자식 요소 숨김 */
+  & :nth-child(2) {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    width: 148px;
+    height: 140px;
+  }
+`;
+
+const TeacherButtonTitle = styled.div`
+  font-family: Pretendard;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: white;
+`;
+
+const TeacherButtonSubTitle = styled.div`
+  font-family: Pretendard;
+  font-weight: 400;
+  font-size: 0.7rem;
+  color: white;
+`;
+
 const MiddleTitle = styled.h1`
   font-size: 1rem;
   font-family: Nunito;
@@ -449,6 +475,11 @@ const EndTitle = styled.h1`
   font-family: Nunito;
   font-weight: 600;
   color: #171717;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    font-size: 1.5rem;
+  }
 `;
 
 const Button = styled.button`

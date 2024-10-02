@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import Image from 'next/image';
 
+import { useRecoilState } from 'recoil';
+import { mobile } from '@/store/state';
+
 const dummyData = {};
 
 // Default Profile Img return Method
@@ -21,6 +24,7 @@ const TeacherDetailPage = () => {
   const router = useRouter();
   const { id } = router.query; // URL의 동적 파라미터를 가져옴
   const [data, setData] = useState(dummyData);
+  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   useEffect(() => {
     if (id) {
@@ -65,6 +69,20 @@ const TeacherDetailPage = () => {
             <MiddleDescription>{data.kk_teacher_phoneNum}</MiddleDescription>
           </MiddleTextContainer> */}
 
+          {mobileFlag && (
+            <Image
+              src={data.kk_teacher_profileImg_path || ramdomDefaultImg()}
+              alt=""
+              width={390}
+              height={418}
+              style={{
+                maxWidth: '100%',
+                height: '90%',
+                borderRadius: '24px',
+              }}
+            />
+          )}
+
           <MiddleTextContainer>
             <MiddleSubtitleSmall>경력 및 학력</MiddleSubtitleSmall>
             <MiddleDescription>
@@ -91,19 +109,21 @@ const TeacherDetailPage = () => {
             </MiddleDescription>
           </MiddleTextContainer>
         </MiddleContainer>
-        <MiddleProfileImgContainer>
-          <Image
-            src={data.kk_teacher_profileImg_path || ramdomDefaultImg()}
-            alt=""
-            width={390}
-            height={418}
-            style={{
-              maxWidth: '100%',
-              height: '90%',
-              borderRadius: '24px',
-            }}
-          />
-        </MiddleProfileImgContainer>
+        {!mobileFlag && (
+          <MiddleProfileImgContainer>
+            <Image
+              src={data.kk_teacher_profileImg_path || ramdomDefaultImg()}
+              alt=""
+              width={390}
+              height={418}
+              style={{
+                maxWidth: '100%',
+                height: '90%',
+                borderRadius: '24px',
+              }}
+            />
+          </MiddleProfileImgContainer>
+        )}
       </MiddleSection>
     </MainContainer>
   );
@@ -207,6 +227,7 @@ const MiddleSection = styled.section`
 
   @media (max-width: 768px) {
     width: 100vw;
+    padding: 2rem;
     flex-direction: column;
     justify-content: center;
     gap: 0;
