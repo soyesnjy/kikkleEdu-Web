@@ -6,6 +6,17 @@ import Image from 'next/image';
 
 const dummyData = {};
 
+// Default Profile Img return Method
+const ramdomDefaultImg = () => {
+  const imgArr = [
+    '/src/Teacher_IMG/Teacher_Pupu_Profile_IMG.png',
+    '/src/Teacher_IMG/Teacher_Ella_Profile_IMG.png',
+    '/src/Teacher_IMG/Teacher_Soyes_Profile_IMG.png',
+  ];
+
+  return imgArr[Math.floor(Math.random() * imgArr.length)];
+};
+
 const TeacherDetailPage = () => {
   const router = useRouter();
   const { id } = router.query; // URL의 동적 파라미터를 가져옴
@@ -82,10 +93,7 @@ const TeacherDetailPage = () => {
         </MiddleContainer>
         <MiddleProfileImgContainer>
           <Image
-            src={
-              data.kk_teacher_profileImg_path ||
-              '/src/Loading_IMG/Loading_Soyes_Logo_IMG.png'
-            }
+            src={data.kk_teacher_profileImg_path || ramdomDefaultImg()}
             alt=""
             width={390}
             height={418}
