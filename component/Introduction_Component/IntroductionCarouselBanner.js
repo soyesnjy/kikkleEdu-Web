@@ -34,7 +34,9 @@ const BannerContainer = styled.div`
   overflow: hidden;
 
   @media (max-width: 768px) {
-    width: 26rem;
+    flex-direction: column;
+
+    width: 90%;
     min-height: 12rem;
   }
 `;

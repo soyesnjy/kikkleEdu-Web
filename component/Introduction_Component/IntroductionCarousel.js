@@ -66,7 +66,7 @@ const slideArr = [
 // 사용자 정의 화살표 컴포넌트
 const CustomNextArrow = ({ onClick }) => {
   return (
-    <ArrowButton onClick={onClick} style={{ right: '10px' }}>
+    <ArrowButton onClick={onClick} style={{ right: '10px', opacity: '0.3' }}>
       <span className="material-symbols-outlined">arrow_forward</span>
     </ArrowButton>
   );
@@ -74,7 +74,7 @@ const CustomNextArrow = ({ onClick }) => {
 
 const CustomPrevArrow = ({ onClick }) => {
   return (
-    <ArrowButton onClick={onClick} style={{ left: '10px' }}>
+    <ArrowButton onClick={onClick} style={{ left: '10px', opacity: '0.3' }}>
       <span className="material-symbols-outlined">arrow_back</span>
     </ArrowButton>
   );
@@ -205,7 +205,7 @@ const StyledSlider = styled(Slider)`
   } */
 
   @media (max-width: 768px) {
-    width: 26rem;
+    width: 100%;
     margin-top: 3rem;
   }
 `;

@@ -1,8 +1,12 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 import IntroductionCarousel from '@/component/Introduction_Component/IntroductionCarousel';
+import { useRecoilState } from 'recoil';
+import { mobile } from '@/store/state';
 
 const HistoryPage = () => {
+  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+
   return (
     <MainContainer>
       {/* 헤더 섹션 */}
@@ -18,13 +22,15 @@ const HistoryPage = () => {
       </HeaderSection>
       {/* 미들 섹션 */}
       <MiddleSection>
-        <Image
-          src="/src/Introduce_IMG/Introduce_Middle_Icon_IMG.png"
-          alt="Icon"
-          width={178}
-          height={213}
-          style={{ maxWidth: '100%', height: 'auto' }}
-        />
+        {!mobileFlag && (
+          <Image
+            src="/src/Introduce_IMG/Introduce_Middle_Icon_IMG.png"
+            alt="Icon"
+            width={178}
+            height={213}
+            style={{ maxWidth: '100%', height: 'auto' }}
+          />
+        )}
         <MiddleContainer>
           <MiddleTitle>KC EDU - History</MiddleTitle>
           <MiddleSubtitle>회사 연혁</MiddleSubtitle>
@@ -80,6 +86,12 @@ const HeaderSection = styled.section`
   align-items: center;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 90vw;
+    min-height: 300px;
+    padding: 0 2rem;
+  }
 `;
 
 const HeaderContent = styled.div`
@@ -88,6 +100,9 @@ const HeaderContent = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 0.5rem;
+
+  @media (max-width: 768px) {
+  }
 `;
 
 const Title = styled.h1`
@@ -150,6 +165,13 @@ const MiddleSection = styled.section`
   align-items: center;
 
   gap: 4rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+    min-height: 0;
+  }
 `;
 
 const MiddleContainer = styled.section`
@@ -161,6 +183,10 @@ const MiddleContainer = styled.section`
   align-items: flex-start;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    padding-top: 1rem;
+  }
 `;
 
 const MiddleTitle = styled.h1`
