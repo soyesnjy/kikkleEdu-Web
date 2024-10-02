@@ -158,7 +158,9 @@ const CalendarContainer = styled.div`
   .fc-scrollgrid-liquid,
   .fc-daygrid-body-unbalanced .fc-scrollgrid-sync-table,
   .fc-scrollgrid-sync-table td,
-  .fc-scrollgrid-sync-table th {
+  .fc-scrollgrid-sync-table th,
+  .fc-theme-standard td,
+  .fc-theme-standard th {
     border: none;
   }
 
@@ -232,7 +234,7 @@ const CalendarContainer = styled.div`
     padding: 0;
 
     .fc {
-      width: 90vw;
+      width: 80vw;
       height: 26rem;
     }
 
@@ -249,8 +251,8 @@ const CalendarContainer = styled.div`
     }
 
     .fc-daygrid-day-number {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
 
       font-size: 1rem;
       font-family: AppleSDGothicNeoB00;

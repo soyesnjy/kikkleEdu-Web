@@ -266,44 +266,46 @@ export default function Reservation() {
                 {navText}
               </ReservationNavText>
               {/* 페이지 버튼 */}
-              <ReservationButtonContainer>
-                {/* 이전 버튼 */}
-                {pageNumber > 0 && (
-                  <ReservationButton
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setPageNumber(pageNumber - 1);
-                    }}
-                  >
-                    이전 단계
-                  </ReservationButton>
-                )}
-                {/* 다음 버튼 */}
-                {pageNumber !== 3 && (
-                  <ReservationButton
-                    onClick={(e) => {
-                      e.preventDefault();
-                      // 페이지별 필수 항목 체크
-                      if (pageNumber === 0 && !pageCheckFirst()) return;
-                      if (pageNumber === 1 && !pageCheckSecond()) return;
-                      if (pageNumber === 2 && !pageCheckThird()) return;
-                      setPageNumber(pageNumber + 1);
-                    }}
-                  >
-                    다음 단계
-                  </ReservationButton>
-                )}
-                {/* 예약 버튼 */}
-                {pageNumber === 3 && (
-                  <ReservationButton
-                    onClick={reservationHandler}
-                    disabled={isPending}
-                    isPending={isPending}
-                  >
-                    {isPending ? '처리중...' : '예약 하기'}
-                  </ReservationButton>
-                )}
-              </ReservationButtonContainer>
+              {!mobileFlag && (
+                <ReservationButtonContainer>
+                  {/* 이전 버튼 */}
+                  {pageNumber > 0 && (
+                    <ReservationButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setPageNumber(pageNumber - 1);
+                      }}
+                    >
+                      이전 단계
+                    </ReservationButton>
+                  )}
+                  {/* 다음 버튼 */}
+                  {pageNumber !== 3 && (
+                    <ReservationButton
+                      onClick={(e) => {
+                        e.preventDefault();
+                        // 페이지별 필수 항목 체크
+                        if (pageNumber === 0 && !pageCheckFirst()) return;
+                        if (pageNumber === 1 && !pageCheckSecond()) return;
+                        if (pageNumber === 2 && !pageCheckThird()) return;
+                        setPageNumber(pageNumber + 1);
+                      }}
+                    >
+                      다음 단계
+                    </ReservationButton>
+                  )}
+                  {/* 예약 버튼 */}
+                  {pageNumber === 3 && (
+                    <ReservationButton
+                      onClick={reservationHandler}
+                      disabled={isPending}
+                      isPending={isPending}
+                    >
+                      {isPending ? '처리중...' : '예약 하기'}
+                    </ReservationButton>
+                  )}
+                </ReservationButtonContainer>
+              )}
             </ReservationNavContainer>
             {/* 수업 선택 */}
             {pageNumber === 0 && (
@@ -481,6 +483,46 @@ export default function Reservation() {
               </PageContainer>
             )}
           </InputContainer>
+          {mobileFlag && (
+            <ReservationButtonContainer>
+              {/* 이전 버튼 */}
+              {pageNumber > 0 && (
+                <ReservationButton
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setPageNumber(pageNumber - 1);
+                  }}
+                >
+                  이전 단계
+                </ReservationButton>
+              )}
+              {/* 다음 버튼 */}
+              {pageNumber !== 3 && (
+                <ReservationButton
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // 페이지별 필수 항목 체크
+                    if (pageNumber === 0 && !pageCheckFirst()) return;
+                    if (pageNumber === 1 && !pageCheckSecond()) return;
+                    if (pageNumber === 2 && !pageCheckThird()) return;
+                    setPageNumber(pageNumber + 1);
+                  }}
+                >
+                  다음 단계
+                </ReservationButton>
+              )}
+              {/* 예약 버튼 */}
+              {pageNumber === 3 && (
+                <ReservationButton
+                  onClick={reservationHandler}
+                  disabled={isPending}
+                  isPending={isPending}
+                >
+                  {isPending ? '처리중...' : '예약 하기'}
+                </ReservationButton>
+              )}
+            </ReservationButtonContainer>
+          )}
         </RightFormContainer>
       </FormWrap>
     </ReservationPageContainer>
@@ -717,7 +759,7 @@ const PageContainer = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    gap: 0.5rem;
+    gap: 1rem;
   }
 `;
 
