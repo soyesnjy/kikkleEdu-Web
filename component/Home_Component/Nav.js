@@ -44,9 +44,9 @@ const navList_info = [
     items: [
       { href: '/program', label: '발레 교육' },
       { href: '/program/dance', label: '댄스 교육' },
-      { href: '/program', label: '요가 교육' },
-      { href: '/program', label: '필라테스 교육' },
-      { href: '/program', label: '미술 교육' },
+      { href: '/program/yoga', label: '요가 교육' },
+      { href: '/program/pila', label: '필라테스 교육' },
+      { href: '/program/art', label: '미술 교육' },
       // { href: '/program', label: '마음챙김심리 교육' },
       // { href: '/program', label: '음악 교육' },
     ],
