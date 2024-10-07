@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
-// import Image from 'next/image';
+import Image from 'next/image';
 
 // import { mobile } from '@/store/state';
 // import { useRecoilState } from 'recoil';
@@ -48,31 +48,39 @@ const eduSectionData = {
     '작품반 발레',
     '체험형 원데이',
     '세계의 춤',
-  ],
+  ], // default features
+  youtubeUrl: '//www.youtube.com/embed/DTJUfa0kKzY',
 };
 
 const BalletProgramPage = () => {
-  const [classDataArr, serClassDataArr] = useState([]);
-  const router = useRouter();
+  const [classDataArr, setClassDataArr] = useState([]);
+  const [selectedClass, setSelectedClass] = useState({});
+  // const router = useRouter();
 
   // 발레 수업 DB 조회
   useEffect(() => {
     // Class Read API 호출 메서드 - ballet 고정
-    handleClassGet({ classTag: 'ballet' })
+    handleClassGet({ classTag: 'ballet', classDetail: true })
       .then((res) => res.data.data)
       .then((data) => {
-        serClassDataArr([
+        setClassDataArr([
           ...data.map((el) => {
             return {
               title: el.kk_class_title,
+              content: el.kk_class_content,
               imgPath: el.kk_class_file_path,
-              routePath: `/program/${el.kk_class_idx}`,
+              detailPath: el.kk_class_detail_path,
+              // routePath: `/program/${el.kk_class_idx}`,
             };
           }),
         ]);
       })
-      .catch(() => serClassDataArr(classDefaultArr));
+      .catch(() => setClassDataArr(classDefaultArr));
   }, []);
+
+  useEffect(() => {
+    if (classDataArr.length > 0) setSelectedClass({ ...classDataArr[0] });
+  }, [classDataArr]);
 
   return (
     <MainContainer>
@@ -89,44 +97,53 @@ const BalletProgramPage = () => {
           </HeaderIntroDiv>
         </HeaderContent>
       </HeaderSection>
+      {/* 수업 카테고리 */}
+      <MiddleSection>
+        <SearchContainer>
+          {classDataArr.map((el, index) => {
+            return (
+              <TagButton
+                key={index}
+                selected={selectedClass?.title === el?.title}
+                onClick={() => {
+                  setSelectedClass({ ...el });
+                }}
+              >
+                {el.title}
+              </TagButton>
+            );
+          })}
+        </SearchContainer>
+      </MiddleSection>
       {/* 소개 섹션 */}
       <IntroSection>
         <LessonSection
-          title="스토리발레(창의발레) 소개"
-          subtitle="소예키즈에서 연구개발한 ICT융복합 창의발레프로그램"
-          imgUrl="/src/Home_IMG/Home_Section_5_Background_IMG.png"
+          title={selectedClass?.title || ''}
+          subtitle={selectedClass?.content || ''}
+          imgUrl={
+            selectedClass?.imgPath ||
+            '/src/Home_IMG/Home_Section_5_Background_IMG.png'
+          }
           type="left"
         />
       </IntroSection>
       {/* 미들 섹션 - 발레 영상 */}
-      <EduArtVideoComponent sectionData={eduSectionData} />
-      {/* 미들 섹션 - 발레 프로그램 */}
-      <SectionTenth>
-        <MiddleContainer>
-          <MiddleSectionTitle>발레 프로그램</MiddleSectionTitle>
-          <Description>
-            Lorem ipsum dolor sit amet veli elitni legro int dolor.
-            <br />
-            Lorem ipsum dolor sit amet veli elitni legro int dolor.
-            <br />
-            Lorem ipsum dolor sit amet veli elitni legro int dolor.
-          </Description>
-          <ProgramContainer>
-            {classDataArr.map((el, index) => {
-              const { title, imgPath, routePath } = el;
-              return (
-                <ProgramContentContainer
-                  key={index}
-                  imgPath={imgPath}
-                  onClick={() => router.push(routePath)}
-                >
-                  <ProgramTitle>{title}</ProgramTitle>
-                </ProgramContentContainer>
-              );
-            })}
-          </ProgramContainer>
-        </MiddleContainer>
-      </SectionTenth>
+      <EduArtVideoComponent
+        sectionData={{
+          ...eduSectionData,
+          features: classDataArr.map((el) => el.title),
+        }}
+      />
+      {/* 수업 Detail 섹션 */}
+      <ClassDetailSection>
+        <Image
+          src={selectedClass?.detailPath || ''}
+          alt="DetailPath"
+          width={1321}
+          height={3044}
+          style={{ maxWidth: '60%', height: 'auto' }}
+        />
+      </ClassDetailSection>
       {/* 엔드 섹션 */}
       <EndSection>
         <EndTitle>
@@ -179,6 +196,11 @@ const HeaderSection = styled.section`
   align-items: center;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 90vw;
+    min-height: 24vh;
+  }
 `;
 
 const HeaderContent = styled.div`
@@ -236,6 +258,72 @@ const GreenColorSpan = styled.span`
   font-weight: 600;
 `;
 
+const MiddleSection = styled.section`
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    width: 100vw;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+
+    padding: 1rem;
+  }
+`;
+
+const SearchContainer = styled.section`
+  width: 100%;
+  padding-left: 12rem;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0rem;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+`;
+
+const TagButton = styled.button`
+  background-color: ${(props) =>
+    props.selected ? '#378E56' : 'rgba(255, 255, 255, 0.01)'};
+  border: 1px solid #378e56;
+  border-radius: 24px;
+
+  padding: 0.7rem 2rem;
+
+  color: ${(props) => (props.selected ? 'white' : 'black')};
+  text-align: center;
+  text-decoration: none;
+
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: Pretendard;
+
+  cursor: pointer;
+  &:hover {
+    background-color: #378e56;
+    color: white;
+  }
+
+  transition: 0.2s;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    padding: 0.8rem;
+    margin-bottom: 0;
+    border-radius: 1rem;
+  }
+`;
+
 const IntroSection = styled.section`
   width: 100vw;
   min-height: 50vh;
@@ -253,87 +341,87 @@ const IntroSection = styled.section`
   }
 `;
 
-const MiddleSectionTitle = styled.h2`
-  color: white;
+// const MiddleSectionTitle = styled.h2`
+//   color: white;
 
-  font-size: 3rem;
-  font-family: Pretendard;
-  font-weight: 700;
+//   font-size: 3rem;
+//   font-family: Pretendard;
+//   font-weight: 700;
 
-  @media (max-width: 1080px) {
-    font-size: 1.9rem;
-  }
-`;
+//   @media (max-width: 1080px) {
+//     font-size: 1.9rem;
+//   }
+// `;
 
-const ProgramContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 1fr;
+// const ProgramContainer = styled.div`
+//   display: grid;
+//   grid-template-columns: repeat(4, 1fr);
+//   grid-template-rows: 1fr;
 
-  gap: 1rem;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
+//   gap: 1rem;
+//   margin-top: 3rem;
+//   margin-bottom: 3rem;
 
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1fr;
-  }
-`;
+//   @media (max-width: 768px) {
+//     grid-template-columns: repeat(2, 1fr);
+//     grid-template-rows: 1fr;
+//   }
+// `;
 
-const ProgramContentContainer = styled.div`
-  width: 280px;
-  height: 280px;
+// const ProgramContentContainer = styled.div`
+//   width: 280px;
+//   height: 280px;
 
-  /* 배경 이미지와 그라데이션을 함께 설정 */
-  background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 1) 10%,
-      rgba(0, 0, 0, 0) 30%
-    ),
-    url(${(props) => props.imgPath || 'none'});
-  background-size: cover; /* 이미지 크기 조정 */
-  background-position: center;
-  background-repeat: no-repeat;
+//   /* 배경 이미지와 그라데이션을 함께 설정 */
+//   background: linear-gradient(
+//       to top,
+//       rgba(0, 0, 0, 1) 10%,
+//       rgba(0, 0, 0, 0) 30%
+//     ),
+//     url(${(props) => props.imgPath || 'none'});
+//   background-size: cover; /* 이미지 크기 조정 */
+//   background-position: center;
+//   background-repeat: no-repeat;
 
-  /* 배경 이미지 위에 그라데이션 효과를 덧씌우기 */
-  background-blend-mode: normal;
+//   /* 배경 이미지 위에 그라데이션 효과를 덧씌우기 */
+//   background-blend-mode: normal;
 
-  padding: 1rem;
+//   padding: 1rem;
 
-  border-radius: 15px;
+//   border-radius: 15px;
 
-  /* 선택 여부에 따른 테두리 */
-  border: ${(props) => (props.selected ? '5px solid #45b26b' : 'none')};
-  color: white;
+//   /* 선택 여부에 따른 테두리 */
+//   border: ${(props) => (props.selected ? '5px solid #45b26b' : 'none')};
+//   color: white;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-end;
+//   align-items: flex-start;
 
-  gap: 1rem;
+//   gap: 1rem;
 
-  cursor: pointer;
+//   cursor: pointer;
 
-  &:hover {
-    opacity: 0.8;
-  }
+//   &:hover {
+//     opacity: 0.8;
+//   }
 
-  /* 반응형 크기 조정 */
-  @media (max-width: 768px) {
-    width: 155px;
-    height: 202px;
-  }
-`;
+//   /* 반응형 크기 조정 */
+//   @media (max-width: 768px) {
+//     width: 155px;
+//     height: 202px;
+//   }
+// `;
 
-const ProgramTitle = styled.div`
-  font-family: Pretendard;
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: white;
+// const ProgramTitle = styled.div`
+//   font-family: Pretendard;
+//   font-weight: 700;
+//   font-size: 1.2rem;
+//   color: white;
 
-  z-index: 1;
-`;
+//   z-index: 1;
+// `;
 
 const EndSection = styled.section`
   width: 100vw;
@@ -386,41 +474,21 @@ const Button = styled.button`
   z-index: 1;
 `;
 
-const SectionTenth = styled.section`
-  width: 100vw;
-  height: 67vw;
-
+const ClassDetailSection = styled.section`
+  width: 100%;
+  min-height: 150vh;
   background-color: white;
 
   background-image: url('/src/Home_IMG/Home_Section_10_Background_IMG.png');
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  gap: 1rem;
-
-  @media (max-width: 728px) {
-    height: 100%;
-    flex-direction: column;
-    padding: 2rem;
-    background-size: cover;
-  }
-`;
-
-const MiddleContainer = styled.section`
-  width: 70%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-
-  gap: 1rem;
+  padding: 10rem;
 
   @media (max-width: 728px) {
     height: 100%;

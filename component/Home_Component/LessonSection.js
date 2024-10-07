@@ -10,14 +10,14 @@ const LessonSection = ({ title, subtitle, imgUrl, type }) => {
           <ContentContainer>
             <Title>{`${title}`}</Title>
             <Subtitle>{`${subtitle}`}</Subtitle>
-            <InfoText>Loren..</InfoText>
-            <Description>
+            {/* <InfoText>Loren..</InfoText> */}
+            {/* <Description>
               Lorem ipsum dolor sit amet veli elitni legro int dolor.
             </Description>
             <InfoText>Loren..</InfoText>
             <Description>
               Lorem ipsum dolor sit amet veli elitni legro int dolor.
-            </Description>
+            </Description> */}
             <Button>바로 가기</Button>
           </ContentContainer>
           <ImageContainer>
@@ -46,14 +46,14 @@ const LessonSection = ({ title, subtitle, imgUrl, type }) => {
           <ContentContainer>
             <Title>{`${title}`}</Title>
             <Subtitle>{`${subtitle}`}</Subtitle>
-            <InfoText>Loren..</InfoText>
-            <Description>
+            {/* <InfoText>Loren..</InfoText> */}
+            {/* <Description>
               Lorem ipsum dolor sit amet veli elitni legro int dolor.
             </Description>
             <InfoText>Loren..</InfoText>
             <Description>
               Lorem ipsum dolor sit amet veli elitni legro int dolor.
-            </Description>
+            </Description> */}
             <Button>바로 가기</Button>
           </ContentContainer>
         </>
@@ -85,7 +85,7 @@ const SectionContainer = styled.div`
 
 const ContentContainer = styled.div`
   text-align: left;
-  max-width: 500px;
+  min-width: 500px;
 
   display: flex;
   flex-direction: column;
@@ -95,9 +95,9 @@ const ContentContainer = styled.div`
   gap: 2rem;
 
   @media (max-width: 1080px) {
-    max-width: 100%;
+    min-width: 100%;
     gap: 1rem;
-    flex-direction: column;
+    align-items: center;
   }
 `;
 

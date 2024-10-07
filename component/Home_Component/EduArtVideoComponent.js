@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Image from 'next/image';
 
 const EduArtVideoComponent = ({ sectionData }) => {
-  const { title, content, features } = sectionData;
+  const { title, content, features, youtubeUrl } = sectionData;
   return (
     <Container>
       <LeftSection>
@@ -28,7 +28,7 @@ const EduArtVideoComponent = ({ sectionData }) => {
       </LeftSection>
       <VideoContent>
         <iframe
-          src="//www.youtube.com/embed/DTJUfa0kKzY" // 수업 영상 유튜브 링크
+          src={youtubeUrl} // 수업 영상 유튜브 링크
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerpolicy="strict-origin-when-cross-origin"
