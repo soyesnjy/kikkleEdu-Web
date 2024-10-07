@@ -32,7 +32,7 @@ const section_1_Arr = [
   },
 ];
 
-const section_2_Arr = [
+const classDefaultArr = [
   {
     imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_1_Background_IMG.png',
     title: '창의발레',
@@ -101,7 +101,7 @@ const KindergartenPage = () => {
             }),
           ]);
         })
-        .catch(() => setClassDataArr(section_2_Arr));
+        .catch(() => setClassDataArr(classDefaultArr));
     }
   }, []);
 

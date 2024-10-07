@@ -62,7 +62,7 @@ const ContentPage = () => {
             return {
               title: el.kk_class_title,
               imgPath: el.kk_class_file_path,
-              routePath: `/program/${el.kk_class_idx}`,
+              routePath: `/program${el.kk_class_tag === 'ballet' ? '' : `/${el.kk_class_tag}`}?cName=${el.kk_class_title}`,
             };
           }),
         ]);
@@ -158,7 +158,7 @@ const ContentPage = () => {
               <ProgramContentContainer
                 key={index}
                 imgPath={imgPath}
-                // onClick={() => router.push(routePath)}
+                onClick={() => router.push(routePath)}
               >
                 <ProgramTitle>{title}</ProgramTitle>
               </ProgramContentContainer>
@@ -428,11 +428,11 @@ const ProgramContentContainer = styled.div`
 
   gap: 1rem;
 
-  /* cursor: pointer; */
+  cursor: pointer;
 
-  /* &:hover {
+  &:hover {
     opacity: 0.8;
-  } */
+  }
 
   /* 반응형 크기 조정 */
   @media (max-width: 768px) {
