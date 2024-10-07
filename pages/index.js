@@ -75,15 +75,22 @@ export default function Home() {
       <IntroSection>
         <ReadContainer>
           <H1>Kids Class Edu</H1>
-          <H4>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus
-            imperdiet sed id elementum.{' '}
-          </H4>
-          <Button>Read More</Button>
+          {!mobileFlag && (
+            <>
+              <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
+              <Button>Read More</Button>
+            </>
+          )}
         </ReadContainer>
       </IntroSection>
       {/* 섹션1 */}
       <SectionFirst>
+        {mobileFlag && (
+          <div>
+            <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
+            <Button>Read More</Button>
+          </div>
+        )}
         {section_1_Arr.map((el, index) => {
           const { imgPath, title, content } = el;
           return (
@@ -209,8 +216,8 @@ const IntroSection = styled.section`
 
   @media (max-width: 1080px) {
     flex-direction: column;
+    justify-content: center;
     padding: 1rem;
-    padding-bottom: 5rem;
   }
 `;
 
@@ -231,7 +238,7 @@ const ReadContainer = styled.div`
 
   @media (max-width: 1080px) {
     width: 100%;
-    padding: 0;
+    padding: 0 1rem;
   }
 `;
 
@@ -244,8 +251,8 @@ const H1 = styled.h1`
   z-index: 1;
 
   @media (max-width: 1080px) {
-    font-size: 40px;
-    width: 70%;
+    font-size: 55px;
+    width: 80%;
   }
 `;
 
@@ -315,6 +322,8 @@ const SectionFirst = styled.section`
     flex-direction: column;
     align-items: flex-start;
     padding: 2rem;
+
+    gap: 4rem;
   }
 `;
 
