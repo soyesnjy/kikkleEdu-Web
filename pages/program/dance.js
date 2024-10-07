@@ -5,9 +5,9 @@ import { useSearchParams } from 'next/navigation';
 
 // import { mobile } from '@/store/state';
 // import { useRecoilState } from 'recoil';
+// import { useRouter } from 'next/router';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import LessonSection from '@/component/Home_Component/LessonSection';
 import EduArtVideoComponent from '@/component/Home_Component/EduArtVideoComponent';
 import { handleClassGet } from '@/fetchAPI/classAPI';
@@ -44,7 +44,7 @@ const eduSectionData = {
   title: '댄스 교육 프로그램 영상',
   content:
     'Lorem ipsum dolor sit amet velitLorem ipsum dolor sit amet velit, elitni legro int dolor. elitni legro int dolor.',
-  features: ['댄스작품반', 'kpop 소예 방송댄스'],
+  features: ['댄스작품반', 'kpop 소예 방송댄스'], // default features
   youtubeUrl: '//www.youtube.com/embed/inQp6nNnkjk',
 };
 
@@ -58,7 +58,7 @@ const DanceProgramPage = () => {
 
   // 발레 수업 DB 조회
   useEffect(() => {
-    // Class Read API 호출 메서드 - ballet 고정
+    // Class Read API 호출 메서드 - dance 고정
     handleClassGet({ classTag: 'dance', classDetail: true })
       .then((res) => res.data.data)
       .then((data) => {
@@ -69,7 +69,6 @@ const DanceProgramPage = () => {
               content: el.kk_class_content,
               imgPath: el.kk_class_file_path,
               detailPath: el.kk_class_detail_path,
-              // routePath: `/program/${el.kk_class_idx}`,
             };
           }),
         ]);

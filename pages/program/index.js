@@ -5,9 +5,9 @@ import { useSearchParams } from 'next/navigation';
 
 // import { mobile } from '@/store/state';
 // import { useRecoilState } from 'recoil';
+// import { useRouter } from 'next/router';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import LessonSection from '@/component/Home_Component/LessonSection';
 import EduArtVideoComponent from '@/component/Home_Component/EduArtVideoComponent';
 import { handleClassGet } from '@/fetchAPI/classAPI';
