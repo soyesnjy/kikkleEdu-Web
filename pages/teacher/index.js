@@ -114,13 +114,13 @@ const TeacherListPage = () => {
               필라테스
             </TagButton>
             <TagButton
-              selected={teacherClass === 'music'}
-              value="music"
+              selected={teacherClass === 'art'}
+              value="art"
               onClick={(e) => {
                 setTeacherClass(e.target.value);
               }}
             >
-              음악
+              미술
             </TagButton>
           </SearchContainer>
         </MiddleContainer>
