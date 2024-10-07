@@ -6,7 +6,7 @@ import axios from 'axios';
 export const handleClassGet = async (query) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/class?${query?.classTag ? `classTag=${query?.classTag}&` : ''}${query?.classType ? `classType=${query?.classType}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/class?${query?.classDetail ? `classDetail=${query?.classDetail}&` : ''}${query?.classTag ? `classTag=${query?.classTag}&` : ''}${query?.classType ? `classType=${query?.classType}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
