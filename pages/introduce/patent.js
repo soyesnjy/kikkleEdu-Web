@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Link from 'next/link';
 import Image from 'next/image';
 
 const PatentPage = () => {
@@ -28,7 +29,9 @@ const PatentPage = () => {
         <EndTitle>
           우리아이의 성장 소예키즈와 함께 몸과 마음을 성장시켜요
         </EndTitle>
-        <Button>콘텐츠 소개</Button>
+        <Link href="/introduce/partner">
+          <Button>파트너사</Button>
+        </Link>
       </EndSection>
     </MainContainer>
   );

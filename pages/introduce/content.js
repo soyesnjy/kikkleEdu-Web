@@ -78,8 +78,9 @@ const ContentPage = () => {
           <Title>Kids Class edu</Title>
           <Subtitle>콘텐츠 소개</Subtitle>
           <Description>
-            소예키즈에서 연구개발한 다양한 예체능 교육프로그램을 연령대별로
-            제공하고 있으며 기관이 원하는 프로그램을 선택 & 제공하고 있습니다.
+            {`소예키즈에서 연구개발한 다양한 예체능
+교육프로그램을 연령대별로 제공하고 있으며 기관이 원하는
+프로그램을 선택 & 제공하고 있습니다.`}
           </Description>
           <HeaderIntroDiv>
             소예키즈 소개 - <GreenColorSpan>콘텐츠 소개</GreenColorSpan>
@@ -102,6 +103,7 @@ const ContentPage = () => {
       </MiddleSection>
       {/* 수업 프로그램 섹션 */}
       <MiddleSectionThird>
+        {/* 수업 카테고리 */}
         <SearchContainer>
           <TagButton
             selected={classTag === 'ballet'}
@@ -140,13 +142,13 @@ const ContentPage = () => {
             필라테스
           </TagButton>
           <TagButton
-            selected={classTag === 'music'}
-            value="music"
+            selected={classTag === 'art'}
+            value="art"
             onClick={(e) => {
               setClassTag(e.target.value);
             }}
           >
-            음악
+            미술
           </TagButton>
         </SearchContainer>
         <ProgramContainer>
@@ -156,7 +158,7 @@ const ContentPage = () => {
               <ProgramContentContainer
                 key={index}
                 imgPath={imgPath}
-                onClick={() => router.push(routePath)}
+                // onClick={() => router.push(routePath)}
               >
                 <ProgramTitle>{title}</ProgramTitle>
               </ProgramContentContainer>
@@ -201,7 +203,7 @@ const HeaderSection = styled.section`
       /* 시작 색상, 투명도 0.8 */ rgba(76, 176, 178, 0) 60.5%
         /* 중간에서 투명해짐 */
     ),
-    url('');
+    url('/src/Introduce_IMG/Introduce_Content_Header_Background_IMG.png');
   background-size: cover; /* 배경 이미지 크기 조정 */
   background-position: center;
   background-repeat: no-repeat;
@@ -243,9 +245,13 @@ const Subtitle = styled.h2`
 const Description = styled.p`
   color: white;
 
-  font-size: 1.1rem;
+  font-size: 18px;
   font-family: Pretendard;
   font-weight: 400;
+
+  white-space: pre-wrap;
+
+  line-height: 27px;
 `;
 
 const HeaderIntroDiv = styled.div`
@@ -422,11 +428,11 @@ const ProgramContentContainer = styled.div`
 
   gap: 1rem;
 
-  cursor: pointer;
+  /* cursor: pointer; */
 
-  &:hover {
+  /* &:hover {
     opacity: 0.8;
-  }
+  } */
 
   /* 반응형 크기 조정 */
   @media (max-width: 768px) {
