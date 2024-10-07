@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 
 // import { mobile } from '@/store/state';
 // import { useRecoilState } from 'recoil';
@@ -55,6 +56,9 @@ const eduSectionData = {
 const BalletProgramPage = () => {
   const [classDataArr, setClassDataArr] = useState([]);
   const [selectedClass, setSelectedClass] = useState({});
+
+  const searchParams = useSearchParams();
+  const cName = searchParams.get('cName');
   // const router = useRouter();
 
   // 발레 수업 DB 조회
@@ -70,7 +74,6 @@ const BalletProgramPage = () => {
               content: el.kk_class_content,
               imgPath: el.kk_class_file_path,
               detailPath: el.kk_class_detail_path,
-              // routePath: `/program/${el.kk_class_idx}`,
             };
           }),
         ]);
@@ -78,9 +81,27 @@ const BalletProgramPage = () => {
       .catch(() => setClassDataArr(classDefaultArr));
   }, []);
 
+  // selectedClass 설정
   useEffect(() => {
-    if (classDataArr.length > 0) setSelectedClass({ ...classDataArr[0] });
-  }, [classDataArr]);
+    // cName Query 있는 경우
+    if (cName) {
+      setSelectedClass({
+        ...classDataArr.filter((el) => el.title === cName)[0],
+      });
+      return;
+    }
+    // cName Query 없는 경우
+    else if (classDataArr.length > 0) {
+      setSelectedClass({ ...classDataArr[0] });
+      return;
+    }
+  }, [classDataArr, cName]);
+
+  useEffect(() => {
+    setSelectedClass({
+      ...classDataArr.filter((el) => el.title === cName)[0],
+    });
+  }, [cName]);
 
   return (
     <MainContainer>

@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 
 // import { mobile } from '@/store/state';
 // import { useRecoilState } from 'recoil';
@@ -50,7 +51,10 @@ const eduSectionData = {
 const DanceProgramPage = () => {
   const [classDataArr, setClassDataArr] = useState([]);
   const [selectedClass, setSelectedClass] = useState({});
-  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const cName = searchParams.get('cName');
+  // const router = useRouter();
 
   // 발레 수업 DB 조회
   useEffect(() => {
@@ -73,9 +77,27 @@ const DanceProgramPage = () => {
       .catch(() => setClassDataArr(classDefaultArr));
   }, []);
 
+  // selectedClass 설정
   useEffect(() => {
-    if (classDataArr.length > 0) setSelectedClass({ ...classDataArr[0] });
-  }, [classDataArr]);
+    // cName Query 있는 경우
+    if (cName) {
+      setSelectedClass({
+        ...classDataArr.filter((el) => el.title === cName)[0],
+      });
+      return;
+    }
+    // cName Query 없는 경우
+    else if (classDataArr.length > 0) {
+      setSelectedClass({ ...classDataArr[0] });
+      return;
+    }
+  }, [classDataArr, cName]);
+
+  useEffect(() => {
+    setSelectedClass({
+      ...classDataArr.filter((el) => el.title === cName)[0],
+    });
+  }, [cName]);
 
   return (
     <MainContainer>

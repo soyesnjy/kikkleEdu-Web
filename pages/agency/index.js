@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 
 import AgencyProgramCard from '@/component/Home_Component/AgencyProgramCard';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
+import { handleClassGet } from '@/fetchAPI/classAPI';
 
 import Image from 'next/image';
 
@@ -34,40 +35,41 @@ const section_1_Arr = [
 const section_2_Arr = [
   {
     imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_1_Background_IMG.png',
-    title: '스토리발레(창의발레)',
-    routePath: '/',
+    title: '창의발레',
+    routePath: '/program',
   },
   {
     imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_2_Background_IMG.png',
     title: '체험형 원데이 프로그램',
-    routePath: '/',
+    routePath: '/program',
   },
   {
     imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_3_Background_IMG.png',
     title: '발표회 프로그램',
-    routePath: '/',
+    routePath: '/program',
   },
   {
     imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_4_Background_IMG.png',
     title: 'KPOP 방송댄스 프로그램',
-    routePath: '/',
+    routePath: '/program',
   },
   {
     imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_5_Background_IMG.png',
     title: '세계의 춤 프로그램',
-    routePath: '/',
+    routePath: '/program',
   },
 ];
 
 const KindergartenPage = () => {
   const [agency, setAgency] = useRecoilState(agencyClass);
+  const [classDataArr, setClassDataArr] = useState([]);
   const [teacherDataArr, setTeacherDataArr] = useState([]);
   const router = useRouter();
 
   // 강사 List 조회
   useEffect(() => {
+    // 강사 Read API 호출 메서드
     if (!teacherDataArr.length) {
-      // 강사 Read API 호출 메서드
       handleTeacherGet({ classType: '유치원' })
         .then((res) => res.data.data)
         .then((data) => {
@@ -83,6 +85,23 @@ const KindergartenPage = () => {
           ]);
         })
         .catch((err) => console.error(err));
+    }
+    // 수업 Read API 호출 메서드
+    if (!classDataArr.length) {
+      handleClassGet({ classType: '공통' })
+        .then((res) => res.data.data)
+        .then((data) => {
+          setClassDataArr([
+            ...data.map((el) => {
+              return {
+                title: el.kk_class_title,
+                imgPath: el.kk_class_file_path,
+                routePath: `/program${el.kk_class_tag === 'ballet' ? '' : `/${el.kk_class_tag}`}?cName=${el.kk_class_title}`,
+              };
+            }),
+          ]);
+        })
+        .catch(() => setClassDataArr(section_2_Arr));
     }
   }, []);
 
@@ -169,7 +188,7 @@ const KindergartenPage = () => {
           dolor sit amet veli elitni legro int dolor.
         </Description>
         <ProgramContainer>
-          {section_2_Arr.map((el, index) => {
+          {classDataArr.map((el, index) => {
             const { title, imgPath, routePath } = el;
             return (
               <ProgramContentContainer
