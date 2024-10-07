@@ -88,7 +88,7 @@ const KindergartenPage = () => {
     }
     // 수업 Read API 호출 메서드
     if (!classDataArr.length) {
-      handleClassGet({ classType: '공통' })
+      handleClassGet({ classType: '유치원' })
         .then((res) => res.data.data)
         .then((data) => {
           setClassDataArr([
@@ -529,7 +529,7 @@ const MiddleSectionThird = styled.section`
 
 const ProgramContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 1fr;
 
   gap: 1rem;
