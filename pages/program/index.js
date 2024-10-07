@@ -61,7 +61,7 @@ const BalletProgramPage = () => {
   const cName = searchParams.get('cName');
   // const router = useRouter();
 
-  // 발레 수업 DB 조회
+  // 수업 DB 조회
   useEffect(() => {
     // Class Read API 호출 메서드 - ballet 고정
     handleClassGet({ classTag: 'ballet', classDetail: true })

@@ -41,14 +41,14 @@ const classDefaultArr = [
 ];
 
 const eduSectionData = {
-  title: '댄스 교육 프로그램 영상',
+  title: '필라테스 교육 프로그램 영상',
   content:
     'Lorem ipsum dolor sit amet velitLorem ipsum dolor sit amet velit, elitni legro int dolor. elitni legro int dolor.',
-  features: ['댄스작품반', 'kpop 소예 방송댄스'], // default features
-  youtubeUrl: '//www.youtube.com/embed/inQp6nNnkjk',
+  features: ['성인필라테스'], // default features
+  youtubeUrl: '//www.youtube.com/embed/k4yFXL9ClSk',
 };
 
-const DanceProgramPage = () => {
+const YogaProgramPage = () => {
   const [classDataArr, setClassDataArr] = useState([]);
   const [selectedClass, setSelectedClass] = useState({});
 
@@ -58,8 +58,8 @@ const DanceProgramPage = () => {
 
   // 수업 DB 조회
   useEffect(() => {
-    // Class Read API 호출 메서드 - dance 고정
-    handleClassGet({ classTag: 'dance', classDetail: true })
+    // Class Read API 호출 메서드 - pila 고정
+    handleClassGet({ classTag: 'pila', classDetail: true })
       .then((res) => res.data.data)
       .then((data) => {
         setClassDataArr([
@@ -104,12 +104,12 @@ const DanceProgramPage = () => {
       <HeaderSection>
         <HeaderContent>
           <Title>Kids Class edu</Title>
-          <Subtitle>댄스 교육</Subtitle>
+          <Subtitle>필라테스 교육</Subtitle>
           <Description>
             Lorem ipsum dolor sit amet veli elitni legro int dolor.
           </Description>
           <HeaderIntroDiv>
-            소예키즈 소개 - <GreenColorSpan>댄스 교육</GreenColorSpan>
+            소예키즈 소개 - <GreenColorSpan>필라테스 교육</GreenColorSpan>
           </HeaderIntroDiv>
         </HeaderContent>
       </HeaderSection>
@@ -172,7 +172,7 @@ const DanceProgramPage = () => {
   );
 };
 
-export default DanceProgramPage;
+export default YogaProgramPage;
 
 const MainContainer = styled.div`
   width: 100%;

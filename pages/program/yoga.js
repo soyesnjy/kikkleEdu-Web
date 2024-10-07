@@ -56,9 +56,9 @@ const YogaProgramPage = () => {
   const cName = searchParams.get('cName');
   // const router = useRouter();
 
-  // 발레 수업 DB 조회
+  // 수업 DB 조회
   useEffect(() => {
-    // Class Read API 호출 메서드 - dance 고정
+    // Class Read API 호출 메서드 - yoga 고정
     handleClassGet({ classTag: 'yoga', classDetail: true })
       .then((res) => res.data.data)
       .then((data) => {
