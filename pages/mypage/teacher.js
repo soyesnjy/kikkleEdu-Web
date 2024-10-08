@@ -1,13 +1,12 @@
-import styled, { keyframes } from 'styled-components';
+/* eslint-disable react-hooks/exhaustive-deps */
+import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { agencyClass } from '@/store/state';
 import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
 import { useRouter } from 'next/router';
 
 import Directory from '@/component/Music_Component/Directory';
 import { handleDirectoryRead } from '@/fetchAPI/directory';
-import { useTranslation } from 'next-i18next';
+// import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
 import Pagination from '@/component/Common_Component/Pagination';
@@ -30,8 +29,15 @@ const dummyTableData = [
   // 추가 데이터
 ];
 
+const agencyTypeArr = [
+  '유치원',
+  '초등학교',
+  '문화센터',
+  '커뮤니티센터',
+  '아동(복지)센터',
+];
+
 const MyPage = () => {
-  const [agencyType, setAgencyType] = useRecoilState(agencyClass);
   const [activeTab, setActiveTab] = useState('attend');
   const [tableData, setTableData] = useState(dummyTableData);
   const [page, setPage] = useState(1);
@@ -55,12 +61,20 @@ const MyPage = () => {
     setData([...formattedData]);
   };
 
-  // 기관 로그인 시 진입 제한
   useEffect(() => {
-    if (agencyType) router.push('/mypage');
-  }, [agencyType]);
-
-  useEffect(() => {
+    // 비로그인 처리
+    const loginSession = localStorage.getItem('log');
+    if (!loginSession) {
+      router.replace('/login');
+      return;
+    }
+    // 기관 로그인 진입 제한
+    const agencyType = localStorage.getItem('agencyType');
+    if (!agencyTypeArr.includes(agencyType)) {
+      router.replace('/mypage/teacher');
+      return;
+    }
+    // activeTab 설정
     if (localStorage.getItem('activeTab'))
       setActiveTab(localStorage.getItem('activeTab'));
     else setActiveTab('attend');
@@ -84,7 +98,8 @@ const MyPage = () => {
           setLastPageNum(data.lastPageNum);
         });
     } else initMusicDirectory(activeTab);
-    if (localStorage.getItem('activeTab') !== activeTab) setPage(1); // 탭 변경 시 페이지 초기화
+    // 탭 변경 시 페이지 초기화
+    if (localStorage.getItem('activeTab') !== activeTab) setPage(1);
     localStorage.setItem('activeTab', activeTab);
   }, [activeTab, page]);
 

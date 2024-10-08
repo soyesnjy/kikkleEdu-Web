@@ -71,8 +71,12 @@ const Administor = () => {
     setData([...formattedData]);
   };
 
+  // 관리자 권한이 없을 경우 메인페이지로 이동
   useEffect(() => {
-    // if (agencyType !== 'admin') router.push('/');
+    if (localStorage.getItem('agencyType') !== 'admin') router.replace('/');
+  }, [agencyType]);
+
+  useEffect(() => {
     if (localStorage.getItem('activeTab'))
       setActiveTab(localStorage.getItem('activeTab'));
     else setActiveTab('attend');
@@ -81,11 +85,6 @@ const Administor = () => {
       localStorage.removeItem('activeTab');
     };
   }, []);
-
-  // 관리자 권한이 없을 경우 메인페이지로 이동
-  useEffect(() => {
-    if (localStorage.getItem('agencyType') !== 'admin') router.push('/');
-  }, [agencyType]);
 
   // 일반 조회 (탭 || 페이지)
   useEffect(() => {

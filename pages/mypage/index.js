@@ -1,15 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { agencyClass } from '../../store/state';
 import { useRouter } from 'next/router';
 import {
   handleMypageAgencyReservationGet,
   handleMypageTeacherAttendGet,
 } from '@/fetchAPI/mypageAPI';
 
-import { useTranslation } from 'next-i18next';
+// import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import AgencyTableReservationBody from '@/component/MyPage_Component/Agency/AgencyTableReservationBody';
 import AgencyTableAttendBody from '@/component/MyPage_Component/Agency/AgencyTableAttendBody';
@@ -38,11 +36,10 @@ const agencyTypeArr = [
   '초등학교',
   '문화센터',
   '커뮤니티센터',
-  '아동(복지)센터',
+  '아동복지센터',
 ];
 
 const MyPage = () => {
-  const [agencyType, setAgencyType] = useRecoilState(agencyClass);
   const [activeTab, setActiveTab] = useState('attend');
   const [tableData, setTableData] = useState(dummyTableData);
   const [page, setPage] = useState(1);
@@ -50,12 +47,20 @@ const MyPage = () => {
 
   const router = useRouter();
 
-  // 강사 로그인 시 진입 제한
   useEffect(() => {
-    if (!agencyTypeArr.includes(agencyType)) router.push('/mypage/teacher');
-  }, [agencyType]);
-
-  useEffect(() => {
+    // 비로그인 처리
+    const loginSession = localStorage.getItem('log');
+    if (!loginSession) {
+      router.replace('/login');
+      return;
+    }
+    // 강사 로그인 시 진입 제한
+    const agencyType = localStorage.getItem('agencyType');
+    if (!agencyTypeArr.includes(agencyType)) {
+      router.replace('/mypage/teacher');
+      return;
+    }
+    // activeTab 설정
     if (localStorage.getItem('activeTab'))
       setActiveTab(localStorage.getItem('activeTab'));
     else setActiveTab('reservation');
@@ -251,20 +256,20 @@ const TableHeader = styled.th`
   text-align: left;
 `;
 
-const TableRow = styled.tr`
-  &:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-`;
+// const TableRow = styled.tr`
+//   &:nth-child(even) {
+//     background-color: #f9f9f9;
+//   }
+// `;
 
-const TableCell = styled.td`
-  padding: 1rem;
-  border-bottom: 1px solid #ddd;
-`;
+// const TableCell = styled.td`
+//   padding: 1rem;
+//   border-bottom: 1px solid #ddd;
+// `;
 
-const PaymentStatus = styled.span`
-  color: ${({ status }) => (status === '결제 완료' ? '#61b15a' : 'red')};
-  font-weight: bold;
-`;
+// const PaymentStatus = styled.span`
+//   color: ${({ status }) => (status === '결제 완료' ? '#61b15a' : 'red')};
+//   font-weight: bold;
+// `;
 
 export default MyPage;
