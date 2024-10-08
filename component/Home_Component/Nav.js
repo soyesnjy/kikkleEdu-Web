@@ -257,7 +257,11 @@ export default function Nav() {
               style={{ maxWidth: '100%', height: 'auto' }}
             />
           </Link>
-          <NavModal login={login} logoutHandler={logoutHandler} />
+          <NavModal
+            login={login}
+            logoutHandler={logoutHandler}
+            navList_info={navList_info}
+          />
         </NavContainer>
       )}
     </>

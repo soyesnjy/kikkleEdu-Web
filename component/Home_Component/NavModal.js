@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import NavDropDown from './NavDropDown';
 // import { useSession } from "next-auth/react";
 
-const NavModal = ({ login, logoutHandler }) => {
+const NavModal = ({ login, logoutHandler, navList_info }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -15,6 +15,7 @@ const NavModal = ({ login, logoutHandler }) => {
 
   return (
     <NavMenuContainer>
+      {/* 로고 */}
       <NavMobileBtn onClick={toggleMenu}>
         <Image
           src="/src/Home_IMG/Nav_IMG/Home_Nav_Combine_3_IMG.png"
@@ -24,34 +25,33 @@ const NavModal = ({ login, logoutHandler }) => {
           style={{ maxWidth: '100%', height: 'auto' }}
         />
       </NavMobileBtn>
-
+      {/* Menu Section */}
       <SideMenu isOpen={isOpen}>
+        {/* 닫기버튼 */}
         <CloseButton onClick={toggleMenu}>
           <CloseIcon />
         </CloseButton>
         <MenuList>
-          <Link href="/introduce" passHref>
-            <MenuItem onClick={toggleMenu}>소예기즈 소개</MenuItem>
-          </Link>
-          <Link href="/agency" passHref>
-            <MenuItem onClick={toggleMenu}>기업 및 기관</MenuItem>
-          </Link>
-          <Link href="/" passHref>
-            <MenuItem onClick={toggleMenu}>강사</MenuItem>
-          </Link>
-          <Link href="/" passHref>
-            <MenuItem onClick={toggleMenu}>교육 프로그램</MenuItem>
-          </Link>
-          <Link href="/" passHref>
-            <MenuItem onClick={toggleMenu}>게시판</MenuItem>
-          </Link>
+          {navList_info.map((el, index) => {
+            return (
+              <NavDropDown key={index} toggleMenu={toggleMenu} navItem={el} />
+            );
+          })}
         </MenuList>
+        {/* End Section */}
         {login ? (
-          <LoginButton onClick={logoutHandler}>LOGOUT</LoginButton>
+          <NavEndContainer>
+            <Link href="/mypage" passHref>
+              <NavMobileButton onClick={toggleMenu}>MY PAGE</NavMobileButton>
+            </Link>
+            <NavMobileButton onClick={logoutHandler}>LOGOUT</NavMobileButton>
+          </NavEndContainer>
         ) : (
-          <Link href="/login" passHref>
-            <LoginButton onClick={toggleMenu}>LOGIN</LoginButton>
-          </Link>
+          <NavEndContainer>
+            <Link href="/login" passHref>
+              <NavMobileButton onClick={toggleMenu}>LOGIN</NavMobileButton>
+            </Link>
+          </NavEndContainer>
         )}
       </SideMenu>
     </NavMenuContainer>
@@ -86,25 +86,26 @@ const NavMobileBtn = styled.button`
 
   transition: 0.3s;
 `;
-const SideMenuContainer = styled.div`
-  background-color: rgba(0, 0, 0, 0.5);
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 100vw;
-  height: 100vh;
+const NavEndContainer = styled.div`
+  padding: 1.2rem;
 
-  display: ${(props) => (props.isOpen ? 'flex' : 'none')};
-  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition: 0.3s;
 `;
 
 const SideMenu = styled.div`
   position: fixed;
   top: 0;
   right: 0;
-  width: 250px;
+  width: 80%;
   height: 100%;
   background-color: white;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
@@ -128,27 +129,28 @@ const MenuList = styled.ul`
   padding: 0;
   margin: 0;
   flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  gap: 1rem;
 `;
 
-const MenuItem = styled.li`
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
-  &:hover {
-    color: #0070f3;
-  }
-`;
-
-const LoginButton = styled.button`
-  padding: 10px 20px;
-  border: 1px solid #0070f3;
-  color: #0070f3;
+const NavMobileButton = styled.button`
+  padding: 1rem 2rem;
+  border: 1px solid #45b26b;
+  border-radius: 8px;
+  color: #45b26b;
   background-color: white;
+
   cursor: pointer;
   align-self: center;
   margin-top: auto;
+
   &:hover {
-    background-color: #0070f3;
+    background-color: #45b26b;
     color: white;
   }
 `;

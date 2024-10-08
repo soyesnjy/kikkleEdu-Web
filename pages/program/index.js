@@ -161,7 +161,7 @@ const BalletProgramPage = () => {
           alt="DetailPath"
           width={1321}
           height={3044}
-          style={{ maxWidth: '60%', height: 'auto' }}
+          style={{ maxWidth: '100%', height: 'auto' }}
         />
       </ClassDetailSection>
       {/* 엔드 섹션 */}
@@ -507,12 +507,12 @@ const ClassDetailSection = styled.section`
   justify-content: center;
   align-items: center;
 
-  padding: 10rem;
+  padding: 30rem;
 
   @media (max-width: 728px) {
     height: 100%;
     flex-direction: column;
-    padding: 2rem;
+    padding: 0 2rem;
     background-size: cover;
   }
 `;
