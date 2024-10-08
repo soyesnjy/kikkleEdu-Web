@@ -94,8 +94,7 @@ const HeaderSection = styled.section`
   background: linear-gradient(
       90deg,
       rgba(76, 176, 178, 0.8) 0%,
-      /* 시작 색상, 투명도 0.8 */ rgba(76, 176, 178, 0) 60.5%
-        /* 중간에서 투명해짐 */
+      rgba(76, 176, 178, 0) 60.5%
     ),
     url('/src/Introduce_IMG/Map/Introduce_Map_Header_Background_IMG.png');
   background-size: cover; /* 배경 이미지 크기 조정 */
@@ -241,13 +240,13 @@ const MapLeftTextContainer = styled.div`
 `;
 
 const MapLeftTitle = styled.h1`
-  font-family: Nunito;
-  font-weight: 600;
+  font-family: Pretendard;
+  font-weight: 700;
   color: black;
 `;
 
 const MapLeftDescription = styled.h4`
-  font-family: Nunito;
+  font-family: Pretendard;
   font-weight: 600;
   color: #b9b9b9;
 `;
