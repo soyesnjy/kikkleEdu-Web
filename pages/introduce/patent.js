@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
+import PatentCarousel from '@/component/Introduction_Component/PatentCarousel';
 
 const PatentPage = () => {
   return (
@@ -23,7 +24,7 @@ const PatentPage = () => {
         </MiddleContainer>
       </MiddleSection>
       {/* 특허 섹션 */}
-
+      <PatentCarousel />
       {/* 엔드 섹션 */}
       <EndSection>
         <EndTitle>
@@ -62,7 +63,7 @@ const HeaderSection = styled.section`
       /* 시작 색상, 투명도 0.8 */ rgba(76, 176, 178, 0) 60.5%
         /* 중간에서 투명해짐 */
     ),
-    url('/src/Introduce_IMG/Introduce_Patent_Header_Background_IMG.png');
+    url('/src/Introduce_IMG/Patent/Introduce_Patent_Header_Background_IMG.png');
   background-size: cover; /* 배경 이미지 크기 조정 */
   background-position: center;
   background-repeat: no-repeat;
