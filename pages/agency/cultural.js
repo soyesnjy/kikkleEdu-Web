@@ -57,7 +57,7 @@ const classDefaultArr = [
   },
 ];
 
-const KindergartenPage = () => {
+const CulturalPage = () => {
   const [agency, setAgency] = useRecoilState(agencyClass);
   const [classDataArr, setClassDataArr] = useState([]);
   const [teacherDataArr, setTeacherDataArr] = useState([]);
@@ -67,7 +67,7 @@ const KindergartenPage = () => {
   useEffect(() => {
     // 강사 Read API 호출 메서드
     if (!teacherDataArr.length) {
-      handleTeacherGet({ classType: '유치원' })
+      handleTeacherGet({ classType: '문화센터' })
         .then((res) => res.data.data)
         .then((data) => {
           setTeacherDataArr([
@@ -85,7 +85,7 @@ const KindergartenPage = () => {
     }
     // 수업 Read API 호출 메서드
     if (!classDataArr.length) {
-      handleClassGet({ classType: '유치원' })
+      handleClassGet({ classType: '문화센터' })
         .then((res) => res.data.data)
         .then((data) => {
           setClassDataArr([
@@ -143,7 +143,7 @@ const KindergartenPage = () => {
           <ReservationButtonContainer>
             <ReservationTextContainer>
               <ReservationButtonTitle>
-                유치원 수업 예약하기
+                문화센터 수업 예약하기
               </ReservationButtonTitle>
               <ReservationButtonSubTitle>
                 손쉽게 수업을 예약해보세요.
@@ -165,10 +165,10 @@ const KindergartenPage = () => {
       {/* 미들 섹션 - 수업 영상 */}
       <MiddleSectionSecond>
         <MiddleSectionSubtitle>Our Program Video</MiddleSectionSubtitle>
-        <MiddleSectionTitle>유치원 수업 영상</MiddleSectionTitle>
+        <MiddleSectionTitle>문화센터 수업 영상</MiddleSectionTitle>
         <VideoContent>
           <iframe
-            src="//www.youtube.com/embed/DTJUfa0kKzY" // 수업 영상 유튜브 링크
+            src="//www.youtube.com/embed/inQp6nNnkjk" // 수업 영상 유튜브 링크
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
@@ -179,7 +179,7 @@ const KindergartenPage = () => {
       {/* 미들 섹션 - 수업 프로그램 */}
       <MiddleSectionThird>
         <MiddleSectionSubtitle>Our Program Image</MiddleSectionSubtitle>
-        <MiddleSectionTitle>유치원 프로그램</MiddleSectionTitle>
+        <MiddleSectionTitle>문화센터 프로그램</MiddleSectionTitle>
         <Description>
           아이들이 재미있게 체험할 수 있는 다양한 소예키즈의 교육프로그램
         </Description>
@@ -235,7 +235,7 @@ const KindergartenPage = () => {
   );
 };
 
-export default KindergartenPage;
+export default CulturalPage;
 
 const MainContainer = styled.div`
   width: 100%;
@@ -328,7 +328,7 @@ const StyledLink = styled(Link)`
 `;
 
 const ReservationButton = styled.button`
-  background-color: #45b26b;
+  background-color: #4a90e2;
   border-radius: 2rem;
   border: none;
 
@@ -394,7 +394,7 @@ const ReservationButtonContainer = styled.div`
   border-radius: 32px;
 
   padding: 4rem;
-  background-color: #45b26b;
+  background-color: #4a90e2;
 
   display: flex;
   justify-content: space-between;
@@ -734,7 +734,7 @@ const EndTitle = styled.h1`
 const Button = styled.button`
   font-family: Pretendard;
   font-weight: 600;
-  background-color: #45b26b;
+  background-color: #3b82f6;
 
   border-radius: 10px;
   border: none;

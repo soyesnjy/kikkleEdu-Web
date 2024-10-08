@@ -29,10 +29,10 @@ const navList_info = [
     title: '기업 및 기관',
     items: [
       { href: '/agency', label: '유치원' },
-      { href: '/agency', label: '초등학교' },
-      { href: '/agency', label: '문화센터' },
-      { href: '/agency', label: '커뮤니티센터' },
-      { href: '/agency', label: '아동(복지)센터' },
+      { href: '/agency/element', label: '초등학교' },
+      { href: '/agency/cultural', label: '문화센터' },
+      { href: '/agency/comunity', label: '커뮤니티센터' },
+      { href: '/agency/welfare', label: '아동복지센터' },
     ],
   },
   {
