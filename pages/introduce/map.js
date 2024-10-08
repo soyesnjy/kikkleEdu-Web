@@ -20,15 +20,46 @@ const CeoPage = () => {
           <MiddleTitle>CONNECT WITH US !</MiddleTitle>
           <MiddleSubtitle>주소 및 약도</MiddleSubtitle>
           <Description>
-            주소 : 서울시 마포구 성암로 330 DMC첨단산업센터 404-4
+            {`주소         : 서울시 마포구 성암로 330 DMC첨단산업센터 404-4`}
           </Description>
           <Description>
             오시는 길 : 가까운 지하철역 수색역 / 디지털미디어시티역
           </Description>
         </MiddleContainer>
       </MiddleSection>
-      {/* 특허 섹션 */}
+      {/* 맵 섹션 */}
+      <MapSection>
+        <MapLeftContainer>
+          <MapLeftTextContainer>
+            <MapLeftTitle>Name</MapLeftTitle>
+            <MapLeftDescription>소예키즈</MapLeftDescription>
+          </MapLeftTextContainer>
 
+          <MapLeftTextContainer>
+            <MapLeftTitle>Website</MapLeftTitle>
+            <MapLeftDescription>soyes.kr</MapLeftDescription>
+          </MapLeftTextContainer>
+
+          <MapLeftTextContainer>
+            <MapLeftTitle>Phone Number</MapLeftTitle>
+            <MapLeftDescription>02-303-4420 </MapLeftDescription>
+          </MapLeftTextContainer>
+
+          <MapLeftTextContainer>
+            <MapLeftTitle>Email Address</MapLeftTitle>
+            <MapLeftDescription>soyes2013@gmail.com</MapLeftDescription>
+          </MapLeftTextContainer>
+        </MapLeftContainer>
+        <MapRightContainer>
+          <Image
+            src="/src/Introduce_IMG/Map/Introduce_Map_IMG.png"
+            alt="bannerImgPath"
+            width={601}
+            height={601}
+            style={{ maxWidth: '100%', height: 'auto' }}
+          />
+        </MapRightContainer>
+      </MapSection>
       {/* 엔드 섹션 */}
       <EndSection>
         <EndTitle>
@@ -66,7 +97,7 @@ const HeaderSection = styled.section`
       /* 시작 색상, 투명도 0.8 */ rgba(76, 176, 178, 0) 60.5%
         /* 중간에서 투명해짐 */
     ),
-    url('');
+    url('/src/Introduce_IMG/Map/Introduce_Map_Header_Background_IMG.png');
   background-size: cover; /* 배경 이미지 크기 조정 */
   background-position: center;
   background-repeat: no-repeat;
@@ -111,6 +142,8 @@ const Description = styled.p`
   font-size: 1.1rem;
   font-family: Pretendard;
   font-weight: 400;
+
+  white-space: pre;
 `;
 
 const HeaderIntroDiv = styled.div`
@@ -173,6 +206,57 @@ const MiddleSubtitle = styled.h2`
   font-size: 3rem;
   font-family: Pretendard;
   font-weight: 700;
+`;
+
+const MapSection = styled.section`
+  width: 80vw;
+  min-height: 327px;
+  position: relative;
+
+  padding: 4rem 2rem;
+  border-radius: 24px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 4rem;
+`;
+
+const MapLeftContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  gap: 2rem;
+`;
+
+const MapLeftTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+`;
+
+const MapLeftTitle = styled.h1`
+  font-family: Nunito;
+  font-weight: 600;
+  color: black;
+`;
+
+const MapLeftDescription = styled.h4`
+  font-family: Nunito;
+  font-weight: 600;
+  color: #b9b9b9;
+`;
+
+const MapRightContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const EndSection = styled.section`
