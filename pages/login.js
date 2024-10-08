@@ -21,6 +21,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Image from 'next/image';
 import Link from 'next/link';
 
+// 로그인 만료시간 설정 (hour 시간)
 const expireSetHourFunc = (hour) => {
   const today = new Date();
   return today.setHours(today.getHours() + hour);
@@ -79,7 +80,7 @@ export default function Login() {
   const [login, setLogin] = useRecoilState(log);
   const [url, setUrl] = useState('');
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  // const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   const router = useRouter();
 
@@ -87,7 +88,7 @@ export default function Login() {
   const code = searchParams.get('code');
   const type = searchParams.get('type');
 
-  // TODO# 일반 로그인
+  // 일반 로그인
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!id || !pwd) {
@@ -335,7 +336,7 @@ export default function Login() {
               {t('login_submit')}
             </LoginButton>
             <StyledLink href="#">비밀번호를 잊으셨나요?</StyledLink>
-            {userClass === 'teacher' && (
+            {/* {userClass === 'teacher' && (
               <Image
                 src="/src/Login_IMG/Login_Divider_IMG.png"
                 alt={'soyes_logo'}
@@ -351,7 +352,7 @@ export default function Login() {
               </OAuthWrap>
             ) : (
               ''
-            )}
+            )} */}
             <H4>
               아직 키클에듀 회원이 아니신가요?{' '}
               <StyledLink href="/signup">회원가입</StyledLink>
