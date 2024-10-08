@@ -335,7 +335,7 @@ export default function Login() {
             <LoginButton onClick={submitHandler}>
               {t('login_submit')}
             </LoginButton>
-            <StyledLink href="#">비밀번호를 잊으셨나요?</StyledLink>
+            {/* <StyledLink href="#">비밀번호를 잊으셨나요?</StyledLink> */}
             {/* {userClass === 'teacher' && (
               <Image
                 src="/src/Login_IMG/Login_Divider_IMG.png"
