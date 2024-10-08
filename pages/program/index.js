@@ -72,6 +72,7 @@ const BalletProgramPage = () => {
             return {
               title: el.kk_class_title,
               content: el.kk_class_content,
+              info: el.kk_class_info,
               imgPath: el.kk_class_file_path,
               detailPath: el.kk_class_detail_path,
             };
@@ -141,11 +142,9 @@ const BalletProgramPage = () => {
         <LessonSection
           title={selectedClass?.title || ''}
           subtitle={selectedClass?.content || ''}
-          imgUrl={
-            selectedClass?.imgPath ||
-            '/src/Home_IMG/Home_Section_5_Background_IMG.png'
-          }
-          type="left"
+          imgUrl={selectedClass?.imgPath || ''}
+          type="program"
+          info={selectedClass?.info || ''}
         />
       </IntroSection>
       {/* 미들 섹션 - 발레 영상 */}
@@ -201,10 +200,9 @@ const HeaderSection = styled.section`
   background: linear-gradient(
       90deg,
       rgba(76, 176, 178, 0.8) 0%,
-      /* 시작 색상, 투명도 0.8 */ rgba(76, 176, 178, 0) 60.5%
-        /* 중간에서 투명해짐 */
+      rgba(76, 176, 178, 0) 60.5%
     ),
-    url('/src/Program_IMG/Program_Header_Ballet_Background_IMG.png');
+    url('/src/Program_IMG/Ballet/Program_Header_Ballet_Background_IMG.png');
   background-size: cover; /* 배경 이미지 크기 조정 */
   background-position: center;
   background-repeat: no-repeat;

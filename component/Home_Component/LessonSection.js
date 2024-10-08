@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 
-const LessonSection = ({ title, subtitle, imgUrl, type }) => {
+const LessonSection = ({ title, subtitle, imgUrl, type, info }) => {
   return (
     <SectionContainer>
       {type === 'left' ? (
@@ -25,21 +25,21 @@ const LessonSection = ({ title, subtitle, imgUrl, type }) => {
             <Image
               src={imgUrl}
               alt={'lesson_img'}
-              width={600}
-              height={660}
+              width={500}
+              height={560}
               style={{ maxWidth: '100%', height: 'auto' }}
             />
           </ImageContainer>{' '}
         </>
-      ) : (
+      ) : type === 'right' ? (
         <>
           <ImageContainer>
             <Overlay />
             <Image
               src={imgUrl}
               alt={'lesson_img'}
-              width={600}
-              height={660}
+              width={500}
+              height={560}
               style={{ maxWidth: '100%', height: 'auto' }}
             />
           </ImageContainer>
@@ -56,6 +56,25 @@ const LessonSection = ({ title, subtitle, imgUrl, type }) => {
             </Description> */}
             <Button>바로 가기</Button>
           </ContentContainer>
+        </>
+      ) : (
+        <>
+          <ContentContainer>
+            <Title>{`${title}`} 소개</Title>
+            <Subtitle>{`${subtitle}`}</Subtitle>
+            <InfoTitle>Infomation</InfoTitle>
+            <Subtitle>{`${info}`}</Subtitle>
+          </ContentContainer>
+          <ProgramImageContainer>
+            <Overlay />
+            <Image
+              src={imgUrl}
+              alt={'lesson_img'}
+              width={500}
+              height={560}
+              style={{ maxWidth: '100%', height: 'auto' }}
+            />
+          </ProgramImageContainer>
         </>
       )}
     </SectionContainer>
@@ -86,6 +105,7 @@ const SectionContainer = styled.div`
 const ContentContainer = styled.div`
   text-align: left;
   min-width: 500px;
+  max-width: 500px;
 
   display: flex;
   flex-direction: column;
@@ -96,6 +116,7 @@ const ContentContainer = styled.div`
 
   @media (max-width: 1080px) {
     min-width: 100%;
+    max-width: 100%;
     gap: 1rem;
     align-items: center;
   }
@@ -108,25 +129,18 @@ const Title = styled.h2`
   color: #333;
 `;
 
+const InfoTitle = styled.h2`
+  font-size: 2rem;
+  font-family: Pretendard;
+  font-weight: bold;
+  color: #333;
+`;
+
 const Subtitle = styled.p`
   font-size: 1.2rem;
   font-family: Pretendard;
   line-height: 1.6;
   color: #555;
-`;
-
-const InfoText = styled.p`
-  font-size: 24px;
-  font-family: Nunito;
-  font-weight: bold;
-  color: #444;
-`;
-
-const Description = styled.p`
-  font-size: 18px;
-  font-family: Pretendard;
-  color: #666;
-  line-height: 1.4;
 `;
 
 const Button = styled.button`
@@ -147,11 +161,36 @@ const Button = styled.button`
 const ImageContainer = styled.div`
   flex: 1;
   position: relative;
-  max-width: 600px;
+  max-width: 500px;
   height: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   @media (max-width: 1080px) {
     max-width: 100%;
+  }
+`;
+
+const ProgramImageContainer = styled.div`
+  /* flex: 1;
+  position: relative; */
+  width: 610px;
+  height: 610px;
+
+  background-image: url('/src/Program_IMG/Program_LessionSection_Background_IMG.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    height: 100%;
   }
 `;
 
