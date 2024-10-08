@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
-const LessonSection = ({ title, subtitle, imgUrl, type, info }) => {
+const LessonSection = ({ title, subtitle, imgUrl, type, routePath, info }) => {
+  const router = useRouter();
   return (
     <SectionContainer>
       {type === 'left' ? (
@@ -10,15 +12,13 @@ const LessonSection = ({ title, subtitle, imgUrl, type, info }) => {
           <ContentContainer>
             <Title>{`${title}`}</Title>
             <Subtitle>{`${subtitle}`}</Subtitle>
-            {/* <InfoText>Loren..</InfoText> */}
-            {/* <Description>
-              Lorem ipsum dolor sit amet veli elitni legro int dolor.
-            </Description>
-            <InfoText>Loren..</InfoText>
-            <Description>
-              Lorem ipsum dolor sit amet veli elitni legro int dolor.
-            </Description> */}
-            <Button>바로 가기</Button>
+            <Button
+              onClick={() => {
+                router.push(routePath);
+              }}
+            >
+              바로 가기
+            </Button>
           </ContentContainer>
           <ImageContainer>
             <Overlay />
@@ -46,15 +46,13 @@ const LessonSection = ({ title, subtitle, imgUrl, type, info }) => {
           <ContentContainer>
             <Title>{`${title}`}</Title>
             <Subtitle>{`${subtitle}`}</Subtitle>
-            {/* <InfoText>Loren..</InfoText> */}
-            {/* <Description>
-              Lorem ipsum dolor sit amet veli elitni legro int dolor.
-            </Description>
-            <InfoText>Loren..</InfoText>
-            <Description>
-              Lorem ipsum dolor sit amet veli elitni legro int dolor.
-            </Description> */}
-            <Button>바로 가기</Button>
+            <Button
+              onClick={() => {
+                router.push(routePath);
+              }}
+            >
+              바로 가기
+            </Button>
           </ContentContainer>
         </>
       ) : (

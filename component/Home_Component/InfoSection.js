@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
 const InfoSection = () => {
+  const router = useRouter();
   return (
     <SectionContainer>
       <ContentContainer>
@@ -10,7 +12,13 @@ const InfoSection = () => {
           소예키즈는 어린이들의 창의성발달, 신체발달, 사회성 발달, 정서발달에
           가치실현을 목표로 하고 있습니다.
         </Text>
-        <Button>소예키즈 소개</Button>
+        <Button
+          onClick={() => {
+            router.push('/introduce');
+          }}
+        >
+          소예키즈 소개
+        </Button>
         <CactusIcon />
       </ContentContainer>
     </SectionContainer>

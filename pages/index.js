@@ -17,17 +17,18 @@ const section_1_Arr = [
   {
     imgPath: '/src/Home_IMG/Icon_IMG/Home_Icon_1_IMG.png',
     title: 'Kids education',
-    content: 'Lorem ipsum dolor sit amet velit, elitni legro int dolor.',
+    content:
+      '아동에게 맞는 다양한 움직임 프로그램 기술과 예술이 결합된 프로그램',
   },
   {
     imgPath: '/src/Home_IMG/Icon_IMG/Home_Icon_2_IMG.png',
     title: 'Culture Class',
-    content: 'Lorem ipsum dolor sit amet velit, elitni legro int dolor.',
+    content: '각 기관에 맞는 교육프로그램',
   },
   {
     imgPath: '/src/Home_IMG/Icon_IMG/Home_Icon_3_IMG.png',
     title: 'Full-Time',
-    content: 'Lorem ipsum dolor sit amet velit, elitni legro int dolor.',
+    content: '교육하고 체험하고 스스로 만드는 움직임',
   },
 ];
 
@@ -45,23 +46,27 @@ const section_5to9_Arr = [
     subtitle:
       '유치원 기관에 맞는 다양한 프로그램과 연령대에 맞춘 소예키즈 프로그램을 제공합니다.',
     imgUrl: '/src/Home_IMG/Home_Section_5_Background_IMG.png',
+    routePath: '/agency',
   },
   {
     title: '초등학교 수업',
     subtitle:
       '초등학교 기관에 맞는 맞춤형 프로그램과 연령에 맞춘 다양한 프로그램을 제공합니다.',
     imgUrl: '/src/Home_IMG/Home_Section_6_Background_IMG.png',
+    routePath: '/agency/element',
   },
   {
     title: '문화센터 수업',
     subtitle:
       '유아, 초등, 성인들을 대상으로 하는 다양한 연령대의 프로그램을 제공합니다.',
     imgUrl: '/src/Home_IMG/Home_Section_7_Background_IMG.png',
+    routePath: '/agency/cultural',
   },
   {
     title: '아파트 커뮤니티 센터 수업',
     subtitle: '아파트 커뮤니티센터에 적절한 프로그램을 제공합니다.',
     imgUrl: '/src/Home_IMG/Home_Section_8_Background_IMG.png',
+    routePath: '/agency/comunity',
   },
 ];
 
@@ -120,6 +125,7 @@ export default function Home() {
               subtitle={el.subtitle}
               imgUrl={el.imgUrl}
               type={mobileFlag ? 'mobile' : index % 2 ? 'right' : 'left'}
+              routePath={el.routePath}
             />
           </SectionFifthtoNineth>
         );
