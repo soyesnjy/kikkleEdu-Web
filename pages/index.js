@@ -163,27 +163,27 @@ const MasterContainer = styled.div`
   align-items: center;
 `;
 
-const MainContainer = styled.div`
-  width: 100vw;
-  min-height: 100vh;
-  background-color: white;
-  padding-bottom: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
+// const MainContainer = styled.div`
+//   width: 100vw;
+//   min-height: 100vh;
+//   background-color: white;
+//   padding-bottom: 2rem;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-start;
+//   align-items: center;
 
-  gap: 1rem;
+//   gap: 1rem;
 
-  @media (max-width: 768px) {
-    background-image: url('/src/Background_IMG/Mobile/mobile_background_2.png');
-    justify-content: center;
-  }
-`;
+//   @media (max-width: 768px) {
+//     background-image: url('/src/Background_IMG/Mobile/mobile_background_2.png');
+//     justify-content: center;
+//   }
+// `;
 
 const IntroSection = styled.section`
   width: 100vw;
-  height: 67vw; /* 16:9 비율 유지 (100 / 16 * 9) */
+  height: 59vw; /* 16:9 비율 유지 (100 / 16 * 9) */
   position: relative;
 
   background-color: white;
@@ -284,27 +284,27 @@ const Button = styled.button`
   z-index: 1;
 `;
 
-const ImageContainer = styled.div`
-  width: 40vw;
+// const ImageContainer = styled.div`
+//   width: 40vw;
 
-  padding: 5rem;
+//   padding: 5rem;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: flex-start;
 
-  gap: 1rem;
+//   gap: 1rem;
 
-  color: white;
-  z-index: 1;
+//   color: white;
+//   z-index: 1;
 
-  @media (max-width: 1080px) {
-    margin-top: 5rem;
-    width: 100%;
-    padding: 0.5rem;
-  }
-`;
+//   @media (max-width: 1080px) {
+//     margin-top: 5rem;
+//     width: 100%;
+//     padding: 0.5rem;
+//   }
+// `;
 
 const SectionFirst = styled.section`
   width: 100vw;
@@ -344,22 +344,22 @@ const SectionSecond = styled.section`
   }
 `;
 
-const SectionThird = styled.section`
-  width: 100vw;
-  min-height: 50vh;
+// const SectionThird = styled.section`
+//   width: 100vw;
+//   min-height: 50vh;
 
-  background-color: white;
+//   background-color: white;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
 
-  @media (max-width: 1080px) {
-    height: 100%;
-    flex-direction: column;
-    padding: 2rem;
-  }
-`;
+//   @media (max-width: 1080px) {
+//     height: 100%;
+//     flex-direction: column;
+//     padding: 2rem;
+//   }
+// `;
 
 const SectionFourth = styled.section`
   width: 100vw;
