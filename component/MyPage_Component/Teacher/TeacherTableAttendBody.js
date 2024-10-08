@@ -28,6 +28,7 @@ const TeacherTableAttendBody = ({ data }) => {
 
   const [attendIdx, setAttendIdx] = useState(0);
   const [attendStatus, setAttendStatus] = useState(0);
+  const [attendTrigger, setAttendTrigger] = useState(0);
 
   useEffect(() => {
     setAttendIdx(data.kk_attend_idx);
@@ -55,12 +56,12 @@ const TeacherTableAttendBody = ({ data }) => {
         Swal.fire({
           icon: 'success',
           title: 'Attend Update Success!',
-          text: 'Login Page로 이동합니다',
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
           // 화면 새로고침
           // window.location.reload();
+          setAttendTrigger(0);
         });
       } else if (res.status === 403) {
         Swal.fire({
@@ -90,13 +91,23 @@ const TeacherTableAttendBody = ({ data }) => {
       <TableCell>{data.kk_reservation_time}</TableCell>
       <TableCell>
         <AttendContainer>
-          <CheckboxContainer onClick={() => setAttendStatus(1)}>
+          <CheckboxContainer
+            onClick={() => {
+              setAttendStatus(1);
+              setAttendTrigger(1);
+            }}
+          >
             <CheckboxWrapper status={attendStatus}>
               <CheckIcon />
             </CheckboxWrapper>
             <CheckboxLabel>출근</CheckboxLabel>
           </CheckboxContainer>
-          <CheckboxContainer onClick={() => setAttendStatus(0)}>
+          <CheckboxContainer
+            onClick={() => {
+              setAttendStatus(0);
+              setAttendTrigger(1);
+            }}
+          >
             <CheckboxWrapper status={!attendStatus}>
               <CheckIcon />
             </CheckboxWrapper>
@@ -105,7 +116,11 @@ const TeacherTableAttendBody = ({ data }) => {
         </AttendContainer>
       </TableCell>
       <TableCell>
-        <Button onClick={attendUpdateHandler} disabled={isPending}>
+        <Button
+          onClick={attendUpdateHandler}
+          disabled={!attendTrigger}
+          attendTrigger={attendTrigger}
+        >
           저장하기
         </Button>
       </TableCell>
@@ -165,7 +180,7 @@ const CheckboxLabel = styled.span`
 `;
 
 const Button = styled.button`
-  background-color: #61b15a;
+  background-color: ${(props) => (props.attendTrigger ? '#61b15a' : '#CACACA')};
   color: white;
   padding: 0.4rem 0.8rem;
   border: none;
