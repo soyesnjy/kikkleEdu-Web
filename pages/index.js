@@ -124,7 +124,7 @@ export default function Home() {
               title={el.title}
               subtitle={el.subtitle}
               imgUrl={el.imgUrl}
-              type={mobileFlag ? 'mobile' : index % 2 ? 'right' : 'left'}
+              type={mobileFlag ? 'left' : index % 2 ? 'right' : 'left'}
               routePath={el.routePath}
             />
           </SectionFifthtoNineth>
