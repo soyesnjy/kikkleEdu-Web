@@ -34,11 +34,13 @@ const AdminTableTeacherBody = ({ data }) => {
   //   console.log(typeof approveStatus);
   // }, [approveStatus]);
 
+  // profileImg 변경 핸들러
   const handleProfileImgChange = (e) => {
     const selectedFile = e.target.files[0];
     setProfileImg(selectedFile);
   };
 
+  // 강사 정보 update 핸들러
   const signupUpdateHandler = async (e) => {
     e.preventDefault();
     // 수정 확인 버튼 비활성화
@@ -51,15 +53,14 @@ const AdminTableTeacherBody = ({ data }) => {
     setIsPending(true);
 
     const reader = new FileReader();
+    // 파일 onloadend 메서드
     reader.onloadend = async () => {
       const base64Data = reader.result;
       try {
         const res = await handleSignupUpdate({
           SignUpData: {
-            // pUid: email,
             userIdx: teacherIdx,
             userClass: 'teacher',
-            // passWord: pwd,
             introduce,
             name,
             phoneNum,
@@ -103,15 +104,15 @@ const AdminTableTeacherBody = ({ data }) => {
         console.error('업로드 실패:', error);
       }
     };
+    // profileImg가 있을 경우 -> reader의 파일 정보를 읽고 onloadend 메서드 실행
     if (profileImg) reader?.readAsDataURL(profileImg);
+    // profileImg가 없을 경우 -> 아래 코드 실행
     else {
       try {
         const res = await handleSignupUpdate({
           SignUpData: {
-            // pUid: email,
             userIdx: teacherIdx,
             userClass: 'teacher',
-            // passWord: pwd,
             introduce,
             name,
             phoneNum,
@@ -157,6 +158,7 @@ const AdminTableTeacherBody = ({ data }) => {
     }
   };
 
+  // 강사 정보 delete 핸들러
   const signupDeleteHandler = async () => {
     try {
       if (confirm('삭제 하시겠습니까?') === true) {

@@ -31,55 +31,39 @@ const AdminTableAgencyBody = ({ data }) => {
       alert('승인 여부를 선택하세요');
       return;
     }
-
+    // 대기상태 적용
     setIsPending(true);
     try {
       const res = await handleSignupUpdate({
         SignUpData: {
-          // pUid: email,
-          userIdx: agencyIdx,
-          userClass: 'agency',
-          // passWord: pwd,
-          // introduce,
-          name,
-          address,
-          phoneNum,
-          typeA: type,
-          // location,
-          // history,
-          // education,
-          // fileData: {
-          //   fileName: profileImg.name,
-          //   fileType: profileImg.type,
-          //   baseData: base64Data,
-          // },
-          approveStatus,
+          userIdx: agencyIdx, // 기관 Index
+          userClass: 'agency', // 조회할 User DB 식별자
+          name, // 기관명
+          address, // 기관 주소
+          phoneNum, // 기관 전화번호
+          typeA: type, // 기관 유형
+          approveStatus, // 관리자 승인 여부
         },
       });
 
       if (res.status === 200) {
         Swal.fire({
           icon: 'success',
-          title: 'Sign Up Success!',
-          text: 'Login Page로 이동합니다',
+          title: 'Agency Update Success!',
+          text: 'Page Reloading...',
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
           // 화면 새로고침
           window.location.reload();
         });
-      } else if (res.status === 403) {
-        Swal.fire({
-          icon: 'error',
-          title: '중복된 이메일입니다',
-        });
       } else {
         Swal.fire({
           icon: 'error',
-          title: 'Sign Up Fail',
+          title: 'Agency Update Fail!',
         });
       }
-      // 회원가입 버튼 활성화
+      // 대기상태 해제
       setIsPending(false);
     } catch (error) {
       console.error('기관 업데이트 실패:', error);
@@ -97,7 +81,7 @@ const AdminTableAgencyBody = ({ data }) => {
         if (res.status === 200) {
           Swal.fire({
             icon: 'success',
-            title: 'Delete Success!',
+            title: 'Agency Delete Success!',
             text: 'Page Reloading...',
             showConfirmButton: false,
             timer: 1500,
@@ -105,15 +89,10 @@ const AdminTableAgencyBody = ({ data }) => {
             // 화면 새로고침
             window.location.reload();
           });
-        } else if (res.status === 403) {
-          Swal.fire({
-            icon: 'error',
-            title: '중복된 이메일입니다',
-          });
         } else {
           Swal.fire({
             icon: 'error',
-            title: 'Sign Up Fail',
+            title: 'Agency Delete Fail!',
           });
         }
       } else return;
