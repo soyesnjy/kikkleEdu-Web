@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-async-promise-executor */
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { handleDirectoryCreate } from '@/fetchAPI/directory';
@@ -16,7 +18,8 @@ const UploadForm = ({ directories, form }) => {
   const [treeData, setTreeData] = useState([]);
   const [selectedDirectory, setSelectedDirectory] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  const [file, setFile] = useState(null);
+  // const [file, setFile] = useState(null);
+  const [files, setFiles] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -70,36 +73,113 @@ const UploadForm = ({ directories, form }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!selectedDirectory) {
-      alert('폴더 선택 ㄱㄱ');
+      alert('폴더를 선택하세요.');
       return;
     }
 
-    if (!file) {
-      alert('파일 선택 ㄱㄱ');
+    if (!files || files.length === 0) {
+      alert('파일을 선택하세요.');
       return;
     }
     setIsPending(true);
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64String = reader.result
-        .replace('data:', '')
-        .replace(/^.+,/, '');
+    let reloadCnt = 0;
+    const filesCnt = files.length;
+    // 각 파일을 처리하기 위한 Promise 배열 생성
+    const uploadPromises = Array.from(files).map((file) => {
+      ++reloadCnt;
+      return new Promise(async (resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+          const base64String = reader.result
+            .replace('data:', '')
+            .replace(/^.+,/, '');
 
-      const formData = {
-        type: 'file',
-        form,
-        fileData: {
-          fileName: file.name,
-          mimeType: file.type,
-          baseData: `data:${file.type};base64,${base64String}`,
-        },
-        directoryId: selectedDirectory.value,
-      };
+          console.log(base64String);
 
-      const response = await handleDirectoryCreate(formData);
+          const formData = {
+            type: 'file',
+            form,
+            fileData: {
+              fileName: file.name,
+              mimeType: file.type,
+              baseData: `data:${file.type};base64,${base64String}`,
+            },
+            directoryId: selectedDirectory.value,
+          };
 
-      if (response.status === 200) {
+          try {
+            const response = await handleDirectoryCreate(formData);
+            if (response.status === 200) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Upload Success!',
+                text: 'Page Reload',
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                if (filesCnt === reloadCnt) router.reload();
+                resolve(); // 업로드 성공 시 resolve 호출
+              });
+            } else {
+              console.error('Upload failed');
+              reject(new Error('Upload failed'));
+            }
+          } catch (error) {
+            console.error('Upload error', error);
+            reject(error);
+          }
+        };
+
+        // 파일을 base64로 인코딩
+        reader.readAsDataURL(file);
+      });
+    });
+
+    // 모든 파일 업로드 완료 시 처리
+    try {
+      await Promise.all(uploadPromises); // 모든 파일 업로드 완료 시까지 대기
+      setIsPending(false);
+      router.reload(); // 페이지 새로고침
+    } catch (error) {
+      console.error('File upload failed:', error);
+      setIsPending(false);
+    }
+  };
+
+  const handleVideoSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!selectedDirectory) {
+      alert('폴더를 선택하세요.');
+      return;
+    }
+
+    if (!files || files.length === 0) {
+      alert('파일을 선택하세요.');
+      return;
+    }
+    setIsPending(true);
+    try {
+      // FormData 생성 및 파일 추가
+      const formData = new FormData();
+      formData.append('file', files[0]); // 'file'이라는 이름으로 파일 추가
+      formData.append('form', form);
+      formData.append('directoryId', selectedDirectory.value);
+      formData.append('fileName', files[0].name);
+      // console.log(files[0]);
+
+      // fetch를 사용하여 서버로 FormData 전송
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_URL}/directory/create/video`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
         Swal.fire({
           icon: 'success',
           title: 'Upload Success!',
@@ -107,14 +187,15 @@ const UploadForm = ({ directories, form }) => {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          setIsPending(false);
           router.reload();
         });
       } else {
         console.error('Upload failed');
+        alert('Upload Failed');
       }
-    };
-    reader.readAsDataURL(file);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleChange = (currentNode, selectedNodes) => {
@@ -124,7 +205,7 @@ const UploadForm = ({ directories, form }) => {
   return (
     <FormContainer>
       <h3>File Create Form</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={form === 'video' ? handleVideoSubmit : handleSubmit}>
         <FormGroup>
           <Label htmlFor="directory">Directory</Label>
           <DropdownTreeSelect
@@ -141,11 +222,18 @@ const UploadForm = ({ directories, form }) => {
         </FormGroup>
         <FormGroup>
           <Label htmlFor="file">File</Label>
-          <Input
+          {/* <Input
             type="file"
             id="file"
             accept={acceptMap[form]}
-            onChange={(e) => setFile(e.target.files[0])}
+            onChange={(e) => setFiles(e.target.files[0])}
+          /> */}
+          <Input
+            type="file"
+            id="file"
+            multiple
+            accept={acceptMap[form]}
+            onChange={(e) => setFiles(e.target.files)} // FileList를 상태로 저장
           />
         </FormGroup>
         <Button type="submit" disabled={isPending}>
