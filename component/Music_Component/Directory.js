@@ -150,6 +150,10 @@ const ListItem = styled.li`
   font-family: Pretendard;
   font-weight: 700;
   text-align: center;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const StyledLink = styled.a`
