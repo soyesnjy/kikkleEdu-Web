@@ -77,19 +77,23 @@ const Directory = ({ data, form }) => {
         ))}
         {trackData.url && (
           <TrackContainer>
-            <h2>{trackData.name}</h2>
+            {/* <h2>{trackData.kk_directory_name}</h2> */}
             {/* <AudioPlayer key={audioKey} controls autoPlay>
               <source src={trackData.url} type="audio/mp3" />
             </AudioPlayer> */}
             {form === 'video' ? (
-              <a href={trackData.url} target="_blank">
-                Download
-              </a>
+              <iframe
+                key={audioKey}
+                src={trackData.url}
+                // allowfullscreen
+                width="450"
+                height="270"
+              />
             ) : (
               <iframe
                 key={audioKey}
                 src={trackData.url}
-                width="350"
+                width="450"
                 height="70"
               />
             )}
