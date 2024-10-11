@@ -96,6 +96,7 @@ export default ProgramClassContainer;
 const ProgramContainer = styled.div`
   width: 80vw;
   display: flex;
+  justify-content: center;
   overflow-x: hidden;
 
   cursor: grab;

@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import AgencyProgramCard from '@/component/Home_Component/AgencyProgramCard';
+import ProgramClassContainer from '@/component/Agency_Component/ProgramClassContainer';
+
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
 
@@ -183,20 +185,7 @@ const WelfarePage = () => {
         <Description>
           아이들이 재미있게 체험할 수 있는 다양한 소예키즈의 교육프로그램
         </Description>
-        <ProgramContainer>
-          {classDataArr.map((el, index) => {
-            const { title, imgPath, routePath } = el;
-            return (
-              <ProgramContentContainer
-                key={index}
-                imgPath={imgPath}
-                onClick={() => router.push(routePath)}
-              >
-                <ProgramTitle>{title}</ProgramTitle>
-              </ProgramContentContainer>
-            );
-          })}
-        </ProgramContainer>
+        <ProgramClassContainer classDataArr={classDataArr} />
       </MiddleSectionThird>
       {/* 미들 섹션 - 수업 강사 */}
       <MiddleSectionFourth>
