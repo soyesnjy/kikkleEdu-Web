@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 import Link from 'next/link';
 import { agencyClass } from '@/store/state';
@@ -6,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import AgencyProgramCard from '@/component/Home_Component/AgencyProgramCard';
+import ProgramClassContainer from '@/component/Agency_Component/ProgramClassContainer';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
 
@@ -61,9 +63,9 @@ const KindergartenPage = () => {
   const [agency, setAgency] = useRecoilState(agencyClass);
   const [classDataArr, setClassDataArr] = useState([]);
   const [teacherDataArr, setTeacherDataArr] = useState([]);
+
   const router = useRouter();
 
-  // 강사 List 조회
   useEffect(() => {
     // 강사 Read API 호출 메서드
     if (!teacherDataArr.length) {
@@ -123,7 +125,7 @@ const KindergartenPage = () => {
           </StyledLink>
         </HeaderContent>
       </HeaderSection>
-      {/* 미들 섹션 - 1 */}
+      {/* 미들 섹션 - Program, Teacher, Time */}
       <MiddleSectionFirst>
         {section_1_Arr.map((el, index) => {
           const { imgPath, title, content } = el;
@@ -161,7 +163,6 @@ const KindergartenPage = () => {
           </ReservationButtonContainer>
         </MiddleSectionReservation>
       ) : null}
-
       {/* 미들 섹션 - 수업 영상 */}
       <MiddleSectionSecond>
         <MiddleSectionSubtitle>Our Program Video</MiddleSectionSubtitle>
@@ -183,20 +184,7 @@ const KindergartenPage = () => {
         <Description>
           아이들이 재미있게 체험할 수 있는 다양한 소예키즈의 교육프로그램
         </Description>
-        <ProgramContainer>
-          {classDataArr.map((el, index) => {
-            const { title, imgPath, routePath } = el;
-            return (
-              <ProgramContentContainer
-                key={index}
-                imgPath={imgPath}
-                onClick={() => router.push(routePath)}
-              >
-                <ProgramTitle>{title}</ProgramTitle>
-              </ProgramContentContainer>
-            );
-          })}
-        </ProgramContainer>
+        <ProgramClassContainer classDataArr={classDataArr} />
       </MiddleSectionThird>
       {/* 미들 섹션 - 수업 강사 */}
       <MiddleSectionFourth>
@@ -503,7 +491,7 @@ const VideoContent = styled.div`
 `;
 
 const MiddleSectionThird = styled.section`
-  width: 100vw;
+  width: 100%;
   min-height: 262px;
 
   background-color: white;

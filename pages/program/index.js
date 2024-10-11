@@ -98,6 +98,7 @@ const BalletProgramPage = () => {
     }
   }, [classDataArr, cName]);
 
+  // cName Query
   useEffect(() => {
     setSelectedClass({
       ...classDataArr.filter((el) => el.title === cName)[0],

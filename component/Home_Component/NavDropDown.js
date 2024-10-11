@@ -18,7 +18,7 @@ import Image from 'next/image';
 const NavDropDown = ({ toggleMenu, navItem }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  console.log(navItem);
+  // console.log(navItem);
   // const { title, items } = navItem;
 
   const toggleDropDown = () => {
