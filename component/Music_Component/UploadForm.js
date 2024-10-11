@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-async-promise-executor */
 import { useState, useEffect } from 'react';
@@ -150,6 +151,9 @@ const UploadForm = ({ directories, form }) => {
 
   const handleVideoSubmit = async (e) => {
     e.preventDefault();
+
+    alert('개발 중인 기능입니다.');
+    return;
 
     if (!selectedDirectory) {
       alert('폴더를 선택하세요.');
