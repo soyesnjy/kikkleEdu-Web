@@ -3,7 +3,7 @@
 /* eslint-disable no-async-promise-executor */
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { handleDirectoryCreate } from '@/fetchAPI/directory';
+import { handleDirectoryCreate, handleVideoCreate } from '@/fetchAPI/directory';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
@@ -175,15 +175,17 @@ const UploadForm = ({ directories, form }) => {
       // console.log(files[0]);
 
       // fetch를 사용하여 서버로 FormData 전송
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}/directory/create/video`,
-        {
-          method: 'POST',
-          body: formData,
-        }
-      );
+      // const response = await fetch(
+      //   `${process.env.NEXT_PUBLIC_URL}/directory/create/video`,
+      //   {
+      //     method: 'POST',
+      //     body: formData,
+      //   }
+      // );
 
-      if (response.ok) {
+      const response = await handleVideoCreate(formData);
+
+      if (response.status === 200) {
         Swal.fire({
           icon: 'success',
           title: 'Upload Success!',
