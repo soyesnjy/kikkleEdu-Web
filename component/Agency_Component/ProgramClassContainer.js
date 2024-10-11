@@ -28,7 +28,7 @@ const ProgramClassContainer = ({ classDataArr }) => {
     if (containerRef.current) {
       const x = e.pageX - startX; // 마우스 이동 거리 계산
       containerRef.current.scrollLeft = scrollLeft - x; // 스크롤 위치 업데이트
-      console.log(containerRef.current.scrollLeft);
+      // console.log(containerRef.current.scrollLeft);
     }
   };
 
@@ -50,7 +50,7 @@ const ProgramClassContainer = ({ classDataArr }) => {
   // 터치 중일 때 실행
   const onTouchMove = (e) => {
     if (!isDragging) return;
-    e.preventDefault();
+
     const touch = e.touches[0];
     const x = touch.pageX - startX; // 터치 이동 거리 계산
     if (containerRef.current) {
@@ -66,10 +66,13 @@ const ProgramClassContainer = ({ classDataArr }) => {
   return (
     <ProgramContainer
       ref={containerRef}
-      onMouseDown={mobileFlag ? onTouchStart : onDragStart} // 마우스 클릭 시 드래그 시작
-      onMouseMove={mobileFlag ? onTouchMove : onDragMove} // 마우스 이동 시 스크롤 이동
-      onMouseUp={mobileFlag ? onTouchEnd : onDragEnd} // 마우스 버튼을 놓을 때 드래그 종료
-      onMouseLeave={mobileFlag ? onTouchEnd : onDragEnd} // 마우스가 영역을 벗어날 때 드래그 종료
+      onMouseDown={onDragStart} // 마우스 클릭 시 드래그 시작
+      onMouseMove={onDragMove} // 마우스 이동 시 스크롤 이동
+      onMouseUp={onDragEnd} // 마우스 버튼을 놓을 때 드래그 종료
+      onMouseLeave={onDragEnd} // 마우스가 영역을 벗어날 때 드래그 종료
+      onTouchStart={onTouchStart} // 터치 시작 시 드래그 시작
+      onTouchMove={onTouchMove} // 터치 이동 시 스크롤 이동
+      onTouchEnd={onTouchEnd} // 터치 종료 시 드래그 종료
     >
       {classDataArr.map((el, index) => {
         const { title, imgPath, routePath } = el;
