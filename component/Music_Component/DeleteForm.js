@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 import 'react-dropdown-tree-select/dist/styles.css';
 
-const DeleteForm = ({ directories }) => {
+const DeleteForm = ({ directories, form }) => {
   const [treeData, setTreeData] = useState([]);
   const [selectedDirectory, setSelectedDirectory] = useState('');
   const [isPending, setIsPending] = useState(false);
@@ -55,6 +55,7 @@ const DeleteForm = ({ directories }) => {
     const response = await handleDirectoryDelete({
       directoryIdx: selectedDirectory.kk_directory_idx,
       type: selectedDirectory.kk_directory_type,
+      form,
     });
 
     if (response.status === 200) {

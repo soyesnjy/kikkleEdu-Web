@@ -61,7 +61,7 @@ const Directory = ({ data, form }) => {
             )}
             form={form}
           />
-          <DeleteForm directories={data} />
+          <DeleteForm directories={data} form={form} />
         </UploadContainer>
       )}
       <List>

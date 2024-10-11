@@ -3,7 +3,11 @@
 /* eslint-disable no-async-promise-executor */
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { handleDirectoryCreate, handleVideoCreate } from '@/fetchAPI/directory';
+import {
+  handleDirectoryCreate,
+  // handleVideoCreate,
+  handleVideoV2Create,
+} from '@/fetchAPI/directory';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
@@ -19,6 +23,8 @@ const UploadForm = ({ directories, form }) => {
   const [treeData, setTreeData] = useState([]);
   const [selectedDirectory, setSelectedDirectory] = useState(null);
   const [isPending, setIsPending] = useState(false);
+  const [fileName, setFileName] = useState('');
+  const [fileCode, setFileCode] = useState('');
   // const [file, setFile] = useState(null);
   const [files, setFiles] = useState(null);
   const router = useRouter();
@@ -149,7 +155,62 @@ const UploadForm = ({ directories, form }) => {
     }
   };
 
-  const handleVideoSubmit = async (e) => {
+  // const handleVideoSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   // alert('개발 중인 기능입니다.');
+  //   // return;
+
+  //   if (!selectedDirectory) {
+  //     alert('폴더를 선택하세요.');
+  //     return;
+  //   }
+
+  //   if (!files || files.length === 0) {
+  //     alert('파일을 선택하세요.');
+  //     return;
+  //   }
+  //   setIsPending(true);
+  //   try {
+  //     // FormData 생성 및 파일 추가
+  //     const formData = new FormData();
+  //     formData.append('file', files[0]); // 'file'이라는 이름으로 파일 추가
+  //     formData.append('form', form);
+  //     formData.append('directoryId', selectedDirectory.value);
+  //     formData.append('fileName', files[0].name);
+  //     // console.log(files[0]);
+
+  //     // fetch를 사용하여 서버로 FormData 전송
+  //     // const response = await fetch(
+  //     //   `${process.env.NEXT_PUBLIC_URL}/directory/create/video`,
+  //     //   {
+  //     //     method: 'POST',
+  //     //     body: formData,
+  //     //   }
+  //     // );
+
+  //     const response = await handleVideoCreate(formData);
+
+  //     if (response.status === 200) {
+  //       Swal.fire({
+  //         icon: 'success',
+  //         title: 'Upload Success!',
+  //         text: 'Page Reload',
+  //         showConfirmButton: false,
+  //         timer: 1500,
+  //       }).then(() => {
+  //         router.reload();
+  //       });
+  //     } else {
+  //       console.error('Upload failed');
+  //       alert('Upload Failed');
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  const handleVideoV2Submit = async (e) => {
     e.preventDefault();
 
     // alert('개발 중인 기능입니다.');
@@ -160,30 +221,25 @@ const UploadForm = ({ directories, form }) => {
       return;
     }
 
-    if (!files || files.length === 0) {
-      alert('파일을 선택하세요.');
+    if (!fileName) {
+      alert('파일명을 입력하세요.');
       return;
     }
+    if (!fileCode) {
+      alert('파일코드를 입력하세요.');
+      return;
+    }
+
     setIsPending(true);
     try {
-      // FormData 생성 및 파일 추가
-      const formData = new FormData();
-      formData.append('file', files[0]); // 'file'이라는 이름으로 파일 추가
-      formData.append('form', form);
-      formData.append('directoryId', selectedDirectory.value);
-      formData.append('fileName', files[0].name);
-      // console.log(files[0]);
+      const formData = {
+        fileName,
+        fileCode,
+        directoryId: selectedDirectory.value,
+        form,
+      };
 
-      // fetch를 사용하여 서버로 FormData 전송
-      // const response = await fetch(
-      //   `${process.env.NEXT_PUBLIC_URL}/directory/create/video`,
-      //   {
-      //     method: 'POST',
-      //     body: formData,
-      //   }
-      // );
-
-      const response = await handleVideoCreate(formData);
+      const response = await handleVideoV2Create(formData);
 
       if (response.status === 200) {
         Swal.fire({
@@ -211,7 +267,7 @@ const UploadForm = ({ directories, form }) => {
   return (
     <FormContainer>
       <h3>File Create Form</h3>
-      <form onSubmit={form === 'video' ? handleVideoSubmit : handleSubmit}>
+      <form onSubmit={form === 'video' ? handleVideoV2Submit : handleSubmit}>
         <FormGroup>
           <Label htmlFor="directory">Directory</Label>
           <DropdownTreeSelect
@@ -227,20 +283,43 @@ const UploadForm = ({ directories, form }) => {
           />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="file">File</Label>
+          {form !== 'video' ? <Label htmlFor="file">File</Label> : null}
           {/* <Input
             type="file"
             id="file"
             accept={acceptMap[form]}
             onChange={(e) => setFiles(e.target.files[0])}
           /> */}
-          <Input
-            type="file"
-            id="file"
-            multiple
-            accept={acceptMap[form]}
-            onChange={(e) => setFiles(e.target.files)} // FileList를 상태로 저장
-          />
+          {form === 'video' ? (
+            <>
+              <>
+                <label>Video Name</label>
+                <Input
+                  type="text"
+                  id="fileName"
+                  value={fileName}
+                  onChange={(e) => setFileName(e.target.value)} // FileList를 상태로 저장
+                />
+              </>
+              <>
+                <label>Video Code</label>
+                <Input
+                  type="text"
+                  id="fileCode"
+                  value={fileCode}
+                  onChange={(e) => setFileCode(e.target.value)} // FileList를 상태로 저장
+                />
+              </>
+            </>
+          ) : (
+            <Input
+              type="file"
+              id="file"
+              multiple
+              accept={acceptMap[form]}
+              onChange={(e) => setFiles(e.target.files)} // FileList를 상태로 저장
+            />
+          )}
         </FormGroup>
         <Button type="submit" disabled={isPending}>
           {isPending ? 'Uploading...' : 'Upload'}

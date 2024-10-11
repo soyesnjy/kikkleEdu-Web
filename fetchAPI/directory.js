@@ -71,12 +71,34 @@ export const handleVideoCreate = async (formData) => {
     console.error('File upload failed', error);
   }
 };
+export const handleVideoV2Create = async (input) => {
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/directory/create/video`,
+      { data: input },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }
+    );
+    console.log(response);
+    return response;
+  } catch (err) {
+    console.log('ReviewCreate API 호출 실패');
+    console.error(err);
+    return {
+      status: 400,
+    };
+  }
+};
 
 // DELETE
 export const handleDirectoryDelete = async (query) => {
   try {
     const response = await axios.delete(
-      `${process.env.NEXT_PUBLIC_URL}/directory/delete?${query?.directoryIdx ? `directoryIdx=${query?.directoryIdx}&` : ''}${query?.type ? `type=${query?.type}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/directory/delete?${query?.form ? `form=${query?.form}&` : ''}${query?.directoryIdx ? `directoryIdx=${query?.directoryIdx}&` : ''}${query?.type ? `type=${query?.type}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
