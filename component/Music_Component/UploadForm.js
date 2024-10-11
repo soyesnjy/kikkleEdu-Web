@@ -152,8 +152,8 @@ const UploadForm = ({ directories, form }) => {
   const handleVideoSubmit = async (e) => {
     e.preventDefault();
 
-    alert('개발 중인 기능입니다.');
-    return;
+    // alert('개발 중인 기능입니다.');
+    // return;
 
     if (!selectedDirectory) {
       alert('폴더를 선택하세요.');
