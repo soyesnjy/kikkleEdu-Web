@@ -212,6 +212,10 @@ const Header = styled.div`
   font-family: Pretendard;
   font-weight: 700;
   text-align: left;
+
+  @media (max-width: 768px) {
+    padding: 2rem;
+  }
 `;
 
 const Tabs = styled.div`

@@ -193,6 +193,10 @@ const MyPageContainer = styled.div`
   width: 85%;
   margin: 0 auto;
   padding-top: 2rem;
+
+  @media (max-width: 768px) {
+    width: 95%;
+  }
 `;
 
 const Header = styled.div`
@@ -206,6 +210,10 @@ const Header = styled.div`
   font-family: Pretendard;
   font-weight: 700;
   text-align: left;
+
+  @media (max-width: 768px) {
+    padding: 2rem;
+  }
 `;
 
 const Tabs = styled.div`
@@ -233,6 +241,10 @@ const TabButton = styled.button`
     background-color: #61b15a;
     color: white;
   }
+
+  @media (max-width: 768px) {
+    padding: 0.7rem;
+  }
 `;
 
 const TableContainer = styled.div`
@@ -254,22 +266,10 @@ const TableHeader = styled.th`
   font-family: Pretendard;
   font-weight: 600;
   text-align: left;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
 `;
-
-// const TableRow = styled.tr`
-//   &:nth-child(even) {
-//     background-color: #f9f9f9;
-//   }
-// `;
-
-// const TableCell = styled.td`
-//   padding: 1rem;
-//   border-bottom: 1px solid #ddd;
-// `;
-
-// const PaymentStatus = styled.span`
-//   color: ${({ status }) => (status === '결제 완료' ? '#61b15a' : 'red')};
-//   font-weight: bold;
-// `;
 
 export default MyPage;
