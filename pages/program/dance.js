@@ -156,7 +156,7 @@ const DanceProgramPage = () => {
           alt="DetailPath"
           width={1321}
           height={3044}
-          style={{ maxWidth: '60%', height: 'auto' }}
+          style={{ maxWidth: '100%', height: '100%' }}
         />
       </ClassDetailSection>
       {/* 엔드 섹션 */}
@@ -492,7 +492,7 @@ const Button = styled.button`
 
 const ClassDetailSection = styled.section`
   width: 100%;
-  min-height: 150vh;
+  /* min-height: 150vh; */
   background-color: white;
 
   background-image: url('/src/Home_IMG/Home_Section_10_Background_IMG.png');
@@ -504,12 +504,13 @@ const ClassDetailSection = styled.section`
   justify-content: center;
   align-items: center;
 
-  padding: 10rem;
+  padding: 30rem;
 
   @media (max-width: 728px) {
-    height: 100%;
+    /* min-height: 100vh; */
     flex-direction: column;
-    padding: 2rem;
+    justify-content: flex-start;
+    padding: 5rem 0.5rem;
     background-size: cover;
   }
 `;
