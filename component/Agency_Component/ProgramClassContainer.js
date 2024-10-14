@@ -112,6 +112,7 @@ const ProgramContainer = styled.div`
 
   @media (max-width: 768px) {
     width: 90vw;
+    justify-content: flex-start;
   }
 `;
 
