@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Image from 'next/image';
 
 const EduArtComponent = ({ sectionData }) => {
   const { title, content, features, imgPath } = sectionData;
@@ -54,6 +55,7 @@ const Container = styled.div`
 
   @media (max-width: 1080px) {
     width: 100%;
+    padding: 1rem;
   }
 `;
 
@@ -120,7 +122,7 @@ const FeatureItem = styled.li`
   gap: 1rem;
 `;
 
-const Image = styled.img`
-  height: auto;
-  border-radius: 20px;
-`;
+// const Image = styled.img`
+//   height: auto;
+//   border-radius: 20px;
+// `;
