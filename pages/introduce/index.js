@@ -185,7 +185,9 @@ const MiddleContainer = styled.section`
   gap: 1rem;
 
   @media (max-width: 768px) {
-    padding-top: 1rem;
+    width: 90vw;
+    min-height: 300px;
+    padding: 0 2rem;
   }
 `;
 

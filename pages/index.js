@@ -34,9 +34,8 @@ const section_1_Arr = [
 
 const section_2_Data = {
   title: 'EDU ART',
-  content:
-    'Lorem ipsum dolor sit amet velitLorem ipsum dolor sit amet velit, elitni legro int dolor. elitni legro int dolor.',
-  features: ['FEATURES', 'FEATURES', 'FEATURES', 'self-confidence'],
+  content: '우리아이의 건강한 몸과 마음의 행복을 위해',
+  features: ['social', 'physical', 'creativity', 'self-confidence'],
   imgPath: '/src/Home_IMG/Home_Section_2_IMG.png',
 };
 
@@ -221,6 +220,7 @@ const IntroSection = styled.section`
   } */
 
   @media (max-width: 1080px) {
+    height: 55vw;
     flex-direction: column;
     justify-content: center;
     padding: 1rem;
@@ -257,8 +257,8 @@ const H1 = styled.h1`
   z-index: 1;
 
   @media (max-width: 1080px) {
-    font-size: 55px;
-    width: 80%;
+    font-size: 50px;
+    width: 90%;
   }
 `;
 
@@ -329,7 +329,7 @@ const SectionFirst = styled.section`
     align-items: flex-start;
     padding: 2rem;
 
-    gap: 4rem;
+    gap: 2rem;
   }
 `;
 
@@ -346,7 +346,7 @@ const SectionSecond = styled.section`
   @media (max-width: 1080px) {
     height: 100%;
     flex-direction: column;
-    padding: 2rem;
+    padding: 1rem;
   }
 `;
 

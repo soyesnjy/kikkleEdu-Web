@@ -59,7 +59,6 @@ const HeaderSection = styled.section`
   width: 80vw;
   min-height: 21vw;
   position: relative;
-
   /* linear-gradient와 이미지 URL을 background 속성으로 조합 */
   background: linear-gradient(
       90deg,
@@ -80,6 +79,12 @@ const HeaderSection = styled.section`
   align-items: center;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 90vw;
+    min-height: 300px;
+    padding: 0 2rem;
+  }
 `;
 
 const HeaderContent = styled.div`
@@ -189,6 +194,10 @@ const PartnerSection = styled.section`
   align-items: center;
 
   gap: 4rem;
+
+  @media (max-width: 768px) {
+    width: 95vw;
+  }
 `;
 
 const EndSection = styled.section`

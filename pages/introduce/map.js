@@ -22,9 +22,7 @@ const CeoPage = () => {
           <Description>
             {`주소         : 서울시 마포구 성암로 330 DMC첨단산업센터 404-4`}
           </Description>
-          <Description>
-            오시는 길 : 가까운 지하철역 수색역 / 디지털미디어시티역
-          </Description>
+          <Description>오시는 길 : 수색역 / 디지털미디어시티역</Description>
         </MiddleContainer>
       </MiddleSection>
       {/* 맵 섹션 */}
@@ -32,7 +30,7 @@ const CeoPage = () => {
         <MapLeftContainer>
           <MapLeftTextContainer>
             <MapLeftTitle>Name</MapLeftTitle>
-            <MapLeftDescription>소예키즈</MapLeftDescription>
+            <MapLeftDescription>소예키즈 Soyes Kids</MapLeftDescription>
           </MapLeftTextContainer>
 
           <MapLeftTextContainer>
@@ -47,7 +45,7 @@ const CeoPage = () => {
 
           <MapLeftTextContainer>
             <MapLeftTitle>Email Address</MapLeftTitle>
-            <MapLeftDescription>soyes2013@gmail.com</MapLeftDescription>
+            <MapLeftDescription>soyeskids@gmail.com</MapLeftDescription>
           </MapLeftTextContainer>
         </MapLeftContainer>
         <MapRightContainer>
@@ -89,7 +87,6 @@ const HeaderSection = styled.section`
   width: 80vw;
   min-height: 21vw;
   position: relative;
-
   /* linear-gradient와 이미지 URL을 background 속성으로 조합 */
   background: linear-gradient(
       90deg,
@@ -109,6 +106,12 @@ const HeaderSection = styled.section`
   align-items: center;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 90vw;
+    min-height: 300px;
+    padding: 0 2rem;
+  }
 `;
 
 const HeaderContent = styled.div`
@@ -143,6 +146,10 @@ const Description = styled.p`
   font-weight: 400;
 
   white-space: pre;
+
+  @media (max-width: 768px) {
+    white-space: wrap;
+  }
 `;
 
 const HeaderIntroDiv = styled.div`
@@ -181,6 +188,11 @@ const MiddleSection = styled.section`
   align-items: center;
 
   gap: 4rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0 1rem;
+  }
 `;
 
 const MiddleContainer = styled.section`
@@ -220,6 +232,12 @@ const MapSection = styled.section`
   align-items: flex-start;
 
   gap: 4rem;
+
+  @media (max-width: 768px) {
+    width: 95vw;
+    flex-direction: column;
+    padding: 1rem;
+  }
 `;
 
 const MapLeftContainer = styled.div`
