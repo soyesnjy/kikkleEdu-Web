@@ -12,6 +12,7 @@ const NavModal = ({
   login,
   logoutHandler,
   navList_info,
+  menuItems,
 }) => {
   return (
     <NavMenuContainer>
@@ -41,9 +42,16 @@ const NavModal = ({
         {/* End Section */}
         {login ? (
           <NavEndContainer>
-            <Link href="/mypage" passHref>
+            {/* <Link href="/mypage" passHref>
               <NavMobileButton onClick={toggleMenu}>MY PAGE</NavMobileButton>
-            </Link>
+            </Link> */}
+            {menuItems.map((item, index) => (
+              <Link key={index} href={item.href} passHref>
+                <NavMobileButton onClick={toggleMenu}>
+                  {item.label}
+                </NavMobileButton>
+              </Link>
+            ))}
             <NavMobileButton onClick={logoutHandler}>LOGOUT</NavMobileButton>
           </NavEndContainer>
         ) : (

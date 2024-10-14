@@ -269,6 +269,7 @@ export default function Nav() {
             login={login}
             logoutHandler={logoutHandler}
             navList_info={navList_info}
+            menuItems={menuItems}
           />
         </NavContainer>
       )}
