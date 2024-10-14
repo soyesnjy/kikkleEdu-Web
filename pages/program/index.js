@@ -219,7 +219,9 @@ const HeaderSection = styled.section`
 
   @media (max-width: 768px) {
     width: 90vw;
-    min-height: 24vh;
+    min-height: 300px;
+    padding: 0 2rem;
+    background-position: right;
   }
 `;
 
