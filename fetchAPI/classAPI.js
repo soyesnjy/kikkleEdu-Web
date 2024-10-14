@@ -14,7 +14,7 @@ export const handleClassGet = async (query) => {
         withCredentials: true,
       }
     );
-    console.log(response.data);
+    // console.log(response.data);
     return response;
   } catch (err) {
     console.error(err);
