@@ -82,21 +82,22 @@ export default function Home() {
         <ReadContainer>
           <H1>Kids Class Edu</H1>
           {!mobileFlag && (
-            <>
+            <div>
               <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
               <Button>Read More</Button>
-            </>
+            </div>
           )}
         </ReadContainer>
       </IntroSection>
+      {/* 모바일용 섹션 */}
+      {mobileFlag && (
+        <FirstMobileContainer>
+          <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
+          <Button>Read More</Button>
+        </FirstMobileContainer>
+      )}
       {/* 섹션1 */}
       <SectionFirst>
-        {mobileFlag && (
-          <div>
-            <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
-            <Button>Read More</Button>
-          </div>
-        )}
         {section_1_Arr.map((el, index) => {
           const { imgPath, title, content } = el;
           return (
@@ -333,8 +334,14 @@ const SectionFirst = styled.section`
     flex-direction: column;
     align-items: flex-start;
     padding: 2rem;
-
     gap: 2rem;
+  }
+`;
+
+const FirstMobileContainer = styled.div`
+  margin: 3rem 0;
+  @media (max-width: 1080px) {
+    background-color: white;
   }
 `;
 
