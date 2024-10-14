@@ -414,6 +414,8 @@ const TableContainer = styled.div`
 
   display: flex;
   flex-direction: column;
+
+  overflow-x: auto;
 `;
 
 const Table = styled.table`
