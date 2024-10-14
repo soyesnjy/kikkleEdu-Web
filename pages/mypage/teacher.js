@@ -195,6 +195,10 @@ const MyPageContainer = styled.div`
   width: 85%;
   margin: 0 auto;
   padding-top: 2rem;
+
+  @media (max-width: 768px) {
+    width: 95%;
+  }
 `;
 
 const Header = styled.div`
@@ -235,14 +239,23 @@ const TabButton = styled.button`
     background-color: #61b15a;
     color: white;
   }
+
+  @media (max-width: 768px) {
+    padding: 0.7rem;
+  }
 `;
 
 const TableContainer = styled.div`
   margin-top: 2rem;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Table = styled.table`
@@ -260,15 +273,19 @@ const TableHeader = styled.th`
   font-family: Pretendard;
   font-weight: 600;
   text-align: left;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
 `;
 
-const Title = styled.h1`
-  width: 500px;
-  background-color: #4caf50;
-  color: white;
+// const Title = styled.h1`
+//   width: 500px;
+//   background-color: #4caf50;
+//   color: white;
 
-  padding: 1rem;
-  text-align: center;
-`;
+//   padding: 1rem;
+//   text-align: center;
+// `;
 
 export default MyPage;

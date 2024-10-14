@@ -4,7 +4,7 @@ import UploadForm from './UploadForm'; // 새로운 업로드 폼 컴포넌트
 import UploadFormDir from './UploadFormDir';
 import DeleteForm from './DeleteForm';
 import { useRecoilState } from 'recoil';
-import { agencyClass } from '@/store/state';
+import { agencyClass, mobile } from '@/store/state';
 
 const titleMap = {
   music: 'Music',
@@ -19,6 +19,7 @@ const Directory = ({ data, form }) => {
   const [trackData, setTrackData] = useState({});
   const [audioKey, setAudioKey] = useState(0); // unique key for AudioPlayer
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
+  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   useEffect(() => {
     const currentParentId = path[path.length - 1];
@@ -86,15 +87,15 @@ const Directory = ({ data, form }) => {
                 key={audioKey}
                 src={trackData.url}
                 // allowfullscreen
-                width="450"
+                width={mobileFlag ? '370' : '450'}
                 height="270"
               />
             ) : (
               <iframe
                 key={audioKey}
                 src={trackData.url}
-                width="450"
-                height="70"
+                width={mobileFlag ? '100%' : '450'}
+                height={mobileFlag ? '170' : '70'}
               />
             )}
           </TrackContainer>
@@ -112,6 +113,10 @@ const Container = styled.div`
   padding: 1rem;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const UploadContainer = styled.div`
@@ -129,16 +134,15 @@ const List = styled.ul`
   border-radius: 24px;
 
   @media (max-width: 768px) {
+    min-width: 390px;
     width: 100%;
-    padding: 0.5rem 1rem;
+    padding: 1rem;
   }
 `;
 
 const ListItem = styled.li`
   margin: 5px 0;
   padding: 0.5rem;
-  /* background-color: ${(props) =>
-    props.type === 'directory' ? '#378e56' : '#45B26B'}; */
 
   background-color: #45b26b;
 
@@ -180,7 +184,7 @@ const TrackContainer = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    padding: 0.5rem 1rem;
+    padding: 0;
   }
 `;
 

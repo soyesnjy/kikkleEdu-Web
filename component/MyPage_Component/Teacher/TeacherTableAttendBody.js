@@ -25,7 +25,6 @@ const getDayName = (dateString) => {
 
 const TeacherTableAttendBody = ({ data }) => {
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
-
   const [attendIdx, setAttendIdx] = useState(0);
   const [attendStatus, setAttendStatus] = useState(0);
   const [attendTrigger, setAttendTrigger] = useState(0);
@@ -111,7 +110,7 @@ const TeacherTableAttendBody = ({ data }) => {
             <CheckboxWrapper status={!attendStatus}>
               <CheckIcon />
             </CheckboxWrapper>
-            <CheckboxLabel>출근 미완료</CheckboxLabel>
+            <CheckboxLabel>미출근</CheckboxLabel>
           </CheckboxContainer>
         </AttendContainer>
       </TableCell>
@@ -132,6 +131,10 @@ const TableRow = styled.tr`
   &:nth-child(even) {
     background-color: #f9f9f9;
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const TableCell = styled.td`
@@ -144,12 +147,23 @@ const TableCell = styled.td`
   font-family: Pretendard;
   font-weight: 700;
   text-align: left;
+
+  @media (max-width: 768px) {
+    max-width: 150px;
+    padding: 0.4rem;
+    font-size: 0.8rem;
+  }
 `;
 const AttendContainer = styled.div`
   display: flex;
   align-items: center;
 
   gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
 `;
 
 const CheckboxContainer = styled.div`
@@ -169,6 +183,11 @@ const CheckboxWrapper = styled.div`
   background-color: ${({ status }) => (status ? '#61b15a' : '#e0e0e0')};
   color: white;
   margin-right: 0.5rem;
+
+  @media (max-width: 768px) {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 const CheckboxLabel = styled.span`
@@ -177,6 +196,10 @@ const CheckboxLabel = styled.span`
   font-family: Pretendard;
   font-weight: 700;
   text-align: left;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const Button = styled.button`
