@@ -161,6 +161,10 @@ const Description = styled.p`
   font-family: Pretendard;
   color: white;
   margin-bottom: 2rem;
+
+  @media (max-width: 728px) {
+    width: 30%;
+  }
 `;
 
 const CarouselContainer = styled.div`
@@ -219,8 +223,8 @@ const ProfileCard = styled.div`
     color: ${(props) => (props.active ? 'black' : 'white')};
   }
 
-  /* 사다리꼴 모양을 만들기 위한 clip-path */
-  /* clip-path: polygon(0% 10%, 100% -5%, 100% 100%, 0% 100%); */
+  @media (max-width: 728px) {
+  }
 `;
 
 const ProfileName = styled.h3`

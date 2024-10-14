@@ -452,7 +452,7 @@ const MiddleSectionTitle = styled.h2`
   font-weight: 700;
 
   @media (max-width: 1080px) {
-    font-size: 1.9rem;
+    font-size: 1.7rem;
   }
 `;
 
