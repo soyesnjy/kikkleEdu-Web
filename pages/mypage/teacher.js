@@ -197,7 +197,7 @@ const MyPageContainer = styled.div`
   padding-top: 2rem;
 
   @media (max-width: 768px) {
-    width: 95%;
+    width: 100%;
   }
 `;
 
