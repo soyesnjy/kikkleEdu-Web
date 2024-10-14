@@ -26,7 +26,7 @@ const ProgramClassContainer = ({ classDataArr }) => {
     if (!isDragging) return; // 드래그 상태가 아닐 때는 실행하지 않음
     e.preventDefault(); // 기본 동작 방지 (필수)
     if (containerRef.current) {
-      const x = e.pageX - startX; // 마우스 이동 거리 계산
+      const x = (e.pageX - startX) * 1.5; // 마우스 이동 거리 계산
       containerRef.current.scrollLeft = scrollLeft - x; // 스크롤 위치 업데이트
       // console.log(containerRef.current.scrollLeft);
     }
@@ -52,7 +52,7 @@ const ProgramClassContainer = ({ classDataArr }) => {
     if (!isDragging) return;
 
     const touch = e.touches[0];
-    const x = touch.pageX - startX; // 터치 이동 거리 계산
+    const x = (touch.pageX - startX) * 1.5; // 터치 이동 거리 계산
     if (containerRef.current) {
       containerRef.current.scrollLeft = scrollLeft - x; // 스크롤 위치 업데이트
     }
