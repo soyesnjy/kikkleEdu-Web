@@ -46,6 +46,7 @@ const section_5to9_Arr = [
       '유치원 기관에 맞는 다양한 프로그램과 연령대에 맞춘 소예키즈 프로그램을 제공합니다.',
     imgUrl: '/src/Home_IMG/Home_Section_5_Background_IMG.png',
     routePath: '/agency',
+    backgroundColor: '#F4EEE5',
   },
   {
     title: '초등학교 수업',
@@ -60,6 +61,7 @@ const section_5to9_Arr = [
       '유아, 초등, 성인들을 대상으로 하는 다양한 연령대의 프로그램을 제공합니다.',
     imgUrl: '/src/Home_IMG/Home_Section_7_Background_IMG.png',
     routePath: '/agency/cultural',
+    backgroundColor: '#F4EEE5',
   },
   {
     title: '아파트 커뮤니티 센터 수업',
@@ -118,7 +120,10 @@ export default function Home() {
       {/* 섹션5~8 */}
       {section_5to9_Arr.map((el, index) => {
         return (
-          <SectionFifthtoNineth key={index}>
+          <SectionFifthtoNineth
+            key={index}
+            backgroundColor={el.backgroundColor}
+          >
             <LessonSection
               title={el.title}
               subtitle={el.subtitle}
@@ -316,7 +321,7 @@ const SectionFirst = styled.section`
   width: 100vw;
   min-height: 262px;
 
-  background-color: white;
+  background-color: #f4eee5;
   padding: 3rem;
 
   display: flex;
@@ -388,7 +393,7 @@ const SectionFifthtoNineth = styled.section`
   width: 100vw;
   min-height: 50vh;
 
-  background-color: white;
+  background-color: ${(props) => props.backgroundColor || 'white'};
 
   display: flex;
   justify-content: center;

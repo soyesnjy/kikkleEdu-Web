@@ -366,6 +366,10 @@ const MyPageContainer = styled.div`
   width: 85%;
   margin: 0 auto;
   padding-top: 2rem;
+
+  @media (max-width: 768px) {
+    width: 95%;
+  }
 `;
 
 const Header = styled.div`
