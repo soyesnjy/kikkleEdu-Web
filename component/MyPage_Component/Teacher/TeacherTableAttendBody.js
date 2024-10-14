@@ -219,5 +219,10 @@ const Button = styled.button`
   &:hover {
     opacity: 0.8;
   }
+
+  @media (max-width: 768px) {
+    padding: 0.6rem;
+    font-size: 0.8rem;
+  }
 `;
 export default TeacherTableAttendBody;
