@@ -76,6 +76,12 @@ export default function Nav() {
     height: undefined,
   });
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   useEffect(() => {
     const loginSession = localStorage.getItem('log');
     // 로그인 세션 만료 처리
@@ -248,7 +254,7 @@ export default function Nav() {
         </NavContainer>
       ) : (
         <NavContainer show={showNavbar}>
-          <Link href="/" passHref>
+          <Link href="/" passHref onClick={() => setIsOpen(false)}>
             <Image
               src="/src/Home_IMG/Nav_IMG/Home_Nav_Logo_IMG.png"
               alt={'soyes_logo'}
@@ -258,6 +264,8 @@ export default function Nav() {
             />
           </Link>
           <NavModal
+            isOpen={isOpen}
+            toggleMenu={toggleMenu}
             login={login}
             logoutHandler={logoutHandler}
             navList_info={navList_info}

@@ -6,13 +6,13 @@ import Link from 'next/link';
 import NavDropDown from './NavDropDown';
 // import { useSession } from "next-auth/react";
 
-const NavModal = ({ login, logoutHandler, navList_info }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
+const NavModal = ({
+  isOpen,
+  toggleMenu,
+  login,
+  logoutHandler,
+  navList_info,
+}) => {
   return (
     <NavMenuContainer>
       {/* 로고 */}
