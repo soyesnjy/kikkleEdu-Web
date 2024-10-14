@@ -257,6 +257,8 @@ const TableContainer = styled.div`
   justify-content: center;
   align-items: center;
 
+  overflow-x: auto;
+
   @media (max-width: 768px) {
     width: 100%;
   }

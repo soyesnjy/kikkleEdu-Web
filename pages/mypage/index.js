@@ -40,7 +40,7 @@ const agencyTypeArr = [
 ];
 
 const MyPage = () => {
-  const [activeTab, setActiveTab] = useState('attend');
+  const [activeTab, setActiveTab] = useState('reservation');
   const [tableData, setTableData] = useState(dummyTableData);
   const [page, setPage] = useState(1);
   const [lastPageNum, setLastPageNum] = useState(1);
@@ -249,6 +249,7 @@ const TabButton = styled.button`
 
 const TableContainer = styled.div`
   margin-top: 2rem;
+  overflow-x: auto;
 `;
 
 const Table = styled.table`
