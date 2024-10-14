@@ -45,6 +45,10 @@ const TextContainer = styled.div`
   flex-direction: column;
 
   gap: 0.3rem;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+  }
 `;
 
 const Title = styled.h3`

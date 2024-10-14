@@ -68,11 +68,7 @@ const TeacherListPage = () => {
           <MiddleTitle>KC EDU - ballet</MiddleTitle>
           <MiddleSubtitle>강사</MiddleSubtitle>
           <MiddleDescription>
-            Lorem ipsum dolor sit amet veli elitni legro int dolor.
-            <br />
-            Lorem ipsum dolor sit amet veli elitni legro int dolor.
-            <br />
-            Lorem ipsum dolor sit amet veli elitni legro int dolor.
+            각 장르별 수업가능한 강사님들을 찾아보고 선택.
           </MiddleDescription>
         </MiddleContainer>
         <MiddleContainer>
@@ -195,6 +191,12 @@ const HeaderSection = styled.section`
   align-items: center;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 90vw;
+    min-height: 300px;
+    padding: 0 2rem;
+  }
 `;
 
 const HeaderContent = styled.div`
