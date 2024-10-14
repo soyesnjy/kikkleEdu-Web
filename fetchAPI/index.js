@@ -56,7 +56,7 @@ export const loginAPI_OAuth_URL = async () => {
         withCredentials: true,
       }
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   } catch (err) {
     // 에러시 false 반환
@@ -119,7 +119,7 @@ export const loginAPI_OAuth_Approve_Google = async (post) => {
         withCredentials: true,
       }
     );
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (err) {
     console.log('UserExpiratio API 호출 실패');
