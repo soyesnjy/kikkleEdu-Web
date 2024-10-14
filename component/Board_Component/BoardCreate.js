@@ -101,8 +101,9 @@ const BoardCreate = () => {
           onChange={handleIsPrivateChange}
         />
       </CheckContainer>
-
-      <Button type="submit">등록</Button>
+      <ButtonContainer>
+        <Button type="submit">등록</Button>
+      </ButtonContainer>
     </FormContainer>
   );
 };
@@ -126,7 +127,7 @@ const FormGroup = styled.div`
 const CheckContainer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: right;
+  justify-content: left;
   align-items: center;
 
   gap: 1rem;
@@ -159,6 +160,12 @@ const TextArea = styled.textarea`
   border-radius: 4px;
   font-size: 1rem;
   resize: none;
+`;
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  align-items: center;
 `;
 
 const Button = styled.button`
