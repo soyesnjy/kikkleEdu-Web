@@ -179,7 +179,7 @@ const HeaderSection = styled.section`
   position: relative;
 
   background: linear-gradient(90deg, #378e56 0%, rgba(55, 142, 86, 0) 60.5%),
-    url('/src/Introduce_IMG/Introduce_Content_Header_Background_IMG.png');
+    url('/src/Shop_IMG/Shop_Header_Background_IMG_.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -192,6 +192,12 @@ const HeaderSection = styled.section`
   align-items: center;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 90vw;
+    min-height: 300px;
+    padding: 0 2rem;
+  }
 `;
 
 const HeaderContent = styled.div`
