@@ -148,7 +148,7 @@ const MainContainer = styled.div`
 
 const HeaderSection = styled.section`
   width: 80vw;
-  min-height: 327px;
+  min-height: 21vw;
   position: relative;
 
   background-image: url('/src/Introduce_IMG/Introduce_Header_Background_IMG.png');
@@ -165,6 +165,12 @@ const HeaderSection = styled.section`
   align-items: center;
 
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 90vw;
+    min-height: 300px;
+    padding: 0 2rem;
+  }
 `;
 
 const HeaderContent = styled.div`
@@ -226,6 +232,12 @@ const BoardContainer = styled.div`
   width: 80%;
   margin: 0 auto;
   padding: 2rem 0;
+
+  @media (max-width: 768px) {
+    width: 95%;
+
+    padding: 1rem 0;
+  }
 `;
 
 const Table = styled.table`
