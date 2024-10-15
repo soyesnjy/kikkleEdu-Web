@@ -122,6 +122,8 @@ const SideMenu = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
+
+  overflow-y: auto;
 `;
 
 const CloseButton = styled.button`
