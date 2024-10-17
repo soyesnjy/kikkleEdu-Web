@@ -273,7 +273,7 @@ const HeaderContent = styled.div`
   width: 40%;
   padding: 4rem 4rem 4rem 8rem;
 
-  background: rgba(255, 255, 255, 0.3); /* 반투명 배경 */
+  background: rgba(0, 0, 0, 0.1); /* 반투명 배경 */
   backdrop-filter: blur(25px); /* 블러 효과 */
   border-radius: 0 2rem 2rem 0;
 
@@ -283,6 +283,7 @@ const HeaderContent = styled.div`
   gap: 2rem;
 
   @media (max-width: 1080px) {
+    background: rgba(255, 255, 255, 0.2);
     width: 90%;
     padding: 1.5rem;
     position: inherit;
