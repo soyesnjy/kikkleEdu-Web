@@ -175,7 +175,12 @@ const HeaderSection = styled.section`
   min-height: 400px;
   position: relative;
 
-  background-image: url('/src/Teacher_IMG/Teacher_Header_Background_IMG.png');
+  background-image: linear-gradient(
+      90deg,
+      rgba(76, 176, 178, 0.8) 0%,
+      rgba(76, 176, 178, 0) 60.5%
+    ),
+    url('/src/Teacher_IMG/Teacher_Header_Background_IMG.png');
   background-size: cover;
   background-position-y: 30%;
   background-repeat: no-repeat;
@@ -191,34 +196,54 @@ const HeaderSection = styled.section`
   gap: 1rem;
 
   @media (max-width: 768px) {
+    background: url('/src/Teacher_IMG/Teacher_Header_Background_IMG.png');
+    background-size: cover; /* 배경 이미지 크기 조정 */
+    background-repeat: no-repeat;
+
     width: 90vw;
-    min-height: 300px;
+    min-height: 90vw;
     padding: 0 2rem;
+    background-position: 70%;
+    align-items: flex-start;
   }
 `;
 
 const HeaderContent = styled.div`
   width: 100%;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+    margin-top: 3rem;
+  }
 `;
 
 const Title = styled.h1`
-  color: #333;
+  color: white;
 
   font-size: 1rem;
   font-family: Nunito;
   font-weight: 600;
+
+  @media (max-width: 768px) {
+    color: black;
+  }
 `;
 
 const Subtitle = styled.h2`
-  color: #333;
+  color: white;
 
   font-size: 2.2rem;
   font-family: Pretendard;
   font-weight: 700;
+
+  @media (max-width: 768px) {
+    color: black;
+  }
 `;
 
 const HeaderIntroDiv = styled.div`
