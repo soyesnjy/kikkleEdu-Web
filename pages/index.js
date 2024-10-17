@@ -194,24 +194,6 @@ const MasterContainer = styled.div`
   align-items: center;
 `;
 
-// const MainContainer = styled.div`
-//   width: 100vw;
-//   min-height: 100vh;
-//   background-color: white;
-//   padding-bottom: 2rem;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: flex-start;
-//   align-items: center;
-
-//   gap: 1rem;
-
-//   @media (max-width: 768px) {
-//     background-image: url('/src/Background_IMG/Mobile/mobile_background_2.png');
-//     justify-content: center;
-//   }
-// `;
-
 const IntroSection = styled.section`
   width: 100vw;
   height: 59vw; /* 16:9 비율 유지 (100 / 16 * 9) */
@@ -237,10 +219,10 @@ const IntroSection = styled.section`
     background-position: center;
     background-repeat: no-repeat;
 
-    height: 59vw;
+    height: 76vw;
     flex-direction: column;
-    justify-content: center;
-    padding: 1rem;
+    justify-content: flex-start;
+    padding: 1.3rem 0.8rem;
   }
 `;
 
@@ -262,6 +244,7 @@ const ReadContainer = styled.div`
   @media (max-width: 768px) {
     width: 100%;
     padding: 0 1rem;
+    justify-content: flex-start;
   }
 `;
 
