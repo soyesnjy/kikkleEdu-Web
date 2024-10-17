@@ -10,6 +10,7 @@ import AgencyProgramCard from '@/component/Home_Component/AgencyProgramCard';
 import ProgramClassContainer from '@/component/Agency_Component/ProgramClassContainer';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
+import EndSection from '@/component/Home_Component/EndSection';
 
 import Image from 'next/image';
 
@@ -211,12 +212,11 @@ const KindergartenPage = () => {
         </TeacherContainer>
       </MiddleSectionFourth>
       {/* 엔드 섹션 */}
-      <EndSection>
-        <EndTitle>
-          {`For our child's healthy body \n and heart happiness`}
-        </EndTitle>
-        <Button>예약하기</Button>
-      </EndSection>
+      <EndSection
+        Title={`For our child's healthy body \n and heart happiness`}
+        btnTitle={`예약하기`}
+        routePath={`/`}
+      />
     </MainContainer>
   );
 };
@@ -622,56 +622,4 @@ const TeacherButtonSubTitle = styled.div`
   font-family: Pretendard;
   font-weight: 400;
   font-size: 12px;
-`;
-
-const EndSection = styled.section`
-  width: 100vw;
-  height: 100vh;
-  background-color: white;
-  position: relative;
-
-  background-image: url('/src/Home_IMG/Home_Last_Background_IMG.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  @media (max-width: 728px) {
-    background-size: cover;
-  }
-`;
-
-const EndTitle = styled.h1`
-  width: 70%;
-  text-align: center;
-  font-size: 3rem;
-  font-family: Nunito;
-  font-weight: 600;
-  color: #171717;
-  white-space: pre;
-
-  @media (max-width: 1080px) {
-    font-size: 24px;
-  }
-`;
-
-const Button = styled.button`
-  font-family: Pretendard;
-  font-weight: 600;
-  background-color: #45b26b;
-
-  border-radius: 10px;
-  border: none;
-
-  margin-top: 1rem;
-  padding: 1rem 2rem;
-
-  color: white;
-
-  cursor: pointer;
-  z-index: 1;
 `;

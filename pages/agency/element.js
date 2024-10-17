@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 
 import AgencyProgramCard from '@/component/Home_Component/AgencyProgramCard';
 import ProgramClassContainer from '@/component/Agency_Component/ProgramClassContainer';
+import EndSection from '@/component/Home_Component/EndSection';
 
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
@@ -212,12 +213,11 @@ const ElementPage = () => {
         </TeacherContainer>
       </MiddleSectionFourth>
       {/* 엔드 섹션 */}
-      <EndSection>
-        <EndTitle>
-          {`For our child's healthy body \n and heart happiness`}
-        </EndTitle>
-        <Button>예약하기</Button>
-      </EndSection>
+      <EndSection
+        Title={`For our child's healthy body \n and heart happiness`}
+        btnTitle={`예약하기`}
+        routePath={`/`}
+      />
     </MainContainer>
   );
 };
@@ -521,76 +521,6 @@ const MiddleSectionThird = styled.section`
   }
 `;
 
-const ProgramContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 1fr;
-
-  gap: 1rem;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1fr;
-  }
-`;
-
-const ProgramContentContainer = styled.div`
-  width: 280px;
-  height: 280px;
-
-  /* 배경 이미지와 그라데이션을 함께 설정 */
-  background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 1) 10%,
-      rgba(0, 0, 0, 0) 30%
-    ),
-    url(${(props) => props.imgPath || 'none'});
-  background-size: cover; /* 이미지 크기 조정 */
-  background-position: center;
-  background-repeat: no-repeat;
-
-  /* 배경 이미지 위에 그라데이션 효과를 덧씌우기 */
-  background-blend-mode: normal;
-
-  padding: 1rem;
-
-  border-radius: 15px;
-
-  /* 선택 여부에 따른 테두리 */
-  border: ${(props) => (props.selected ? '5px solid #45b26b' : 'none')};
-  color: white;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-
-  gap: 1rem;
-
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-
-  /* 반응형 크기 조정 */
-  @media (max-width: 768px) {
-    width: 155px;
-    height: 202px;
-  }
-`;
-
-const ProgramTitle = styled.div`
-  font-family: Pretendard;
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: white;
-
-  z-index: 1;
-`;
-
 const MiddleSectionFourth = styled.section`
   width: 100vw;
   min-height: 100vh;
@@ -693,56 +623,4 @@ const TeacherButtonSubTitle = styled.div`
   font-family: Pretendard;
   font-weight: 400;
   font-size: 12px;
-`;
-
-const EndSection = styled.section`
-  width: 100vw;
-  height: 100vh;
-  background-color: white;
-  position: relative;
-
-  background-image: url('/src/Home_IMG/Home_Last_Background_IMG.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  @media (max-width: 728px) {
-    background-size: cover;
-  }
-`;
-
-const EndTitle = styled.h1`
-  width: 70%;
-  text-align: center;
-  font-size: 3rem;
-  font-family: Nunito;
-  font-weight: 600;
-  color: #171717;
-  white-space: pre;
-
-  @media (max-width: 1080px) {
-    font-size: 24px;
-  }
-`;
-
-const Button = styled.button`
-  font-family: Pretendard;
-  font-weight: 600;
-  background-color: #f5a623;
-
-  border-radius: 10px;
-  border: none;
-
-  margin-top: 1rem;
-  padding: 1rem 2rem;
-
-  color: white;
-
-  cursor: pointer;
-  z-index: 1;
 `;
