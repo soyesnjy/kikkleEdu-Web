@@ -214,8 +214,7 @@ const ElementPage = () => {
       {/* 엔드 섹션 */}
       <EndSection>
         <EndTitle>
-          Loren iqsum dolor sit...Loren iqsum dolor sit... Loren iqsum dolor
-          sit...
+          {`For our child's healthy body \n and heart happiness`}
         </EndTitle>
         <Button>예약하기</Button>
       </EndSection>
@@ -724,6 +723,7 @@ const EndTitle = styled.h1`
   font-family: Nunito;
   font-weight: 600;
   color: #171717;
+  white-space: pre;
 
   @media (max-width: 1080px) {
     font-size: 24px;
