@@ -142,12 +142,12 @@ const MyPage = () => {
             {activeTab === 'attend' && (
               <thead>
                 <tr>
-                  <TableHeader>수업 타이틀</TableHeader>
+                  <TableHeader>타이틀</TableHeader>
                   <TableHeader>기관명</TableHeader>
-                  <TableHeader>수업 강사</TableHeader>
+                  <TableHeader>강사</TableHeader>
                   <TableHeader>날짜</TableHeader>
-                  <TableHeader>수업 요일</TableHeader>
-                  <TableHeader>수업 시간대</TableHeader>
+                  <TableHeader>요일</TableHeader>
+                  <TableHeader>시간대</TableHeader>
                   <TableHeader>출근 현황</TableHeader>
                   <TableHeader></TableHeader>
                 </tr>
@@ -260,7 +260,8 @@ const TableContainer = styled.div`
   overflow-x: auto;
 
   @media (max-width: 768px) {
-    width: 100%;
+    justify-content: center;
+    align-items: flex-start;
   }
 `;
 
@@ -268,6 +269,10 @@ const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   font-size: 1rem;
+
+  @media (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const TableHeader = styled.th`
@@ -282,6 +287,9 @@ const TableHeader = styled.th`
 
   @media (max-width: 768px) {
     font-size: 0.9rem;
+    padding: 1rem 0rem;
+    padding-left: 0.5rem;
+    text-align: center;
   }
 `;
 

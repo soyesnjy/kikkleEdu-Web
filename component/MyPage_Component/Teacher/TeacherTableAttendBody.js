@@ -133,7 +133,6 @@ const TableRow = styled.tr`
   }
 
   @media (max-width: 768px) {
-    width: 100%;
   }
 `;
 
@@ -149,9 +148,10 @@ const TableCell = styled.td`
   text-align: left;
 
   @media (max-width: 768px) {
-    max-width: 150px;
-    padding: 0.4rem;
+    min-width: 100px;
+    padding: 0.3rem;
     font-size: 0.8rem;
+    text-align: center;
   }
 `;
 const AttendContainer = styled.div`
@@ -162,7 +162,7 @@ const AttendContainer = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.4rem;
   }
 `;
 
@@ -171,6 +171,9 @@ const CheckboxContainer = styled.div`
   align-items: center;
 
   cursor: pointer;
+
+  @media (max-width: 768px) {
+  }
 `;
 
 const CheckboxWrapper = styled.div`
@@ -199,6 +202,7 @@ const CheckboxLabel = styled.span`
 
   @media (max-width: 768px) {
     font-size: 0.8rem;
+    min-width: 50px;
   }
 `;
 

@@ -205,6 +205,10 @@ const Title = styled.h1`
   font-family: Pretendard;
   font-weight: 600;
   text-align: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 // const AudioPlayer = styled.audio`
