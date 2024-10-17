@@ -58,7 +58,6 @@ const EndTitle = styled.h1`
   color: #171717;
 
   white-space: pre;
-  line-height: 36px;
 
   @media (max-width: 768px) {
     width: 90%;
