@@ -27,9 +27,9 @@ const PatentPage = () => {
       <PatentCarousel />
       {/* 엔드 섹션 */}
       <EndSection>
-        <EndTitle>
+        {/* <EndTitle>
           우리아이의 성장 소예키즈와 함께 몸과 마음을 성장시켜요
-        </EndTitle>
+        </EndTitle> */}
         <Link href="/introduce/partner">
           <Button>파트너사</Button>
         </Link>
@@ -59,8 +59,7 @@ const HeaderSection = styled.section`
   background: linear-gradient(
       90deg,
       rgba(76, 176, 178, 0.8) 0%,
-      /* 시작 색상, 투명도 0.8 */ rgba(76, 176, 178, 0) 60.5%
-        /* 중간에서 투명해짐 */
+      rgba(76, 176, 178, 0) 60.5%
     ),
     url('/src/Introduce_IMG/Patent/Introduce_Patent_Header_Background_IMG.png');
   background-size: cover; /* 배경 이미지 크기 조정 */

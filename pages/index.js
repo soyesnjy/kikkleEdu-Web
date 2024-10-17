@@ -10,6 +10,7 @@ import LessonSection from '@/component/Home_Component/LessonSection';
 
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
+import { useRouter } from 'next/router';
 // import { useTranslation } from 'next-i18next';
 // import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
@@ -74,6 +75,7 @@ const section_5to9_Arr = [
 // Home 페이지
 export default function Home() {
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const router = useRouter();
 
   return (
     <MasterContainer>
@@ -84,7 +86,13 @@ export default function Home() {
           {!mobileFlag && (
             <div>
               <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
-              <Button>Read More</Button>
+              <Button
+                onClick={() => {
+                  router.push('/introduce/content');
+                }}
+              >
+                Read More
+              </Button>
             </div>
           )}
         </ReadContainer>
@@ -93,7 +101,13 @@ export default function Home() {
       {mobileFlag && (
         <FirstMobileContainer>
           <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
-          <Button>Read More</Button>
+          <Button
+            onClick={() => {
+              router.push('/introduce/content');
+            }}
+          >
+            Read More
+          </Button>
         </FirstMobileContainer>
       )}
       {/* 섹션1 */}

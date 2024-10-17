@@ -169,10 +169,15 @@ const ContentPage = () => {
       {/* 엔드 섹션 */}
       <EndSection>
         <EndTitle>
-          상상하고 즐기는 아동 창의력 발달! 정서 발달! 사회성 발달! ICT 융복합
-          교육 문화콘텐츠 SOYES KIDS!
+          {`상상하고 즐기는 아동 창의력 발달! \n 정서 발달! 사회성 발달! \n ICT 융복합 교육 문화콘텐츠 SOYES KIDS!`}
         </EndTitle>
-        <Button>콘텐츠 소개</Button>
+        {/* <Button
+          onClick={() => {
+            router.push('/program');
+          }}
+        >
+          콘텐츠 소개
+        </Button> */}
       </EndSection>
     </MainContainer>
   );
@@ -519,6 +524,8 @@ const EndTitle = styled.h1`
   font-family: Nunito;
   font-weight: 600;
   color: #171717;
+
+  white-space: pre;
 
   @media (max-width: 1080px) {
     font-size: 24px;

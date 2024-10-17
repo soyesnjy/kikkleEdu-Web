@@ -3,9 +3,11 @@ import Image from 'next/image';
 import IntroductionCarousel from '@/component/Introduction_Component/IntroductionCarousel';
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
+import { useRouter } from 'next/router';
 
 const HistoryPage = () => {
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const router = useRouter();
 
   return (
     <MainContainer>
@@ -41,9 +43,15 @@ const HistoryPage = () => {
       {/* 엔드 섹션 */}
       <EndSection>
         <EndTitle>
-          우리아이의 성장 소예키즈와 함께 몸과 마음을 성장시켜요
+          {`우리아이의 성장 소예키즈와 함께 \n 몸과 마음을 성장시켜요`}
         </EndTitle>
-        <Button>콘텐츠 소개</Button>
+        <Button
+          onClick={() => {
+            router.push('/program');
+          }}
+        >
+          콘텐츠 소개
+        </Button>
       </EndSection>
     </MainContainer>
   );
@@ -254,6 +262,8 @@ const EndTitle = styled.h1`
   font-family: Nunito;
   font-weight: 600;
   color: #171717;
+
+  white-space: pre;
 
   @media (max-width: 1080px) {
     font-size: 24px;

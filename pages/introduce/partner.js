@@ -64,10 +64,9 @@ const HeaderSection = styled.section`
   background: linear-gradient(
       90deg,
       rgba(76, 176, 178, 0.8) 0%,
-      /* 시작 색상, 투명도 0.8 */ rgba(76, 176, 178, 0) 60.5%
-        /* 중간에서 투명해짐 */
+      rgba(76, 176, 178, 0) 60.5%
     ),
-    url('/src/Introduce_IMG/Introduce_Partner_Header_Background_IMG.png');
+    url('/src/Introduce_IMG/Partner/Introduce_Partner_Header_Background_IMG.png');
   background-size: cover; /* 배경 이미지 크기 조정 */
   background-position: center;
   background-repeat: no-repeat;
