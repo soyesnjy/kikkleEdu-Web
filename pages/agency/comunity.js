@@ -109,10 +109,9 @@ const ComunityPage = () => {
       {/* 헤더 섹션 */}
       <HeaderSection>
         <HeaderContent>
-          <Subtitle>Where Children Grow and Learn Happily - Slogan</Subtitle>
+          <Subtitle>{`"Soyes Kids" \n with kids !!`}</Subtitle>
           <Description>
-            Lorem ipsum dolor sit amet veli elitni legro int dolor.Lorem ipsum
-            dolor sit amet veli elitni legro int dolor.
+            {`각 기관에 맞는 프로그램을 찾고 강사를 \n 선택하여 예약하는 시스템입니다.`}
           </Description>
           {/* <StyledLink href={agency ? '/reservation' : '/login'}> */}
           <StyledLink href="/reservation">
@@ -244,7 +243,7 @@ const HeaderSection = styled.section`
   height: 52.65vw;
   position: relative;
 
-  background-image: url('/src/Agency_IMG/Agency_kindergarden_Header_Background_IMG.png');
+  background-image: url('/src/Agency_IMG/커뮤니티센터/Agency_community_Header_Background_IMG.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -259,8 +258,9 @@ const HeaderSection = styled.section`
 
   @media (max-width: 1080px) {
     height: 100%;
-    padding: 1rem;
+    padding: 3rem 1rem;
     justify-content: center;
+    background-position: right;
   }
 `;
 
@@ -279,16 +279,15 @@ const HeaderContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 2rem;
 
   @media (max-width: 1080px) {
-    padding: 1.5rem;
     width: 90%;
+    padding: 1.5rem;
     position: inherit;
-
     align-items: center;
-
     border-radius: 2rem;
+    gap: 1rem;
   }
 `;
 
@@ -299,8 +298,11 @@ const Subtitle = styled.h2`
   font-family: Nunito;
   font-weight: 700;
 
+  white-space: pre;
+
   @media (max-width: 1080px) {
-    font-size: 1.9rem;
+    font-size: 2.3rem;
+    text-align: center;
   }
 `;
 
@@ -310,6 +312,12 @@ const Description = styled.p`
   font-size: 1.2rem;
   font-family: Pretendard;
   font-weight: 400;
+
+  white-space: pre;
+
+  @media (max-width: 1080px) {
+    text-align: center;
+  }
 `;
 
 const StyledLink = styled(Link)`
