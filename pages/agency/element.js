@@ -257,10 +257,11 @@ const HeaderSection = styled.section`
   gap: 1rem;
 
   @media (max-width: 1080px) {
-    height: 100%;
-    padding: 1rem;
+    min-height: 471px;
+    padding: 3rem 0rem;
     justify-content: center;
-    background-position: 115%;
+    align-items: flex-start;
+    background-position: 80%;
   }
 `;
 
