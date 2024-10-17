@@ -1,7 +1,13 @@
 import styled from 'styled-components';
 import Image from 'next/image';
+import { useRecoilState } from 'recoil';
+import { mobile } from '@/store/state';
+
+import PartnerCarouselMobile from '@/component/Introduction_Component/PartnerCarouselMobile';
 
 const PartnerPage = () => {
+  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+
   return (
     <MainContainer>
       {/* 헤더 섹션 */}
@@ -24,13 +30,17 @@ const PartnerPage = () => {
       {/* 파트너사 섹션 */}
       <PartnerSection>
         <PartnerTitle>Happy Partner</PartnerTitle>
-        <Image
-          src="/src/Introduce_IMG/Introduce_Partner_Middle_IMG.png"
-          alt="Icon"
-          width={1189}
-          height={349}
-          style={{ maxWidth: '100%', height: 'auto' }}
-        />
+        {!mobileFlag ? (
+          <Image
+            src="/src/Introduce_IMG/Introduce_Partner_Middle_IMG.png"
+            alt="Icon"
+            width={1189}
+            height={349}
+            style={{ maxWidth: '100%', height: 'auto' }}
+          />
+        ) : (
+          <PartnerCarouselMobile />
+        )}
       </PartnerSection>
       {/* 엔드 섹션 */}
       <EndSection>
