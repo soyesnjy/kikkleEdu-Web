@@ -190,14 +190,22 @@ const MiddleSection = styled.section`
   align-items: center;
 
   gap: 4rem;
+
+  @media (max-width: 768px) {
+    width: 90vw;
+    min-height: 300px;
+    padding: 0 2rem;
+  }
 `;
 
 const MiddleContainer = styled.section`
-  padding-top: 5rem;
+  border-radius: 24px;
+  height: 100%;
+  position: relative;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: flex-start;
 
   gap: 1rem;
@@ -233,6 +241,7 @@ const PartnerSection = styled.section`
 
   @media (max-width: 768px) {
     width: 95vw;
+    gap: 1rem;
   }
 `;
 

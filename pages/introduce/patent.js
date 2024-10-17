@@ -184,11 +184,13 @@ const MiddleSection = styled.section`
 `;
 
 const MiddleContainer = styled.section`
-  padding-top: 5rem;
+  border-radius: 24px;
+  height: 100%;
+  position: relative;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: flex-start;
 
   gap: 1rem;

@@ -196,28 +196,23 @@ const MiddleSection = styled.section`
   gap: 4rem;
 
   @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 0 1rem;
-    min-height: 0;
-  }
-`;
-
-const MiddleContainer = styled.section`
-  padding-top: 5rem;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-
-  gap: 1rem;
-
-  @media (max-width: 768px) {
     width: 90vw;
     min-height: 300px;
     padding: 0 2rem;
   }
+`;
+
+const MiddleContainer = styled.section`
+  border-radius: 24px;
+  height: 100%;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+
+  gap: 1rem;
 `;
 
 const MiddleTitle = styled.h1`
