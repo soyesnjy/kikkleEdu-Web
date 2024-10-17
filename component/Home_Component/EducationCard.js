@@ -24,7 +24,7 @@ export default EducationCard;
 
 // Styled Components
 const CardContainer = styled.div`
-  width: 30%;
+  width: 33%;
   display: flex;
   align-items: center;
   /* background-color: white; */
@@ -41,10 +41,11 @@ const CardContainer = styled.div`
 `;
 
 const TextContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
 
-  gap: 0.3rem;
+  gap: 0.5rem;
 
   @media (max-width: 1080px) {
     width: 100%;

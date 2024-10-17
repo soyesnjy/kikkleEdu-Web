@@ -210,22 +210,13 @@ const IntroSection = styled.section`
 
   gap: 1rem;
 
-  /* &::before {
-    content: '';
-    display: block;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
+  @media (max-width: 768px) {
+    background-color: white;
     background-image: url('/src/Home_IMG/Home_Intro_Background_IMG.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    position: absolute;
-  } */
 
-  @media (max-width: 1080px) {
     height: 55vw;
     flex-direction: column;
     justify-content: center;
@@ -248,7 +239,7 @@ const ReadContainer = styled.div`
   color: white;
   z-index: 1;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 768px) {
     width: 100%;
     padding: 0 1rem;
   }
@@ -259,12 +250,13 @@ const H1 = styled.h1`
   font-weight: bold;
   font-family: Nunito;
 
-  color: #2e6c6d;
+  color: white;
   z-index: 1;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 768px) {
     font-size: 50px;
     width: 90%;
+    color: #2e6c6d;
   }
 `;
 
@@ -273,10 +265,11 @@ const H4 = styled.h4`
   font-weight: 300;
   font-family: Pretendard;
 
-  color: #2e6c6d;
+  color: white;
   z-index: 1;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 768px) {
+    color: #2e6c6d;
   }
 `;
 
@@ -287,41 +280,23 @@ const Button = styled.button`
   border-radius: 10px;
   border: none;
 
-  margin-top: 1rem;
+  margin-top: 5rem;
   padding: 1rem 3rem;
 
   color: white;
 
   cursor: pointer;
   z-index: 1;
+
+  @media (max-width: 768px) {
+    margin-top: 1rem;
+  }
 `;
-
-// const ImageContainer = styled.div`
-//   width: 40vw;
-
-//   padding: 5rem;
-
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: flex-start;
-
-//   gap: 1rem;
-
-//   color: white;
-//   z-index: 1;
-
-//   @media (max-width: 1080px) {
-//     margin-top: 5rem;
-//     width: 100%;
-//     padding: 0.5rem;
-//   }
-// `;
 
 const SectionFirst = styled.section`
   width: 100vw;
   min-height: 262px;
-
+  margin: 5rem 0;
   background-color: #f4eee5;
   padding: 3rem;
 
@@ -329,18 +304,17 @@ const SectionFirst = styled.section`
   justify-content: space-around;
   align-items: center;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 768px) {
     width: 100%;
     flex-direction: column;
     align-items: flex-start;
     padding: 2rem;
-    gap: 2rem;
   }
 `;
 
 const FirstMobileContainer = styled.div`
   margin: 3rem 0;
-  @media (max-width: 1080px) {
+  @media (max-width: 768px) {
     background-color: white;
   }
 `;
@@ -355,29 +329,12 @@ const SectionSecond = styled.section`
   justify-content: space-around;
   align-items: center;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 768px) {
     height: 100%;
     flex-direction: column;
     padding: 1rem;
   }
 `;
-
-// const SectionThird = styled.section`
-//   width: 100vw;
-//   min-height: 50vh;
-
-//   background-color: white;
-
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-
-//   @media (max-width: 1080px) {
-//     height: 100%;
-//     flex-direction: column;
-//     padding: 2rem;
-//   }
-// `;
 
 const SectionFourth = styled.section`
   width: 100vw;
@@ -389,7 +346,7 @@ const SectionFourth = styled.section`
   justify-content: center;
   align-items: center;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 768px) {
     height: 100%;
     flex-direction: column;
     padding: 2rem;
@@ -406,7 +363,7 @@ const SectionFifthtoNineth = styled.section`
   justify-content: center;
   align-items: center;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 768px) {
     height: 100%;
     flex-direction: column;
     padding: 2rem;
@@ -427,7 +384,7 @@ const SectionTenth = styled.section`
   justify-content: center;
   align-items: center;
 
-  @media (max-width: 728px) {
+  @media (max-width: 768px) {
     height: 100%;
     flex-direction: column;
     padding: 2rem;
@@ -465,7 +422,7 @@ const EndTitle = styled.h1`
   font-weight: 600;
   color: #171717;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 768px) {
     font-size: 24px;
   }
 `;

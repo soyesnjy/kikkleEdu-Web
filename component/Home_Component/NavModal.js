@@ -67,7 +67,7 @@ const NavModal = ({
 };
 
 const NavMenuContainer = styled.div`
-  z-index: 2;
+  z-index: 3;
 `;
 
 const NavMobileBtn = styled.button`

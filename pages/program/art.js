@@ -42,8 +42,7 @@ const classDefaultArr = [
 
 const eduSectionData = {
   title: '미술 교육 프로그램 영상',
-  content:
-    'Lorem ipsum dolor sit amet velitLorem ipsum dolor sit amet velit, elitni legro int dolor. elitni legro int dolor.',
+  content: '아동의 연령에 맞춘 재미있는 미술프로그램 제공합니다.',
   features: ['원데이클래스'], // default features
   youtubeUrl: '//www.youtube.com/embed/KvBdfRdnuSQ',
 };
@@ -150,7 +149,12 @@ const YogaProgramPage = () => {
         }}
       />
       {/* 수업 Detail 섹션 */}
-      <ClassDetailSection>
+      <ClassDetailSection
+        defaultChecked={
+          selectedClass?.detailPath ===
+          '/src/Program_IMG/Program_Default_ClassDetail_IMG.png'
+        }
+      >
         <Image
           src={selectedClass?.detailPath || ''}
           alt="DetailPath"
@@ -212,10 +216,26 @@ const HeaderSection = styled.section`
   gap: 1rem;
 
   @media (max-width: 768px) {
+    background: url('/src/Program_IMG/Art/Program_Header_Art_Background_IMG.png');
+
+    /* ::before 가상 요소로 오버레이 추가 */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.5); /* 반투명한 흰색 오버레이 */
+      pointer-events: none; /* 자식 컴포넌트의 상호작용을 방해하지 않도록 */
+      z-index: 1; /* 자식 요소보다 아래에 오버레이 배치 */
+    }
+
     width: 90vw;
-    min-height: 300px;
+    min-height: 327px;
     padding: 0 2rem;
-    background-position: right;
+    background-position: 90%;
+    align-items: flex-start;
   }
 `;
 
@@ -225,6 +245,12 @@ const HeaderContent = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 0.5rem;
+
+  z-index: 2;
+
+  @media (max-width: 768px) {
+    margin-top: 3rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -233,6 +259,10 @@ const Title = styled.h1`
   font-size: 1rem;
   font-family: Nunito;
   font-weight: 600;
+
+  @media (max-width: 768px) {
+    color: black;
+  }
 `;
 
 const Subtitle = styled.h2`
@@ -241,6 +271,10 @@ const Subtitle = styled.h2`
   font-size: 2.2rem;
   font-family: Pretendard;
   font-weight: 700;
+
+  @media (max-width: 768px) {
+    color: black;
+  }
 `;
 
 const Description = styled.p`
@@ -249,6 +283,10 @@ const Description = styled.p`
   font-size: 1.1rem;
   font-family: Pretendard;
   font-weight: 400;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const HeaderIntroDiv = styled.div`
@@ -492,22 +530,22 @@ const Button = styled.button`
 
 const ClassDetailSection = styled.section`
   width: 100%;
-  /* min-height: 150vh; */
+  min-height: ${(props) => (props.defaultChecked ? '150vh' : '0')};
   background-color: white;
 
-  background-image: url('/src/Home_IMG/Home_Section_10_Background_IMG.png');
+  background-image: url('/src/Program_IMG/Art/Program_ClassDetailSection_Background_IMG.png');
   background-size: cover;
-  background-position: center;
+  background-position: top;
   background-repeat: no-repeat;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  padding: 30rem;
+  padding: 10rem;
 
   @media (max-width: 728px) {
-    /* min-height: 100vh; */
+    min-height: 0;
     flex-direction: column;
     justify-content: flex-start;
     padding: 5rem 0.5rem;

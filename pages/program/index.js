@@ -43,7 +43,7 @@ const classDefaultArr = [
 const eduSectionData = {
   title: '발레 교육 프로그램 영상',
   content:
-    'Lorem ipsum dolor sit amet velitLorem ipsum dolor sit amet velit, elitni legro int dolor. elitni legro int dolor.',
+    '소예키즈만의 특화된 발레프로그램과 기관이 원하는 형태의 프로그램 제공',
   features: [
     '스토리발레 (창의발레)',
     '작품반 발레',
@@ -156,7 +156,12 @@ const BalletProgramPage = () => {
         }}
       />
       {/* 수업 Detail 섹션 */}
-      <ClassDetailSection>
+      <ClassDetailSection
+        defaultChecked={
+          selectedClass?.detailPath ===
+          '/src/Program_IMG/Program_Default_ClassDetail_IMG.png'
+        }
+      >
         <Image
           src={selectedClass?.detailPath || ''}
           alt="DetailPath"
@@ -218,19 +223,27 @@ const HeaderSection = styled.section`
   gap: 1rem;
 
   @media (max-width: 768px) {
+    background: url('/src/Program_IMG/Ballet/Program_Header_Ballet_Background_IMG.png');
     width: 90vw;
-    min-height: 300px;
+    min-height: 327px;
     padding: 0 2rem;
     background-position: right;
+    align-items: flex-start;
   }
 `;
 
 const HeaderContent = styled.div`
   width: 100%;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+    margin-top: 3rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -239,6 +252,10 @@ const Title = styled.h1`
   font-size: 1rem;
   font-family: Nunito;
   font-weight: 600;
+
+  @media (max-width: 768px) {
+    color: black;
+  }
 `;
 
 const Subtitle = styled.h2`
@@ -247,6 +264,10 @@ const Subtitle = styled.h2`
   font-size: 2.2rem;
   font-family: Pretendard;
   font-weight: 700;
+
+  @media (max-width: 768px) {
+    color: black;
+  }
 `;
 
 const Description = styled.p`
@@ -255,6 +276,10 @@ const Description = styled.p`
   font-size: 1.1rem;
   font-family: Pretendard;
   font-weight: 400;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const HeaderIntroDiv = styled.div`
@@ -309,7 +334,8 @@ const SearchContainer = styled.section`
 
   @media (max-width: 768px) {
     padding: 0rem;
-    justify-content: center;
+    flex-wrap: wrap;
+    /* justify-content: center; */
     gap: 0.5rem;
   }
 `;
@@ -340,7 +366,7 @@ const TagButton = styled.button`
 
   @media (max-width: 768px) {
     font-size: 1rem;
-    padding: 0.8rem;
+    padding: 0.7rem;
     margin-bottom: 0;
     border-radius: 1rem;
   }
@@ -359,7 +385,7 @@ const IntroSection = styled.section`
   @media (max-width: 1080px) {
     height: 100%;
     flex-direction: column;
-    padding: 2rem;
+    padding: 1rem;
   }
 `;
 
@@ -497,23 +523,24 @@ const Button = styled.button`
 `;
 
 const ClassDetailSection = styled.section`
-  width: 100%;
-  /* min-height: 150vh; */
+  width: 100vw;
+
+  min-height: ${(props) => (props.defaultChecked ? '150vh' : '0')};
   background-color: white;
 
-  background-image: url('/src/Home_IMG/Home_Section_10_Background_IMG.png');
+  background-image: url('/src/Program_IMG/Ballet/Program_ClassDetailSection_Background_IMG.png');
   background-size: cover;
-  background-position: center;
+  background-position: top;
   background-repeat: no-repeat;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  padding: 30rem;
+  padding: 10rem;
 
   @media (max-width: 728px) {
-    /* min-height: 100vh; */
+    min-height: 0;
     flex-direction: column;
     justify-content: flex-start;
     padding: 5rem 0.5rem;

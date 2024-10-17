@@ -260,7 +260,7 @@ const HeaderSection = styled.section`
     height: 100%;
     padding: 1rem;
     justify-content: center;
-    background-position: right;
+    background-position: 115%;
   }
 `;
 

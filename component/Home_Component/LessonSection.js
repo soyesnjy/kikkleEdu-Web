@@ -112,7 +112,7 @@ const ContentContainer = styled.div`
 
   gap: 2rem;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 768px) {
     min-width: 100%;
     max-width: 100%;
     gap: 1rem;
@@ -125,6 +125,11 @@ const Title = styled.h2`
   font-family: Pretendard;
   font-weight: bold;
   color: #333;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    text-align: center;
+  }
 `;
 
 const InfoTitle = styled.h2`
