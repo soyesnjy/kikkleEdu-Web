@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import Image from 'next/image';
+import EndSection from '@/component/Home_Component/EndSection';
 
-const CeoPage = () => {
+const MapPage = () => {
   return (
     <MainContainer>
       {/* 헤더 섹션 */}
@@ -59,22 +60,22 @@ const CeoPage = () => {
         </MapRightContainer>
       </MapSection>
       {/* 엔드 섹션 */}
-      <EndSection>
+      <EndSection />
+      {/* <EndSection>
         <EndTitle>
           Loren iqsum dolor sit...Loren iqsum dolor sit...Loren iqsum dolor
           sit...
         </EndTitle>
         <Button>콘텐츠 소개</Button>
-      </EndSection>
+      </EndSection> */}
     </MainContainer>
   );
 };
 
-export default CeoPage;
+export default MapPage;
 
 const MainContainer = styled.div`
   width: 100%;
-  padding: 1rem;
   background-color: white;
 
   display: flex;
@@ -295,56 +296,4 @@ const MapRightContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-const EndSection = styled.section`
-  width: 100vw;
-  height: 100vh;
-  background-color: white;
-  position: relative;
-
-  background-image: url('/src/Home_IMG/Home_Last_Background_IMG.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  @media (max-width: 728px) {
-    width: 100%;
-    background-size: cover;
-  }
-`;
-
-const EndTitle = styled.h1`
-  width: 70%;
-  text-align: center;
-  font-size: 3rem;
-  font-family: Nunito;
-  font-weight: 600;
-  color: #171717;
-
-  @media (max-width: 1080px) {
-    font-size: 24px;
-  }
-`;
-
-const Button = styled.button`
-  font-family: Pretendard;
-  font-weight: 600;
-  background-color: #ff8500;
-
-  border-radius: 10px;
-  border: none;
-
-  margin-top: 1rem;
-  padding: 1rem 2rem;
-
-  color: white;
-
-  cursor: pointer;
-  z-index: 1;
 `;

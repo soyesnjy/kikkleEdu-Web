@@ -38,6 +38,8 @@ const BannerContainer = styled.div`
 
     width: 90%;
     min-height: 12rem;
+
+    padding: 0 2rem;
   }
 `;
 

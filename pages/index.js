@@ -7,6 +7,7 @@ import EduArtComponent from '@/component/Home_Component/EduArtComponent';
 import InfoSection from '@/component/Home_Component/InfoSection';
 import TeacherCarousel from '@/component/Home_Component/TeacherCarousel';
 import LessonSection from '@/component/Home_Component/LessonSection';
+import EndSection from '@/component/Home_Component/EndSection';
 
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
@@ -154,10 +155,15 @@ export default function Home() {
         <TeacherCarousel />
       </SectionTenth>
       {/* 엔드 섹션 */}
-      <EndSection>
+      <EndSection
+        Title={`For our child's healthy body \n and heart happiness`}
+        btnTitle={`콘텐츠 소개`}
+        routePath={`/introduce/content`}
+      />
+      {/* <EndSection>
         <EndTitle>For our child's healthy body and heart happiness</EndTitle>
         <Button>콘텐츠 소개</Button>
-      </EndSection>
+      </EndSection> */}
       {/* 섹션3 */}
       {/* <SectionThird>
         <EduArtClassSection />
@@ -410,37 +416,40 @@ const SectionTenth = styled.section`
   }
 `;
 
-const EndSection = styled.section`
-  width: 100vw;
-  height: 100vh;
-  background-color: white;
-  position: relative;
+// const EndSection = styled.section`
+//   width: 100vw;
+//   height: 100vh;
+//   background-color: white;
+//   position: relative;
 
-  background-image: url('/src/Home_IMG/Home_Last_Background_IMG.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+//   background-image: url('/src/Home_IMG/Home_Last_Background_IMG.png');
+//   background-size: contain;
+//   background-position: center;
+//   background-repeat: no-repeat;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
 
-  @media (max-width: 728px) {
-    width: 100%;
-    background-size: cover;
-  }
-`;
+//   @media (max-width: 728px) {
+//     width: 100%;
+//     background-image: url('/src/Home_IMG/Home_Last_Background_Mobile_IMG.png');
+//     background-size: cover;
+//     background-position: center;
+//     background-repeat: no-repeat;
+//   }
+// `;
 
-const EndTitle = styled.h1`
-  width: 70%;
-  text-align: center;
-  font-size: 3rem;
-  font-family: Nunito;
-  font-weight: 600;
-  color: #171717;
+// const EndTitle = styled.h1`
+//   width: 70%;
+//   text-align: center;
+//   font-size: 3rem;
+//   font-family: Nunito;
+//   font-weight: 600;
+//   color: #171717;
 
-  @media (max-width: 768px) {
-    font-size: 24px;
-  }
-`;
+//   @media (max-width: 768px) {
+//     font-size: 24px;
+//   }
+// `;

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import PatentCarousel from '@/component/Introduction_Component/PatentCarousel';
+import EndSection from '@/component/Home_Component/EndSection';
 
 const PatentPage = () => {
   return (
@@ -26,14 +27,7 @@ const PatentPage = () => {
       {/* 특허 섹션 */}
       <PatentCarousel />
       {/* 엔드 섹션 */}
-      <EndSection>
-        {/* <EndTitle>
-          우리아이의 성장 소예키즈와 함께 몸과 마음을 성장시켜요
-        </EndTitle> */}
-        <Link href="/introduce/partner">
-          <Button>파트너사</Button>
-        </Link>
-      </EndSection>
+      <EndSection btnTitle={'파트너사'} routePath={'/introduce/partner'} />
     </MainContainer>
   );
 };
@@ -42,7 +36,6 @@ export default PatentPage;
 
 const MainContainer = styled.div`
   width: 100%;
-  padding: 1rem;
   background-color: white;
 
   display: flex;
@@ -207,56 +200,4 @@ const MiddleSubtitle = styled.h2`
   font-size: 3rem;
   font-family: Pretendard;
   font-weight: 700;
-`;
-
-const EndSection = styled.section`
-  width: 100vw;
-  height: 100vh;
-  background-color: white;
-  position: relative;
-
-  background-image: url('/src/Home_IMG/Home_Last_Background_IMG.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  @media (max-width: 728px) {
-    width: 100%;
-    background-size: cover;
-  }
-`;
-
-const EndTitle = styled.h1`
-  width: 70%;
-  text-align: center;
-  font-size: 3rem;
-  font-family: Nunito;
-  font-weight: 600;
-  color: #171717;
-
-  @media (max-width: 1080px) {
-    font-size: 24px;
-  }
-`;
-
-const Button = styled.button`
-  font-family: Pretendard;
-  font-weight: 600;
-  background-color: #ff8500;
-
-  border-radius: 10px;
-  border: none;
-
-  margin-top: 1rem;
-  padding: 1rem 2rem;
-
-  color: white;
-
-  cursor: pointer;
-  z-index: 1;
 `;
