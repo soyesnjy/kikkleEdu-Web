@@ -117,8 +117,8 @@ const ProgramContainer = styled.div`
 `;
 
 const ProgramContentContainer = styled.div`
-  min-width: 280px;
-  height: 280px;
+  min-width: 380px;
+  height: 380px;
   padding: 1rem;
 
   background: linear-gradient(
@@ -149,8 +149,8 @@ const ProgramContentContainer = styled.div`
   }
 
   @media (max-width: 768px) {
-    min-width: 202px;
-    height: 202px;
+    min-width: 300px;
+    height: 280px;
   }
 `;
 

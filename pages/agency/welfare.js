@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Link from 'next/link';
-import { agencyClass } from '@/store/state';
+import { agencyClass, mobile } from '@/store/state';
 import { useRecoilState } from 'recoil';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
@@ -62,6 +62,7 @@ const classDefaultArr = [
 
 const WelfarePage = () => {
   const [agency, setAgency] = useRecoilState(agencyClass);
+  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
   const [classDataArr, setClassDataArr] = useState([]);
   const [teacherDataArr, setTeacherDataArr] = useState([]);
   const router = useRouter();
@@ -183,7 +184,9 @@ const WelfarePage = () => {
         <MiddleSectionSubtitle>Our Program Image</MiddleSectionSubtitle>
         <MiddleSectionTitle>아동복지 센터 프로그램</MiddleSectionTitle>
         <Description>
-          아이들이 재미있게 체험할 수 있는 다양한 소예키즈의 교육프로그램
+          {mobileFlag
+            ? `아이들이 재미있게 체험할 수 있는 \n 다양한 소예키즈의 교육프로그램`
+            : `아이들이 재미있게 체험할 수 있는 다양한 소예키즈의 교육프로그램`}
         </Description>
         <ProgramClassContainer classDataArr={classDataArr} />
       </MiddleSectionThird>
@@ -448,7 +451,6 @@ const MiddleSectionSecond = styled.section`
   @media (max-width: 1080px) {
     width: 100%;
     flex-direction: column;
-    align-items: flex-start;
     padding: 2rem;
   }
 `;
@@ -461,7 +463,7 @@ const MiddleSectionTitle = styled.h2`
   font-weight: 700;
 
   @media (max-width: 1080px) {
-    font-size: 1.9rem;
+    font-size: 24px;
   }
 `;
 
@@ -473,7 +475,7 @@ const MiddleSectionSubtitle = styled.h2`
   font-weight: 700;
 
   @media (max-width: 1080px) {
-    font-size: 1.9rem;
+    font-size: 12px;
   }
 `;
 
@@ -516,7 +518,6 @@ const MiddleSectionThird = styled.section`
   @media (max-width: 1080px) {
     width: 100%;
     flex-direction: column;
-    align-items: flex-start;
     padding: 2rem;
   }
 `;
