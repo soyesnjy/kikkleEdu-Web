@@ -6,6 +6,7 @@ import Image from 'next/image';
 
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
+import EndSection from '@/component/Home_Component/EndSection';
 
 const dummyData = {};
 
@@ -125,6 +126,12 @@ const TeacherDetailPage = () => {
           </MiddleProfileImgContainer>
         )}
       </MiddleSection>
+      {/* 엔드 섹션 */}
+      <EndSection
+        Title={`For our child's healthy body \n and heart happiness`}
+        btnTitle={`강사 등록`}
+        routePath={`/`}
+      />
     </MainContainer>
   );
 };
@@ -132,7 +139,6 @@ const TeacherDetailPage = () => {
 // Styled Components
 const MainContainer = styled.div`
   width: 100%;
-  padding: 1rem;
   background-color: white;
 
   display: flex;

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { useRouter } from 'next/router';
+import EndSection from '@/component/Home_Component/EndSection';
 
 const TeacherListPage = () => {
   const [teacherClass, setTeacherClass] = useState('ballet');
@@ -144,20 +145,17 @@ const TeacherListPage = () => {
         </TeacherContainer>
       </PageContainer>
       {/* 엔드 섹션 */}
-      <EndSection>
-        <EndTitle>
-          Loren iqsum dolor sit...Loren iqsum dolor sit... Loren iqsum dolor
-          sit...
-        </EndTitle>
-        <Button>콘텐츠 소개</Button>
-      </EndSection>
+      <EndSection
+        Title={`For our child's healthy body \n and heart happiness`}
+        btnTitle={`강사 등록`}
+        routePath={`/`}
+      />
     </MainContainer>
   );
 };
 
 const MainContainer = styled.div`
   width: 100%;
-  padding: 1rem;
   background-color: white;
 
   display: flex;
@@ -447,58 +445,6 @@ const MiddleDescription = styled.p`
   margin-top: 0.5rem;
 
   line-height: 1.5;
-`;
-
-const EndSection = styled.section`
-  width: 100%;
-  min-height: 650px;
-  position: relative;
-
-  background-image: url('/src/Introduce_IMG/Introduce_End_Background_IMG.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  padding: 0 4rem 0 4rem;
-  border-radius: 24px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  gap: 1rem;
-`;
-
-const EndTitle = styled.h1`
-  width: 70%;
-  text-align: center;
-  font-size: 3rem;
-  font-family: Nunito;
-  font-weight: 600;
-  color: #171717;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    font-size: 1.5rem;
-  }
-`;
-
-const Button = styled.button`
-  font-family: Pretendard;
-  font-weight: 600;
-  background-color: #ff8500;
-
-  border-radius: 10px;
-  border: none;
-
-  margin-top: 1rem;
-  padding: 1rem 2rem;
-
-  color: white;
-
-  cursor: pointer;
-  z-index: 1;
 `;
 
 export default TeacherListPage;
