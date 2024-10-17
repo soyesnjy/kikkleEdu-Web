@@ -1,16 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
+import { mobile } from '../../store/state';
 
 const InfoSection = () => {
   const router = useRouter();
+  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+
   return (
     <SectionContainer>
       <ContentContainer>
         <RhinoIcon />
         <Text>
-          소예키즈는 어린이들의 창의성발달, 신체발달, 사회성 발달, 정서발달에
-          가치실현을 목표로 하고 있습니다.
+          {!mobileFlag
+            ? `소예키즈는 어린이들의 \n 창의성발달, 신체발달, 사회성 발달, 정서발달에 \n 가치실현을 목표로 하고 있습니다.`
+            : `소예키즈는 어린이들의 \n 창의성발달, 신체발달, \n 사회성 발달, 정서발달에 \n 가치실현을 \n 목표로 하고 있습니다.`}
         </Text>
         <Button
           onClick={() => {
@@ -80,6 +85,8 @@ const Text = styled.p`
   font-family: Nunito;
   color: #171717;
   line-height: 1.6;
+
+  white-space: pre;
 
   @media (max-width: 1080px) {
     font-size: 24px;
