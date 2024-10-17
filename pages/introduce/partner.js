@@ -23,6 +23,7 @@ const PartnerPage = () => {
       </MiddleSection>
       {/* 파트너사 섹션 */}
       <PartnerSection>
+        <PartnerTitle>Happy Partner</PartnerTitle>
         <Image
           src="/src/Introduce_IMG/Introduce_Partner_Middle_IMG.png"
           alt="Icon"
@@ -81,18 +82,31 @@ const HeaderSection = styled.section`
   gap: 1rem;
 
   @media (max-width: 768px) {
+    background: url('/src/Introduce_IMG/Partner/Introduce_Partner_Header_Background_Mobile_IMG.png');
+    background-size: cover; /* 배경 이미지 크기 조정 */
+    background-position: center;
+    background-repeat: no-repeat;
+
     width: 90vw;
-    min-height: 300px;
+    min-height: 90vw;
     padding: 0 2rem;
+    background-position: 95%;
+    align-items: flex-start;
   }
 `;
 
 const HeaderContent = styled.div`
   width: 100%;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+    margin-top: 3rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -101,6 +115,10 @@ const Title = styled.h1`
   font-size: 1rem;
   font-family: Nunito;
   font-weight: 600;
+
+  @media (max-width: 768px) {
+    color: black;
+  }
 `;
 
 const Subtitle = styled.h2`
@@ -109,6 +127,10 @@ const Subtitle = styled.h2`
   font-size: 2.2rem;
   font-family: Pretendard;
   font-weight: 700;
+
+  @media (max-width: 768px) {
+    color: black;
+  }
 `;
 
 const Description = styled.p`
@@ -117,6 +139,10 @@ const Description = styled.p`
   font-size: 1.1rem;
   font-family: Pretendard;
   font-weight: 400;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const HeaderIntroDiv = styled.div`
@@ -190,13 +216,24 @@ const PartnerSection = styled.section`
   border-radius: 24px;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  gap: 4rem;
+  gap: 5rem;
 
   @media (max-width: 768px) {
     width: 95vw;
+  }
+`;
+
+const PartnerTitle = styled.h1`
+  font-size: 3rem;
+  font-family: Nunito;
+  font-weight: 700;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
   }
 `;
 

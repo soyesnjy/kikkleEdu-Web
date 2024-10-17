@@ -212,12 +212,12 @@ const IntroSection = styled.section`
 
   @media (max-width: 768px) {
     background-color: white;
-    background-image: url('/src/Home_IMG/Home_Intro_Background_IMG.png');
+    background-image: url('/src/Home_IMG/Home_Intro_Background_Mobile_IMG.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 
-    height: 55vw;
+    height: 59vw;
     flex-direction: column;
     justify-content: center;
     padding: 1rem;
@@ -306,9 +306,12 @@ const SectionFirst = styled.section`
 
   @media (max-width: 768px) {
     width: 100%;
+    background-color: white;
     flex-direction: column;
     align-items: flex-start;
     padding: 2rem;
+
+    margin: 0;
   }
 `;
 
@@ -331,8 +334,9 @@ const SectionSecond = styled.section`
 
   @media (max-width: 768px) {
     height: 100%;
-    flex-direction: column;
     padding: 1rem;
+    flex-direction: column;
+    justify-content: flex-start;
   }
 `;
 
