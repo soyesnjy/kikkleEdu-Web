@@ -279,6 +279,9 @@ const Description = styled.p`
   font-size: 1.1rem;
   font-family: Pretendard;
   font-weight: 400;
+  line-height: 27px;
+
+  white-space: pre;
 
   @media (max-width: 768px) {
     display: none;
