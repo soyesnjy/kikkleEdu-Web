@@ -420,12 +420,21 @@ const TableContainer = styled.div`
   flex-direction: column;
 
   overflow-x: auto;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    align-items: flex-start;
+  }
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   font-size: 1rem;
+
+  @media (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const TableHeader = styled.th`
@@ -437,6 +446,13 @@ const TableHeader = styled.th`
   font-family: Pretendard;
   font-weight: 600;
   text-align: left;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+    padding: 1rem 0rem;
+    padding-left: 0.5rem;
+    text-align: center;
+  }
 `;
 
 export default Administor;

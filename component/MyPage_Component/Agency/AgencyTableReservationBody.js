@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { handleMypageUpdate } from '@/fetchAPI/mypageAPI';
-import Swal from 'sweetalert2';
-import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
+// import { handleMypageUpdate } from '@/fetchAPI/mypageAPI';
+// import Swal from 'sweetalert2';
+// import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
 
 const AgencyTableReservationBody = ({ data }) => {
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state

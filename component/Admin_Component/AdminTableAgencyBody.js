@@ -213,6 +213,9 @@ const TableRow = styled.tr`
   &:nth-child(even) {
     background-color: #f9f9f9;
   }
+
+  @media (max-width: 768px) {
+  }
 `;
 
 const TableCell = styled.td`
@@ -225,6 +228,13 @@ const TableCell = styled.td`
   font-family: Pretendard;
   font-weight: 700;
   text-align: left;
+
+  @media (max-width: 768px) {
+    min-width: 100px;
+    padding: 0.3rem;
+    font-size: 0.8rem;
+    text-align: center;
+  }
 `;
 
 const Status = styled.span`

@@ -213,7 +213,7 @@ const AdminTableTeacherBody = ({ data }) => {
                 Show
               </a>
             ) : (
-              'None'
+              'X'
             )}
           </TableCell>
           <TableCell>{data.kk_teacher_location}</TableCell>
@@ -354,6 +354,13 @@ const TableCell = styled.td`
   font-family: Pretendard;
   font-weight: 700;
   text-align: left;
+
+  @media (max-width: 768px) {
+    min-width: 100px;
+    padding: 0.3rem;
+    font-size: 0.8rem;
+    text-align: center;
+  }
 `;
 
 const Status = styled.span`
