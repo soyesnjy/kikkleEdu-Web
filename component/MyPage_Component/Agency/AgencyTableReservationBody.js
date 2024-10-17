@@ -37,7 +37,6 @@ const TableRow = styled.tr`
   }
 
   @media (max-width: 768px) {
-    width: 100%;
   }
 `;
 
@@ -53,9 +52,10 @@ const TableCell = styled.td`
   text-align: left;
 
   @media (max-width: 768px) {
-    max-width: 150px;
-    padding: 0.4rem;
+    min-width: 100px;
+    padding: 0.3rem;
     font-size: 0.8rem;
+    text-align: center;
   }
 `;
 

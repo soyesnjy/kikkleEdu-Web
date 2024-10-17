@@ -126,8 +126,8 @@ const MyPage = () => {
             {activeTab === 'reservation' && (
               <thead>
                 <tr>
-                  <TableHeader>수업 타이틀</TableHeader>
-                  <TableHeader>수업 강사</TableHeader>
+                  <TableHeader>타이틀</TableHeader>
+                  <TableHeader>강사</TableHeader>
                   <TableHeader>날짜</TableHeader>
                   <TableHeader>연락처</TableHeader>
                   <TableHeader>승인 여부</TableHeader>
@@ -138,11 +138,11 @@ const MyPage = () => {
             {activeTab === 'instructor' && (
               <thead>
                 <tr>
-                  <TableHeader>수업 타이틀</TableHeader>
-                  <TableHeader>수업 강사</TableHeader>
+                  <TableHeader>타이틀</TableHeader>
+                  <TableHeader>강사</TableHeader>
                   <TableHeader>날짜</TableHeader>
-                  <TableHeader>수업 요일</TableHeader>
-                  <TableHeader>수업 시간대</TableHeader>
+                  <TableHeader>요일</TableHeader>
+                  <TableHeader>시간대</TableHeader>
                   <TableHeader>연락처</TableHeader>
                   <TableHeader>출석 여부</TableHeader>
                 </tr>
@@ -249,13 +249,28 @@ const TabButton = styled.button`
 
 const TableContainer = styled.div`
   margin-top: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   overflow-x: auto;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    align-items: flex-start;
+  }
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   font-size: 1rem;
+
+  @media (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 const TableHeader = styled.th`
@@ -270,6 +285,9 @@ const TableHeader = styled.th`
 
   @media (max-width: 768px) {
     font-size: 0.9rem;
+    padding: 1rem 0rem;
+    padding-left: 0.5rem;
+    text-align: center;
   }
 `;
 

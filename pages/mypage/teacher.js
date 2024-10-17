@@ -74,6 +74,7 @@ const MyPage = () => {
       router.replace('/mypage/teacher');
       return;
     }
+
     // activeTab 설정
     if (localStorage.getItem('activeTab'))
       setActiveTab(localStorage.getItem('activeTab'));
@@ -292,14 +293,5 @@ const TableHeader = styled.th`
     text-align: center;
   }
 `;
-
-// const Title = styled.h1`
-//   width: 500px;
-//   background-color: #4caf50;
-//   color: white;
-
-//   padding: 1rem;
-//   text-align: center;
-// `;
 
 export default MyPage;
