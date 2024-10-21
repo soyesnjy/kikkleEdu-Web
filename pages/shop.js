@@ -16,7 +16,7 @@ const classDefaultArr = [
   {
     imgPath: '/src/Shop_IMG/Shop_Goods_WorkBookAR_IMG_.png',
     title: '스토리발레 AR워크북 (1종)',
-    price: 25000,
+    price: 20000,
     routePath: '/',
   },
   {
@@ -34,7 +34,7 @@ const classDefaultArr = [
   {
     imgPath: '/src/Shop_IMG/Shop_Goods_WorkBook_IMG_.png',
     title: '세계문화발레 워크북(1종)',
-    price: 25000,
+    price: 20000,
     routePath: '/',
   },
   {
