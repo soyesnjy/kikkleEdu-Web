@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 import Image from 'next/image';
+import { useRecoilState } from 'recoil';
+import { mobile } from '@/store/state';
 
 export default function Footer() {
+  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+
   return (
     <FooterContainer>
       <FooterInfo>
@@ -36,7 +40,20 @@ export default function Footer() {
           </SocialLink>
         </SocialMediaLinks>
       </FooterInfo>
-      <CopyText>Copy Right 키클에듀 2024</CopyText>
+      <CopyText>
+        {!mobileFlag
+          ? `(주) 소예키즈 | 주소 서울시 마포구 성암로 330 DMC첨단산업센터 404-4호 | 전화번호 02-303-4420
+사업자등록번호 371-86-01244 | 통신판매업등록번호 2022-서울마포-3834 | 개인정보관리책임자 : 소예키즈
+이메일무단수집거부 | 영상,이미지 무단사용금지
+ⓒ소예키즈 주식회사 | Soyes Kids All rights reserved`
+          : `(주) 소예키즈｜주소 서울시 마포구 성암로 330 DMC첨
+단산업센터 404-4호 | 전화번호 02-303-4420
+사업자등록번호 371-86-01244 | 통신판매업등록번호
+2022-서울마포-3834 | 개인정보관리책임자 : 소예키즈
+이메일무단수집거부 | 영상,이미지 무단사용금지
+ⓒ소예키즈 주식회사 | Soyes Kids All rights
+Reserved.`}
+      </CopyText>
     </FooterContainer>
   );
 }
@@ -51,16 +68,16 @@ const FooterContainer = styled.footer`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 
   @media (max-width: 768px) {
-    padding: 1.5rem 2rem;
+    padding: 1.5rem 1rem;
   }
 `;
 
 const FooterInfo = styled.div`
   width: 100%;
-  padding: 2rem;
+  padding: 1rem 0;
 
   display: flex;
   justify-content: space-between;
@@ -87,15 +104,17 @@ const InfoText = styled.p`
 `;
 
 const CopyText = styled.p`
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.5;
 
-  font-family: Pretendard, sans-serif;
-  font-weight: 600;
+  font-family: Pretendard;
+  font-weight: 400;
+
+  white-space: pre;
 
   @media (max-width: 768px) {
     padding: 1rem;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
   }
 `;
