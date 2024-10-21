@@ -59,6 +59,9 @@ const NavModal = ({
             <Link href="/login" passHref>
               <NavMobileButton onClick={toggleMenu}>LOGIN</NavMobileButton>
             </Link>
+            <Link href="/signup" passHref>
+              <NavMobileButton onClick={toggleMenu}>SIGNUP</NavMobileButton>
+            </Link>
           </NavEndContainer>
         )}
       </SideMenu>
