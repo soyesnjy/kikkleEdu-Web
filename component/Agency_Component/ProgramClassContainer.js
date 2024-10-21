@@ -65,6 +65,7 @@ const ProgramClassContainer = ({ classDataArr }) => {
 
   return (
     <ProgramContainer
+      dataLength={classDataArr.length}
       ref={containerRef}
       onMouseDown={onDragStart} // 마우스 클릭 시 드래그 시작
       onMouseMove={onDragMove} // 마우스 이동 시 스크롤 이동
@@ -96,7 +97,8 @@ export default ProgramClassContainer;
 const ProgramContainer = styled.div`
   width: 80vw;
   display: flex;
-  justify-content: center;
+  justify-content: ${(props) =>
+    props.dataLength >= 4 ? 'flex-start' : 'center'};
   overflow-x: hidden;
 
   cursor: grab;
