@@ -373,7 +373,6 @@ const MiddleSectionThird = styled.section`
   @media (max-width: 1080px) {
     width: 100%;
     flex-direction: column;
-    /* align-items: flex-start; */
     padding: 1rem;
   }
 `;
@@ -388,9 +387,9 @@ const SearchContainer = styled.section`
   gap: 1rem;
 
   @media (max-width: 768px) {
-    width: 100%;
+    width: 80%;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 0.3rem;
   }
 `;
