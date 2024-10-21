@@ -39,7 +39,7 @@ const BannerContainer = styled.div`
     width: 90%;
     min-height: 12rem;
 
-    padding: 0 2rem;
+    padding: 0rem 2rem 2rem 2rem;
   }
 `;
 
@@ -61,11 +61,11 @@ const Title = styled.h1`
   margin-bottom: 1.5rem;
   color: #378e56;
 
-  font-size: 64px;
+  font-size: 4rem;
   font-family: Pretendard;
   font-weight: 700;
   @media (max-width: 768px) {
-    font-size: 25px;
+    font-size: 3rem;
   }
 `;
 

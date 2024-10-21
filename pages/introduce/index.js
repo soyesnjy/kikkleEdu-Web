@@ -3,12 +3,12 @@ import Image from 'next/image';
 import IntroductionCarousel from '@/component/Introduction_Component/IntroductionCarousel';
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import EndSection from '@/component/Home_Component/EndSection';
 
 const HistoryPage = () => {
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
-  const router = useRouter();
+  // const router = useRouter();
 
   return (
     <MainContainer>
