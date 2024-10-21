@@ -373,8 +373,8 @@ const MiddleSectionThird = styled.section`
   @media (max-width: 1080px) {
     width: 100%;
     flex-direction: column;
-    align-items: flex-start;
-    padding: 2rem;
+    /* align-items: flex-start; */
+    padding: 1rem;
   }
 `;
 
@@ -389,9 +389,9 @@ const SearchContainer = styled.section`
 
   @media (max-width: 768px) {
     width: 100%;
-    justify-content: center;
-
-    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.3rem;
   }
 `;
 
@@ -420,7 +420,6 @@ const TagButton = styled.button`
 
   @media (max-width: 768px) {
     min-width: 70px;
-    width: 100%;
     font-size: 1rem;
     padding: 1rem;
     margin-bottom: 0;
