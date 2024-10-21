@@ -13,7 +13,7 @@ export const handlePtAnalsys = async (input) => {
         withCredentials: true,
       }
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   } catch (err) {
     console.log('PT 결과 분석 API 호출 실패');
@@ -38,7 +38,7 @@ export const handleEbtAnalsys = async (input) => {
         withCredentials: true,
       }
     );
-    console.log(response);
+    // console.log(response);
     return response.data;
   } catch (err) {
     console.log('EBT 결과 분석 API 호출 실패');

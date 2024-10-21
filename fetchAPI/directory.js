@@ -36,7 +36,7 @@ export const handleDirectoryCreate = async (input) => {
         withCredentials: true,
       }
     );
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (err) {
     console.log('ReviewCreate API 호출 실패');
@@ -65,7 +65,7 @@ export const handleVideoCreate = async (formData) => {
       }
     );
 
-    console.log('File uploaded successfully', response.data);
+    // console.log('File uploaded successfully', response.data);
     return response;
   } catch (error) {
     console.error('File upload failed', error);
@@ -83,7 +83,7 @@ export const handleVideoV2Create = async (input) => {
         withCredentials: true,
       }
     );
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (err) {
     console.log('ReviewCreate API 호출 실패');

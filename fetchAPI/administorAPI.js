@@ -23,7 +23,7 @@ export const handleAdministorGet = async (query) => {
 };
 // CREATE
 export const handleAdministorCreate = async (input) => {
-  console.log(input);
+  // console.log(input);
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_URL}/reservation/create`,
