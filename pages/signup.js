@@ -127,7 +127,7 @@ export default function Signup() {
       handleClassGet()
         .then((res) => res.data.data)
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setPossClassArr([
             ...data.map((el) => {
               return { id: el.kk_class_idx, title: el.kk_class_title };
