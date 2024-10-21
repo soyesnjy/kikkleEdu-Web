@@ -219,7 +219,7 @@ const ElementPage = () => {
       <EndSection
         Title={`For our child's healthy body \n and heart happiness`}
         btnTitle={`예약하기`}
-        routePath={`/`}
+        routePath={agency ? `/reservation` : `/login`}
       />
     </MainContainer>
   );

@@ -219,7 +219,7 @@ const WelfarePage = () => {
       <EndSection
         Title={`For our child's healthy body \n and heart happiness`}
         btnTitle={`예약하기`}
-        routePath={`/`}
+        routePath={agency ? `/reservation` : `/login`}
       />
     </MainContainer>
   );
@@ -242,10 +242,10 @@ const MainContainer = styled.div`
 
 const HeaderSection = styled.section`
   width: 100vw;
-  height: 52.65vw;
+  height: 46vw;
   position: relative;
 
-  background-image: url('/src/Agency_IMG/유치원/Agency_kindergarden_Header_Background_IMG.png');
+  background-image: url('/src/Agency_IMG/복지센터/Agency_welfare_Header_Background_IMG.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
