@@ -148,7 +148,7 @@ const TeacherListPage = () => {
       <EndSection
         Title={`For our child's healthy body \n and heart happiness`}
         btnTitle={`강사 등록`}
-        routePath={`/`}
+        routePath={`/signup`}
       />
     </MainContainer>
   );
