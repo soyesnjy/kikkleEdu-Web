@@ -4,9 +4,13 @@ import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { useRouter } from 'next/router';
 import EndSection from '@/component/Home_Component/EndSection';
 
+import { useRecoilState } from 'recoil';
+import { log } from '@/store/state';
+
 const TeacherListPage = () => {
   const [teacherClass, setTeacherClass] = useState('ballet');
   const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
+  const [login, setLogin] = useRecoilState(log);
 
   const router = useRouter();
 
@@ -30,6 +34,16 @@ const TeacherListPage = () => {
         .catch((err) => console.error(err));
     }
   }, []);
+
+  // 기능 잠금
+  useEffect(() => {
+    // 로그인 시 메인 페이지로 이동
+    const loginSession = JSON.parse(localStorage.getItem('log'));
+    if (!loginSession) {
+      router.replace('/login');
+      return;
+    }
+  }, [login]);
 
   // 강사 태그 조회
   useEffect(() => {

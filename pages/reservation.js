@@ -19,7 +19,7 @@ import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 // import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import 'react-phone-number-input/style.css';
-import PhoneInput from 'react-phone-number-input';
+// import PhoneInput from 'react-phone-number-input';
 // import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
 import Calendar from '@/component/MyPage_Component/Calendar';
 
