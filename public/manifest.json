@@ -1,6 +1,6 @@
 {
-  "short_name": "KikleEdu",
-  "name": "Kikle Education",
+  "name": "Kids Class Education",
+  "short_name": "키클에듀",
   "icons": [
     {
       "src": "/half-moon.png",
@@ -14,7 +14,9 @@
     }
   ],
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "description": "키클에듀는 예체능 교육이 필요한 기관과 강사를 매칭해주는 플랫폼으로 강사들이 편하게 자신의 이력을 업로드하고 기관에서는 필요한 강사를 선택하여 수업을 진행할 수 있도록 하는 플랫폼입니다. 또한 소예키즈만의 특화된 다양한 프로그램과 더불어 기관에서 원하는 다양한 예체능 프로그램을 강사와 기관에 제공합니다."
 }
