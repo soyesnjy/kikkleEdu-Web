@@ -3,12 +3,12 @@
   "short_name": "키클에듀",
   "icons": [
     {
-      "src": "/half-moon.png",
+      "src": "/kikle_edu_logo_512",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/half-moon.png",
+      "src": "/kikle_edu_logo_512",
       "type": "image/png",
       "sizes": "512x512"
     }
