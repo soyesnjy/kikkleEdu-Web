@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -18,6 +18,7 @@ import Image from 'next/image';
 const NavDropDown = ({ toggleMenu, navItem }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+
   // console.log(navItem);
   // const { title, items } = navItem;
 
@@ -43,6 +44,7 @@ const NavDropDown = ({ toggleMenu, navItem }) => {
           return (
             <NavDropDownLabel
               key={index}
+              selected={router.pathname === href}
               onClick={() => {
                 // toggleDropDown();
                 toggleMenu();
@@ -108,7 +110,7 @@ const NavDropDownTitle = styled.div`
 
 const NavDropDownLabel = styled.div`
   text-align: left;
-  color: black;
+  color: ${(props) => (props.selected ? '#45B26B' : 'black')};
 
   padding-left: 2rem;
 
