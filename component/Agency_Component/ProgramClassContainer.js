@@ -1,8 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import { useRecoilState } from 'recoil';
-import { mobile } from '@/store/state';
 
 const ProgramClassContainer = ({ classDataArr }) => {
   const containerRef = useRef(null);
@@ -10,78 +8,87 @@ const ProgramClassContainer = ({ classDataArr }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const [dragDistance, setDragDistance] = useState(0); // 드래그 거리 추적
+
+  const MIN_DRAG_DISTANCE = 5; // 드래그와 클릭을 구분할 최소 거리
 
   // 마우스 클릭하여 드래그 시작할 때 실행
   const onDragStart = (e) => {
+    e.preventDefault();
     setIsDragging(true);
-    setStartX(e.pageX); // 마우스 시작 위치 설정
+    setDragDistance(0); // 드래그 거리 초기화
+    setStartX(e.pageX);
     if (containerRef.current) {
-      setScrollLeft(containerRef.current.scrollLeft); // 현재 스크롤 위치 저장
+      setScrollLeft(containerRef.current.scrollLeft);
     }
   };
 
-  // 드래그 중일 때 실행
   const onDragMove = (e) => {
-    if (!isDragging) return; // 드래그 상태가 아닐 때는 실행하지 않음
-    e.preventDefault(); // 기본 동작 방지 (필수)
+    if (!isDragging) return;
+    const x = (e.pageX - startX) * 1.5;
+    setDragDistance(Math.abs(x)); // 드래그 거리 업데이트
     if (containerRef.current) {
-      const x = (e.pageX - startX) * 1.5; // 마우스 이동 거리 계산
-      containerRef.current.scrollLeft = scrollLeft - x; // 스크롤 위치 업데이트
-      // console.log(containerRef.current.scrollLeft);
+      containerRef.current.scrollLeft = scrollLeft - x;
     }
   };
 
-  // 드래그 종료 시 실행
   const onDragEnd = () => {
-    setIsDragging(false); // 드래그 상태 종료
+    if (dragDistance < MIN_DRAG_DISTANCE) {
+      setIsDragging(false); // 짧은 드래그는 클릭으로 처리
+    }
+    setIsDragging(false);
   };
 
-  // 터치 시작 시 실행
   const onTouchStart = (e) => {
-    setIsDragging(true);
     const touch = e.touches[0];
-    setStartX(touch.pageX); // 터치 시작 위치 설정
+    setIsDragging(true);
+    setDragDistance(0);
+    setStartX(touch.pageX);
     if (containerRef.current) {
-      setScrollLeft(containerRef.current.scrollLeft); // 현재 스크롤 위치 저장
+      setScrollLeft(containerRef.current.scrollLeft);
     }
   };
 
-  // 터치 중일 때 실행
   const onTouchMove = (e) => {
     if (!isDragging) return;
-
     const touch = e.touches[0];
-    const x = (touch.pageX - startX) * 1.5; // 터치 이동 거리 계산
+    const x = (touch.pageX - startX) * 1.5;
+    setDragDistance(Math.abs(x));
     if (containerRef.current) {
-      containerRef.current.scrollLeft = scrollLeft - x; // 스크롤 위치 업데이트
+      containerRef.current.scrollLeft = scrollLeft - x;
     }
   };
 
-  // 터치 종료 시 실행
   const onTouchEnd = () => {
-    setIsDragging(false); // 드래그 상태 종료
+    if (dragDistance < MIN_DRAG_DISTANCE) {
+      setIsDragging(false); // 짧은 터치는 클릭으로 처리
+    }
+    setIsDragging(false);
   };
 
   return (
     <ProgramContainer
       dataLength={classDataArr.length}
       ref={containerRef}
-      onMouseDown={onDragStart} // 마우스 클릭 시 드래그 시작
-      onMouseMove={onDragMove} // 마우스 이동 시 스크롤 이동
-      onMouseUp={onDragEnd} // 마우스 버튼을 놓을 때 드래그 종료
-      onMouseLeave={onDragEnd} // 마우스가 영역을 벗어날 때 드래그 종료
-      onTouchStart={onTouchStart} // 터치 시작 시 드래그 시작
-      onTouchMove={onTouchMove} // 터치 이동 시 스크롤 이동
-      onTouchEnd={onTouchEnd} // 터치 종료 시 드래그 종료
+      onMouseDown={onDragStart}
+      onMouseMove={onDragMove}
+      onMouseUp={onDragEnd}
+      onMouseLeave={onDragEnd}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       {classDataArr.map((el) => {
-        const { title, imgPath, routePath } = el;
+        const { title, imgPath, routePath, idx } = el;
         return (
           <ProgramContentContainer
-            key={el.idx}
+            key={idx}
             imgPath={imgPath}
-            onClick={() => !isDragging && router.push(routePath)} // 드래그 중 클릭 방지
+            onClick={() => {
+              if (dragDistance < MIN_DRAG_DISTANCE) {
+                router.push(routePath); // 드래그가 짧으면 클릭으로 처리
+              }
+            }}
           >
             <ProgramTitle>{title}</ProgramTitle>
           </ProgramContentContainer>
@@ -93,7 +100,6 @@ const ProgramClassContainer = ({ classDataArr }) => {
 
 export default ProgramClassContainer;
 
-// 스타일 정의
 const ProgramContainer = styled.div`
   width: 80vw;
   display: flex;
