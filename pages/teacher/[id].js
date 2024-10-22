@@ -5,7 +5,7 @@ import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import Image from 'next/image';
 
 import { useRecoilState } from 'recoil';
-import { mobile } from '@/store/state';
+import { mobile, log } from '@/store/state';
 import EndSection from '@/component/Home_Component/EndSection';
 
 const dummyData = {};
@@ -26,6 +26,7 @@ const TeacherDetailPage = () => {
   const { id } = router.query; // URL의 동적 파라미터를 가져옴
   const [data, setData] = useState(dummyData);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const [login, setLogin] = useRecoilState(log);
 
   useEffect(() => {
     if (id) {
@@ -36,6 +37,16 @@ const TeacherDetailPage = () => {
         });
     }
   }, [id]);
+
+  // 기능 잠금
+  useEffect(() => {
+    // 로그인 시 메인 페이지로 이동
+    const loginSession = JSON.parse(localStorage.getItem('log'));
+    if (!loginSession) {
+      router.replace('/login');
+      return;
+    }
+  }, [login]);
 
   // const handleGoBack = () => {
   //   router.push('/teacher'); // 강사 List 페이지로 이동
