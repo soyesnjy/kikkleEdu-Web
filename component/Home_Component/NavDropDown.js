@@ -48,7 +48,7 @@ const NavDropDown = ({ toggleMenu, navItem }) => {
               onClick={() => {
                 // toggleDropDown();
                 toggleMenu();
-                router.push(href);
+                router.replace(href);
               }}
             >
               {label}
