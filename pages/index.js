@@ -12,8 +12,6 @@ import EndSection from '@/component/Home_Component/EndSection';
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
 import { useRouter } from 'next/router';
-// import { useTranslation } from 'next-i18next';
-// import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const section_1_Arr = [
   {
@@ -160,30 +158,9 @@ export default function Home() {
         btnTitle={`콘텐츠 소개`}
         routePath={`/introduce/content`}
       />
-      {/* <EndSection>
-        <EndTitle>For our child's healthy body and heart happiness</EndTitle>
-        <Button>콘텐츠 소개</Button>
-      </EndSection> */}
-      {/* 섹션3 */}
-      {/* <SectionThird>
-        <EduArtClassSection />
-      </SectionThird> */}
-      {/* 섹션9 */}
-      {/* <SectionNineth>
-        <PartnerCarousel />
-      </SectionNineth> */}
     </MasterContainer>
   );
 }
-
-// // Translation 파일 적용
-// export async function getStaticProps({ locale }) {
-//   return {
-//     props: {
-//       ...(await serverSideTranslations(locale, ['common', 'nav'])), // 파일 다중 적용 가능
-//     },
-//   };
-// }
 
 const MasterContainer = styled.div`
   background-color: white;

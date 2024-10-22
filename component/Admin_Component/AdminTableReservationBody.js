@@ -208,7 +208,7 @@ const AdminTableReservationBody = ({ data }) => {
               <option value="-1">선택</option>
               {teacherArr.map((el, index) => {
                 return (
-                  <option key={index} value={el.idx}>
+                  <option key={el.idx} value={el.idx}>
                     {el.name}
                   </option>
                 );

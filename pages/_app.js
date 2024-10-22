@@ -5,14 +5,14 @@ import Nav from '@/component/Home_Component/Nav';
 import Footer from '@/component/Home_Component/Footer';
 import TopButton from '@/component/Home_Component/TopButton';
 
-import Page from '@/component/Motion_Paging/Page'; // 모든 페이지 이동 시 적용되는 페이지 애니메이션
+// import Page from '@/component/Motion_Paging/Page'; // 모든 페이지 이동 시 적용되는 페이지 애니메이션
 import { AnimatePresence } from 'framer-motion';
 
 import { RecoilRoot } from 'recoil';
 
 import { appWithTranslation } from 'next-i18next';
 
-function App({ Component, pageProps, router }) {
+function App({ Component, pageProps }) {
   return (
     <>
       <Head>
@@ -39,10 +39,10 @@ function App({ Component, pageProps, router }) {
           </Page> */}
         </AnimatePresence>
       </RecoilRoot>
-      <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+      {/* <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.2/dist/browser/pixi.min.js"></script>
       <script src="/Live2D/live2d.min.js"></script>
-      <script src="/Live2D/index.min.js"></script>
+      <script src="/Live2D/index.min.js"></script> */}
       <script
         src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
         integrity="sha384-6MFdIr0zOira1CHQkedUqJVql0YtcZA1P0nbPrQYJXVJZUkTk/oX4U9GhUIs3/z8"

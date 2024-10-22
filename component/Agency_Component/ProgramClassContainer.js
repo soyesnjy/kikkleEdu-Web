@@ -75,11 +75,11 @@ const ProgramClassContainer = ({ classDataArr }) => {
       onTouchMove={onTouchMove} // 터치 이동 시 스크롤 이동
       onTouchEnd={onTouchEnd} // 터치 종료 시 드래그 종료
     >
-      {classDataArr.map((el, index) => {
+      {classDataArr.map((el) => {
         const { title, imgPath, routePath } = el;
         return (
           <ProgramContentContainer
-            key={index}
+            key={el.idx}
             imgPath={imgPath}
             onClick={() => !isDragging && router.push(routePath)} // 드래그 중 클릭 방지
           >

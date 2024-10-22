@@ -95,6 +95,7 @@ const KindergartenPage = () => {
           setClassDataArr([
             ...data.map((el) => {
               return {
+                idx: el.kk_class_idx,
                 title: el.kk_class_title,
                 imgPath: el.kk_class_file_path,
                 routePath: `/program${el.kk_class_tag === 'ballet' ? '' : `/${el.kk_class_tag}`}?cName=${el.kk_class_title}`,
