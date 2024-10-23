@@ -88,7 +88,7 @@ export const handleSignupUpdate = async (post) => {
     };
   }
 };
-// TODO# DELETE
+// DELETE
 export const handleSignupDelete = async (query) => {
   try {
     const response = await axios.delete(

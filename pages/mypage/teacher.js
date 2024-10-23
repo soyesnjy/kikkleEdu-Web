@@ -9,6 +9,7 @@ import { handleDirectoryRead } from '@/fetchAPI/directory';
 // import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
+import TeacherTablePrivacyBody from '@/component/MyPage_Component/Teacher/TeacherTablePrivacyBody';
 import Pagination from '@/component/Common_Component/Pagination';
 
 const dummyTableData = [
@@ -94,7 +95,7 @@ const MyPage = () => {
       })
         .then((res) => res.data)
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setTableData(data.data);
           setLastPageNum(data.lastPageNum);
         });
@@ -120,6 +121,12 @@ const MyPage = () => {
             출석 확인
           </TabButton>
           <TabButton
+            active={activeTab === 'privacy'}
+            onClick={() => handleTabClick('privacy')}
+          >
+            개인정보 관리
+          </TabButton>
+          <TabButton
             active={activeTab === 'music'}
             onClick={() => handleTabClick('music')}
           >
@@ -140,6 +147,7 @@ const MyPage = () => {
         </Tabs>
         <TableContainer>
           <Table>
+            {/* Table Header */}
             {activeTab === 'attend' && (
               <thead>
                 <tr>
@@ -154,6 +162,7 @@ const MyPage = () => {
                 </tr>
               </thead>
             )}
+            {/* Table Body */}
             {activeTab === 'attend' && (
               <tbody>
                 {tableData.map((data, index) => (
@@ -162,6 +171,7 @@ const MyPage = () => {
               </tbody>
             )}
           </Table>
+          {activeTab === 'privacy' && <TeacherTablePrivacyBody />}
           {activeTab === 'music' && <Directory data={data} form={activeTab} />}
           {activeTab === 'video' && <Directory data={data} form={activeTab} />}
           {activeTab === 'class' && <Directory data={data} form={activeTab} />}
