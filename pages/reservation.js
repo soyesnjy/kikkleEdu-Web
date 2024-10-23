@@ -117,13 +117,6 @@ export default function Reservation() {
 
   // pageNumber에 따른 navText값 변경
   useEffect(() => {
-    // 화면 최상단으로 올리기
-    if (!window.scrollY) return;
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-
     if (pageNumber === 2) {
       const dayArr = getUniqueWeekdays(dateArr);
       // Class Read API 호출 메서드
@@ -156,6 +149,12 @@ export default function Reservation() {
         setNavText('결제');
         break;
     }
+    // 화면 최상단으로 올리기
+    if (!window.scrollY) return;
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   }, [pageNumber]);
 
   // 선택한 수업 변경 시 기존 선택되었던 강사 목록 초기화
@@ -324,7 +323,7 @@ export default function Reservation() {
             {pageNumber === 0 && (
               <PageContainer>
                 <ClassContainer rowCount={Math.ceil(possClassArr.length / 5)}>
-                  {possClassArr.map((el, index) => {
+                  {possClassArr.map((el) => {
                     const { id, title, imgUrl, content } = el;
                     return (
                       <ClassButtonContainer
@@ -797,7 +796,7 @@ const ClassButtonContainer = styled.div`
   height: 280px;
   background: ${(props) =>
     props.selected
-      ? `linear-gradient(rgba(255, 255, 255, 0) 80%, black), url(${props.imgUrl})`
+      ? `linear-gradient(rgba(0, 0, 0, 0.3) 80%, black), url(${props.imgUrl})`
       : `linear-gradient(rgba(0, 0, 0, 0.3) 100%, black 0%), url(${props.imgUrl})`};
 
   /* linear-gradient(90deg, #378e56 0%, rgba(55, 142, 86, 0) 60.5%), */
