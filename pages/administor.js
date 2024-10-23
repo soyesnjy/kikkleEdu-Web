@@ -258,7 +258,7 @@ const Administor = () => {
                   <TableHeader>기관 번호</TableHeader>
                   <TableHeader>기관 계정정보</TableHeader>
                   <TableHeader>기관명</TableHeader>
-                  <TableHeader>강사 주소</TableHeader>
+                  <TableHeader>기관 주소</TableHeader>
                   <TableHeader>연락처</TableHeader>
                   <TableHeader>기관 유형</TableHeader>
                   <TableHeader>기관 첨부자료</TableHeader>
