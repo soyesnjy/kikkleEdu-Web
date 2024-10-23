@@ -271,7 +271,7 @@ const AdminTableTeacherBody = ({ data }) => {
           <TableCell>
             <StyledInput
               type="file"
-              accept=".jpg, .png"
+              accept=".jpg, .png, .jpeg"
               onChange={handleProfileImgChange}
             />
           </TableCell>
