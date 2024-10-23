@@ -132,7 +132,7 @@ const Shop = () => {
               <ShopGoodsContainer
                 key={index}
                 onClick={() => {
-                  alert('개발중인 기능입니다!');
+                  alert('상품 준비중입니다');
                   // router.push(routePath);
                 }}
               >
