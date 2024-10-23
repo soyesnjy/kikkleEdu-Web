@@ -248,8 +248,8 @@ export default function Reservation() {
         <LeftContainer>
           {!mobileFlag && (
             <ProfileContainer>
-              <div>Profile name</div>
-              <div>name@naver.com</div>
+              <span>Profile name</span>
+              <div>{localStorage.getItem('id')}</div>
             </ProfileContainer>
           )}
           {!mobileFlag ? (
@@ -604,7 +604,9 @@ const LeftContainer = styled.div`
 `;
 
 const ProfileContainer = styled.form`
-  height: 100%;
+  min-width: 250px;
+  min-height: 100px;
+
   padding: 2rem 4.5rem;
   display: flex;
   flex-direction: column;
@@ -616,10 +618,19 @@ const ProfileContainer = styled.form`
 
   background-color: #f8f8f8;
 
+  span {
+    font-family: Pretendard;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+
+  div {
+    font-family: Pretendard;
+    font-weight: 400;
+    font-size: 1rem;
+  }
+
   @media (max-width: 768px) {
-    width: 100%;
-    flex-direction: column;
-    gap: 0.5rem;
   }
 `;
 
