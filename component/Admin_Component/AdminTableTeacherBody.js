@@ -17,6 +17,7 @@ const AdminTableTeacherBody = ({ data }) => {
   const [education, setEducation] = useState('');
   // const [file, setFile] = useState(null);
   const [approveStatus, setApproveStatus] = useState(-1);
+  const [profilePreviewImg, setprofilePreviewImg] = useState(null);
 
   useEffect(() => {
     setTeacherIdx(data.kk_teacher_idx);
@@ -38,6 +39,14 @@ const AdminTableTeacherBody = ({ data }) => {
   const handleProfileImgChange = (e) => {
     const selectedFile = e.target.files[0];
     setProfileImg(selectedFile);
+
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setprofilePreviewImg(event.target.result); // 이미지 미리보기 URL 설정
+      };
+      reader.readAsDataURL(selectedFile); // 파일을 데이터 URL로 변환
+    }
   };
 
   // 강사 정보 update 핸들러
@@ -274,6 +283,9 @@ const AdminTableTeacherBody = ({ data }) => {
               accept=".jpg, .png, .jpeg"
               onChange={handleProfileImgChange}
             />
+            {profilePreviewImg && (
+              <PreviewImage src={profilePreviewImg} alt="미리보기 이미지" />
+            )}
           </TableCell>
           <TableCell>
             <select
@@ -382,6 +394,19 @@ const Button = styled.button`
 
 const StyledInput = styled.input`
   max-width: 7rem;
+`;
+
+const PreviewImage = styled.img`
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-top: 1rem;
+  border: 2px solid #ddd;
+
+  @media (max-width: 768px) {
+    width: 50px;
+    height: 50px;
+  }
 `;
 
 export default AdminTableTeacherBody;
