@@ -119,7 +119,7 @@ const Shop = () => {
       {/* 미들 섹션 */}
       <MiddleSection>
         <MiddleContainer>
-          <MiddleTitle>KC EDU - Contents</MiddleTitle>
+          <MiddleTitle>KK EDU - Contents</MiddleTitle>
           <MiddleSubtitle>상점</MiddleSubtitle>
         </MiddleContainer>
       </MiddleSection>

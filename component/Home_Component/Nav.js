@@ -19,7 +19,7 @@ const navList_info = [
     items: [
       { href: '/introduce', label: '회사연혁' },
       { href: '/introduce/content', label: '소예키즈 콘텐츠' },
-      { href: '/introduce/patent', label: '특허 및 저작권' },
+      { href: '/introduce/patent', label: '특허 및 상표권' },
       { href: '/introduce/partner', label: '파트너사' },
       // { href: '/introduce/ceo', label: '대표이사' },
       { href: '/introduce/map', label: '주소 및 약도' },

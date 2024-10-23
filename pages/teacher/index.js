@@ -80,7 +80,7 @@ const TeacherListPage = () => {
       {/* 미들 섹션 */}
       <MiddleSection>
         <MiddleContainer>
-          <MiddleTitle>KC EDU - ballet</MiddleTitle>
+          <MiddleTitle>KK EDU - ballet</MiddleTitle>
           <MiddleSubtitle>강사</MiddleSubtitle>
           <MiddleDescription>
             각 장르별 수업가능한 강사님들을 찾아보고 선택.

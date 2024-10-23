@@ -66,7 +66,7 @@ const TeacherDetailPage = () => {
       </HeaderSection>
       <MiddleSection>
         <MiddleContainer>
-          <MiddleTitle>KC EDU - ballet</MiddleTitle>
+          <MiddleTitle>KK EDU - ballet</MiddleTitle>
           <MiddleTextContainer>
             <MiddleSubtitle>강사 - {data.kk_teacher_name}</MiddleSubtitle>
             <MiddleDescription>

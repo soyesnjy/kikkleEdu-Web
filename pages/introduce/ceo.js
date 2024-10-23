@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Image from 'next/image';
+// import Image from 'next/image';
 
 const CeoPage = () => {
   return (
@@ -18,7 +18,7 @@ const CeoPage = () => {
       {/* 미들 섹션 */}
       <MiddleSection>
         <MiddleContainer>
-          <MiddleTitle>KC EDU - CEO</MiddleTitle>
+          <MiddleTitle>KK EDU - CEO</MiddleTitle>
           <MiddleSubtitle>대표이사 경력 및 소개</MiddleSubtitle>
         </MiddleContainer>
       </MiddleSection>

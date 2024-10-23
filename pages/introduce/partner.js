@@ -24,7 +24,7 @@ const PartnerPage = () => {
       {/* 미들 섹션 */}
       <MiddleSection>
         <MiddleContainer>
-          <MiddleTitle>KC EDU - Partner</MiddleTitle>
+          <MiddleTitle>KK EDU - Partner</MiddleTitle>
           <MiddleSubtitle>파트너사</MiddleSubtitle>
         </MiddleContainer>
       </MiddleSection>
@@ -189,7 +189,7 @@ const MiddleSection = styled.section`
   @media (max-width: 768px) {
     width: 90vw;
     min-height: 300px;
-    padding: 0 2rem;
+    padding: 0 1rem;
   }
 `;
 
@@ -214,7 +214,7 @@ const MiddleTitle = styled.h1`
 `;
 
 const MiddleSubtitle = styled.h2`
-  font-size: 3rem;
+  font-size: 2rem;
   font-family: Pretendard;
   font-weight: 700;
 `;

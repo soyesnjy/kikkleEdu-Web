@@ -21,7 +21,7 @@ const MapPage = () => {
           <MiddleTitle>CONNECT WITH US !</MiddleTitle>
           <MiddleSubtitle>주소 및 약도</MiddleSubtitle>
           <Description>
-            {`주소         : 서울시 마포구 성암로 330 DMC첨단산업센터 404-4`}
+            주소 : 서울시 마포구 성암로 330 DMC첨단산업센터 404-4
           </Description>
           <Description>오시는 길 : 수색역 / 디지털미디어시티역</Description>
         </MiddleContainer>
@@ -161,16 +161,17 @@ const Subtitle = styled.h2`
 `;
 
 const Description = styled.p`
-  color: white;
+  color: #737373;
 
   font-size: 1.1rem;
   font-family: Pretendard;
   font-weight: 400;
+  /* white-space: pre; */
 
   @media (max-width: 768px) {
-    display: none;
   }
 `;
+
 const HeaderIntroDiv = styled.div`
   width: fit-content;
   padding: 1rem 1.5rem;
@@ -211,7 +212,7 @@ const MiddleSection = styled.section`
   @media (max-width: 768px) {
     width: 90vw;
     min-height: 300px;
-    padding: 0 2rem;
+    padding: 0 1rem;
   }
 `;
 
@@ -236,7 +237,7 @@ const MiddleTitle = styled.h1`
 `;
 
 const MiddleSubtitle = styled.h2`
-  font-size: 3rem;
+  font-size: 2rem;
   font-family: Pretendard;
   font-weight: 700;
 `;
