@@ -156,11 +156,20 @@ export default function Signup() {
     };
   }, [pwd]);
 
+  const isValidEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  };
+
   // 강사 페이지 체크
   // First 페이지 체크 메서드
   const pageCheckFirst = () => {
     if (!email) {
       alert('이메일을 입력하세요');
+      return false;
+    }
+    if (!isValidEmail(email)) {
+      alert('이메일 형식으로 입력하세요');
       return false;
     }
     if (!name) {
@@ -223,6 +232,10 @@ export default function Signup() {
   const agencyPageCheckFirst = () => {
     if (!emailA) {
       alert('이메일을 입력하세요');
+      return false;
+    }
+    if (!isValidEmail(emailA)) {
+      alert('이메일 형식으로 입력하세요');
       return false;
     }
     if (!pwdA) {
