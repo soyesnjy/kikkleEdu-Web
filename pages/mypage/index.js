@@ -11,6 +11,7 @@ import {
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import AgencyTableReservationBody from '@/component/MyPage_Component/Agency/AgencyTableReservationBody';
 import AgencyTableAttendBody from '@/component/MyPage_Component/Agency/AgencyTableAttendBody';
+import AgencyTablePrivacyBody from '@/component/MyPage_Component/Agency/AgencyTablePrivacyBody';
 import Pagination from '@/component/Common_Component/Pagination';
 
 const dummyTableData = [
@@ -120,9 +121,16 @@ const MyPage = () => {
           >
             수업 및 강사 현황
           </TabButton>
+          <TabButton
+            active={activeTab === 'privacy'}
+            onClick={() => handleTabClick('privacy')}
+          >
+            개인정보 관리
+          </TabButton>
         </Tabs>
         <TableContainer>
           <Table>
+            {/* Table Header */}
             {activeTab === 'reservation' && (
               <thead>
                 <tr>
@@ -148,6 +156,7 @@ const MyPage = () => {
                 </tr>
               </thead>
             )}
+            {/* Table Body */}
             {activeTab === 'reservation' && (
               <tbody>
                 {tableData.map((data, index) => (
@@ -163,9 +172,11 @@ const MyPage = () => {
               </tbody>
             )}
           </Table>
+          {activeTab === 'privacy' && <AgencyTablePrivacyBody />}
         </TableContainer>
-
-        <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
+        {(activeTab === 'reservation' || activeTab === 'instructor') && (
+          <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
+        )}
       </MyPageContainer>
     </MasterContainer>
   );
