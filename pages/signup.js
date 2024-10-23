@@ -167,10 +167,10 @@ export default function Signup() {
       alert('이름을 입력하세요');
       return false;
     }
-    if (!phoneNumber) {
-      alert('전화번호를 입력하세요');
-      return false;
-    }
+    // if (!phoneNumber) {
+    //   alert('전화번호를 입력하세요');
+    //   return false;
+    // }
     if (!checkPwd_1 || !checkPwd_2 || !checkPwd_3) {
       alert('비밀번호 요구사항을 지켜주세요');
       return false;
@@ -233,17 +233,16 @@ export default function Signup() {
       alert('이름을 입력하세요');
       return false;
     }
-    if (!phoneNumberA) {
-      alert('전화번호를 입력하세요');
-      return false;
-    }
+    // if (!phoneNumberA) {
+    //   alert('전화번호를 입력하세요');
+    //   return false;
+    // }
     if (!addressA) {
       alert('주소를 입력하세요');
       return false;
     }
     return true;
   };
-
   // Second 페이지 체크 메서드
   const agencyPageCheckSecond = () => {
     if (!typeA) {
@@ -256,71 +255,6 @@ export default function Signup() {
     }
     return true;
   };
-
-  // 회원가입 형식 체크 메서드
-  // const formCheck = () => {
-  //   if (!id || !pwd) {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: 'Input is empty!',
-  //       showConfirmButton: false,
-  //       timer: 1000,
-  //     });
-  //     return false;
-  //   }
-
-  //   if (regex.test(id) || regex.test(pwd)) {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: '한글 쓰지마!!',
-  //       showConfirmButton: false,
-  //       timer: 1000,
-  //     });
-  //     return false;
-  //   }
-
-  //   if (id.length < minlengthStd) {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: `ID 길이 ${minlengthStd}글자 이상!`,
-  //       showConfirmButton: false,
-  //       timer: 1000,
-  //     });
-  //     return false;
-  //   }
-
-  //   if (id.length > maxlengthStd) {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: `ID 길이 ${maxlengthStd}글자 이하!`,
-  //       showConfirmButton: false,
-  //       timer: 1000,
-  //     });
-  //     return false;
-  //   }
-
-  //   if (pwd.length < minlengthStd) {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: `Password 길이 ${minlengthStd}글자 이상!`,
-  //       showConfirmButton: false,
-  //       timer: 1000,
-  //     });
-  //     return false;
-  //   }
-
-  //   if (pwd.length > maxlengthStd) {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: `Password 길이 ${maxlengthStd}글자 이하!`,
-  //       showConfirmButton: false,
-  //       timer: 1000,
-  //     });
-  //     return false;
-  //   }
-
-  //   return true;
-  // };
 
   // 강사 회원가입 핸들러
   const signupHandler = async (e) => {
@@ -452,13 +386,6 @@ export default function Signup() {
   return (
     <SignUpPageContainer>
       <FormWrap>
-        {/* <Image
-          src='image_path'
-          alt='image_text'
-          width={111}
-          height={52}
-          style={{ maxWidth: '100%', height: 'auto' }}
-        /> */}
         <div>
           <H1>키클에듀 id를 생성하세요.</H1>
           <H4>개인정보는 회원가입 확인에만 이용됩니다.</H4>
@@ -489,9 +416,19 @@ export default function Signup() {
               {/* 회원가입 First Page */}
               {pageNumber === 0 && (
                 <PageContainer>
+                  <H5>* 표시는 필수 입력 정보입니다</H5>
+                  <SignUpInput
+                    id="name"
+                    placeholder="*성함"
+                    type="text"
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
+                  />
                   <SignUpInput
                     id="email"
-                    placeholder="이메일"
+                    placeholder="*이메일 (ID)"
                     type="email"
                     value={email}
                     onChange={(e) => {
@@ -499,12 +436,12 @@ export default function Signup() {
                     }}
                   />
                   <SignUpInput
-                    id="name"
-                    placeholder="성함"
-                    type="text"
-                    value={name}
+                    id="password"
+                    placeholder="*비밀번호"
+                    type="password"
+                    value={pwd}
                     onChange={(e) => {
-                      setName(e.target.value);
+                      setPwd(e.target.value);
                     }}
                   />
                   <StyledPhoneInput
@@ -513,15 +450,7 @@ export default function Signup() {
                     onChange={setPhoneNumber}
                     defaultCountry="KR"
                   />
-                  <SignUpInput
-                    id="password"
-                    placeholder="비밀번호"
-                    type="password"
-                    value={pwd}
-                    onChange={(e) => {
-                      setPwd(e.target.value);
-                    }}
-                  />
+
                   <PwdCheckContainer>
                     <H5>비밀번호 요구사항</H5>
                     <PwdCheckText check={checkPwd_1}>
@@ -586,7 +515,8 @@ export default function Signup() {
               {/* 회원가입 Second Page */}
               {pageNumber === 1 && (
                 <PageContainer>
-                  <H4>희망 수업</H4>
+                  <H5>* 표시는 필수 입력 정보입니다</H5>
+                  <H4>* 희망 수업</H4>
                   <UserPossClassContainer
                     rowCount={Math.ceil(possClassArr.length / 5)}
                   >
@@ -617,7 +547,7 @@ export default function Signup() {
                       );
                     })}
                   </UserPossClassContainer>
-                  <H4>희망 지역</H4>
+                  <H4>* 희망 지역</H4>
                   <UserPossClassContainer
                     rowCount={Math.ceil(possLocalArr.length / 5)}
                   >
@@ -638,7 +568,7 @@ export default function Signup() {
                       );
                     })}
                   </UserPossClassContainer>
-                  <H4>희망 날짜 </H4>
+                  <H4>* 희망 날짜 </H4>
                   <UserPossClassContainer rowCount={1} dayCheck={true}>
                     {possDayArr.map((possDayName, index) => {
                       return (
@@ -662,7 +592,7 @@ export default function Signup() {
                       );
                     })}
                   </UserPossClassContainer>
-                  <H4>희망 시간대 </H4>
+                  <H4>* 희망 시간대 </H4>
                   <UserPossClassContainer rowCount={1} dayCheck={true}>
                     {partTimeArr.map((partTime, index) => {
                       return (
@@ -696,7 +626,8 @@ export default function Signup() {
               {/* 회원가입 Third Page */}
               {pageNumber === 2 && (
                 <PageContainer>
-                  <H4>강사 소개 (본인 소개글)</H4>
+                  <H5>* 표시는 필수 입력 정보입니다</H5>
+                  <H4>* 강사 소개 (본인 소개글)</H4>
                   <UserInfoRowContainer>
                     <SignUpInput
                       id="introduce"
@@ -708,7 +639,7 @@ export default function Signup() {
                       }}
                     />
                   </UserInfoRowContainer>
-                  <H4>경력 & 학력</H4>
+                  <H4>* 경력 & 학력</H4>
                   <UserInfoRowContainer>
                     <SignUpInput
                       id="career"
@@ -729,7 +660,7 @@ export default function Signup() {
                       }}
                     />
                   </UserInfoRowContainer>
-                  <H4>필수요청 서류 탭 (ZIP파일 제출)</H4>
+                  <H4>* 필수요청 서류 탭 (ZIP파일 제출)</H4>
                   <FileUploadComponent setFile={setFile} file={file} />
                   <H5>+ 필수 서류 확인하기</H5>
                   <FileCheckText>
@@ -792,9 +723,19 @@ export default function Signup() {
             <InputContainer>
               {pageNumberA === 0 && (
                 <PageContainer>
+                  <H5>* 표시는 필수 입력 정보입니다</H5>
+                  <SignUpInput
+                    id="name"
+                    placeholder="* 기관명"
+                    type="text"
+                    value={nameA}
+                    onChange={(e) => {
+                      setNameA(e.target.value);
+                    }}
+                  />
                   <SignUpInput
                     id="email"
-                    placeholder="이메일"
+                    placeholder="* 이메일 (ID)"
                     type="email"
                     value={emailA}
                     onChange={(e) => {
@@ -803,20 +744,11 @@ export default function Signup() {
                   />
                   <SignUpInput
                     id="password"
-                    placeholder="비밀번호"
+                    placeholder="* 비밀번호"
                     type="password"
                     value={pwdA}
                     onChange={(e) => {
                       setPwdA(e.target.value);
-                    }}
-                  />
-                  <SignUpInput
-                    id="name"
-                    placeholder="기관명"
-                    type="text"
-                    value={nameA}
-                    onChange={(e) => {
-                      setNameA(e.target.value);
                     }}
                   />
                   <StyledPhoneInput
@@ -828,7 +760,7 @@ export default function Signup() {
                   <SignUpInputAddressContainer>
                     <SignUpInputAddress
                       id="name"
-                      placeholder="주소"
+                      placeholder="* 주소"
                       type="text"
                       value={addressA}
                       disabled={true}
@@ -839,7 +771,8 @@ export default function Signup() {
               )}
               {pageNumberA === 1 && (
                 <PageContainer>
-                  <H4>기관 유형</H4>
+                  <H5>* 표시는 필수 입력 정보입니다</H5>
+                  <H4>* 기관 유형</H4>
                   <UserPossClassContainer
                     rowCount={Math.ceil(agencyTypeArr.length / 5)}
                   >
@@ -860,7 +793,7 @@ export default function Signup() {
                       );
                     })}
                   </UserPossClassContainer>
-                  <H4>필수요청 서류 탭 (ZIP파일 제출)</H4>
+                  <H4>* 필수요청 서류 탭 (ZIP파일 제출)</H4>
                   <FileUploadComponent setFile={setFileA} file={fileA} />
                 </PageContainer>
               )}
@@ -1353,8 +1286,8 @@ const SignUpInputAddressContainer = styled.div`
 
 const SignUpInputAddress = styled.input`
   width: 360px;
-  background-color: white;
-  color: black;
+  background-color: rgba(255, 255, 255, 0.01);
+  color: white;
   padding: 1rem 18px;
 
   border: 1px solid #bfbfbf;
