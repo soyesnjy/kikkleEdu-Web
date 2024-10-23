@@ -11,9 +11,9 @@ const PatentPage = () => {
       <HeaderSection>
         <HeaderContent>
           <Title>Kids Class edu</Title>
-          <Subtitle>특허 및 저작권</Subtitle>
+          <Subtitle>특허 및 상표권</Subtitle>
           <HeaderIntroDiv>
-            소예키즈 소개 - <GreenColorSpan>특허 및 저작권</GreenColorSpan>
+            소예키즈 소개 - <GreenColorSpan>특허 및 상표권</GreenColorSpan>
           </HeaderIntroDiv>
         </HeaderContent>
       </HeaderSection>
