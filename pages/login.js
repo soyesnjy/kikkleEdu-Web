@@ -353,10 +353,8 @@ export default function Login() {
             ) : (
               ''
             )} */}
-            <H4>
-              아직 키클에듀 회원이 아니신가요?{' '}
-              <StyledLink href="/signup">회원가입</StyledLink>
-            </H4>
+            <H4>아직 키클에듀 회원이 아니신가요?</H4>
+            <StyledLink href="/signup">회원가입</StyledLink>
           </InputContainer>
         </FormContainer>
       </FormWrap>
@@ -425,7 +423,7 @@ const FormWrap = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    padding: 2rem 3rem;
+    padding: 1rem 2rem;
   }
 `;
 
