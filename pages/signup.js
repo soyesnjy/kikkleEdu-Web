@@ -177,7 +177,7 @@ export default function Signup() {
     //   return false;
     // }
     if (!isValidTeacher(email)) {
-      alert('TC_ 형식으로 입력하세요');
+      alert('강사회원은 TC_(ID)입력해주세요.');
       return;
     }
     if (!name) {
