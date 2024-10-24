@@ -13,8 +13,8 @@ import { useRecoilState } from 'recoil';
 import { log, uid, mobile, agencyClass } from '../store/state';
 import Swal from 'sweetalert2';
 import { useSearchParams } from 'next/navigation';
-import GoogleOAuthBtn from '@/component/Login_Componet/googleOAuthBtn';
-import KakaoOAuthBtn from '@/component/Login_Componet/kakaoOAuthBtn';
+// import GoogleOAuthBtn from '@/component/Login_Componet/googleOAuthBtn';
+// import KakaoOAuthBtn from '@/component/Login_Componet/kakaoOAuthBtn';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -122,7 +122,7 @@ export default function Login() {
         localStorage.setItem(
           'log',
           JSON.stringify({
-            expires: expireSetHourFunc(1),
+            expires: expireSetHourFunc(24), // 로그인 세션 24시간 설정
           })
         );
         // ID 저장
