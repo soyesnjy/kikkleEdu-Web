@@ -248,8 +248,8 @@ export default function Reservation() {
         <LeftContainer>
           {!mobileFlag && (
             <ProfileContainer>
-              <span>Profile name</span>
-              <div>{localStorage.getItem('id')}</div>
+              {/* <span>Profile name</span>
+              <div>{localStorage.getItem('id')}</div> */}
             </ProfileContainer>
           )}
           {!mobileFlag ? (
