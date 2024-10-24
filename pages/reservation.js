@@ -473,7 +473,7 @@ export default function Reservation() {
                     </PayModalContentMiddleContainer>
 
                     <PayModalButton>
-                      <PayModalA href="tel:+821012345678">
+                      <PayModalA href="tel:01012345678">
                         담당자 전화 연결하기
                       </PayModalA>
                     </PayModalButton>
