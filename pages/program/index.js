@@ -115,9 +115,7 @@ const BalletProgramPage = () => {
         <HeaderContent>
           <Title>Kids Class edu</Title>
           <Subtitle>발레 교육</Subtitle>
-          <Description>
-            Lorem ipsum dolor sit amet veli elitni legro int dolor.
-          </Description>
+          <Description>소예키즈만의 특화된 다양한 발레클래스</Description>
           <HeaderIntroDiv>
             소예키즈 소개 - <GreenColorSpan>발레 교육</GreenColorSpan>
           </HeaderIntroDiv>

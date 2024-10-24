@@ -18,30 +18,56 @@ const classDefaultArr = [
     title: '스토리발레 AR워크북 (1종)',
     price: 20000,
     routePath: '/',
+    tagColor: '#9757D7',
   },
   {
     imgPath: '/src/Shop_IMG/Shop_Goods_Card_IMG_.png',
     title: '마음챙김 카드',
     price: 10000,
     routePath: '/',
+    tagColor: '#D97904',
   },
   {
     imgPath: '/src/Shop_IMG/Shop_Goods_Board_IMG_.png',
     title: '마음챙김 보드게임판',
     price: 10000,
     routePath: '/',
+    tagColor: '#45B26B',
   },
   {
     imgPath: '/src/Shop_IMG/Shop_Goods_WorkBook_IMG_.png',
-    title: '세계문화발레 워크북(1종)',
+    title: `세계문화발레 워크북\n유럽(1종)`,
     price: 20000,
     routePath: '/',
+    tagColor: '#7067AA',
   },
   {
     imgPath: '/src/Shop_IMG/Shop_Goods_BoardPackage_IMG_.png',
     title: '보드게임 패키지',
     price: 20000,
     routePath: '/',
+    tagColor: '#9757D7',
+  },
+  {
+    imgPath: '/src/Shop_IMG/Shop_Goods_WorkBook_Asia_IMG_.png',
+    title: `세계문화발레 워크북\n아시아 (1종)`,
+    price: 20000,
+    routePath: '/',
+    tagColor: '#D97904',
+  },
+  {
+    imgPath: '/src/Shop_IMG/Shop_Goods_WorkBook_America_IMG_.png',
+    title: `세계문화발레 워크북\n아메리카 (1종)`,
+    price: 20000,
+    routePath: '/',
+    tagColor: '#45B26B',
+  },
+  {
+    imgPath: '/src/Shop_IMG/Shop_Goods_WorkBook_Animal_IMG_.png',
+    title: `세계문화발레 워크북\n동물대 탐험(1종)`,
+    price: 20000,
+    routePath: '/',
+    tagColor: '#7067AA',
   },
 ];
 
@@ -111,6 +137,10 @@ const Shop = () => {
         <HeaderContent>
           <Title>Kids Class edu</Title>
           <Subtitle>상점</Subtitle>
+          <Description>
+            소예키즈에서 제작해 제공되는 다양한 상품들을 확인하고 구매하는
+            시스템
+          </Description>
           <HeaderIntroDiv>
             소예키즈 소개 - <GreenColorSpan>상점</GreenColorSpan>
           </HeaderIntroDiv>
@@ -127,7 +157,7 @@ const Shop = () => {
       <MiddleSectionThird>
         <ProgramContainer>
           {classDataArr.map((el, index) => {
-            const { title, imgPath, routePath, price } = el;
+            const { title, imgPath, routePath, price, tagColor } = el;
             return (
               <ShopGoodsContainer
                 key={index}
@@ -136,7 +166,7 @@ const Shop = () => {
                   // router.push(routePath);
                 }}
               >
-                <ShopGoodsTag>태그</ShopGoodsTag>
+                <ShopGoodsTag tagColor={tagColor}>태그</ShopGoodsTag>
                 <ShopGoodsImageContainer imgPath={imgPath} />
                 <ShopGoodsTextContainer>
                   <ShopGoodsTitle>{title}</ShopGoodsTitle>
@@ -220,6 +250,18 @@ const Subtitle = styled.h2`
   font-size: 2.2rem;
   font-family: Pretendard;
   font-weight: 700;
+`;
+
+const Description = styled.p`
+  color: white;
+
+  font-size: 1.1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const HeaderIntroDiv = styled.div`
@@ -395,6 +437,8 @@ const ShopGoodsTitle = styled.div`
   font-weight: 600;
   font-size: 1rem;
   color: black;
+
+  white-space: pre;
 `;
 
 const ShopGoodsSubTitle = styled.div`
@@ -409,7 +453,7 @@ const ShopGoodsTag = styled.button`
   top: 5%;
   left: 5%;
 
-  background-color: #45b26b;
+  background-color: ${(props) => props.tagColor};
 
   padding: 6px 12px;
   border-radius: 16px;

@@ -86,7 +86,7 @@ export default function BoardList() {
           <Title>Kids Class edu</Title>
           <Subtitle>문의 하기</Subtitle>
           <Description>
-            Lorem ipsum dolor sit amet veli elitni legro int dolor.
+            소예키즈에서 제공하는 다양한 공지와 질문을 편하게 적어주세요
           </Description>
           <HeaderIntroDiv>
             소예키즈 소개 - <GreenColorSpan>게시판</GreenColorSpan>
@@ -198,11 +198,15 @@ const Subtitle = styled.h2`
 `;
 
 const Description = styled.p`
-  color: #666;
+  color: white;
 
   font-size: 1.1rem;
   font-family: Pretendard;
   font-weight: 400;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const HeaderIntroDiv = styled.div`

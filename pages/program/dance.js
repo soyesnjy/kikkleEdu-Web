@@ -109,7 +109,7 @@ const DanceProgramPage = () => {
           <Title>Kids Class edu</Title>
           <Subtitle>댄스 교육</Subtitle>
           <Description>
-            Lorem ipsum dolor sit amet veli elitni legro int dolor.
+            신나는 음악에 맞춰 자유롭게 표현하는 KPOP댄스 클래스
           </Description>
           <HeaderIntroDiv>
             소예키즈 소개 - <GreenColorSpan>댄스 교육</GreenColorSpan>

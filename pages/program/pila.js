@@ -108,9 +108,7 @@ const YogaProgramPage = () => {
         <HeaderContent>
           <Title>Kids Class edu</Title>
           <Subtitle>필라테스 교육</Subtitle>
-          <Description>
-            Lorem ipsum dolor sit amet veli elitni legro int dolor.
-          </Description>
+          <Description>매트에서 할 수 있는 다양한 필라테스 클래스</Description>
           <HeaderIntroDiv>
             소예키즈 소개 - <GreenColorSpan>필라테스 교육</GreenColorSpan>
           </HeaderIntroDiv>

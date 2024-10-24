@@ -108,9 +108,7 @@ const YogaProgramPage = () => {
         <HeaderContent>
           <Title>Kids Class edu</Title>
           <Subtitle>요가 교육</Subtitle>
-          <Description>
-            Lorem ipsum dolor sit amet veli elitni legro int dolor.
-          </Description>
+          <Description>몸과 마음이 편안해지는 힐링요가클래스</Description>
           <HeaderIntroDiv>
             소예키즈 소개 - <GreenColorSpan>요가 교육</GreenColorSpan>
           </HeaderIntroDiv>

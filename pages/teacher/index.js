@@ -76,6 +76,9 @@ const TeacherListPage = () => {
         <HeaderContent>
           <Title>Kids Class edu</Title>
           <Subtitle>강사</Subtitle>
+          <Description>
+            기관에서 원하는 강사님들을 찾아보는 시스템입니다.
+          </Description>
           <HeaderIntroDiv>
             소예키즈 소개 - <GreenColorSpan>강사</GreenColorSpan>
           </HeaderIntroDiv>
@@ -261,6 +264,18 @@ const Subtitle = styled.h2`
   }
 `;
 
+const Description = styled.p`
+  color: white;
+
+  font-size: 1.1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 const HeaderIntroDiv = styled.div`
   width: fit-content;
   padding: 1rem 1.5rem;
@@ -409,59 +424,59 @@ const TeacherContainer = styled.div`
   }
 `;
 
-const TeacherButtonContainer = styled.div`
-  width: 288px;
-  height: 280px;
-  background: linear-gradient(#cacaca 80%, black);
+// const TeacherButtonContainer = styled.div`
+//   width: 288px;
+//   height: 280px;
+//   background: linear-gradient(#cacaca 80%, black);
 
-  padding: 1rem;
+//   padding: 1rem;
 
-  border-radius: 15px;
+//   border-radius: 15px;
 
-  border: none;
+//   border: none;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-end;
+//   align-items: flex-start;
 
-  cursor: pointer;
-  gap: 1rem;
+//   cursor: pointer;
+//   gap: 1rem;
 
-  /* 부모가 hover 되었을 때, 두 번째 자식 요소를 타겟팅 */
-  &:hover {
-    background: linear-gradient(#cacaca 100%, black);
+//   /* 부모가 hover 되었을 때, 두 번째 자식 요소를 타겟팅 */
+//   &:hover {
+//     background: linear-gradient(#cacaca 100%, black);
 
-    /* 두 번째 자식 요소 선택 */
-    & :nth-child(2) {
-      display: block;
-    }
-  }
+//     /* 두 번째 자식 요소 선택 */
+//     & :nth-child(2) {
+//       display: block;
+//     }
+//   }
 
-  /* 초기 상태에서 두 번째 자식 요소 숨김 */
-  & :nth-child(2) {
-    display: none;
-  }
+//   /* 초기 상태에서 두 번째 자식 요소 숨김 */
+//   & :nth-child(2) {
+//     display: none;
+//   }
 
-  @media (max-width: 768px) {
-    width: 148px;
-    height: 140px;
-  }
-`;
+//   @media (max-width: 768px) {
+//     width: 148px;
+//     height: 140px;
+//   }
+// `;
 
-const TeacherButtonTitle = styled.div`
-  font-family: Pretendard;
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: white;
-`;
+// const TeacherButtonTitle = styled.div`
+//   font-family: Pretendard;
+//   font-weight: 700;
+//   font-size: 1.2rem;
+//   color: white;
+// `;
 
-const TeacherButtonSubTitle = styled.div`
-  font-family: Pretendard;
-  font-weight: 400;
-  font-size: 0.7rem;
-  color: white;
-`;
+// const TeacherButtonSubTitle = styled.div`
+//   font-family: Pretendard;
+//   font-weight: 400;
+//   font-size: 0.7rem;
+//   color: white;
+// `;
 
 const MiddleTitle = styled.h1`
   font-size: 1rem;

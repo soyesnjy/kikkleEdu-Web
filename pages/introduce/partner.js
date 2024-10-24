@@ -16,6 +16,9 @@ const PartnerPage = () => {
         <HeaderContent>
           <Title>Kids Class edu</Title>
           <Subtitle>파트너사</Subtitle>
+          <Description>
+            소예키즈와 함께 협력하고 서비스하고 있는 기관
+          </Description>
           <HeaderIntroDiv>
             소예키즈 소개 - <GreenColorSpan>파트너</GreenColorSpan>
           </HeaderIntroDiv>
@@ -137,17 +140,17 @@ const Subtitle = styled.h2`
   }
 `;
 
-// const Description = styled.p`
-//   color: white;
+const Description = styled.p`
+  color: white;
 
-//   font-size: 1.1rem;
-//   font-family: Pretendard;
-//   font-weight: 400;
+  font-size: 1.1rem;
+  font-family: Pretendard;
+  font-weight: 400;
 
-//   @media (max-width: 768px) {
-//     display: none;
-//   }
-// `;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
 
 const HeaderIntroDiv = styled.div`
   width: fit-content;
