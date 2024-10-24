@@ -1,18 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import Link from 'next/link';
 import NavList from './NavList';
 import NavModal from './NavModal';
 
 import { useRecoilState } from 'recoil';
-import { log, avarta, mobile, uid, agencyClass } from '../../store/state';
+import { log, mobile, uid, agencyClass } from '../../store/state';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { logoutAPI } from '@/fetchAPI';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
-import ExitApp from './ExitApp';
 
 const navList_info = [
   {
@@ -272,7 +271,6 @@ export default function Nav() {
             navList_info={navList_info}
             menuItems={menuItems}
           />
-          <ExitApp />
         </NavContainer>
       )}
     </>
@@ -400,27 +398,27 @@ const NavBtn = styled.button`
   transition: 0.3s;
 `;
 
-const NavMobileBtn = styled.button`
-  background-color: ${(props) => (props.login ? '#45b26b' : 'white')};
-  color: ${(props) => (props.login ? 'white' : '#45b26b')};
-  font-family: Nunito;
+// const NavMobileBtn = styled.button`
+//   background-color: ${(props) => (props.login ? '#45b26b' : 'white')};
+//   color: ${(props) => (props.login ? 'white' : '#45b26b')};
+//   font-family: Nunito;
 
-  border: 1px solid #45b26b;
-  border-radius: 10px;
+//   border: 1px solid #45b26b;
+//   border-radius: 10px;
 
-  padding: 1.2rem;
+//   padding: 1.2rem;
 
-  text-align: center;
-  text-decoration: none;
+//   text-align: center;
+//   text-decoration: none;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   font-size: 16px;
 
-  white-space: nowrap;
+//   white-space: nowrap;
 
-  cursor: pointer;
+//   cursor: pointer;
 
-  transition: 0.3s;
-`;
+//   transition: 0.3s;
+// `;
