@@ -686,15 +686,11 @@ export default function Signup() {
                   <H5>+ 필수 서류 확인하기</H5>
                   <FileCheckText>
                     <span class="material-symbols-outlined">check</span>
-                    이력서 / 신분증 사본 / 통장사본 / 보건
+                    이력서 / 신분증 / 통장사본 / 보건증
                   </FileCheckText>
                   <FileCheckText>
                     <span class="material-symbols-outlined">check</span>
                     졸업 증명서(재학증명서) / 경력 증명서
-                  </FileCheckText>
-                  <FileCheckText>
-                    <span class="material-symbols-outlined">check</span>
-                    성범죄 및 아동학전력회신
                   </FileCheckText>
                   <FileCheckText>
                     <span class="material-symbols-outlined">check</span>
@@ -1290,7 +1286,7 @@ const FileCheckText = styled.div`
   text-decoration: none;
 
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   font-family: Pretendard;
 `;
 
