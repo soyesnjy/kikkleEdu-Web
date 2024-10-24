@@ -20,6 +20,7 @@ const TeacherProfileCard = ({ name, introduce, imgUrl, onClick }) => {
           alt="Background Image"
           width={300}
           height={300}
+          style={{ maxWidth: '100%', height: '100%' }}
         />
       )}
       <Content>
@@ -42,6 +43,11 @@ const Wrapper = styled.div`
   background-color: #cacaca;
 
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 160px;
+    height: 170px;
+  }
 `;
 
 const StyledImage = styled(Image)`
@@ -73,16 +79,30 @@ const Content = styled.div`
   gap: 1rem;
 
   z-index: 2;
+
+  @media (max-width: 768px) {
+    min-height: 30px;
+    gap: 0.3rem;
+    padding: 0.7rem;
+  }
 `;
 
 const Name = styled.h2`
   font-family: Pretendard;
   font-weight: 600;
   font-size: 16px;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const Message = styled.p`
   font-family: Pretendard;
   font-weight: 400;
   font-size: 12px;
+
+  @media (max-width: 768px) {
+    font-size: 10px;
+  }
 `;

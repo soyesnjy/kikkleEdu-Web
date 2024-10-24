@@ -159,7 +159,7 @@ const TeacherListPage = () => {
                   />
                 );
               })
-            : '조건에 부합하는 강사가 없습니다.'}
+            : 'X'}
         </TeacherContainer>
       </PageContainer>
       {/* 엔드 섹션 */}
@@ -344,18 +344,17 @@ const MiddleContainer = styled.section`
 
 const SearchContainer = styled.section`
   width: 100%;
-  margin-top: 10rem;
   border-radius: 24px;
 
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 
   gap: 1rem;
 
   @media (max-width: 768px) {
-    justify-content: space-around;
-    margin-top: 1rem;
-    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3rem;
   }
 `;
 
@@ -380,16 +379,64 @@ const TagButton = styled.button`
     background-color: #378e56;
     color: white;
   }
-
   transition: 0.2s;
 
   @media (max-width: 768px) {
+    min-width: 70px;
     font-size: 1rem;
-    padding: 0.8rem;
+    padding: 1rem;
     margin-bottom: 0;
-    border-radius: 1rem;
   }
 `;
+
+// const SearchContainer = styled.section`
+//   width: 100%;
+//   margin-top: 10rem;
+//   border-radius: 24px;
+
+//   display: flex;
+//   justify-content: center;
+
+//   gap: 1rem;
+
+//   @media (max-width: 768px) {
+//     justify-content: space-around;
+//     margin-top: 1rem;
+//     gap: 0.5rem;
+//   }
+// `;
+
+// const TagButton = styled.button`
+//   background-color: ${(props) =>
+//     props.selected ? '#378E56' : 'rgba(255, 255, 255, 0.01)'};
+//   border: 1px solid #378e56;
+//   border-radius: 24px;
+
+//   padding: 0.7rem 2rem;
+
+//   color: ${(props) => (props.selected ? 'white' : 'black')};
+//   text-align: center;
+//   text-decoration: none;
+
+//   font-size: 1rem;
+//   font-weight: 600;
+//   font-family: Pretendard;
+
+//   cursor: pointer;
+//   &:hover {
+//     background-color: #378e56;
+//     color: white;
+//   }
+
+//   transition: 0.2s;
+
+//   @media (max-width: 768px) {
+//     font-size: 1rem;
+//     padding: 0.8rem;
+//     margin-bottom: 0;
+//     border-radius: 1rem;
+//   }
+// `;
 
 const PageContainer = styled.div`
   padding: 1rem;
