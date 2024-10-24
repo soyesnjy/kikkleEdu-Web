@@ -12,6 +12,7 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { logoutAPI } from '@/fetchAPI';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
+import ExitApp from './ExitApp';
 
 const navList_info = [
   {
@@ -271,6 +272,7 @@ export default function Nav() {
             navList_info={navList_info}
             menuItems={menuItems}
           />
+          <ExitApp />
         </NavContainer>
       )}
     </>
