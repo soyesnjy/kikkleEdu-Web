@@ -33,8 +33,8 @@ const PartnerPage = () => {
         <PartnerTitle>Happy Partner</PartnerTitle>
         {!mobileFlag ? (
           <Image
-            src="/src/Introduce_IMG/Introduce_Partner_Middle_IMG.png"
-            alt="Icon"
+            src="/src/Introduce_IMG/Partner/Introduce_Partner_Middle_IMG.png"
+            alt="Partner IMG"
             width={1189}
             height={349}
             style={{ maxWidth: '100%', height: 'auto' }}
@@ -137,17 +137,17 @@ const Subtitle = styled.h2`
   }
 `;
 
-const Description = styled.p`
-  color: white;
+// const Description = styled.p`
+//   color: white;
 
-  font-size: 1.1rem;
-  font-family: Pretendard;
-  font-weight: 400;
+//   font-size: 1.1rem;
+//   font-family: Pretendard;
+//   font-weight: 400;
 
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
+//   @media (max-width: 768px) {
+//     display: none;
+//   }
+// `;
 
 const HeaderIntroDiv = styled.div`
   width: fit-content;
