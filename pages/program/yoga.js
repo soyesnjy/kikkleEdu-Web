@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 
-// import { mobile } from '@/store/state';
-// import { useRecoilState } from 'recoil';
+import { agencyClass } from '@/store/state';
+import { useRecoilState } from 'recoil';
 // import { useRouter } from 'next/router';
 
 import { useState, useEffect } from 'react';
@@ -52,6 +52,7 @@ const eduSectionData = {
 const YogaProgramPage = () => {
   const [classDataArr, setClassDataArr] = useState([]);
   const [selectedClass, setSelectedClass] = useState({});
+  const [agency, setAgency] = useRecoilState(agencyClass);
 
   const searchParams = useSearchParams();
   const cName = searchParams.get('cName');
@@ -169,7 +170,7 @@ const YogaProgramPage = () => {
       <EndSection
         Title={`For our child's healthy body \n and heart happiness`}
         btnTitle={`예약하기`}
-        routePath={`/`}
+        routePath={agency ? `/reservation` : `/signup`}
       />
     </MainContainer>
   );
