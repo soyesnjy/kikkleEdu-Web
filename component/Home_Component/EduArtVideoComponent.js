@@ -7,7 +7,7 @@ const EduArtVideoComponent = ({ sectionData }) => {
   return (
     <Container>
       <LeftSection>
-        <Title>{title}</Title>
+        <Title>{`${title}\n프로그램 영상`}</Title>
         <RightSection>
           <Content>{content}</Content>
           <FeatureList>
@@ -18,7 +18,7 @@ const EduArtVideoComponent = ({ sectionData }) => {
                   alt="Home_Intro_Picture_IMG"
                   width={24}
                   height={24}
-                  style={{ maxWidth: '100%', height: 'auto' }}
+                  // style={{ maxWidth: '100%', height: 'auto' }}
                 />{' '}
                 {feature}
               </FeatureItem>
@@ -44,12 +44,14 @@ export default EduArtVideoComponent;
 // Styled Components
 const Container = styled.div`
   width: 80%;
+  padding: 2rem;
+  margin: 0 auto;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
-  margin: 0 auto;
+
   background-color: white;
   border-radius: 20px;
 
@@ -68,6 +70,7 @@ const LeftSection = styled.div`
 
   @media (max-width: 1080px) {
     flex-direction: column;
+    align-items: flex-start;
   }
 `;
 
@@ -90,7 +93,13 @@ const Title = styled.h1`
   font-weight: bold;
   font-family: Nunito;
 
+  white-space: pre;
+
   margin-bottom: 1rem;
+
+  @media (max-width: 1080px) {
+    font-size: 2.5rem;
+  }
 `;
 
 const Content = styled.p`

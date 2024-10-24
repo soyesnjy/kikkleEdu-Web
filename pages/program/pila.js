@@ -43,7 +43,7 @@ const classDefaultArr = [
 ];
 
 const eduSectionData = {
-  title: '필라테스 교육 프로그램 영상',
+  title: '필라테스',
   content: '연령에 맞춘 매트필라테스 프로그램 제공',
   features: ['성인필라테스'], // default features
   youtubeUrl: '//www.youtube.com/embed/k4yFXL9ClSk',

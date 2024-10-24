@@ -43,7 +43,7 @@ const classDefaultArr = [
 ];
 
 const eduSectionData = {
-  title: '요가 교육 프로그램 영상',
+  title: '요가',
   content: '연령에 맞춘 요가 프로그램 제공',
   features: ['성인요가'], // default features
   youtubeUrl: '//www.youtube.com/embed/ekc2TYm99jg',

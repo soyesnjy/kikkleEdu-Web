@@ -126,6 +126,8 @@ const Title = styled.h2`
   font-weight: bold;
   color: #333;
 
+  white-space: pre;
+
   @media (max-width: 768px) {
     font-size: 2rem;
     text-align: center;
@@ -144,6 +146,8 @@ const Subtitle = styled.p`
   font-family: Pretendard;
   line-height: 1.6;
   color: #555;
+
+  text-align: center;
 `;
 
 const Button = styled.button`

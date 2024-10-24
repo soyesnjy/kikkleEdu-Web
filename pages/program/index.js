@@ -43,7 +43,7 @@ const classDefaultArr = [
 ];
 
 const eduSectionData = {
-  title: '발레 교육 프로그램 영상',
+  title: '발레 교육',
   content:
     '소예키즈만의 특화된 발레프로그램과 기관이 원하는 형태의 프로그램 제공',
   features: [
@@ -383,7 +383,7 @@ const IntroSection = styled.section`
   @media (max-width: 1080px) {
     height: 100%;
     flex-direction: column;
-    padding: 1rem;
+    padding: 0rem;
   }
 `;
 
