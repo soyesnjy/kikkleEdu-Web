@@ -6,12 +6,14 @@ import {
   handleMypageAgencyReservationGet,
   handleMypageTeacherAttendGet,
 } from '@/fetchAPI/mypageAPI';
+import { handleDirectoryRead } from '@/fetchAPI/directory';
 
 // import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import AgencyTableReservationBody from '@/component/MyPage_Component/Agency/AgencyTableReservationBody';
 import AgencyTableAttendBody from '@/component/MyPage_Component/Agency/AgencyTableAttendBody';
 import AgencyTablePrivacyBody from '@/component/MyPage_Component/Agency/AgencyTablePrivacyBody';
+import Directory from '@/component/Music_Component/Directory';
 import Pagination from '@/component/Common_Component/Pagination';
 
 const dummyTableData = [
@@ -45,8 +47,24 @@ const MyPage = () => {
   const [tableData, setTableData] = useState(dummyTableData);
   const [page, setPage] = useState(1);
   const [lastPageNum, setLastPageNum] = useState(1);
+  const [data, setData] = useState([]); // 파일 데이터
 
   const router = useRouter();
+
+  // 디렉토리 구조 초기화 메서드
+  const initMusicDirectory = async (form) => {
+    const data = await handleDirectoryRead({ form });
+    const formattedData = data.directories.map((dir) => ({
+      ...dir,
+      url:
+        dir.kk_directory_type === 'file'
+          ? data.tracks.find(
+              (track) => track.kk_directory_idx === dir.kk_directory_idx
+            )?.kk_file_path
+          : null,
+    }));
+    setData([...formattedData]);
+  };
 
   useEffect(() => {
     // 비로그인 처리
@@ -95,7 +113,8 @@ const MyPage = () => {
           setTableData(data.data);
           setLastPageNum(data.lastPageNum);
         });
-    }
+    } else initMusicDirectory(activeTab);
+
     if (localStorage.getItem('activeTab') !== activeTab) setPage(1); // 탭 변경 시 페이지 초기화
     localStorage.setItem('activeTab', activeTab);
   }, [activeTab, page]);
@@ -120,6 +139,12 @@ const MyPage = () => {
             onClick={() => handleTabClick('instructor')}
           >
             수업 및 강사 현황
+          </TabButton>
+          <TabButton
+            active={activeTab === 'class'}
+            onClick={() => handleTabClick('class')}
+          >
+            강의 계획서
           </TabButton>
           <TabButton
             active={activeTab === 'privacy'}
@@ -173,6 +198,7 @@ const MyPage = () => {
             )}
           </Table>
           {activeTab === 'privacy' && <AgencyTablePrivacyBody />}
+          {activeTab === 'class' && <Directory data={data} form={activeTab} />}
         </TableContainer>
         {(activeTab === 'reservation' || activeTab === 'instructor') && (
           <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
