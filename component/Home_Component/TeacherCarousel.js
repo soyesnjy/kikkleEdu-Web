@@ -214,7 +214,7 @@ const ProfileCard = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 
   gap: 1rem;
 
