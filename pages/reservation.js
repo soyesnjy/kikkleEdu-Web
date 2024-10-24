@@ -22,6 +22,7 @@ import 'react-phone-number-input/style.css';
 // import PhoneInput from 'react-phone-number-input';
 // import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
 import Calendar from '@/component/MyPage_Component/Calendar';
+import ReservationTeacherProfileCard from '@/component/Reservation_Component/ReservationTeacherProfileCard';
 
 const partTimeArr = [
   { title: '오전 (10:00~12:00)', value: '오전' },
@@ -123,12 +124,14 @@ export default function Reservation() {
       handleTeacherGet({ classIdx: selectedClass, dayofweek: dayArr, partTime }) // 추후 기관 타입 recoil 전역변수 넣기
         .then((res) => res.data.data)
         .then((data) => {
+          // console.log(data);
           setPossTeacherArr([
             ...data.map((el) => {
               return {
                 id: el.kk_teacher_idx,
                 name: el.kk_teacher_name,
                 introduce: el.kk_teacher_introduction,
+                imgUrl: el.kk_teacher_profileImg_path,
               };
             }),
           ]);
@@ -392,48 +395,18 @@ export default function Reservation() {
               <PageContainer>
                 <ClassContainer rowCount={Math.ceil(possClassArr.length / 5)}>
                   {possTeacherArr.length > 0
-                    ? possTeacherArr.map((el, index) => {
-                        const { id, name, introduce } = el;
+                    ? possTeacherArr.map((el) => {
+                        const { id, name, introduce, imgUrl } = el;
                         return (
-                          <ClassButtonContainer
-                            key={index}
-                            selected={selectedTeacher.includes(id)}
-                          >
-                            <ClassButtonTitle>{name}</ClassButtonTitle>
-
-                            <ClassButtonSubTitle>
-                              {introduce ? introduce : '소개글이 없습니다'}
-                            </ClassButtonSubTitle>
-
-                            <TeacherButton
-                              value={id}
-                              selected={selectedTeacher.includes(id)}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                // setSelectedClass(Number(e.target.value));
-                                // 선택 취소
-                                if (selectedTeacher.includes(id))
-                                  setSelectedTeacher([
-                                    ...selectedTeacher.filter(
-                                      (el) => el !== id
-                                    ),
-                                  ]);
-                                //
-                                else if (selectedTeacher.length > 2)
-                                  alert('3명까지 선택 가능');
-                                // 선택
-                                else
-                                  setSelectedTeacher([
-                                    ...selectedTeacher,
-                                    Number(e.target.value),
-                                  ]);
-                              }}
-                            >
-                              {selectedTeacher.includes(id)
-                                ? '취소하기'
-                                : '선택하기'}
-                            </TeacherButton>
-                          </ClassButtonContainer>
+                          <ReservationTeacherProfileCard
+                            key={id}
+                            id={id}
+                            name={name}
+                            introduce={introduce}
+                            imgUrl={imgUrl}
+                            selectedTeacher={selectedTeacher}
+                            setSelectedTeacher={setSelectedTeacher}
+                          />
                         );
                       })
                     : '조건에 부합하는 강사가 없습니다'}

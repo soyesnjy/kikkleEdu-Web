@@ -11,6 +11,7 @@ import ProgramClassContainer from '@/component/Agency_Component/ProgramClassCont
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
 import EndSection from '@/component/Home_Component/EndSection';
+import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
 
 import Image from 'next/image';
 
@@ -74,6 +75,7 @@ const KindergartenPage = () => {
       handleTeacherGet({ classType: '유치원' })
         .then((res) => res.data.data)
         .then((data) => {
+          // console.log(data);
           setTeacherDataArr([
             ...data.map((el) => {
               return {
@@ -195,20 +197,16 @@ const KindergartenPage = () => {
         <MiddleSectionTitle>수업 강사</MiddleSectionTitle>
         <TeacherContainer rowCount={Math.ceil(teacherDataArr.length / 4)}>
           {teacherDataArr.length > 0
-            ? teacherDataArr.map((el, index) => {
-                const { id, name, introduce } = el;
+            ? teacherDataArr.map((el) => {
+                const { id, name, introduce, profileImg } = el;
                 return (
-                  <TeacherButtonContainer
-                    key={index}
+                  <TeacherProfileCard
+                    key={id}
+                    name={name}
+                    introduce={introduce}
+                    imgUrl={profileImg}
                     onClick={() => router.push(`/teacher/${id}`)}
-                  >
-                    <TeacherTextContainer>
-                      <TeacherButtonTitle>{name}</TeacherButtonTitle>
-                      <TeacherButtonSubTitle>
-                        {introduce ? introduce : `강사 ${name}입니다`}
-                      </TeacherButtonSubTitle>
-                    </TeacherTextContainer>
-                  </TeacherButtonContainer>
+                  />
                 );
               })
             : ''}
@@ -557,70 +555,4 @@ const TeacherContainer = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
   }
-`;
-
-const TeacherButtonContainer = styled.div`
-  width: 280px;
-  height: 280px;
-  background: ${(props) =>
-    props.selected
-      ? 'linear-gradient(#cacaca 80%, black)'
-      : 'linear-gradient(#cacaca 100%, black)'};
-
-  border-radius: 24px;
-
-  border: ${(props) => (props.selected ? '5px solid #45b26b' : 'none')};
-  color: white;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-
-  gap: 1rem;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-
-  @media (max-width: 768px) {
-    height: 280px;
-  }
-`;
-
-const TeacherTextContainer = styled.div`
-  width: 100%;
-  height: 30%;
-  background-color: white;
-  color: black;
-
-  padding: 1rem;
-
-  border-radius: 0 0 15px 15px;
-
-  border: ${(props) => (props.selected ? '5px solid #45b26b' : 'none')};
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-
-  gap: 1rem;
-
-  @media (max-width: 768px) {
-    height: 30%;
-  }
-`;
-
-const TeacherButtonTitle = styled.div`
-  font-family: Pretendard;
-  font-weight: 600;
-  font-size: 16px;
-`;
-
-const TeacherButtonSubTitle = styled.div`
-  font-family: Pretendard;
-  font-weight: 400;
-  font-size: 12px;
 `;

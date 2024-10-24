@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import AgencyProgramCard from '@/component/Home_Component/AgencyProgramCard';
 import ProgramClassContainer from '@/component/Agency_Component/ProgramClassContainer';
 import EndSection from '@/component/Home_Component/EndSection';
+import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
 
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
@@ -196,20 +197,16 @@ const CulturalPage = () => {
         <MiddleSectionTitle>수업 강사</MiddleSectionTitle>
         <TeacherContainer rowCount={Math.ceil(teacherDataArr.length / 4)}>
           {teacherDataArr.length > 0
-            ? teacherDataArr.map((el, index) => {
-                const { id, name, introduce } = el;
+            ? teacherDataArr.map((el) => {
+                const { id, name, introduce, profileImg } = el;
                 return (
-                  <TeacherButtonContainer
-                    key={index}
+                  <TeacherProfileCard
+                    key={id}
+                    name={name}
+                    introduce={introduce}
+                    imgUrl={profileImg}
                     onClick={() => router.push(`/teacher/${id}`)}
-                  >
-                    <TeacherTextContainer>
-                      <TeacherButtonTitle>{name}</TeacherButtonTitle>
-                      <TeacherButtonSubTitle>
-                        {introduce ? introduce : `강사 ${name}입니다`}
-                      </TeacherButtonSubTitle>
-                    </TeacherTextContainer>
-                  </TeacherButtonContainer>
+                  />
                 );
               })
             : ''}

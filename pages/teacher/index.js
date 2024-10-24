@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { useRouter } from 'next/router';
 import EndSection from '@/component/Home_Component/EndSection';
+import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
 
 import { useRecoilState } from 'recoil';
 import { log } from '@/store/state';
@@ -21,12 +22,14 @@ const TeacherListPage = () => {
       handleTeacherGet({ classTag: teacherClass }) // 추후 기관 타입 recoil 전역변수 넣기
         .then((res) => res.data.data)
         .then((data) => {
+          // console.log(data);
           setTeacherDataArr([
             ...data.map((el) => {
               return {
                 id: el.kk_teacher_idx,
                 name: el.kk_teacher_name,
                 introduce: el.kk_teacher_introduction,
+                profileImg: el.kk_teacher_profileImg_path,
               };
             }),
           ]);
@@ -57,6 +60,7 @@ const TeacherListPage = () => {
                 id: el.kk_teacher_idx,
                 name: el.kk_teacher_name,
                 introduce: el.kk_teacher_introduction,
+                profileImg: el.kk_teacher_profileImg_path,
               };
             }),
           ]);
@@ -140,22 +144,19 @@ const TeacherListPage = () => {
       <PageContainer>
         <TeacherContainer rowCount={Math.ceil(teacherDataArr.length / 5)}>
           {teacherDataArr.length > 0
-            ? teacherDataArr.map((el, index) => {
-                const { id, name, introduce } = el;
+            ? teacherDataArr.map((el) => {
+                const { id, name, introduce, profileImg } = el;
                 return (
-                  <TeacherButtonContainer
-                    key={index}
-                    onClick={() => {
-                      console.log(id);
-                      router.push(`/teacher/${id}`);
-                    }}
-                  >
-                    <TeacherButtonTitle>{name}</TeacherButtonTitle>
-                    <TeacherButtonSubTitle>{introduce}</TeacherButtonSubTitle>
-                  </TeacherButtonContainer>
+                  <TeacherProfileCard
+                    key={id}
+                    name={name}
+                    introduce={introduce}
+                    imgUrl={profileImg}
+                    onClick={() => router.push(`/teacher/${id}`)}
+                  />
                 );
               })
-            : '조건에 부합하는 강사가 없습니다'}
+            : '조건에 부합하는 강사가 없습니다.'}
         </TeacherContainer>
       </PageContainer>
       {/* 엔드 섹션 */}
