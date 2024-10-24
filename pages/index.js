@@ -69,6 +69,14 @@ const section_5to9_Arr = [
     imgUrl: '/src/Home_IMG/Home_Section_8_Background_IMG.png',
     routePath: '/agency/comunity',
   },
+  {
+    title: '아동 복지 센터 수업',
+    subtitle:
+      '유아, 초등, 성인들을 대상으로 하는 다양한 연령대의 프로그램을 제공합니다.',
+    imgUrl: '/src/Home_IMG/Home_Section_9_Background_IMG.png',
+    routePath: '/agency/welfare',
+    backgroundColor: '#F4EEE5',
+  },
 ];
 
 // Home 페이지
@@ -341,6 +349,8 @@ const SectionFifthtoNineth = styled.section`
   width: 100vw;
   min-height: 50vh;
 
+  margin: 10rem 0;
+
   background-color: ${(props) => props.backgroundColor || 'white'};
 
   display: flex;
@@ -348,6 +358,7 @@ const SectionFifthtoNineth = styled.section`
   align-items: center;
 
   @media (max-width: 768px) {
+    margin: 0;
     height: 100%;
     flex-direction: column;
     padding: 2rem;
