@@ -468,12 +468,12 @@ export default function Reservation() {
                     <PayModalContentMiddleContainer>
                       <PayModalMiddleTitle>담당자</PayModalMiddleTitle>
                       <PayModalMiddleSubtitle>
-                        010-1234-5678
+                        02-303-4420
                       </PayModalMiddleSubtitle>
                     </PayModalContentMiddleContainer>
 
                     <PayModalButton>
-                      <PayModalA href="tel:01012345678">
+                      <PayModalA href="tel:02-303-4420">
                         담당자 전화 연결하기
                       </PayModalA>
                     </PayModalButton>
