@@ -3,13 +3,13 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 // Router
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 // Params
-import { useSearchParams } from 'next/navigation';
+// import { useSearchParams } from 'next/navigation';
 // SweetAlert2
-import Swal from 'sweetalert2';
-import { handleKakaoPayApprove } from '@/fetchAPI/kakaoPayAPI';
-import { payInfo } from '@/store/payInfo';
+// import Swal from 'sweetalert2';
+// import { handleKakaoPayApprove } from '@/fetchAPI/kakaoPayAPI';
+// import { payInfo } from '@/store/payInfo';
 import EndSection from '@/component/Home_Component/EndSection';
 
 const classDefaultArr = [
@@ -73,11 +73,11 @@ const classDefaultArr = [
 
 const Shop = () => {
   const [classDataArr, setClassDataArr] = useState(classDefaultArr);
-  const router = useRouter();
+  // const router = useRouter();
 
   // 권한 code Params 찾기
-  const searchParams = useSearchParams();
-  const pg_token = searchParams.get('pg_token'); // 결제 성공 시 반환되는 Parameter 값
+  // const searchParams = useSearchParams();
+  // const pg_token = searchParams.get('pg_token'); // 결제 성공 시 반환되는 Parameter 값
 
   useEffect(() => {
     // 페이지 언마운트 - 결제관련 정보 localStorage에서 제거
@@ -88,47 +88,47 @@ const Shop = () => {
   }, []);
 
   // pg_token 반환 시 발동 - KakaoPay 승인
-  useEffect(() => {
-    if (pg_token) {
-      // KakaoPay 승인 API 호출
-      handleKakaoPayApprove({
-        cid: process.env.NEXT_PUBLIC_KAKAO_PAY_CID,
-        tid: '', // 서버 세션 데이터에 저장
-        partner_order_id:
-          payInfo[localStorage.getItem('payClass')].partner_order_id,
-        partner_user_id: localStorage.getItem('id'),
-        pg_token,
-      }).then((res) => {
-        // 승인 성공
-        if (res.status === 200) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Pay Success!',
-            text: 'Main Page로 이동합니다',
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            localStorage.removeItem('tid');
-            localStorage.removeItem('payClass');
-            router.push('/'); // 메인 화면으로 라우팅
-          });
-        }
-        // 승인 실패
-        else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Pay Fail!',
-            showConfirmButton: false,
-            timer: 1000,
-          }).then(() => {
-            localStorage.removeItem('tid');
-            localStorage.removeItem('payClass');
-            router.push('/shop'); // pg_token 삭제를 위한 라우팅
-          });
-        }
-      });
-    }
-  }, [pg_token]);
+  // useEffect(() => {
+  //   if (pg_token) {
+  //     // KakaoPay 승인 API 호출
+  //     handleKakaoPayApprove({
+  //       cid: process.env.NEXT_PUBLIC_KAKAO_PAY_CID,
+  //       tid: '', // 서버 세션 데이터에 저장
+  //       partner_order_id:
+  //         payInfo[localStorage.getItem('payClass')].partner_order_id,
+  //       partner_user_id: localStorage.getItem('id'),
+  //       pg_token,
+  //     }).then((res) => {
+  //       // 승인 성공
+  //       if (res.status === 200) {
+  //         Swal.fire({
+  //           icon: 'success',
+  //           title: 'Pay Success!',
+  //           text: 'Main Page로 이동합니다',
+  //           showConfirmButton: false,
+  //           timer: 1500,
+  //         }).then(() => {
+  //           localStorage.removeItem('tid');
+  //           localStorage.removeItem('payClass');
+  //           router.push('/'); // 메인 화면으로 라우팅
+  //         });
+  //       }
+  //       // 승인 실패
+  //       else {
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: 'Pay Fail!',
+  //           showConfirmButton: false,
+  //           timer: 1000,
+  //         }).then(() => {
+  //           localStorage.removeItem('tid');
+  //           localStorage.removeItem('payClass');
+  //           router.push('/shop'); // pg_token 삭제를 위한 라우팅
+  //         });
+  //       }
+  //     });
+  //   }
+  // }, [pg_token]);
 
   return (
     <MainContainer>
