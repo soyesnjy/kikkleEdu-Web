@@ -449,18 +449,34 @@ export default function Reservation() {
                     카드 결제
                   </PayButton> */}
                 </PayButtonContainer>
-                <PayModalContainer
-                  isOpen={isOpen}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    // alert('개발중...');
-                    toggleMenu();
-                  }}
-                >
+                <PayModalContainer isOpen={isOpen}>
                   <PayModalContentContainer>
-                    <div>세금계산서 발급 - 담당자</div>
-                    <div>담당자 - 010-xxxx-xxxx</div>
-                    <button>담당자 전화 연결하기</button>
+                    <PayModalContentHeaderContainer>
+                      <PayModalHeaderTitle>
+                        세금계산서 발금 - 담당자
+                      </PayModalHeaderTitle>
+                      <CloseButton
+                        onClick={(e) => {
+                          e.preventDefault();
+                          // alert('개발중...');
+                          toggleMenu();
+                        }}
+                      >
+                        <CloseIcon />
+                      </CloseButton>
+                    </PayModalContentHeaderContainer>
+                    <PayModalContentMiddleContainer>
+                      <PayModalMiddleTitle>담당자</PayModalMiddleTitle>
+                      <PayModalMiddleSubtitle>
+                        010-1234-5678
+                      </PayModalMiddleSubtitle>
+                    </PayModalContentMiddleContainer>
+
+                    <PayModalButton>
+                      <PayModalA href="tel:+821012345678">
+                        담당자 전화 연결하기
+                      </PayModalA>
+                    </PayModalButton>
                   </PayModalContentContainer>
                 </PayModalContainer>
               </PageContainer>
@@ -993,8 +1009,103 @@ const PayModalContentContainer = styled.div`
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 2rem;
+
+  gap: 1rem;
+`;
+
+const PayModalContentHeaderContainer = styled.div`
+  width: 100%;
+
+  background-color: white;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+
+const PayModalHeaderTitle = styled.span`
+  font-family: Pretendard;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: black;
+`;
+
+const PayModalContentMiddleContainer = styled.div`
+  width: 100%;
+
+  background-color: white;
+
+  display: flex;
+  justify-content: flex-start;
   align-items: center;
 
   gap: 1rem;
 `;
+
+const PayModalMiddleTitle = styled.span`
+  background-color: #afc6ff;
+  padding: 0.5rem 2rem;
+  border-radius: 8px;
+
+  font-family: Pretendard;
+  font-weight: 400;
+  font-size: 1rem;
+  color: white;
+`;
+
+const PayModalMiddleSubtitle = styled.span`
+  font-family: Pretendard;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #3870ff;
+`;
+
+const PayModalButton = styled.button`
+  width: 100%;
+  padding: 1rem;
+  background-color: #378e56;
+
+  border: none;
+  border-radius: 12px;
+`;
+
+const PayModalA = styled.a`
+  text-decoration: none;
+
+  font-family: Pretendard;
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: white;
+
+  cursor: pointer;
+`;
+
+const CloseButton = styled.button`
+  align-self: flex-end;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+`;
+
+const CloseIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M6 18L18 6M6 6l12 12"
+    />
+  </svg>
+);
