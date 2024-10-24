@@ -161,16 +161,24 @@ export default function Signup() {
     return emailRegex.test(email);
   };
 
+  const isValidTeacher = (email) => {
+    return email.startsWith('TC_');
+  };
+
   // 강사 페이지 체크
   // First 페이지 체크 메서드
   const pageCheckFirst = () => {
     if (!email) {
-      alert('이메일을 입력하세요');
+      alert('ID를 입력하세요');
       return false;
     }
-    if (!isValidEmail(email)) {
-      alert('이메일 형식으로 입력하세요');
-      return false;
+    // if (!isValidEmail(email)) {
+    //   alert('이메일 형식으로 입력하세요');
+    //   return false;
+    // }
+    if (!isValidTeacher(email)) {
+      alert('TC_ 형식으로 입력하세요');
+      return;
     }
     if (!name) {
       alert('이름을 입력하세요');
@@ -441,7 +449,7 @@ export default function Signup() {
                   />
                   <SignUpInput
                     id="email"
-                    placeholder="*이메일 (ID)"
+                    placeholder="*아이디"
                     type="email"
                     value={email}
                     onChange={(e) => {

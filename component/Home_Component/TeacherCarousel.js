@@ -68,9 +68,8 @@ const TeacherCarousel = () => {
     <Section>
       <Title>강사 프로필</Title>
       <Description>
-        Lorem ipsum dolor sit amet veli elitni legro int dolor.Lorem ipsum dolor
-        sit amet veli elitni legro int dolor.Lorem ipsum dolor sit amet veli
-        elitni legro int dolor.
+        다양한 예술 장르의 전공과 경력을 보유하고 계신 소예키즈의 키클에듀
+        가입강사들을 찾아봐주세요.
       </Description>
       <CarouselContainer>
         {!mobileFlag && (

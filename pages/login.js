@@ -177,7 +177,7 @@ export default function Login() {
             localStorage.setItem(
               'log',
               JSON.stringify({
-                expires: expireSetHourFunc(1),
+                expires: expireSetHourFunc(24),
               })
             );
             localStorage.setItem('id', res.data.id);
@@ -227,7 +227,7 @@ export default function Login() {
             localStorage.setItem(
               'log',
               JSON.stringify({
-                expires: expireSetHourFunc(1),
+                expires: expireSetHourFunc(24),
               })
             );
             localStorage.setItem('id', res.data.id);
