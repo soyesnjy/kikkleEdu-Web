@@ -249,7 +249,7 @@ export default function Reservation() {
           {!mobileFlag && (
             <ProfileContainer>
               {/* <span>Profile name</span>
-              <div>{localStorage.getItem('id')}</div> */}
+              <div>Dummy</div> */}
             </ProfileContainer>
           )}
           {!mobileFlag ? (
