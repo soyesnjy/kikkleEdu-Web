@@ -1,9 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
 const ProgramClassContainer = ({ classDataArr }) => {
   const containerRef = useRef(null);
+  const classContainerRef = useRef(null);
+
   const router = useRouter();
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -11,6 +13,11 @@ const ProgramClassContainer = ({ classDataArr }) => {
   const [dragDistance, setDragDistance] = useState(0); // 드래그 거리 추적
 
   const MIN_DRAG_DISTANCE = 5; // 드래그와 클릭을 구분할 최소 거리
+
+  // useEffect(() => {
+  //   console.log(containerRef?.current?.scrollWidth);
+  //   console.log(classContainerRef?.current?.offsetWidth * classDataArr.length);
+  // }, [containerRef?.current?.scrollLeft]);
 
   // 마우스 클릭하여 드래그 시작할 때 실행
   const onDragStart = (e) => {
@@ -67,38 +74,65 @@ const ProgramClassContainer = ({ classDataArr }) => {
   };
 
   return (
-    <ProgramContainer
-      dataLength={classDataArr.length}
-      ref={containerRef}
-      onMouseDown={onDragStart}
-      onMouseMove={onDragMove}
-      onMouseUp={onDragEnd}
-      onMouseLeave={onDragEnd}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
-    >
-      {classDataArr.map((el) => {
-        const { title, imgPath, routePath, idx } = el;
-        return (
-          <ProgramContentContainer
-            key={idx}
-            imgPath={imgPath}
-            onClick={() => {
-              if (dragDistance < MIN_DRAG_DISTANCE) {
-                router.push(routePath); // 드래그가 짧으면 클릭으로 처리
+    <Container>
+      <ProgramContainer
+        dataLength={classDataArr.length}
+        ref={containerRef}
+        onMouseDown={onDragStart}
+        onMouseMove={onDragMove}
+        onMouseUp={onDragEnd}
+        onMouseLeave={onDragEnd}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
+        {classDataArr.map((el) => {
+          const { title, imgPath, routePath, idx } = el;
+          return (
+            <ProgramContentContainer
+              ref={classContainerRef}
+              key={idx}
+              imgPath={imgPath}
+              onClick={() => {
+                if (dragDistance < MIN_DRAG_DISTANCE) {
+                  router.push(routePath); // 드래그가 짧으면 클릭으로 처리
+                }
+              }}
+            >
+              <ProgramTitle>{title}</ProgramTitle>
+            </ProgramContentContainer>
+          );
+        })}
+      </ProgramContainer>
+      {/* <DotContainer>
+        {classDataArr.map((el, index) => {
+          return (
+            <Dot
+              key={index}
+              active={
+                (containerRef?.current?.scrollWidth / 5) * index <=
+                containerRef?.current?.scrollLeft
               }
-            }}
-          >
-            <ProgramTitle>{title}</ProgramTitle>
-          </ProgramContentContainer>
-        );
-      })}
-    </ProgramContainer>
+            />
+          );
+        })}
+      </DotContainer> */}
+    </Container>
   );
 };
 
 export default ProgramClassContainer;
+
+const Container = styled.div`
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 768px) {
+  }
+`;
 
 const ProgramContainer = styled.div`
   width: 80vw;
@@ -168,4 +202,30 @@ const ProgramTitle = styled.div`
   font-size: 1.2rem;
   color: white;
   z-index: 1;
+`;
+
+const DotContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.active {
+    cursor: grabbing;
+  }
+
+  @media (max-width: 768px) {
+    width: 90vw;
+    justify-content: center;
+  }
+`;
+
+const Dot = styled.div`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: ${({ active }) => (active ? '#4cb0b2' : '#ddd')};
+  margin: 0 5px;
+  transition: background-color 0.3s;
+  cursor: pointer;
 `;
