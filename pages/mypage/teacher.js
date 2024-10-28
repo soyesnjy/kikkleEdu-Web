@@ -232,6 +232,13 @@ const Header = styled.div`
 const Tabs = styled.div`
   display: flex;
   margin-top: 1.5rem;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const TabButton = styled.button`
@@ -257,6 +264,8 @@ const TabButton = styled.button`
 
   @media (max-width: 768px) {
     padding: 0.7rem;
+    border-radius: 20px;
+    margin-right: 0;
   }
 `;
 

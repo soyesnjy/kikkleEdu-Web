@@ -147,7 +147,9 @@ const Subtitle = styled.p`
   line-height: 1.6;
   color: #555;
 
-  text-align: center;
+  @media (max-width: 768px) {
+    text-align: center;
+  }
 `;
 
 const Button = styled.button`
