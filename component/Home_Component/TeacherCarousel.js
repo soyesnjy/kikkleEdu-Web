@@ -95,6 +95,10 @@ const TeacherCarousel = () => {
                   width={103}
                   height={103}
                   style={{
+                    // minWidth: '103px',
+                    // minHeight: '103px',
+                    // maxWidth: '100%',
+                    // height: 'auto',
                     borderRadius: '50%',
                   }}
                 />
