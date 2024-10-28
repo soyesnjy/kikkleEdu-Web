@@ -72,11 +72,9 @@ const TeacherCarousel = () => {
         가입강사들을 찾아봐주세요.
       </Description>
       <CarouselContainer>
-        {!mobileFlag && (
-          <Button onClick={handlePrevClick}>
-            <span class="material-symbols-outlined">arrow_back</span>
-          </Button>
-        )}
+        <Button onClick={handlePrevClick} dir={'pre'}>
+          <span class="material-symbols-outlined">arrow_back</span>
+        </Button>
         <CarouselWrapper>
           <ProfilesContainer
             style={{
@@ -91,7 +89,7 @@ const TeacherCarousel = () => {
                 <Image
                   src={
                     profile.profileImg ||
-                    '/src/Home_IMG/Icon_IMG/Home_Icon_1_IMG.png'
+                    '/src/Teacher_IMG/Teacher_Pupu_Profile_IMG.png'
                   }
                   alt="profile_IMG"
                   width={103}
@@ -113,11 +111,9 @@ const TeacherCarousel = () => {
             ))}
           </ProfilesContainer>
         </CarouselWrapper>
-        {!mobileFlag && (
-          <Button onClick={handleNextClick}>
-            <span class="material-symbols-outlined">arrow_forward</span>
-          </Button>
-        )}
+        <Button onClick={handleNextClick} dir={'next'}>
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </Button>
       </CarouselContainer>
       <Dots>
         {teacherDataArr.map((_, index) => (
@@ -177,6 +173,8 @@ const CarouselContainer = styled.div`
   @media (max-width: 728px) {
     justify-content: flex-start;
     transform: translateX(33.5%);
+
+    position: relative;
   }
 `;
 
@@ -283,6 +281,12 @@ const Button = styled.button`
   &:hover {
     background-color: #ff8500;
     color: white;
+  }
+
+  @media (max-width: 1080px) {
+    position: absolute;
+    top: 10%;
+    left: ${(props) => (props.dir === 'pre' ? '1.5%' : '28%')};
   }
 `;
 
