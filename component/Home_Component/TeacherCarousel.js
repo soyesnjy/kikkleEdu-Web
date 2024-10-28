@@ -285,7 +285,6 @@ const Button = styled.button`
 
   @media (max-width: 1080px) {
     position: absolute;
-    top: 10%;
     left: ${(props) => (props.dir === 'pre' ? '1.5%' : '28%')};
   }
 `;
