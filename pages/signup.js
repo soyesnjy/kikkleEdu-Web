@@ -898,7 +898,7 @@ const SignUpPageContainer = styled.main`
     height: 100%;
     min-height: 100vh;
     flex-direction: column;
-    padding: 2rem;
+    padding: 1rem;
   }
 `;
 
@@ -1236,6 +1236,12 @@ const UserPossClassContainer = styled.div`
   gap: 0.5rem;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: ${(props) =>
+      props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(4, 1fr)'};
+    grid-template-rows: ${(props) => `repeat(${props.rowCount}, 1fr)`};
+  }
 `;
 
 const UserPossClassButton = styled.button`
@@ -1262,7 +1268,7 @@ const UserPossClassButton = styled.button`
   @media (max-width: 768px) {
     width: 100%;
     padding: 0.5rem;
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 `;
 
