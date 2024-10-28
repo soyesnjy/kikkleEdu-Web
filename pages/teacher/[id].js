@@ -89,7 +89,7 @@ const TeacherDetailPage = () => {
               height={418}
               style={{
                 maxWidth: '100%',
-                height: '90%',
+                height: 'auto',
                 borderRadius: '24px',
               }}
             />
@@ -130,7 +130,7 @@ const TeacherDetailPage = () => {
               height={418}
               style={{
                 maxWidth: '100%',
-                height: '90%',
+                height: 'auto',
                 borderRadius: '24px',
               }}
             />
@@ -345,10 +345,10 @@ const MiddleProfileImgContainer = styled.div`
 
   position: relative;
 
-  background-image: url('/src/Teacher_IMG/Teacher_Dummy_Profile_IMG.png');
+  /* background-image: url('/src/Teacher_IMG/Teacher_Dummy_Profile_IMG.png');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
 
   display: flex;
   flex-direction: column;
