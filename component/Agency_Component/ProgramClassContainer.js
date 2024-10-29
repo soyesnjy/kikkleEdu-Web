@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
-const ProgramClassContainer = ({ classDataArr }) => {
+const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
   const containerRef = useRef(null);
   const classContainerRef = useRef(null);
 
@@ -14,9 +14,21 @@ const ProgramClassContainer = ({ classDataArr }) => {
 
   const MIN_DRAG_DISTANCE = 5; // 드래그와 클릭을 구분할 최소 거리
 
+  const scrollLeftHandler = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRightHandler = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+  };
+
   // useEffect(() => {
-  //   console.log(containerRef?.current?.scrollWidth);
-  //   console.log(classContainerRef?.current?.offsetWidth * classDataArr.length);
+  //   // console.log(containerRef?.current?.scrollWidth);
+  //   console.log(containerRef?.current?.scrollLeft);
   // }, [containerRef?.current?.scrollLeft]);
 
   // 마우스 클릭하여 드래그 시작할 때 실행
@@ -86,6 +98,9 @@ const ProgramClassContainer = ({ classDataArr }) => {
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
+        <Button onClick={scrollLeftHandler} dir={'pre'}>
+          <span class="material-symbols-outlined">arrow_back</span>
+        </Button>
         {classDataArr.map((el) => {
           const { title, imgPath, routePath, idx } = el;
           return (
@@ -103,20 +118,31 @@ const ProgramClassContainer = ({ classDataArr }) => {
             </ProgramContentContainer>
           );
         })}
+        <Button onClick={scrollRightHandler} dir={'next'}>
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </Button>
       </ProgramContainer>
-      {/* <DotContainer>
-        {classDataArr.map((el, index) => {
-          return (
-            <Dot
-              key={index}
-              active={
-                (containerRef?.current?.scrollWidth / 5) * index <=
-                containerRef?.current?.scrollLeft
-              }
-            />
-          );
-        })}
-      </DotContainer> */}
+      {mobileFlag && (
+        <DotContainer>
+          {classDataArr.map((el, index) => {
+            return (
+              <Dot
+                key={index}
+                active={
+                  (containerRef?.current?.scrollWidth / classDataArr.length) *
+                    index <=
+                    containerRef?.current?.scrollLeft * 1.2 &&
+                  containerRef?.current?.scrollLeft * 1.2 <=
+                    (containerRef?.current?.scrollWidth / classDataArr.length) *
+                      (index === classDataArr.length - 1
+                        ? containerRef?.current?.scrollWidth
+                        : index + 1)
+                }
+              />
+            );
+          })}
+        </DotContainer>
+      )}
     </Container>
   );
 };
@@ -139,6 +165,7 @@ const ProgramContainer = styled.div`
   display: flex;
   justify-content: ${(props) =>
     props.dataLength >= 4 ? 'flex-start' : 'center'};
+  align-items: center;
   overflow-x: hidden;
 
   cursor: grab;
@@ -155,6 +182,7 @@ const ProgramContainer = styled.div`
   @media (max-width: 768px) {
     width: 90vw;
     justify-content: flex-start;
+    overflow-x: auto;
   }
 `;
 
@@ -228,4 +256,41 @@ const Dot = styled.div`
   margin: 0 5px;
   transition: background-color 0.3s;
   cursor: pointer;
+`;
+
+const Button = styled.button`
+  width: 36px;
+  height: 36px;
+
+  background-color: #beb6f2;
+  border: none;
+  border-radius: 100%;
+  color: white;
+
+  padding: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    font-size: 2.2rem;
+  }
+
+  cursor: pointer;
+  z-index: 10;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  position: absolute;
+  left: ${(props) => (props.dir === 'pre' ? '5%' : '')};
+  right: ${(props) => (props.dir === 'pre' ? '' : '5%')};
+
+  transition: 0.3s;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;

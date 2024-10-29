@@ -189,7 +189,10 @@ const ElementPage = () => {
             ? `아이들이 재미있게 체험할 수 있는 \n 다양한 소예키즈의 교육프로그램`
             : `아이들이 재미있게 체험할 수 있는 다양한 소예키즈의 교육프로그램`}
         </Description>
-        <ProgramClassContainer classDataArr={classDataArr} />
+        <ProgramClassContainer
+          classDataArr={classDataArr}
+          mobileFlag={mobileFlag}
+        />
       </MiddleSectionThird>
       {/* 미들 섹션 - 수업 강사 */}
       <MiddleSectionFourth>

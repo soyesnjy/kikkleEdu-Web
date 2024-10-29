@@ -160,7 +160,6 @@ export default function Signup() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   };
-
   const isValidTeacher = (email) => {
     return email.startsWith('TC_');
   };
@@ -276,7 +275,6 @@ export default function Signup() {
     }
     return true;
   };
-
   // 강사 회원가입 핸들러
   const signupHandler = async (e) => {
     e.preventDefault();
@@ -342,7 +340,6 @@ export default function Signup() {
 
     reader.readAsDataURL(file);
   };
-
   // 기관 회원가입 핸들러
   const signupHandlerA = async (e) => {
     e.preventDefault();
