@@ -27,7 +27,7 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
   };
 
   // useEffect(() => {
-  //   // console.log(containerRef?.current?.scrollWidth);
+  //   console.log(containerRef);
   //   console.log(containerRef?.current?.scrollLeft);
   // }, [containerRef?.current?.scrollLeft]);
 
@@ -131,8 +131,10 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
                 active={
                   (containerRef?.current?.scrollWidth / classDataArr.length) *
                     index <=
-                    containerRef?.current?.scrollLeft * 1.2 &&
-                  containerRef?.current?.scrollLeft * 1.2 <=
+                    containerRef?.current?.scrollLeft +
+                      classContainerRef?.current?.scrollWidth / 3 &&
+                  containerRef?.current?.scrollLeft +
+                    classContainerRef?.current?.scrollWidth / 3 <=
                     (containerRef?.current?.scrollWidth / classDataArr.length) *
                       (index === classDataArr.length - 1
                         ? containerRef?.current?.scrollWidth
@@ -182,7 +184,7 @@ const ProgramContainer = styled.div`
   @media (max-width: 768px) {
     width: 90vw;
     justify-content: flex-start;
-    overflow-x: auto;
+    /* overflow-x: auto; */
   }
 `;
 
