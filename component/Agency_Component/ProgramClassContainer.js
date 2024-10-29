@@ -135,10 +135,11 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
                       classContainerRef?.current?.scrollWidth / 3 &&
                   containerRef?.current?.scrollLeft +
                     classContainerRef?.current?.scrollWidth / 3 <=
-                    (containerRef?.current?.scrollWidth / classDataArr.length) *
-                      (index === classDataArr.length - 1
-                        ? containerRef?.current?.scrollWidth
-                        : index + 1)
+                    (index === classDataArr.length - 1
+                      ? containerRef?.current?.scrollWidth
+                      : (containerRef?.current?.scrollWidth /
+                          classDataArr.length) *
+                        (index + 1))
                 }
               />
             );
