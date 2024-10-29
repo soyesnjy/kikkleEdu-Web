@@ -30,15 +30,16 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
     }
   };
 
-  const dotActiveHandler = (index) => {
+  const dotActiveHandler = (index, length) => {
+    const scrollWidth = containerRef.current.scrollWidth;
+    const scrollLeft = containerRef.current.scrollLeft;
+
     return (
-      (containerRef?.current?.scrollWidth / classDataArr.length) * index <=
-        containerRef?.current?.scrollLeft * 1.2 &&
-      containerRef?.current?.scrollLeft * 1.2 <=
-        (index === classDataArr.length - 1
-          ? containerRef?.current?.scrollWidth
-          : (containerRef?.current?.scrollWidth / classDataArr.length) *
-            (index + 1))
+      (scrollWidth / length) * index <= scrollLeft * 1.2 &&
+      scrollLeft * 1.2 <=
+        (index === length - 1
+          ? scrollWidth + 150
+          : (scrollWidth / length) * (index + 1))
     );
   };
 
@@ -109,9 +110,11 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        <Button onClick={scrollLeftHandler} dir={'pre'}>
-          <span class="material-symbols-outlined">arrow_back</span>
-        </Button>
+        {!mobileFlag && (
+          <Button onClick={scrollLeftHandler} dir={'pre'}>
+            <span class="material-symbols-outlined">arrow_back</span>
+          </Button>
+        )}
         {classDataArr.map((el) => {
           const { title, imgPath, routePath, idx } = el;
           return (
@@ -128,14 +131,21 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
             </ProgramContentContainer>
           );
         })}
-        <Button onClick={scrollRightHandler} dir={'next'}>
-          <span class="material-symbols-outlined">arrow_forward</span>
-        </Button>
+        {!mobileFlag && (
+          <Button onClick={scrollRightHandler} dir={'next'}>
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </Button>
+        )}
       </ProgramContainer>
       {mobileFlag && (
         <DotContainer>
           {classDataArr.map((el, index) => {
-            return <Dot key={el.idx} active={dotActiveHandler(index)} />;
+            return (
+              <Dot
+                key={el.idx}
+                active={dotActiveHandler(index, classDataArr.length)}
+              />
+            );
           })}
         </DotContainer>
       )}
