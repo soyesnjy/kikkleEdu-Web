@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
 const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
   const containerRef = useRef(null);
-  const classContainerRef = useRef(null);
 
   const router = useRouter();
   const [isDragging, setIsDragging] = useState(false);
@@ -13,6 +13,10 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
   const [dragDistance, setDragDistance] = useState(0); // 드래그 거리 추적
 
   const MIN_DRAG_DISTANCE = 5; // 드래그와 클릭을 구분할 최소 거리
+
+  useEffect(() => {
+    console.log(containerRef);
+  }, []);
 
   const scrollLeftHandler = () => {
     if (containerRef.current) {
@@ -26,10 +30,17 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log(containerRef);
-  //   console.log(containerRef?.current?.scrollLeft);
-  // }, [containerRef?.current?.scrollLeft]);
+  const dotActiveHandler = (index) => {
+    return (
+      (containerRef?.current?.scrollWidth / classDataArr.length) * index <=
+        containerRef?.current?.scrollLeft * 1.2 &&
+      containerRef?.current?.scrollLeft * 1.2 <=
+        (index === classDataArr.length - 1
+          ? containerRef?.current?.scrollWidth
+          : (containerRef?.current?.scrollWidth / classDataArr.length) *
+            (index + 1))
+    );
+  };
 
   // 마우스 클릭하여 드래그 시작할 때 실행
   const onDragStart = (e) => {
@@ -105,7 +116,6 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
           const { title, imgPath, routePath, idx } = el;
           return (
             <ProgramContentContainer
-              ref={classContainerRef}
               key={idx}
               imgPath={imgPath}
               onClick={() => {
@@ -125,24 +135,7 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
       {mobileFlag && (
         <DotContainer>
           {classDataArr.map((el, index) => {
-            return (
-              <Dot
-                key={index}
-                active={
-                  (containerRef?.current?.scrollWidth / classDataArr.length) *
-                    index <=
-                    containerRef?.current?.scrollLeft +
-                      classContainerRef?.current?.scrollWidth / 3 &&
-                  containerRef?.current?.scrollLeft +
-                    classContainerRef?.current?.scrollWidth / 3 <=
-                    (index === classDataArr.length - 1
-                      ? containerRef?.current?.scrollWidth
-                      : (containerRef?.current?.scrollWidth /
-                          classDataArr.length) *
-                        (index + 1))
-                }
-              />
-            );
+            return <Dot key={el.idx} active={dotActiveHandler(index)} />;
           })}
         </DotContainer>
       )}
@@ -236,17 +229,13 @@ const ProgramTitle = styled.div`
 `;
 
 const DotContainer = styled.div`
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &.active {
-    cursor: grabbing;
-  }
+  display: none;
 
   @media (max-width: 768px) {
     width: 90vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     justify-content: center;
   }
 `;
