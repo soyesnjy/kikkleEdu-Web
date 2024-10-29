@@ -117,7 +117,7 @@ export default function Login() {
         showConfirmButton: false,
         timer: 1500,
       }).then(() => {
-        console.log(res.data);
+        // console.log(res.data);
         setLogin(true);
         localStorage.setItem(
           'log',

@@ -14,10 +14,6 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
 
   const MIN_DRAG_DISTANCE = 5; // 드래그와 클릭을 구분할 최소 거리
 
-  useEffect(() => {
-    console.log(containerRef);
-  }, []);
-
   const scrollLeftHandler = () => {
     if (containerRef.current) {
       containerRef.current.scrollBy({ left: -300, behavior: 'smooth' });
