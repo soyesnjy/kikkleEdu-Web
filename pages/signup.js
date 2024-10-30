@@ -26,9 +26,9 @@ import PostBtn from '@/component/SignUp_Component/PostBtn';
 const possLocalArr = ['서울', '부산', '기타'];
 const possDayArr = ['월', '화', '수', '목', '금', '토', '일'];
 const partTimeArr = [
-  { title: '오전 (10:00~12:00)', value: '오전' },
-  { title: '오후 (1:00~5:00)', value: '오후' },
-  { title: '야간 (5:00~10:00)', value: '야간' },
+  { title: '오전\n(10:00~12:00)', value: '오전' },
+  { title: '오후\n(1:00~5:00)', value: '오후' },
+  { title: '야간\n(5:00~10:00)', value: '야간' },
 ];
 const agencyTypeArr = [
   '유치원',
@@ -37,6 +37,10 @@ const agencyTypeArr = [
   '커뮤니티센터',
   '아동복지센터',
 ];
+
+const titleMap = {
+  2: '스토리 (창의) 발레',
+};
 
 // SignUp 페이지
 export default function Signup() {
@@ -155,6 +159,11 @@ export default function Signup() {
       clearTimeout(debounce);
     };
   }, [pwd]);
+
+  // title Text 변환 메서드
+  const titleTransHandler = (title) => {
+    return title.split(' ').join('\n');
+  };
 
   const isValidEmail = (email) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
@@ -559,8 +568,13 @@ export default function Signup() {
                               ]);
                           }}
                           selected={possClass.includes(id)}
+                          type="class"
                         >
-                          {title}
+                          {mobileFlag
+                            ? id === 2 // 스토리(창의)발레 수업명에 한해 변환
+                              ? titleTransHandler(titleMap[id])
+                              : titleTransHandler(title)
+                            : title}
                         </UserPossClassButton>
                       );
                     })}
@@ -1248,7 +1262,6 @@ const UserPossClassButton = styled.button`
   border-radius: 15px;
 
   padding: 1.5rem 2rem;
-  margin-bottom: 1rem;
 
   color: white;
   text-align: center;
@@ -1264,8 +1277,10 @@ const UserPossClassButton = styled.button`
 
   @media (max-width: 768px) {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.6rem;
     font-size: 0.9rem;
+
+    white-space: pre;
   }
 `;
 
