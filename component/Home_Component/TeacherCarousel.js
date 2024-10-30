@@ -226,6 +226,7 @@ const ProfileCard = styled.div`
   }
 
   @media (max-width: 728px) {
+    padding: 2.5rem;
   }
 `;
 
