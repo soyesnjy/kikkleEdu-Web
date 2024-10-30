@@ -492,7 +492,6 @@ const VideoContent = styled.div`
     height: 528px;
   }
   min-height: 360px;
-  z-index: 1;
 
   @media (max-width: 1080px) {
     iframe {
