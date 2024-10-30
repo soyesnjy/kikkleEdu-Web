@@ -43,7 +43,7 @@ const classDefaultArr = [
 ];
 
 const eduSectionData = {
-  title: '미술 교육 프로그램 영상',
+  title: '미술 교육',
   content: '아동의 연령에 맞춘 재미있는 미술프로그램 제공합니다.',
   features: ['원데이클래스'], // default features
   youtubeUrl: '//www.youtube.com/embed/KvBdfRdnuSQ',
