@@ -166,7 +166,7 @@ const MyPage = () => {
             {activeTab === 'attend' && (
               <tbody>
                 {tableData.map((data, index) => (
-                  <TeacherTableAttendBody key={index} data={data} />
+                  <TeacherTableAttendBody key={index} data={data} page={page} />
                 ))}
               </tbody>
             )}

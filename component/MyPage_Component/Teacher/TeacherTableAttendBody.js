@@ -23,7 +23,17 @@ const getDayName = (dateString) => {
   return days[dayIndex];
 };
 
-const TeacherTableAttendBody = ({ data }) => {
+const todayCheckHandler = (date) => {
+  const dateObj = new Date();
+  const year = dateObj.getFullYear();
+  const month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
+  const day = ('0' + dateObj.getDate()).slice(-2);
+  const today = `${year}-${month}-${day}`;
+
+  return new Date(today) < new Date(date);
+};
+
+const TeacherTableAttendBody = ({ data, page }) => {
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
   const [attendIdx, setAttendIdx] = useState(0);
   const [attendStatus, setAttendStatus] = useState(0);
@@ -34,13 +44,19 @@ const TeacherTableAttendBody = ({ data }) => {
     setAttendStatus(data.kk_attend_status);
   }, [data]);
 
+  useEffect(() => {
+    setAttendTrigger(0);
+  }, [page]);
+
   const attendUpdateHandler = async (e) => {
     e.preventDefault();
-    // 수정 확인 버튼 비활성화
-    // if (approveStatus === -1) {
-    //   alert('승인 여부를 선택하세요');
-    //   return;
-    // }
+    // 미래 수업 변경 불가 Check
+    if (todayCheckHandler(data.kk_attend_date)) {
+      alert('아직 변경할 수 없습니다.');
+      setAttendStatus(data.kk_attend_status);
+      setAttendTrigger(0);
+      return;
+    }
 
     setIsPending(true);
     try {
