@@ -60,6 +60,7 @@ const classDefaultArr = [
     routePath: '/program',
   },
 ];
+const youtubeUrl = '//www.youtube.com/embed/Cb0jnKtZP4o';
 
 const ElementPage = () => {
   const [agency, setAgency] = useRecoilState(agencyClass);
@@ -172,7 +173,7 @@ const ElementPage = () => {
         <MiddleSectionTitle>초등학교 수업 영상</MiddleSectionTitle>
         <VideoContent>
           <iframe
-            src="//www.youtube.com/embed/inQp6nNnkjk" // 수업 영상 유튜브 링크
+            src={youtubeUrl} // 수업 영상 유튜브 링크
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerpolicy="strict-origin-when-cross-origin"
