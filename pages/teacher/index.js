@@ -90,7 +90,8 @@ const TeacherListPage = () => {
           <MiddleTitle>KK EDU - ballet</MiddleTitle>
           <MiddleSubtitle>강사</MiddleSubtitle>
           <MiddleDescription>
-            각 장르별 수업가능한 강사님들을 찾아보고 선택.
+            키클에듀에서는 다양한 장르의 수업이 가능한 전문 강사님들이
+            함께합니다. 강사 프로필을 확인하고 원하는 수업을 신청해보세요!
           </MiddleDescription>
         </MiddleContainer>
         <MiddleContainer>
@@ -347,8 +348,8 @@ const SearchContainer = styled.section`
   border-radius: 24px;
 
   display: flex;
-  justify-content: flex-end;
-
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 1rem;
 
   @media (max-width: 768px) {
@@ -364,7 +365,7 @@ const TagButton = styled.button`
   border: 1px solid #378e56;
   border-radius: 24px;
 
-  padding: 0.7rem 2rem;
+  padding: 0.7rem 1.7rem;
 
   color: ${(props) => (props.selected ? 'white' : 'black')};
   text-align: center;
@@ -539,14 +540,20 @@ const MiddleSubtitle = styled.h2`
 `;
 
 const MiddleDescription = styled.p`
+  width: 60%;
   font-size: 1.1rem;
   font-family: Pretendard;
   font-weight: 400;
   color: #737373;
 
+  /* white-space: pre; */
   margin-top: 0.5rem;
 
   line-height: 1.5;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export default TeacherListPage;
