@@ -62,7 +62,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
+      // console.log(data);
       setTeacherIdx(data.kk_teacher_idx);
       setName(data.kk_teacher_name);
       setIntroduce(data.kk_teacher_introduction);
@@ -81,9 +81,9 @@ const TeacherTablePrivacyBody = ({ data }) => {
     }
   }, [data]);
 
-  useEffect(() => {
-    console.log(possDay);
-  }, [possDay]);
+  // useEffect(() => {
+  //   console.log(possDay);
+  // }, [possDay]);
 
   // 강사 정보 update 핸들러
   const signupUpdateHandler = async (e) => {
