@@ -94,7 +94,7 @@ export default function Signup() {
   // const regex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 및 한글 자모를 포함하는 정규 표현식
 
   // Pwd Check Method
-  const checkPwd = () => {
+  const checkPwd = (pwd) => {
     if (!pwd) {
       setCheckPwd_1(false);
       setCheckPwd_2(false);
@@ -153,7 +153,7 @@ export default function Signup() {
   // 비밀번호 입력 디바운싱
   useEffect(() => {
     const debounce = setTimeout(() => {
-      return checkPwd();
+      return checkPwd(pwd);
     }, 350);
     return () => {
       clearTimeout(debounce);
@@ -250,12 +250,9 @@ export default function Signup() {
       alert('이메일을 입력하세요');
       return false;
     }
+
     if (!isValidEmail(emailA)) {
       alert('이메일 형식으로 입력하세요');
-      return false;
-    }
-    if (!pwdA) {
-      alert('비밀번호를 입력하세요');
       return false;
     }
     if (!nameA) {
@@ -866,7 +863,6 @@ export default function Signup() {
                   <FileUploadComponent setFile={setFileA} file={fileA} /> */}
                 </PageContainer>
               )}
-
               <SignUpButtonContainer>
                 {/* 이전 버튼 */}
                 {pageNumberA > 0 && (

@@ -114,9 +114,9 @@ const AdminTableAgencyBody = ({ data }) => {
           <TableCell>{data.kk_agency_address}</TableCell>
           <TableCell>{data.kk_agency_phoneNum}</TableCell>
           <TableCell>{data.kk_agency_type}</TableCell>
-          <TableCell>
+          {/* <TableCell>
             <a href={data.kk_agency_file_path}>Download</a>
-          </TableCell>
+          </TableCell> */}
           <TableCell>
             <Status status={data.kk_agency_approve_status}>
               {data.kk_agency_approve_status === 0 ? '미승인' : '승인'}

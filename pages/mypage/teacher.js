@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
+import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { useRouter } from 'next/router';
 
 import Directory from '@/component/Music_Component/Directory';
@@ -43,8 +44,8 @@ const MyPage = () => {
   const [tableData, setTableData] = useState(dummyTableData);
   const [page, setPage] = useState(1);
   const [lastPageNum, setLastPageNum] = useState(1);
-  const [data, setData] = useState([]); // 파일 데이터
-
+  const [data, setData] = useState([]); // [음원,비디오,강의자료] 데이터
+  const [teacherData, setTeacherData] = useState(null); // 파일 데이터
   const router = useRouter();
 
   // 음원 디렉토리 구조 초기화 메서드
@@ -98,6 +99,12 @@ const MyPage = () => {
           // console.log(data);
           setTableData(data.data);
           setLastPageNum(data.lastPageNum);
+        });
+    } else if (activeTab === 'privacy') {
+      handleTeacherGet({ teacherIdx: localStorage.getItem('userIdx') })
+        .then((res) => res.data)
+        .then((data) => {
+          setTeacherData(data.data[0]);
         });
     } else initMusicDirectory(activeTab);
     // 탭 변경 시 페이지 초기화
@@ -171,7 +178,9 @@ const MyPage = () => {
               </tbody>
             )}
           </Table>
-          {activeTab === 'privacy' && <TeacherTablePrivacyBody />}
+          {activeTab === 'privacy' && (
+            <TeacherTablePrivacyBody data={teacherData} />
+          )}
           {activeTab === 'music' && <Directory data={data} form={activeTab} />}
           {activeTab === 'video' && <Directory data={data} form={activeTab} />}
           {activeTab === 'class' && <Directory data={data} form={activeTab} />}
