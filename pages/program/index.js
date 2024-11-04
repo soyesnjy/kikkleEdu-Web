@@ -52,7 +52,7 @@ const eduSectionData = {
     '체험형 원데이',
     '세계의 춤',
   ], // default features
-  youtubeUrl: '//www.youtube.com/embed/DTJUfa0kKzY',
+  youtubeUrl: '//www.youtube.com/embed/-n3X-_FmRk8',
 };
 
 const BalletProgramPage = () => {

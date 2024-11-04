@@ -46,7 +46,7 @@ const eduSectionData = {
   title: '댄스',
   content: '신나는 댄스와 율동프로그램과 기관에서 원하는 형태의 프로그램 제공',
   features: ['댄스작품반', 'kpop 소예 방송댄스'], // default features
-  youtubeUrl: '//www.youtube.com/embed/inQp6nNnkjk',
+  youtubeUrl: '//www.youtube.com/embed/Cb0jnKtZP4o',
 };
 
 const DanceProgramPage = () => {
