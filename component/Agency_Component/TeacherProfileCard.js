@@ -7,9 +7,7 @@ const TeacherProfileCard = ({ name, introduce, imgUrl, onClick }) => {
 
   // 이미지가 로드된 후 src를 상태로 저장
   useEffect(() => {
-    if (imgUrl) {
-      setImageSrc(imgUrl); // 로드할 이미지 경로 설정
-    }
+    setImageSrc(imgUrl || '/src/Teacher_IMG/Teacher_Soyes_Profile_IMG.png'); // 로드할 이미지 경로 설정
   }, [imgUrl]);
 
   return (
