@@ -278,12 +278,13 @@ export default function Signup() {
       alert('기관 유형을 선택하세요');
       return false;
     }
-    if (!fileA) {
-      alert('파일을 선택하세요');
-      return false;
-    }
+    // if (!fileA) {
+    //   alert('파일을 선택하세요');
+    //   return false;
+    // }
     return true;
   };
+
   // 강사 회원가입 핸들러
   const signupHandler = async (e) => {
     e.preventDefault();
@@ -357,57 +358,97 @@ export default function Signup() {
     // 회원가입 버튼 비활성화
     setIsPending(true);
 
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64Data = reader.result;
-      try {
-        const res = await handleSignupCreate({
-          SignUpData: {
-            pUid: emailA,
-            userClass,
-            passWord: pwdA,
-            name: nameA,
-            phoneNumber: phoneNumberA,
-            address: addressA,
-            typeA,
-            fileData: {
-              fileName: fileA.name,
-              fileType: fileA.type,
-              baseData: base64Data,
-            },
-          },
+    // const reader = new FileReader();
+    // reader.onloadend = async () => {
+    //   const base64Data = reader.result;
+    //   try {
+    //     const res = await handleSignupCreate({
+    //       SignUpData: {
+    //         pUid: emailA,
+    //         userClass,
+    //         passWord: pwdA,
+    //         name: nameA,
+    //         phoneNumber: phoneNumberA,
+    //         address: addressA,
+    //         typeA,
+    //         fileData: {
+    //           fileName: fileA.name,
+    //           fileType: fileA.type,
+    //           baseData: base64Data,
+    //         },
+    //       },
+    //     });
+
+    //     if (res.status === 200) {
+    //       Swal.fire({
+    //         icon: 'success',
+    //         title: 'Sign Up Success!',
+    //         text: 'Login Page로 이동합니다',
+    //         showConfirmButton: false,
+    //         timer: 1500,
+    //       }).then(() => {
+    //         // useRouter 인스턴스의 push 메서드를 통해 페이지 이동 가능
+    //         router.push('/login');
+    //       });
+    //     } else if (res.status === 403) {
+    //       Swal.fire({
+    //         icon: 'error',
+    //         title: '중복된 이메일입니다',
+    //       });
+    //     } else {
+    //       Swal.fire({
+    //         icon: 'error',
+    //         title: 'Sign Up Fail',
+    //       });
+    //     }
+    //   } catch (error) {
+    //     console.error('업로드 실패:', error);
+    //   }
+    //   // 회원가입 버튼 활성화
+    //   setIsPending(false);
+    // };
+    // reader.readAsDataURL(fileA);
+
+    try {
+      const res = await handleSignupCreate({
+        SignUpData: {
+          pUid: emailA,
+          userClass,
+          passWord: pwdA,
+          name: nameA,
+          phoneNumber: phoneNumberA,
+          address: addressA,
+          typeA,
+        },
+      });
+
+      if (res.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Sign Up Success!',
+          text: 'Login Page로 이동합니다',
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          // useRouter 인스턴스의 push 메서드를 통해 페이지 이동 가능
+          router.push('/login');
         });
-
-        if (res.status === 200) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Sign Up Success!',
-            text: 'Login Page로 이동합니다',
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            // useRouter 인스턴스의 push 메서드를 통해 페이지 이동 가능
-            router.push('/login');
-          });
-        } else if (res.status === 403) {
-          Swal.fire({
-            icon: 'error',
-            title: '중복된 이메일입니다',
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Sign Up Fail',
-          });
-        }
-      } catch (error) {
-        console.error('업로드 실패:', error);
+      } else if (res.status === 403) {
+        Swal.fire({
+          icon: 'error',
+          title: '중복된 이메일입니다',
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Sign Up Fail',
+        });
       }
-      // 회원가입 버튼 활성화
-      setIsPending(false);
-    };
-
-    reader.readAsDataURL(fileA);
+    } catch (error) {
+      console.error('업로드 실패:', error);
+    }
+    // 회원가입 버튼 활성화
+    setIsPending(false);
   };
 
   return (
@@ -821,8 +862,8 @@ export default function Signup() {
                       );
                     })}
                   </UserPossClassContainer>
-                  <H4>* 필수요청 서류 탭 (ZIP파일 제출)</H4>
-                  <FileUploadComponent setFile={setFileA} file={fileA} />
+                  {/* <H4>* 필수요청 서류 탭 (ZIP파일 제출)</H4>
+                  <FileUploadComponent setFile={setFileA} file={fileA} /> */}
                 </PageContainer>
               )}
 
@@ -1309,6 +1350,8 @@ const FileCheckText = styled.div`
 `;
 
 const SignUpInputAddressContainer = styled.div`
+  width: 360px;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1316,11 +1359,12 @@ const SignUpInputAddressContainer = styled.div`
   gap: 0.2rem;
 
   @media (max-width: 768px) {
+    width: 100%;
   }
 `;
 
 const SignUpInputAddress = styled.input`
-  width: 360px;
+  width: 80%;
   background-color: rgba(255, 255, 255, 0.01);
   color: white;
   padding: 1rem 18px;

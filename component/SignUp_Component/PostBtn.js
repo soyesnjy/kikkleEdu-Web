@@ -39,6 +39,7 @@ const PostBtn = ({ setAddressA }) => {
 };
 
 const Button = styled.button`
+  width: 20%;
   background-color: #45b26b;
   border: 1px solid white;
   border-radius: 15px;
@@ -58,7 +59,7 @@ const Button = styled.button`
   transition: 0.2s;
 
   @media (max-width: 768px) {
-    width: 30%;
+    width: 25%;
     font-size: 1rem;
     padding: 1rem;
   }
