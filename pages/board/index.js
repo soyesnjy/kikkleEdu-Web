@@ -256,8 +256,11 @@ const TableRow = styled.tr`
 const TableHeader = styled.th`
   padding: 10px;
   background-color: #eaeff7;
+
   color: #333;
-  font-weight: bold;
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 700;
   text-align: left;
 
   /* 열 비율 설정 */
@@ -265,12 +268,16 @@ const TableHeader = styled.th`
     width: 15%; /* 첫 번째 열의 너비를 10%로 설정 */
   }
   &:nth-child(2) {
-    width: 50%; /* 두 번째 열의 너비를 50%로 설정 */
+    width: 45%; /* 두 번째 열의 너비를 50%로 설정 */
   }
   &:nth-child(3) {
     width: 20%; /* 세 번째 열의 너비를 10%로 설정 */
   }
   &:nth-child(4) {
-    width: 20%; /* 네 번째 열의 너비를 15%로 설정 */
+    width: 15%; /* 네 번째 열의 너비를 15%로 설정 */
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.7rem;
   }
 `;

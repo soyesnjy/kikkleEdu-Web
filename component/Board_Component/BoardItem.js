@@ -44,17 +44,37 @@ const TableRow = styled.tr`
 
 const TableCell = styled.td`
   padding: 10px;
+
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 600;
   text-align: left;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+    font-size: 0.75rem;
+  }
 `;
 
 const NoticeLabel = styled.span`
+  width: 100%;
   display: inline-block;
   background-color: #eaeff7;
   color: #007bff;
   border-radius: 5px;
   padding: 0.2rem 0.5rem;
   margin-right: 0.5rem;
-  font-weight: bold;
+
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 700;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    margin-right: 0;
+    padding: 0.2rem;
+    font-size: 0.75rem;
+  }
 `;
 
 const PrivateLabel = styled.span`

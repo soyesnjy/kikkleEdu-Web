@@ -195,8 +195,12 @@ const Title = styled.h1`
   color: #333;
 
   font-size: 1rem;
-  font-family: Nunito;
+  font-family: Pretendard;
   font-weight: 600;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const Subtitle = styled.h2`
@@ -267,7 +271,9 @@ const MetaData = styled.div`
 `;
 
 const Author = styled.span`
-  font-weight: bold;
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 600;
 `;
 
 const Date = styled.span`
@@ -288,6 +294,14 @@ const Content = styled.div`
   border-bottom: 1px solid #ddd;
   margin-bottom: 2rem;
   line-height: 1.6;
+
+  min-height: 300px;
+
+  white-space: pre;
+
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
 `;
 
 const ButtonContainer = styled.div`
