@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
 import { logoutAPI } from '@/fetchAPI';
 import { useRecoilState } from 'recoil';
-import { log, uid, agencyClass } from '@/store/state';
+import { log, uid, agencyClass, mobile } from '@/store/state';
 
 import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
 
@@ -25,6 +25,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
   const [login, setLogin] = useRecoilState(log);
   const [userId, setUserId] = useRecoilState(uid);
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
+  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
 
@@ -185,8 +186,8 @@ const TeacherTablePrivacyBody = ({ data }) => {
               showConfirmButton: false,
               timer: 1500,
             }).then(() => {
-              // 화면 새로고침
-              window.location.reload();
+              // // 화면 새로고침
+              // window.location.reload();
             });
           } else if (res.status === 403) {
             Swal.fire({
@@ -339,14 +340,14 @@ const TeacherTablePrivacyBody = ({ data }) => {
           </FormRow>
           <FormRow color={true}>
             <Label>희망 수업</Label>
-            <CheckboxGroup grid={true}>
+            <CheckboxGroup grid={mobileFlag ? 2 : 5}>
               {possClassArr.map((el, index) => {
                 const { id, title } = el;
                 return (
                   <CheckboxContainer
                     key={index}
                     value={id}
-                    onClick={(e) => {
+                    onClick={() => {
                       // 선택 취소
                       if (possClass.includes(id))
                         setPossClass([...possClass.filter((el) => el !== id)]);
@@ -409,7 +410,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
           </FormRow>
           <FormRow>
             <Label>요일</Label>
-            <CheckboxGroup>
+            <CheckboxGroup grid={mobileFlag ? 4 : 0}>
               {possDayArr.map((day, index) => {
                 return (
                   <CheckboxContainer
@@ -434,7 +435,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
           </FormRow>
           <FormRow bottomColor={true}>
             <Label>시간</Label>
-            <CheckboxGroup>
+            <CheckboxGroup grid={mobileFlag ? 1 : 0}>
               {partTimeArr.map((el, index) => {
                 const { title, value } = el;
                 return (
@@ -490,6 +491,8 @@ const PrivacyContainer = styled.div`
   padding: 1rem;
 
   @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
   }
 `;
 
@@ -530,13 +533,10 @@ const PageContainer = styled.div`
   align-items: center;
 
   gap: 1rem;
-`;
 
-const Title = styled.h2`
-  text-align: center;
-  margin-bottom: 1.5rem;
-  font-size: 1.25rem;
-  font-weight: bold;
+  @media (max-width: 768px) {
+    width: 95%;
+  }
 `;
 
 const ProfileImageContainer = styled.div`
@@ -622,17 +622,21 @@ const CheckboxGroup = styled.div`
   flex: 4;
 
   display: ${(props) => (props.grid ? 'grid' : 'flex')};
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
 
-  grid-template-columns: repeat(5, 2fr);
+  grid-template-columns: ${(props) =>
+    props.grid ? `repeat(${props.grid}, 2fr)` : ''};
 
   gap: ${(props) => (props.grid ? '1rem' : '2rem')};
 
   border-left: 1px solid #ddd;
 
   padding: 1.5rem 0rem;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+  }
 `;
 
 const CheckboxContainer = styled.div`
@@ -675,8 +679,7 @@ const CheckboxLabel = styled.span`
   user-select: none;
 
   @media (max-width: 768px) {
-    font-size: 0.8rem;
-    min-width: 50px;
+    font-size: 0.7rem;
   }
 `;
 
