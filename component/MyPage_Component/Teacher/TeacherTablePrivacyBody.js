@@ -442,7 +442,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
                   <CheckboxContainer
                     key={index}
                     value={value}
-                    onClick={(e) => {
+                    onClick={() => {
                       // 선택 취소
                       if (possTimes.includes(value))
                         setPossTimes([

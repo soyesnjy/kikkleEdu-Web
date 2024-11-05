@@ -194,7 +194,7 @@ export default function Login() {
           Swal.fire({
             icon: 'question',
             title: '승인 대기',
-            text: '관리자에의해 승인 대기중인 계정입니다',
+            text: '관리자에 의해 승인 대기 중인 계정입니다',
           });
         } else {
           Swal.fire({
