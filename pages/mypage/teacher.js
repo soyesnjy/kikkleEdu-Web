@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
+import { handleClassGet } from '@/fetchAPI/classAPI';
 import { useRouter } from 'next/router';
 
 import Directory from '@/component/Music_Component/Directory';
@@ -45,7 +46,7 @@ const MyPage = () => {
   const [page, setPage] = useState(1);
   const [lastPageNum, setLastPageNum] = useState(1);
   const [data, setData] = useState([]); // [음원,비디오,강의자료] 데이터
-  const [teacherData, setTeacherData] = useState(null); // 파일 데이터
+  const [teacherData, setTeacherData] = useState(null); // 강사 데이터
   const router = useRouter();
 
   // 음원 디렉토리 구조 초기화 메서드
@@ -104,7 +105,8 @@ const MyPage = () => {
       handleTeacherGet({ teacherIdx: localStorage.getItem('userIdx') })
         .then((res) => res.data)
         .then((data) => {
-          setTeacherData(data.data[0]);
+          // console.log(data);
+          setTeacherData(data.data[0]); // 강사 정보 state 갱신
         });
     } else initMusicDirectory(activeTab);
     // 탭 변경 시 페이지 초기화
