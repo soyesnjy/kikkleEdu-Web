@@ -46,6 +46,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
   // const [approveStatus, setApproveStatus] = useState(-1);
   // const [profilePreviewImg, setprofilePreviewImg] = useState(null);
 
+  // 데이터 초기화 메서드
   const initData = (data) => {
     setTeacherIdx(data.kk_teacher_idx);
     setName(data.kk_teacher_name);
@@ -249,7 +250,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
     }
   };
 
-  return (
+  return data ? (
     <PrivacyContainer>
       <ProfileImageContainer>
         <Image
@@ -476,6 +477,8 @@ const TeacherTablePrivacyBody = ({ data }) => {
         </ButtonGroup>
       </PageContainer>
     </PrivacyContainer>
+  ) : (
+    '미승인 회원'
   );
 };
 
