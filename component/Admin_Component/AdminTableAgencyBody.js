@@ -174,9 +174,9 @@ const AdminTableAgencyBody = ({ data }) => {
               <option value="아동(복지)센터">아동(복지)센터</option>
             </select>
           </TableCell>
-          <TableCell>
+          {/* <TableCell>
             <a href={data.kk_agency_file_path}>Download</a>
-          </TableCell>
+          </TableCell> */}
           <TableCell>
             <select
               id="pet-select"
