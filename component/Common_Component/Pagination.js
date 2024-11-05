@@ -43,7 +43,10 @@ const Pagination = ({ page, setPage, lastPageNum }) => {
         이전
       </NavButton>
       {renderPageNumbers()}
-      <NavButton onClick={handleNext} disabled={page === lastPageNum}>
+      <NavButton
+        onClick={handleNext}
+        disabled={!lastPageNum || page === lastPageNum}
+      >
         다음
       </NavButton>
     </PaginationContainer>
