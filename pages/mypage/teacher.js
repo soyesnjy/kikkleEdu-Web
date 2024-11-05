@@ -79,9 +79,7 @@ const MyPage = () => {
     }
 
     // activeTab 설정
-    if (localStorage.getItem('activeTab'))
-      setActiveTab(localStorage.getItem('activeTab'));
-    else setActiveTab('attend');
+    setActiveTab(localStorage.getItem('activeTab') || 'attend');
 
     return () => {
       localStorage.removeItem('activeTab');
@@ -130,12 +128,6 @@ const MyPage = () => {
             출석 확인
           </TabButton>
           <TabButton
-            active={activeTab === 'privacy'}
-            onClick={() => handleTabClick('privacy')}
-          >
-            개인정보 관리
-          </TabButton>
-          <TabButton
             active={activeTab === 'music'}
             onClick={() => handleTabClick('music')}
           >
@@ -152,6 +144,12 @@ const MyPage = () => {
             onClick={() => handleTabClick('class')}
           >
             강의 계획서
+          </TabButton>
+          <TabButton
+            active={activeTab === 'privacy'}
+            onClick={() => handleTabClick('privacy')}
+          >
+            회원정보 수정
           </TabButton>
         </Tabs>
         <TableContainer>

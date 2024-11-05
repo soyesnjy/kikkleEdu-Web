@@ -26,7 +26,6 @@ const TeacherTablePrivacyBody = ({ data }) => {
   const [userId, setUserId] = useRecoilState(uid);
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
 
-  const [updateFlag, setUpdateFlag] = useState(false);
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
 
   const [possClassArr, setPossClassArr] = useState([]);
@@ -100,117 +99,113 @@ const TeacherTablePrivacyBody = ({ data }) => {
   // 강사 정보 update 핸들러
   const signupUpdateHandler = async (e) => {
     e.preventDefault();
-    // 수정 확인 버튼 비활성화
 
-    // if (approveStatus === -1) {
-    //   alert('승인 여부를 선택하세요');
-    //   return;
-    // }
+    if (confirm('회원 정보를 수정 하시겠습니까?') === true) {
+      setIsPending(true);
 
-    setIsPending(true);
-
-    const reader = new FileReader();
-    // 파일 onloadend 메서드
-    reader.onloadend = async () => {
-      const base64Data = reader.result;
-      try {
-        const res = await handleSignupUpdate({
-          SignUpData: {
-            userIdx: teacherIdx,
-            userClass: 'teacher',
-            introduce,
-            name,
-            phoneNum,
-            location,
-            history,
-            education,
-            fileData: {
-              fileName: profileImg.name,
-              fileType: profileImg.type,
-              baseData: base64Data,
+      const reader = new FileReader();
+      // 파일 onloadend 메서드
+      reader.onloadend = async () => {
+        const base64Data = reader.result;
+        try {
+          const res = await handleSignupUpdate({
+            SignUpData: {
+              userIdx: teacherIdx,
+              userClass: 'teacher',
+              introduce,
+              name,
+              phoneNum,
+              location,
+              history,
+              education,
+              fileData: {
+                fileName: profileImg.name,
+                fileType: profileImg.type,
+                baseData: base64Data,
+              },
+              approveStatus: 1,
             },
-            approveStatus: 1,
-          },
-        });
+          });
 
-        if (res.status === 200) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Update Success!',
-            text: 'Page Reloading...',
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            // 화면 새로고침
-            window.location.reload();
-          });
-        } else if (res.status === 403) {
-          Swal.fire({
-            icon: 'error',
-            title: '중복된 이메일입니다',
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Update Fail',
-          });
+          if (res.status === 200) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Update Success!',
+              text: 'Page Reloading...',
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              // 화면 새로고침
+              window.location.reload();
+            });
+          } else if (res.status === 403) {
+            Swal.fire({
+              icon: 'error',
+              title: '중복된 이메일입니다',
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Update Fail',
+            });
+          }
+          // 회원가입 버튼 활성화
+          setIsPending(false);
+        } catch (error) {
+          console.error('업로드 실패:', error);
         }
-        // 회원가입 버튼 활성화
-        setIsPending(false);
-      } catch (error) {
-        console.error('업로드 실패:', error);
-      }
-    };
-    // profileImg가 있을 경우 -> reader의 파일 정보를 읽고 onloadend 메서드 실행
-    if (profileImg) reader?.readAsDataURL(profileImg);
-    // profileImg가 없을 경우 -> 아래 코드 실행
-    else {
-      try {
-        const res = await handleSignupUpdate({
-          SignUpData: {
-            userIdx: teacherIdx,
-            userClass: 'teacher',
-            introduce,
-            name,
-            phoneNum,
-            location,
-            possDay, // 강사 수업 가능 요일
-            possClass, // 강사 가능 수업
-            possTimes, // 강사 가능 시간대
-            history,
-            education,
-            approveStatus: 1,
-          },
-        });
+      };
+      // profileImg가 있을 경우 -> reader의 파일 정보를 읽고 onloadend 메서드 실행
+      if (profileImg) reader?.readAsDataURL(profileImg);
+      // profileImg가 없을 경우 -> 아래 코드 실행
+      else {
+        try {
+          const res = await handleSignupUpdate({
+            SignUpData: {
+              userIdx: teacherIdx,
+              userClass: 'teacher',
+              introduce,
+              name,
+              phoneNum,
+              location,
+              possDay, // 강사 수업 가능 요일
+              possClass, // 강사 가능 수업
+              possTimes, // 강사 가능 시간대
+              history,
+              education,
+              approveStatus: 1,
+            },
+          });
 
-        if (res.status === 200) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Update Success!',
-            text: 'Page Reloading...',
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            // 화면 새로고침
-            window.location.reload();
-          });
-        } else if (res.status === 403) {
-          Swal.fire({
-            icon: 'error',
-            title: '중복된 이메일입니다',
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Update Up Fail',
-          });
+          if (res.status === 200) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Update Success!',
+              text: 'Page Reloading...',
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              // 화면 새로고침
+              window.location.reload();
+            });
+          } else if (res.status === 403) {
+            Swal.fire({
+              icon: 'error',
+              title: '중복된 이메일입니다',
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Update Up Fail',
+            });
+          }
+          // 회원가입 버튼 활성화
+          setIsPending(false);
+        } catch (error) {
+          console.error(error);
         }
-        // 회원가입 버튼 활성화
-        setIsPending(false);
-      } catch (error) {
-        console.error(error);
       }
-    }
+    } else return;
   };
 
   // 강사 정보 delete 핸들러
@@ -609,6 +604,10 @@ const StyledInput = styled.input`
 
   border: none;
   text-align: center;
+
+  &:hover {
+    color: #45b26b;
+  }
 `;
 
 const StyledLabel = styled.label`
