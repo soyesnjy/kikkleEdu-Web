@@ -2,6 +2,13 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { handleSignupUpdate, handleSignupDelete } from '@/fetchAPI/signupAPI';
 import Swal from 'sweetalert2';
+import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
+
+const partTimeArr = [
+  { title: '오전 (10:00~12:00)', value: '오전' },
+  { title: '오후 (1:00~5:00)', value: '오후' },
+  { title: '야간 (5:00~10:00)', value: '야간' },
+];
 
 const AdminTableTeacherBody = ({ data }) => {
   const [updateFlag, setUpdateFlag] = useState(false);
@@ -12,6 +19,7 @@ const AdminTableTeacherBody = ({ data }) => {
   const [name, setName] = useState('');
   const [phoneNum, setPhoneNum] = useState('');
   const [profileImg, setProfileImg] = useState(null);
+  const [possTimes, setPossTimes] = useState([]); // 희망 시간대
   const [location, setLocation] = useState('');
   const [history, setHistory] = useState('');
   const [education, setEducation] = useState('');
@@ -24,6 +32,9 @@ const AdminTableTeacherBody = ({ data }) => {
     setIntroduce(data.kk_teacher_introduction);
     setName(data.kk_teacher_name);
     setPhoneNum(data.kk_teacher_phoneNum);
+    setPossTimes(
+      data.kk_teacher_time ? [...data.kk_teacher_time.split('/')] : []
+    ); // 시간대 추가
     // setProfileImg(data.kk_teacher_profileImg_path);
     setLocation(data.kk_teacher_location);
     setHistory(data.kk_teacher_history);
@@ -73,6 +84,7 @@ const AdminTableTeacherBody = ({ data }) => {
             introduce,
             name,
             phoneNum,
+            possTimes,
             location,
             history,
             education,
@@ -125,14 +137,10 @@ const AdminTableTeacherBody = ({ data }) => {
             introduce,
             name,
             phoneNum,
+            possTimes,
             location,
             history,
             education,
-            // fileData: {
-            //   fileName: profileImg.name,
-            //   fileType: profileImg.type,
-            //   baseData: base64Data,
-            // },
             approveStatus,
           },
         });
@@ -298,7 +306,33 @@ const AdminTableTeacherBody = ({ data }) => {
             </select>
           </TableCell>
           <TableCell>{data.kk_teacher_dayofweek}</TableCell>
-          <TableCell>{data.kk_teacher_time}</TableCell>
+          <TableCell>
+            <CheckboxGroup grid={1}>
+              {partTimeArr.map((el, index) => {
+                const { value } = el;
+                return (
+                  <CheckboxContainer
+                    key={index}
+                    value={value}
+                    onClick={() => {
+                      // 선택 취소
+                      if (possTimes.includes(value))
+                        setPossTimes([
+                          ...possTimes.filter((el) => el !== value),
+                        ]);
+                      // 선택
+                      else setPossTimes([...possTimes, value]);
+                    }}
+                  >
+                    <CheckboxWrapper status={possTimes.includes(value)}>
+                      <CheckIcon fontSize="8px" />
+                    </CheckboxWrapper>
+                    <CheckboxLabel>{value}</CheckboxLabel>
+                  </CheckboxContainer>
+                );
+              })}
+            </CheckboxGroup>
+          </TableCell>
           <TableCell>
             <StyledInput
               value={history}
@@ -406,6 +440,67 @@ const PreviewImage = styled.img`
   @media (max-width: 768px) {
     width: 50px;
     height: 50px;
+  }
+`;
+
+const CheckboxGroup = styled.div`
+  flex: 4;
+
+  display: ${(props) => (props.grid ? 'grid' : 'flex')};
+  justify-content: center;
+  align-items: center;
+
+  grid-template-columns: ${(props) =>
+    props.grid ? `repeat(${props.grid}, 2fr)` : ''};
+
+  gap: 0.2rem;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+  }
+`;
+
+const CheckboxContainer = styled.div`
+  padding-left: 1rem;
+
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+  }
+`;
+
+const CheckboxWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 20px;
+  height: 20px;
+  border-radius: 8px;
+  background-color: ${({ status }) => (status ? '#61b15a' : '#e0e0e0')};
+  color: white;
+  margin-right: 0.5rem;
+
+  @media (max-width: 768px) {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+const CheckboxLabel = styled.span`
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 600;
+  text-align: left;
+
+  white-space: pre;
+  user-select: none;
+
+  @media (max-width: 768px) {
+    font-size: 0.7rem;
   }
 `;
 
