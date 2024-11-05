@@ -181,7 +181,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
           if (res.status === 200) {
             Swal.fire({
               icon: 'success',
-              title: 'Update Success!',
+              title: '회원 정보 수정 성공!',
               text: 'Page Reloading...',
               showConfirmButton: false,
               timer: 1500,
@@ -197,7 +197,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
           } else {
             Swal.fire({
               icon: 'error',
-              title: 'Update Up Fail',
+              title: '수정 실패...',
             });
           }
           // 회원가입 버튼 활성화
