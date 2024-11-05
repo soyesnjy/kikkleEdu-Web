@@ -7,19 +7,30 @@ import {
 import Swal from 'sweetalert2';
 
 const getUniqueWeekdays = (dateArr) => {
-  // 요일 배열
-  const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+  const weekdays = ['월', '화', '수', '목', '금', '토', '일'];
 
-  // 날짜 배열을 순회하면서 요일로 변환하고 중복을 제거
-  const uniqueWeekdays = new Set(
-    dateArr.map((dateString) => {
-      const date = new Date(dateString);
-      return weekdays[date.getDay()]; // 요일 번호를 이용해 요일 문자열로 변환
-    })
+  // 요일 정렬용 매핑
+  const dayIndex = weekdays.reduce((acc, day, index) => {
+    acc[day] = index;
+    return acc;
+  }, {});
+
+  const sortDays = (arr) => arr.sort((a, b) => dayIndex[a] - dayIndex[b]);
+
+  // 날짜를 요일로 변환해 중복 제거 후 정렬
+  const uniqueWeekdays = Array.from(
+    new Set(
+      dateArr
+        .map((dateString) => {
+          const date = new Date(dateString);
+          if (isNaN(date)) return null; // 유효성 체크
+          return weekdays[date.getDay()];
+        })
+        .filter((day) => day !== null) // 유효하지 않은 날짜 필터링
+    )
   );
 
-  // Set을 배열로 변환하여 반환
-  return Array.from(uniqueWeekdays);
+  return sortDays(uniqueWeekdays);
 };
 
 const AdminTableReservationBody = ({ data }) => {
@@ -30,7 +41,7 @@ const AdminTableReservationBody = ({ data }) => {
   const [name, setName] = useState('');
   const [phoneNum, setPhoneNum] = useState('');
   const [dateArr, setDateArr] = useState([]);
-  const [datArr, setDayArr] = useState([]);
+  const [dayArr, setDayArr] = useState([]);
   const [partTime, setPartTime] = useState('');
   const [teacherArr, setTeacherArr] = useState([]);
   const [matchingTeacher, setMatchingTeacher] = useState(null);
@@ -169,7 +180,7 @@ const AdminTableReservationBody = ({ data }) => {
                   ?.name
               : 'Non Matching'}
           </TableCell>
-          <TableCell>{datArr.join('/')}</TableCell>
+          <TableCell>{dayArr.join('/')}</TableCell>
           <TableCell>{data.kk_reservation_time}</TableCell>
           <TableCell>개발중...</TableCell>
           <TableCell>
@@ -215,7 +226,7 @@ const AdminTableReservationBody = ({ data }) => {
               })}
             </select>
           </TableCell>
-          <TableCell>{datArr.join('/')}</TableCell>
+          <TableCell>{dayArr.join('/')}</TableCell>
           <TableCell>{data.kk_reservation_time}</TableCell>
           <TableCell>개발중...</TableCell>
           <TableCell>
