@@ -13,7 +13,7 @@ const getDayName = (dateString) => {
 
   // 날짜가 유효한지 확인합니다.
   if (isNaN(date)) {
-    return 'Invalid Date';
+    return '';
   }
 
   // getDay() 메서드를 사용하여 요일 인덱스를 가져옵니다.

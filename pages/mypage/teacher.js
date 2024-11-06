@@ -14,20 +14,9 @@ import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/Teacher
 import TeacherTablePrivacyBody from '@/component/MyPage_Component/Teacher/TeacherTablePrivacyBody';
 import Pagination from '@/component/Common_Component/Pagination';
 
-const dummyTableData = [
+const attendErrorData = [
   {
-    title: '○○수업',
-    instructor: '김하나',
-    date: '2024-07-01 ~ 2024-08-01',
-    contact: '010-0000-0000',
-    paymentStatus: '결제 완료',
-  },
-  {
-    title: '○○수업',
-    instructor: '김하나',
-    date: '2024-07-01 ~ 2024-08-01',
-    contact: '010-0000-0000',
-    paymentStatus: '결제 전',
+    kk_teacher_name: '미승인 회원입니다',
   },
   // 추가 데이터
 ];
@@ -42,7 +31,7 @@ const agencyTypeArr = [
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('attend');
-  const [tableData, setTableData] = useState(dummyTableData);
+  const [tableData, setTableData] = useState([]);
   const [page, setPage] = useState(1);
   const [lastPageNum, setLastPageNum] = useState(1);
   const [data, setData] = useState([]); // [음원,비디오,강의자료] 데이터
@@ -98,6 +87,10 @@ const MyPage = () => {
           // console.log(data);
           setTableData(data.data);
           setLastPageNum(data.lastPageNum);
+        })
+        .catch((error) => {
+          console.log(error);
+          setTableData(attendErrorData);
         });
     } else if (activeTab === 'privacy') {
       handleTeacherGet({ teacherIdx: localStorage.getItem('userIdx') })
