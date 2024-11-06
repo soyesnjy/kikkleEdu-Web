@@ -32,7 +32,7 @@ export const handleSignupCreate = async (post) => {
       {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
+          // Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }

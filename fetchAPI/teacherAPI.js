@@ -9,6 +9,7 @@ export const handleTeacherGet = async (query) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -31,6 +32,7 @@ export const handleTeacherCreate = async (input) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -51,6 +53,7 @@ export const handleTeacherDelete = async (uri) => {
     const response = await axios.delete(`${uri}`, {
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
       },
       withCredentials: true,
     });
@@ -72,6 +75,7 @@ export const handleTeacherUpdate = async (input) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }

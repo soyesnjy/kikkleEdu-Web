@@ -10,6 +10,7 @@ export const handleClassGet = async (query) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -32,6 +33,7 @@ export const handleClassCreate = async (input) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -52,6 +54,7 @@ export const handleClassDelete = async (uri) => {
     const response = await axios.delete(`${uri}`, {
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
       },
       withCredentials: true,
     });
@@ -73,6 +76,7 @@ export const handleClassUpdate = async (input) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
