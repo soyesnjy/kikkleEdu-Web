@@ -180,7 +180,8 @@ export default function Nav() {
           localStorage.removeItem('agencyType');
           setAgencyType('');
           localStorage.removeItem('userIdx');
-
+          localStorage.removeItem('refreshToken');
+          localStorage.removeItem('activeTab');
           router.push('/');
         });
       }
