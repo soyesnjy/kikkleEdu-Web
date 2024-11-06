@@ -8,6 +8,7 @@ export const handleDirectoryRead = async (query) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -32,6 +33,7 @@ export const handleDirectoryCreate = async (input) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -55,6 +57,7 @@ export const handleVideoCreate = async (formData) => {
       {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         onUploadProgress: (progressEvent) => {
           const percentCompleted = Math.round(
@@ -79,6 +82,7 @@ export const handleVideoV2Create = async (input) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -102,6 +106,7 @@ export const handleDirectoryDelete = async (query) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -122,6 +127,7 @@ export const handleReviewUpdate = async (input) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { handleSignupDelete, handleSignupUpdate } from '@/fetchAPI/signupAPI';
+import {
+  handleSignupDelete,
+  handleSignupUpdate,
+  handleSignupUpdate_v2,
+} from '@/fetchAPI/signupAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
 import Image from 'next/image';
 

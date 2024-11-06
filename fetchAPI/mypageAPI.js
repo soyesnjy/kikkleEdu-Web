@@ -8,6 +8,7 @@ export const handleMypageTeacherAttendGet = async (query) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }

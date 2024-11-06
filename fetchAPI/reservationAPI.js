@@ -8,6 +8,7 @@ export const handleReservationGet = async (query) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -31,6 +32,7 @@ export const handleReservationCreate = async (input) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -54,6 +56,7 @@ export const handleReservationDelete = async (query) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -76,6 +79,7 @@ export const handleReservationUpdate = async (input) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }

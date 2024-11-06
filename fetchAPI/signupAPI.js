@@ -9,6 +9,7 @@ export const handleSignupGet = async (query) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -31,6 +32,7 @@ export const handleSignupCreate = async (post) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -74,6 +76,7 @@ export const handleSignupUpdate = async (post) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -81,13 +84,14 @@ export const handleSignupUpdate = async (post) => {
     // console.log(response);
     return response;
   } catch (err) {
-    console.log('Gpt API 호출 실패');
+    console.log('API 호출 실패');
     console.error(err);
     return {
       status: err.response.status,
     };
   }
 };
+
 // DELETE
 export const handleSignupDelete = async (query) => {
   try {
@@ -96,6 +100,7 @@ export const handleSignupDelete = async (query) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }

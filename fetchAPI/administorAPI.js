@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// TODO# READ
+// READ
 export const handleAdministorGet = async (query) => {
   try {
     const response = await axios.get(
@@ -8,6 +8,7 @@ export const handleAdministorGet = async (query) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
@@ -31,6 +32,7 @@ export const handleAdministorCreate = async (input) => {
       {
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
         },
         withCredentials: true,
       }
