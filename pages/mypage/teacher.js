@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
-import { handleClassGet } from '@/fetchAPI/classAPI';
+// import { handleClassGet } from '@/fetchAPI/classAPI';
 import { useRouter } from 'next/router';
 
 import Directory from '@/component/Music_Component/Directory';
