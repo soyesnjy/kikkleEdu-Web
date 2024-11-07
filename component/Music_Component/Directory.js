@@ -15,6 +15,7 @@ const titleMap = {
 const Directory = ({ data, form }) => {
   const [path, setPath] = useState([null]); // root path with null
   const [items, setItems] = useState([]);
+  const [selecteditems, setSelecteditems] = useState(0);
   const [isRoot, setIsRoot] = useState(true);
   const [trackData, setTrackData] = useState({});
   const [audioKey, setAudioKey] = useState(0); // unique key for AudioPlayer
@@ -36,6 +37,7 @@ const Directory = ({ data, form }) => {
       setTrackData({});
     } else {
       setTrackData(item);
+      setSelecteditems(item.kk_directory_idx);
       setAudioKey((prevKey) => prevKey + 1); // change key to re-render AudioPlayer
     }
   };
@@ -72,6 +74,7 @@ const Directory = ({ data, form }) => {
             key={index}
             onClick={() => handleItemClick(item)}
             type={item.kk_directory_type}
+            selected={item.kk_directory_idx === selecteditems}
           >
             <StyledLink>{item.kk_directory_name}</StyledLink>
           </ListItem>
@@ -148,7 +151,7 @@ const ListItem = styled.li`
   margin: 5px 0;
   padding: 0.5rem;
 
-  background-color: #45b26b;
+  background-color: ${(props) => (props.selected ? '#398E56' : '#45b26b')};
 
   border-radius: 24px;
 
@@ -158,6 +161,8 @@ const ListItem = styled.li`
   font-family: Pretendard;
   font-weight: 700;
   text-align: center;
+
+  transition: 0.3s;
 
   &:hover {
     opacity: 0.8;
