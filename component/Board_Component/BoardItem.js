@@ -57,7 +57,6 @@ const TableCell = styled.td`
 `;
 
 const NoticeLabel = styled.span`
-  width: 100%;
   display: inline-block;
   background-color: #eaeff7;
   color: #007bff;
