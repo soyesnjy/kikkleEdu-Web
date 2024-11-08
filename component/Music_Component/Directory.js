@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import UploadForm from './UploadForm'; // 새로운 업로드 폼 컴포넌트
 import UploadFormDir from './UploadFormDir';
 import DeleteForm from './DeleteForm';
+import VideoPlayer from './VideoPlayer';
+
 import { useRecoilState } from 'recoil';
 import { agencyClass, mobile } from '@/store/state';
 
@@ -87,14 +89,15 @@ const Directory = ({ data, form }) => {
               <source src={trackData.url} type="audio/mp3" />
             </AudioPlayer> */}
             {form === 'video' ? (
-              <iframe
-                key={audioKey}
-                src={trackData.url}
-                allowfullscreen
-                allow="fullscreen"
-                width={mobileFlag ? '370' : '450'}
-                height="270"
-              />
+              // <iframe
+              //   key={audioKey}
+              //   src={trackData.url}
+              //   allowfullscreen
+              //   allow="fullscreen"
+              //   width={mobileFlag ? '370' : '450'}
+              //   height="270"
+              // />
+              <VideoPlayer videoUrl={trackData.url} mobileFlag={mobileFlag} />
             ) : (
               <iframe
                 key={audioKey}
