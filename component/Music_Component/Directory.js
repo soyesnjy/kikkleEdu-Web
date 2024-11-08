@@ -36,7 +36,7 @@ const Directory = ({ data, form }) => {
   }, [path, data]);
 
   const handleItemClick = (item) => {
-    console.log(item);
+    // console.log(item);
     if (item.kk_directory_type === 'directory') {
       setPath([...path, item.kk_directory_idx]);
       setTrackData({});
@@ -122,8 +122,17 @@ const Directory = ({ data, form }) => {
               allow="fullscreen"
               style={
                 mobileFlag
-                  ? { width: '100%', height: '250px', border: 'none' }
-                  : { width: '100vw', height: '370px', border: 'none' }
+                  ? {
+                      width: '100%',
+                      height: '250px',
+                      border: 'none',
+                    }
+                  : {
+                      width: '100vw',
+                      maxWidth: '1080px',
+                      height: '360px',
+                      border: 'none',
+                    }
               }
               // width={mobileFlag ? '370' : '450'}
               // height="270"
