@@ -11,6 +11,8 @@ const VideoPlayer = ({ videoUrl, mobileFlag }) => {
         videoRef.current.requestFullscreen();
       } else if (videoRef.current.webkitRequestFullscreen) {
         videoRef.current.webkitRequestFullscreen();
+      } else if (videoRef.current.webkitEnterFullScreen) {
+        videoRef.current.webkitEnterFullScreen();
       } else if (videoRef.current.msRequestFullscreen) {
         videoRef.current.msRequestFullscreen();
       }
@@ -55,7 +57,7 @@ const VideoPlayer = ({ videoUrl, mobileFlag }) => {
         src={videoUrl}
         allowFullScreen
         allow="fullscreen"
-        width={mobileFlag ? '370' : '450'}
+        width={mobileFlag ? '360' : '450'}
         height="270"
       />
       <FullscreenButton onClick={handleFullscreen} isFullscreen={isFullscreen}>
