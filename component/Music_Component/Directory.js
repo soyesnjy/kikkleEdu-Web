@@ -90,7 +90,8 @@ const Directory = ({ data, form }) => {
               <iframe
                 key={audioKey}
                 src={trackData.url}
-                // allowfullscreen
+                allowfullscreen
+                allow="fullscreen"
                 width={mobileFlag ? '370' : '450'}
                 height="270"
               />
