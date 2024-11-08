@@ -4,6 +4,7 @@ import UploadForm from './UploadForm'; // 새로운 업로드 폼 컴포넌트
 import UploadFormDir from './UploadFormDir';
 import DeleteForm from './DeleteForm';
 import VideoPlayer from './VideoPlayer';
+import { handleDirectoryVideoUrl } from '@/fetchAPI/directory';
 
 import { useRecoilState } from 'recoil';
 import { agencyClass, mobile } from '@/store/state';
@@ -23,6 +24,7 @@ const Directory = ({ data, form }) => {
   const [audioKey, setAudioKey] = useState(0); // unique key for AudioPlayer
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  // const [videoUrl, setVideoUrl] = useState();
 
   useEffect(() => {
     const currentParentId = path[path.length - 1];
@@ -34,6 +36,7 @@ const Directory = ({ data, form }) => {
   }, [path, data]);
 
   const handleItemClick = (item) => {
+    console.log(item);
     if (item.kk_directory_type === 'directory') {
       setPath([...path, item.kk_directory_idx]);
       setTrackData({});
@@ -49,6 +52,28 @@ const Directory = ({ data, form }) => {
     setSelecteditems(0);
     setTrackData({});
   };
+
+  // const fetchVideoUrl = async (fileID) => {
+  //   const API_KEY = 'AIzaSyC1ht2GAZkBDnnktEfmVQJVWL0jc2hwQoU';
+  //   try {
+  //     const response = await fetch(
+  //       `https://www.googleapis.com/drive/v3/files/${fileID}?alt=media&key=${API_KEY}`
+  //     );
+
+  //     return response.url;
+  //   } catch (err) {
+  //     console.error(err);
+  //     return '';
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (trackData.fileID) {
+  //     handleDirectoryVideoUrl({ fileId: trackData.fileID }).then((data) => {
+  //       setVideoUrl(data.url);
+  //     });
+  //   }
+  // }, [trackData]);
 
   return (
     <Container>
@@ -82,38 +107,44 @@ const Directory = ({ data, form }) => {
             <StyledLink>{item.kk_directory_name}</StyledLink>
           </ListItem>
         ))}
-        {trackData.url && (
-          <TrackContainer>
-            {/* <h2>{trackData.kk_directory_name}</h2> */}
-            {/* <AudioPlayer key={audioKey} controls autoPlay>
+      </List>
+      {trackData.url && (
+        <TrackContainer>
+          {/* <h2>{trackData.kk_directory_name}</h2> */}
+          {/* <AudioPlayer key={audioKey} controls autoPlay>
               <source src={trackData.url} type="audio/mp3" />
             </AudioPlayer> */}
-            {form === 'video' ? (
-              // <iframe
-              //   key={audioKey}
-              //   src={trackData.url}
-              //   allowfullscreen
-              //   allow="fullscreen"
-              //   width={mobileFlag ? '370' : '450'}
-              //   height="270"
-              // />
-              <VideoPlayer videoUrl={trackData.url} mobileFlag={mobileFlag} />
-            ) : (
-              <iframe
-                key={audioKey}
-                src={trackData.url}
-                width={mobileFlag ? '100%' : '450'}
-                height={mobileFlag ? '170' : '70'}
-              />
-            )}
-          </TrackContainer>
-        )}
-      </List>
+          {form === 'video' ? (
+            <iframe
+              key={audioKey}
+              src={trackData.url}
+              allowfullscreen
+              allow="fullscreen"
+              style={
+                mobileFlag
+                  ? { width: '100%', height: '250px', border: 'none' }
+                  : { width: '100vw', height: '370px', border: 'none' }
+              }
+              // width={mobileFlag ? '370' : '450'}
+              // height="270"
+            />
+          ) : (
+            // <VideoPlayer key={audioKey} videoUrl={videoUrl} />
+            <iframe
+              key={audioKey}
+              src={trackData.url}
+              width={mobileFlag ? '100%' : '450'}
+              height={mobileFlag ? '170' : '70'}
+            />
+          )}
+        </TrackContainer>
+      )}
     </Container>
   );
 };
 
 const Container = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

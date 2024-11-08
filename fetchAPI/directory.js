@@ -48,6 +48,7 @@ export const handleDirectoryCreate = async (input) => {
     };
   }
 };
+
 // CREATE Video
 export const handleVideoCreate = async (formData) => {
   try {
@@ -74,6 +75,7 @@ export const handleVideoCreate = async (formData) => {
     console.error('File upload failed', error);
   }
 };
+
 export const handleVideoV2Create = async (input) => {
   try {
     const response = await axios.post(
@@ -141,6 +143,31 @@ export const handleReviewUpdate = async (input) => {
       status: err.response.status,
       message: '미안해 지금은 대화가 힘들어...조금 뒤에 다시 말해줄래?',
       emotion: 0,
+    };
+  }
+};
+
+// CREATE VideoUrl
+export const handleDirectoryVideoUrl = async (input) => {
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/directory/create/videourl`,
+      { data: input },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
+        },
+        withCredentials: true,
+      }
+    );
+    // console.log(response);
+    return response.data;
+  } catch (err) {
+    console.log('API 호출 실패');
+    console.error(err);
+    return {
+      status: 400,
     };
   }
 };

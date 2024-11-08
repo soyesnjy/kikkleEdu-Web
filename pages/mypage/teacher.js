@@ -49,6 +49,12 @@ const MyPage = () => {
               (track) => track.kk_directory_idx === dir.kk_directory_idx
             )?.kk_file_path
           : null,
+      fileID:
+        dir.kk_directory_type === 'file'
+          ? data.tracks.find(
+              (track) => track.kk_directory_idx === dir.kk_directory_idx
+            )?.kk_file_data_id
+          : null,
     }));
     setData([...formattedData]);
   };
@@ -202,6 +208,10 @@ const MasterContainer = styled.div`
   background-color: white;
   margin: 0 auto;
   padding-top: 2rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const MyPageContainer = styled.div`
