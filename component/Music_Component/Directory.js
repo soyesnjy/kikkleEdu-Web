@@ -44,6 +44,7 @@ const Directory = ({ data, form }) => {
 
   const handleBackClick = () => {
     setPath(path.slice(0, -1));
+    setSelecteditems(0);
     setTrackData({});
   };
 
