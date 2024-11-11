@@ -131,7 +131,7 @@ export default function Nav() {
   const handleSessionExpired = useCallback(() => {
     Swal.fire({
       icon: 'error',
-      title: 'Login session expires',
+      title: '로그인 세션 만료!',
       text: 'Main Page로 이동합니다',
       showConfirmButton: false,
       timer: 1500,
@@ -159,13 +159,13 @@ export default function Nav() {
       if (result.isConfirmed) {
         logoutAPI();
         // 히스토리 정보 삭제 - 잘 안되네...
-        if (typeof window !== 'undefined') {
-          window.history.pushState(
-            {},
-            document.title,
-            window.location.pathname
-          );
-        }
+        // if (typeof window !== 'undefined') {
+        //   window.history.pushState(
+        //     {},
+        //     document.title,
+        //     window.location.pathname
+        //   );
+        // }
         Swal.fire({
           icon: 'success',
           title: 'LogOut Success!',
