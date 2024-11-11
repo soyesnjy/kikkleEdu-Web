@@ -85,7 +85,10 @@ const TeacherCarousel = () => {
             }}
           >
             {teacherDataArr.map((profile, index) => (
-              <ProfileCard key={profile.id} active={index === currentIndex}>
+              <ProfileCard
+                key={profile.id}
+                active={index === currentIndex ? 'true' : null}
+              >
                 <Image
                   src={
                     profile.profileImg ||
@@ -123,7 +126,7 @@ const TeacherCarousel = () => {
         {teacherDataArr.map((_, index) => (
           <Dot
             key={index}
-            active={index === currentIndex}
+            active={index === currentIndex ? 'true' : null}
             onClick={() => handleDotClick(index)}
           />
         ))}

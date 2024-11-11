@@ -144,7 +144,7 @@ export default function Home() {
         return (
           <SectionFifthtoNineth
             key={index}
-            backgroundColor={el.backgroundColor}
+            backgroundcolor={el.backgroundColor}
           >
             <LessonSection
               title={el.title}
@@ -351,7 +351,7 @@ const SectionFifthtoNineth = styled.section`
 
   margin: 10rem 0;
 
-  background-color: ${(props) => props.backgroundColor || 'white'};
+  background-color: ${(props) => props.backgroundcolor || 'white'};
 
   display: flex;
   justify-content: center;

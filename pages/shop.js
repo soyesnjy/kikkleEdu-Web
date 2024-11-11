@@ -166,7 +166,7 @@ const Shop = () => {
                   // router.push(routePath);
                 }}
               >
-                <ShopGoodsTag tagColor={tagColor}>태그</ShopGoodsTag>
+                <ShopGoodsTag tagcolor={tagColor}>태그</ShopGoodsTag>
                 <ShopGoodsImageContainer imgpath={imgPath} />
                 <ShopGoodsTextContainer>
                   <ShopGoodsTitle>{title}</ShopGoodsTitle>
@@ -453,7 +453,7 @@ const ShopGoodsTag = styled.button`
   top: 5%;
   left: 5%;
 
-  background-color: ${(props) => props.tagColor};
+  background-color: ${(props) => props.tagcolor};
 
   padding: 6px 12px;
   border-radius: 16px;

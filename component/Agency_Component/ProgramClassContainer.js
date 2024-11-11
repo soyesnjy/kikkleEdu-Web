@@ -115,7 +115,7 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
           const { title, imgPath, routePath, idx } = el;
           return (
             <ProgramContentContainer
-              key={idx}
+              key={`${title}-${idx}`}
               imgpath={imgPath}
               onClick={() => {
                 if (dragDistance < MIN_DRAG_DISTANCE) {
@@ -136,9 +136,10 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
       {mobileFlag && (
         <DotContainer>
           {classDataArr.map((el, index) => {
+            const { routePath, idx } = el;
             return (
               <Dot
-                key={el.idx}
+                key={`${routePath}-${idx}`}
                 active={dotActiveHandler(index, classDataArr.length)}
               />
             );

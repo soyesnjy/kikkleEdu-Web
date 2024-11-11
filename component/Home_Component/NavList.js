@@ -73,7 +73,7 @@ const NavLiMenu = styled.li`
   }
 `;
 
-const NavMenuContainer = styled.li`
+const NavMenuContainer = styled.div`
   position: absolute;
   top: 100%;
   background-color: white;

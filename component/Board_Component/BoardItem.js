@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const BoardItem = ({ post, onClick }) => {
   return (
-    <TableRow isNotice={post.isNotice}>
+    <TableRow isnotice={post.isNotice ? 'true' : null}>
       <TableCell>
         {post.isNotice ? <NoticeLabel>공지</NoticeLabel> : post.number}
       </TableCell>
@@ -35,7 +35,7 @@ const BoardItem = ({ post, onClick }) => {
 export default BoardItem;
 
 const TableRow = styled.tr`
-  background-color: ${(props) => (props.isNotice ? '#fdfaf8' : 'white')};
+  background-color: ${(props) => (props.isnotice ? '#fdfaf8' : 'white')};
   border-bottom: 1px solid #ddd;
   &:hover {
     background-color: #f9f9f9;

@@ -221,7 +221,13 @@ export default function Nav() {
           <NavListContainer>
             {navList_info.map((el, index) => {
               const { title, items } = el;
-              return <NavList key={index} title={title} items={items} />;
+              return (
+                <NavList
+                  key={`${title}-${index}`}
+                  title={title}
+                  items={items}
+                />
+              );
             })}
           </NavListContainer>
 
@@ -230,7 +236,10 @@ export default function Nav() {
               {menuItems.map((item) => (
                 <NavLi key={item.href}>
                   <Link href={item.href} passHref>
-                    <NavBtn login={login} selected={item.href === currentPath}>
+                    <NavBtn
+                      login={login ? 'true' : null}
+                      selected={item.href === currentPath}
+                    >
                       {item.label}
                     </NavBtn>
                   </Link>
@@ -400,28 +409,3 @@ const NavBtn = styled.button`
 
   transition: 0.3s;
 `;
-
-// const NavMobileBtn = styled.button`
-//   background-color: ${(props) => (props.login ? '#45b26b' : 'white')};
-//   color: ${(props) => (props.login ? 'white' : '#45b26b')};
-//   font-family: Nunito;
-
-//   border: 1px solid #45b26b;
-//   border-radius: 10px;
-
-//   padding: 1.2rem;
-
-//   text-align: center;
-//   text-decoration: none;
-
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   font-size: 16px;
-
-//   white-space: nowrap;
-
-//   cursor: pointer;
-
-//   transition: 0.3s;
-// `;

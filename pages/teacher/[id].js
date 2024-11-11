@@ -28,6 +28,8 @@ const TeacherDetailPage = () => {
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
   const [login, setLogin] = useRecoilState(log);
 
+  const [profileImgSrc, setProfileImgSrc] = useState(ramdomDefaultImg());
+
   useEffect(() => {
     if (id) {
       handleTeacherGet({ teacherIdx: id })
@@ -47,6 +49,12 @@ const TeacherDetailPage = () => {
       return;
     }
   }, [login]);
+
+  useEffect(() => {
+    if (data.kk_teacher_profileImg_path) {
+      setProfileImgSrc(data.kk_teacher_profileImg_path);
+    }
+  }, [data.kk_teacher_profileImg_path]);
 
   // const handleGoBack = () => {
   //   router.push('/teacher'); // 강사 List 페이지로 이동
@@ -83,7 +91,7 @@ const TeacherDetailPage = () => {
 
           {mobileFlag && (
             <Image
-              src={data.kk_teacher_profileImg_path || ramdomDefaultImg()}
+              src={profileImgSrc}
               alt=""
               width={390}
               height={418}
@@ -124,7 +132,7 @@ const TeacherDetailPage = () => {
         {!mobileFlag && (
           <MiddleProfileImgContainer>
             <Image
-              src={data.kk_teacher_profileImg_path || ramdomDefaultImg()}
+              src={profileImgSrc}
               alt=""
               width={390}
               height={418}

@@ -29,7 +29,11 @@ const Pagination = ({ page, setPage, lastPageNum }) => {
     const pages = [];
     for (let i = startPage; i <= endPage; i++) {
       pages.push(
-        <PageButton key={i} active={i === page} onClick={() => handleClick(i)}>
+        <PageButton
+          key={i}
+          active={i === page ? 'true' : null}
+          onClick={() => handleClick(i)}
+        >
           {i}
         </PageButton>
       );

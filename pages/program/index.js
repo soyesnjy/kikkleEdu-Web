@@ -144,7 +144,7 @@ const BalletProgramPage = () => {
         <LessonSection
           title={selectedClass?.title || ''}
           subtitle={selectedClass?.content || ''}
-          imgUrl={selectedClass?.imgPath || ''}
+          imgUrl={selectedClass?.imgPath || '/src/soyesKids_Logo.png'}
           type="program"
           info={selectedClass?.info || ''}
         />
@@ -164,7 +164,7 @@ const BalletProgramPage = () => {
         }
       >
         <Image
-          src={selectedClass?.detailPath || ''}
+          src={selectedClass?.detailPath || '/src/soyesKids_Logo.png'}
           alt="DetailPath"
           width={1321}
           height={3044}
