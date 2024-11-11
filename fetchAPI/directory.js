@@ -14,11 +14,11 @@ export const handleDirectoryRead = async (query) => {
       }
     );
     // console.log(response.data);
-    return response.data;
+    return response;
   } catch (err) {
-    console.log('Gpt API 호출 실패');
     console.error(err);
     return {
+      message: err.response.data.message,
       status: err.response.status,
     };
   }

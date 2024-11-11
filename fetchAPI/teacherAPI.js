@@ -19,6 +19,7 @@ export const handleTeacherGet = async (query) => {
   } catch (err) {
     console.error(err);
     return {
+      message: err.response.data.message,
       status: err.response.status,
     };
   }

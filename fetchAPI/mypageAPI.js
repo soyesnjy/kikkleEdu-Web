@@ -18,6 +18,7 @@ export const handleMypageTeacherAttendGet = async (query) => {
   } catch (err) {
     console.error(err);
     return {
+      message: err.response.data.message,
       status: err.response.status,
     };
   }
