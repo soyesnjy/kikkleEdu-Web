@@ -12,6 +12,7 @@ const DeleteForm = ({ directories, form }) => {
   const [isPending, setIsPending] = useState(false);
 
   const router = useRouter();
+
   useEffect(() => {
     const buildTreeData = (dirs) => {
       const map = {};
@@ -47,7 +48,7 @@ const DeleteForm = ({ directories, form }) => {
   //   console.log(selectedDirectory);
   // }, [selectedDirectory]);
 
-  const handleSubmit = async (e) => {
+  const deleteHandleSubmit = async (e) => {
     e.preventDefault();
 
     setIsPending(true);
@@ -70,19 +71,23 @@ const DeleteForm = ({ directories, form }) => {
         router.reload();
       });
     } else {
-      console.error('Delete failed');
-      alert('Directory Upload failed');
+      Swal.fire({
+        icon: 'error',
+        title: 'Directory Upload failed',
+        showConfirmButton: false,
+        timer: 1000,
+      });
     }
   };
 
-  const handleChange = (currentNode, selectedNodes) => {
+  const handleChange = (currentNode) => {
     setSelectedDirectory(currentNode);
   };
 
   return (
     <FormContainer>
       <h3>Directory Delete Form</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={deleteHandleSubmit}>
         <FormGroup>
           <Label htmlFor="directory">Directory</Label>
           <DropdownTreeSelect
@@ -128,12 +133,12 @@ const Label = styled.label`
   margin-bottom: 5px;
 `;
 
-const Input = styled.input`
-  display: block;
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-`;
+// const Input = styled.input`
+//   display: block;
+//   width: 100%;
+//   padding: 8px;
+//   margin-bottom: 10px;
+// `;
 
 const Button = styled.button`
   padding: 10px 15px;
