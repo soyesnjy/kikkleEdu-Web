@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import UploadForm from './UploadForm'; // 새로운 업로드 폼 컴포넌트
 import UploadFormDir from './UploadFormDir';
 import DeleteForm from './DeleteForm';
-import VideoPlayer from './VideoPlayer';
-import { handleDirectoryVideoUrl } from '@/fetchAPI/directory';
 
 import { useRecoilState } from 'recoil';
 import { agencyClass, mobile } from '@/store/state';
@@ -138,7 +136,6 @@ const Directory = ({ data, form }) => {
               // height="270"
             />
           ) : (
-            // <VideoPlayer key={audioKey} videoUrl={videoUrl} />
             <iframe
               key={audioKey}
               src={trackData.url}
