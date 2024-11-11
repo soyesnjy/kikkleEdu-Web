@@ -18,6 +18,7 @@ export const handleReservationGet = async (query) => {
   } catch (err) {
     console.error(err);
     return {
+      message: err.response.data.message,
       status: err.response.status,
     };
   }
@@ -43,8 +44,8 @@ export const handleReservationCreate = async (input) => {
     console.log('ReservationCreate API 호출 실패');
     console.error(err);
     return {
-      status: err.response.status,
       message: err.response.data.message,
+      status: err.response.status,
     };
   }
 };
@@ -66,6 +67,7 @@ export const handleReservationDelete = async (query) => {
   } catch (err) {
     console.error(err);
     return {
+      message: err.response.data.message,
       status: err.response.status,
     };
   }
@@ -90,6 +92,7 @@ export const handleReservationUpdate = async (input) => {
     console.log('Gpt API 호출 실패');
     console.error(err);
     return {
+      message: err.response.data.message,
       status: err.response.status,
     };
   }

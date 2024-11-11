@@ -41,9 +41,9 @@ export const handleDirectoryCreate = async (input) => {
     // console.log(response);
     return response;
   } catch (err) {
-    console.log('ReviewCreate API 호출 실패');
     console.error(err);
     return {
+      message: err.response.data.message,
       status: 400,
     };
   }
@@ -71,8 +71,12 @@ export const handleVideoCreate = async (formData) => {
 
     // console.log('File uploaded successfully', response.data);
     return response;
-  } catch (error) {
-    console.error('File upload failed', error);
+  } catch (err) {
+    console.error('File upload failed', err);
+    return {
+      message: err.response.data.message,
+      status: err.response.status,
+    };
   }
 };
 
@@ -95,6 +99,7 @@ export const handleVideoV2Create = async (input) => {
     console.log('ReviewCreate API 호출 실패');
     console.error(err);
     return {
+      message: err.response.data.message,
       status: 400,
     };
   }
@@ -117,6 +122,10 @@ export const handleDirectoryDelete = async (query) => {
     return response;
   } catch (err) {
     console.error(err);
+    return {
+      message: err.response.data.message,
+      status: 400,
+    };
   }
 };
 
@@ -143,31 +152,6 @@ export const handleReviewUpdate = async (input) => {
       status: err.response.status,
       message: '미안해 지금은 대화가 힘들어...조금 뒤에 다시 말해줄래?',
       emotion: 0,
-    };
-  }
-};
-
-// CREATE VideoUrl
-export const handleDirectoryVideoUrl = async (input) => {
-  try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_URL}/directory/create/videourl`,
-      { data: input },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
-        },
-        withCredentials: true,
-      }
-    );
-    // console.log(response);
-    return response.data;
-  } catch (err) {
-    console.log('API 호출 실패');
-    console.error(err);
-    return {
-      status: 400,
     };
   }
 };

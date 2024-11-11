@@ -19,6 +19,7 @@ export const handleSignupGet = async (query) => {
   } catch (err) {
     console.error(err);
     return {
+      message: err.response.data.message,
       status: err.response.status,
     };
   }
@@ -42,9 +43,11 @@ export const handleSignupCreate = async (post) => {
 
     return response;
   } catch (err) {
-    // 에러시 false 반환
     console.log(err);
-    return { status: err.response.status };
+    return {
+      message: err.response.data.message,
+      status: err.response.status,
+    };
   }
   // // console.log(url, post);
   // try {
@@ -87,6 +90,7 @@ export const handleSignupUpdate = async (post) => {
     console.log('API 호출 실패');
     console.error(err);
     return {
+      message: err.response.data.message,
       status: err.response.status,
     };
   }
@@ -110,6 +114,7 @@ export const handleSignupDelete = async (query) => {
   } catch (err) {
     console.error(err);
     return {
+      message: err.response.data.message,
       status: err.response.status,
     };
   }
