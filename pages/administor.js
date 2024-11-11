@@ -58,7 +58,10 @@ const Administor = () => {
 
   // 음원 디렉토리 구조 초기화 메서드
   const initMusicDirectory = async (form) => {
-    const data = await handleDirectoryRead({ form });
+    const res = await handleDirectoryRead({ form });
+    if (res.status !== 200) return alert(res.message);
+
+    const data = res.data;
     const formattedData = data.directories.map((dir) => ({
       ...dir,
       url:

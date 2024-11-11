@@ -40,7 +40,14 @@ const MyPage = () => {
 
   // 음원 디렉토리 구조 초기화 메서드
   const initMusicDirectory = async (form) => {
-    const data = await handleDirectoryRead({ form });
+    const res = await handleDirectoryRead({ form });
+    if (res.status !== 200) {
+      alert(res.message);
+      if (res.status === 401) loginSessionClear();
+      return;
+    }
+
+    const data = res.data;
     const formattedData = data.directories.map((dir) => ({
       ...dir,
       url:
@@ -57,6 +64,18 @@ const MyPage = () => {
           : null,
     }));
     setData([...formattedData]);
+  };
+
+  // 로그인 세션 Clear 메서드
+  const loginSessionClear = () => {
+    localStorage.setItem(
+      'log',
+      JSON.stringify({
+        expires: 0, // 로그인 세션 24시간 설정
+      })
+    );
+    // 화면 새로고침
+    router.push('/');
   };
 
   useEffect(() => {
@@ -88,7 +107,12 @@ const MyPage = () => {
         userIdx: localStorage.getItem('userIdx'),
         pageNum: page,
       })
-        .then((res) => res.data)
+        .then((res) => {
+          // console.log(res);
+          if (res.status === 200) return res.data;
+          alert(res.message);
+          if (res.status === 401) loginSessionClear();
+        })
         .then((data) => {
           // console.log(data);
           setTableData(data.data);
@@ -100,10 +124,18 @@ const MyPage = () => {
         });
     } else if (activeTab === 'privacy') {
       handleTeacherGet({ teacherIdx: localStorage.getItem('userIdx') })
-        .then((res) => res.data)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) return res.data;
+          alert(res.message);
+          if (res.status === 401) loginSessionClear();
+        })
         .then((data) => {
           // console.log(data);
           setTeacherData(data.data[0]); // 강사 정보 state 갱신
+        })
+        .catch((error) => {
+          console.log(error);
         });
     } else initMusicDirectory(activeTab);
     // 탭 변경 시 페이지 초기화
