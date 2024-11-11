@@ -53,7 +53,14 @@ const MyPage = () => {
 
   // 디렉토리 구조 초기화 메서드
   const initMusicDirectory = async (form) => {
-    const data = await handleDirectoryRead({ form });
+    const res = await handleDirectoryRead({ form });
+    if (res.status !== 200) {
+      alert(res.message);
+      if (res.status === 401) loginSessionClear();
+      return;
+    }
+
+    const data = res.data;
     const formattedData = data.directories.map((dir) => ({
       ...dir,
       url:
@@ -64,6 +71,17 @@ const MyPage = () => {
           : null,
     }));
     setData([...formattedData]);
+  };
+
+  const loginSessionClear = () => {
+    localStorage.setItem(
+      'log',
+      JSON.stringify({
+        expires: 0, // 로그인 세션 24시간 설정
+      })
+    );
+    // 화면 새로고침
+    router.push('/');
   };
 
   useEffect(() => {
