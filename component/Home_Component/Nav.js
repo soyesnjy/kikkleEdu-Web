@@ -182,6 +182,8 @@ export default function Nav() {
           localStorage.removeItem('userIdx');
           localStorage.removeItem('refreshToken');
           localStorage.removeItem('activeTab');
+          setIsOpen(false);
+
           router.push('/');
         });
       }
