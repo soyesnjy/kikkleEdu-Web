@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/router';
@@ -21,6 +21,7 @@ import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
 import PostBtn from '@/component/SignUp_Component/PostBtn';
+import LoadingDots from '@/component/SignUp_Component/LoadingDot';
 // import Page from '@/component/Motion_Paging/Page';
 
 const possLocalArr = ['서울', '부산', '기타'];
@@ -81,7 +82,7 @@ export default function Signup() {
   const [addressA, setAddressA] = useState('');
   const [phoneNumberA, setPhoneNumberA] = useState('');
   const [typeA, setTypeA] = useState('');
-  const [fileA, setFileA] = useState(null);
+  // const [fileA, setFileA] = useState(null);
 
   // Recoil 전역 변수
   const [login, setLogin] = useRecoilState(log);
@@ -327,15 +328,10 @@ export default function Signup() {
             // useRouter 인스턴스의 push 메서드를 통해 페이지 이동 가능
             router.push('/login');
           });
-        } else if (res.status === 403) {
-          Swal.fire({
-            icon: 'error',
-            title: '중복된 이메일입니다',
-          });
         } else {
           Swal.fire({
             icon: 'error',
-            title: 'Sign Up Fail',
+            title: res.message, // 서버측 반환 message 띄우기
           });
         }
       } catch (error) {
@@ -780,7 +776,7 @@ export default function Signup() {
                     disabled={isPending}
                     isPending={isPending}
                   >
-                    {isPending ? '처리중...' : '회원가입'}
+                    {isPending ? <LoadingDots /> : '회원가입'}
                   </SignUpButton>
                 )}
               </SignUpButtonContainer>
@@ -895,7 +891,7 @@ export default function Signup() {
                     disabled={isPending}
                     isPending={isPending}
                   >
-                    {isPending ? '처리중...' : '회원가입'}
+                    {isPending ? <LoadingDots /> : '회원가입'}
                   </SignUpButton>
                 )}
               </SignUpButtonContainer>
