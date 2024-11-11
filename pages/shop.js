@@ -167,7 +167,7 @@ const Shop = () => {
                 }}
               >
                 <ShopGoodsTag tagColor={tagColor}>태그</ShopGoodsTag>
-                <ShopGoodsImageContainer imgPath={imgPath} />
+                <ShopGoodsImageContainer imgpath={imgPath} />
                 <ShopGoodsTextContainer>
                   <ShopGoodsTitle>{title}</ShopGoodsTitle>
                   <ShopGoodsSubTitle>
@@ -392,7 +392,7 @@ const ShopGoodsImageContainer = styled.div`
   width: 100%;
   height: 50%;
 
-  background: url(${(props) => props.imgPath || '/half-moon.png'});
+  background: url(${(props) => props.imgpath || '/half-moon.png'});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

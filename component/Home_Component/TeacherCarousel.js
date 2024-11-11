@@ -73,7 +73,7 @@ const TeacherCarousel = () => {
       </Description>
       <CarouselContainer>
         <Button onClick={handlePrevClick} dir={'pre'}>
-          <span class="material-symbols-outlined">arrow_back</span>
+          <span className="material-symbols-outlined">arrow_back</span>
         </Button>
         <CarouselWrapper>
           <ProfilesContainer
@@ -116,7 +116,7 @@ const TeacherCarousel = () => {
           </ProfilesContainer>
         </CarouselWrapper>
         <Button onClick={handleNextClick} dir={'next'}>
-          <span class="material-symbols-outlined">arrow_forward</span>
+          <span className="material-symbols-outlined">arrow_forward</span>
         </Button>
       </CarouselContainer>
       <Dots>

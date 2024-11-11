@@ -33,7 +33,7 @@ export default function TopButton() {
       <TopButtonWrap>
         {showButton && (
           <Button onClick={handleScroll}>
-            <span class="material-symbols-outlined">arrow_upward</span>
+            <span className="material-symbols-outlined">arrow_upward</span>
           </Button>
         )}
       </TopButtonWrap>

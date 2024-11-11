@@ -515,15 +515,15 @@ export default function Signup() {
                   <PwdCheckContainer>
                     <H5>비밀번호 요구사항</H5>
                     <PwdCheckText check={checkPwd_1}>
-                      <span class="material-symbols-outlined">check</span> 8글자
-                      이상
+                      <span className="material-symbols-outlined">check</span>{' '}
+                      8글자 이상
                     </PwdCheckText>
                     <PwdCheckText check={checkPwd_2}>
-                      <span class="material-symbols-outlined">check</span>{' '}
+                      <span className="material-symbols-outlined">check</span>{' '}
                       영문,숫자,기호 중 2개 이상의 조합
                     </PwdCheckText>
                     <PwdCheckText check={checkPwd_3}>
-                      <span class="material-symbols-outlined">check</span>{' '}
+                      <span className="material-symbols-outlined">check</span>{' '}
                       이메일 주소가 포함되면 안됩니다
                     </PwdCheckText>
                   </PwdCheckContainer>
@@ -579,7 +579,7 @@ export default function Signup() {
                   <H5>* 표시는 필수 입력 정보입니다</H5>
                   <H4>* 희망 수업</H4>
                   <UserPossClassContainer
-                    rowCount={Math.ceil(possClassArr.length / 5)}
+                    rowcount={Math.ceil(possClassArr.length / 5)}
                   >
                     {possClassArr.map((el, index) => {
                       const { id, title } = el;
@@ -615,7 +615,7 @@ export default function Signup() {
                   </UserPossClassContainer>
                   <H4>* 희망 지역</H4>
                   <UserPossClassContainer
-                    rowCount={Math.ceil(possLocalArr.length / 5)}
+                    rowcount={Math.ceil(possLocalArr.length / 5)}
                   >
                     {possLocalArr.map((possLocalName, index) => {
                       return (
@@ -635,7 +635,7 @@ export default function Signup() {
                     })}
                   </UserPossClassContainer>
                   <H4>* 희망 날짜 </H4>
-                  <UserPossClassContainer rowCount={1} dayCheck={true}>
+                  <UserPossClassContainer rowcount={1} dayCheck={true}>
                     {possDayArr.map((possDayName, index) => {
                       return (
                         <UserPossClassButton
@@ -659,7 +659,7 @@ export default function Signup() {
                     })}
                   </UserPossClassContainer>
                   <H4>* 희망 시간대 </H4>
-                  <UserPossClassContainer rowCount={1} dayCheck={true}>
+                  <UserPossClassContainer rowcount={1} dayCheck={true}>
                     {partTimeArr.map((partTime, index) => {
                       return (
                         <UserPossClassButton
@@ -730,15 +730,15 @@ export default function Signup() {
                   <FileUploadComponent setFile={setFile} file={file} />
                   <H5>+ 필수 서류 확인하기</H5>
                   <FileCheckText>
-                    <span class="material-symbols-outlined">check</span>
+                    <span className="material-symbols-outlined">check</span>
                     이력서 / 신분증 / 통장사본 / 보건증
                   </FileCheckText>
                   <FileCheckText>
-                    <span class="material-symbols-outlined">check</span>
+                    <span className="material-symbols-outlined">check</span>
                     졸업 증명서(재학증명서) / 경력 증명서
                   </FileCheckText>
                   <FileCheckText>
-                    <span class="material-symbols-outlined">check</span>
+                    <span className="material-symbols-outlined">check</span>
                     프로필 사진
                   </FileCheckText>
                 </PageContainer>
@@ -836,7 +836,7 @@ export default function Signup() {
                   <H5>* 표시는 필수 입력 정보입니다</H5>
                   <H4>* 기관 유형</H4>
                   <UserPossClassContainer
-                    rowCount={Math.ceil(agencyTypeArr.length / 5)}
+                    rowcount={Math.ceil(agencyTypeArr.length / 5)}
                   >
                     {agencyTypeArr.map((agencyTypeName, index) => {
                       return (
@@ -1275,7 +1275,7 @@ const UserPossClassContainer = styled.div`
   display: grid;
   grid-template-columns: ${(props) =>
     props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(4, 1fr)'};
-  grid-template-rows: ${(props) => `repeat(${props.rowCount}, 1fr)`};
+  grid-template-rows: ${(props) => `repeat(${props.rowcount}, 1fr)`};
 
   gap: 0.5rem;
   margin-top: 0.5rem;
@@ -1284,7 +1284,7 @@ const UserPossClassContainer = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: ${(props) =>
       props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(4, 1fr)'};
-    grid-template-rows: ${(props) => `repeat(${props.rowCount}, 1fr)`};
+    grid-template-rows: ${(props) => `repeat(${props.rowcount}, 1fr)`};
   }
 `;
 

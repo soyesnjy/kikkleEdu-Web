@@ -146,7 +146,7 @@ const TeacherListPage = () => {
       </MiddleSection>
       {/* 강사 List 섹션 */}
       <PageContainer>
-        <TeacherContainer rowCount={Math.ceil(teacherDataArr.length / 5)}>
+        <TeacherContainer rowcount={Math.ceil(teacherDataArr.length / 5)}>
           {teacherDataArr.length > 0
             ? teacherDataArr.map((el) => {
                 const { id, name, introduce, profileImg } = el;
@@ -460,7 +460,7 @@ const TeacherContainer = styled.div`
   display: grid;
   grid-template-columns: ${(props) =>
     props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(4, 1fr)'};
-  grid-template-rows: ${(props) => `repeat(${props.rowCount}, 1fr)`};
+  grid-template-rows: ${(props) => `repeat(${props.rowcount}, 1fr)`};
 
   gap: 0.5rem;
   margin-top: 0.5rem;

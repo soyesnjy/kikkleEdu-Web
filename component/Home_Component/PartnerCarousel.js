@@ -98,7 +98,7 @@ const PartnerCarousel = () => {
       </Description>
       <CarouselContainer>
         <Button onClick={handlePrevClick}>
-          <span class="material-symbols-outlined">arrow_back</span>
+          <span className="material-symbols-outlined">arrow_back</span>
         </Button>
         <CarouselWrapper>
           <ProfilesContainer
@@ -130,7 +130,7 @@ const PartnerCarousel = () => {
           </ProfilesContainer>
         </CarouselWrapper>
         <Button onClick={handleNextClick}>
-          <span class="material-symbols-outlined">arrow_forward</span>
+          <span className="material-symbols-outlined">arrow_forward</span>
         </Button>
       </CarouselContainer>
       <Dots>

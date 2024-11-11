@@ -29,10 +29,10 @@ const EduArtVideoComponent = ({ sectionData }) => {
       <VideoContent>
         <iframe
           src={youtubeUrl} // 수업 영상 유튜브 링크
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
         />
       </VideoContent>
     </Container>

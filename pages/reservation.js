@@ -325,7 +325,7 @@ export default function Reservation() {
             {/* 수업 선택 */}
             {pageNumber === 0 && (
               <PageContainer>
-                <ClassContainer rowCount={Math.ceil(possClassArr.length / 5)}>
+                <ClassContainer rowcount={Math.ceil(possClassArr.length / 5)}>
                   {possClassArr.map((el) => {
                     const { id, title, imgUrl, content } = el;
                     return (
@@ -393,7 +393,7 @@ export default function Reservation() {
             {/* 강사 선택 */}
             {pageNumber === 2 && (
               <PageContainer>
-                <ClassContainer rowCount={Math.ceil(possClassArr.length / 5)}>
+                <ClassContainer rowcount={Math.ceil(possClassArr.length / 5)}>
                   {possTeacherArr.length > 0
                     ? possTeacherArr.map((el) => {
                         const { id, name, introduce, imgUrl } = el;
@@ -778,7 +778,7 @@ const ClassContainer = styled.div`
   display: grid;
   grid-template-columns: ${(props) =>
     props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(4, 1fr)'};
-  grid-template-rows: ${(props) => `repeat(${props.rowCount}, 1fr)`};
+  grid-template-rows: ${(props) => `repeat(${props.rowcount}, 1fr)`};
 
   gap: 0.5rem;
   margin-top: 0.5rem;
@@ -787,7 +787,7 @@ const ClassContainer = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: ${(props) =>
       props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(2, 1fr)'};
-    grid-template-rows: ${(props) => `repeat(${props.rowCount}, 1fr)`};
+    grid-template-rows: ${(props) => `repeat(${props.rowcount}, 1fr)`};
   }
 `;
 

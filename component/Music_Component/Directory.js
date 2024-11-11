@@ -116,7 +116,7 @@ const Directory = ({ data, form }) => {
             <iframe
               key={audioKey}
               src={trackData.url}
-              allowfullscreen
+              allowFullScreen
               allow="fullscreen"
               style={
                 mobileFlag

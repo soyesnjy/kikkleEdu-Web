@@ -122,7 +122,7 @@ const ComunityPage = () => {
             {agency ? (
               <ReservationButton>
                 예약하기
-                <span class="material-symbols-outlined">arrow_forward</span>
+                <span className="material-symbols-outlined">arrow_forward</span>
               </ReservationButton>
             ) : null}
           </StyledLink>
@@ -174,10 +174,10 @@ const ComunityPage = () => {
         <VideoContent>
           <iframe
             src={youtubeUrl} // 수업 영상 유튜브 링크
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
           />
         </VideoContent>
       </MiddleSectionSecond>
@@ -199,7 +199,7 @@ const ComunityPage = () => {
       <MiddleSectionFourth>
         <MiddleSectionSubtitle>OUR PROGRAM CLASS</MiddleSectionSubtitle>
         <MiddleSectionTitle>수업 강사</MiddleSectionTitle>
-        <TeacherContainer rowCount={Math.ceil(teacherDataArr.length / 4)}>
+        <TeacherContainer>
           {teacherDataArr.length > 0
             ? teacherDataArr.map((el) => {
                 const { id, name, introduce, profileImg } = el;

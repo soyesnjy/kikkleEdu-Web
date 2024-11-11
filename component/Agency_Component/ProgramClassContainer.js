@@ -96,7 +96,7 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
   return (
     <Container>
       <ProgramContainer
-        dataLength={classDataArr.length}
+        length={classDataArr.length}
         ref={containerRef}
         onMouseDown={onDragStart}
         onMouseMove={onDragMove}
@@ -108,7 +108,7 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
       >
         {!mobileFlag && (
           <Button onClick={scrollLeftHandler} dir={'pre'}>
-            <span class="material-symbols-outlined">arrow_back</span>
+            <span className="material-symbols-outlined">arrow_back</span>
           </Button>
         )}
         {classDataArr.map((el) => {
@@ -116,7 +116,7 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
           return (
             <ProgramContentContainer
               key={idx}
-              imgPath={imgPath}
+              imgpath={imgPath}
               onClick={() => {
                 if (dragDistance < MIN_DRAG_DISTANCE) {
                   router.push(routePath); // 드래그가 짧으면 클릭으로 처리
@@ -129,7 +129,7 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
         })}
         {!mobileFlag && (
           <Button onClick={scrollRightHandler} dir={'next'}>
-            <span class="material-symbols-outlined">arrow_forward</span>
+            <span className="material-symbols-outlined">arrow_forward</span>
           </Button>
         )}
       </ProgramContainer>
@@ -165,8 +165,7 @@ const Container = styled.div`
 const ProgramContainer = styled.div`
   width: 80vw;
   display: flex;
-  justify-content: ${(props) =>
-    props.dataLength >= 4 ? 'flex-start' : 'center'};
+  justify-content: ${(props) => (props.length >= 4 ? 'flex-start' : 'center')};
   align-items: center;
   overflow-x: hidden;
 
@@ -198,7 +197,7 @@ const ProgramContentContainer = styled.div`
       rgba(0, 0, 0, 1) 10%,
       rgba(0, 0, 0, 0) 30%
     ),
-    url(${(props) => props.imgPath || 'none'});
+    url(${(props) => props.imgpath || 'none'});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

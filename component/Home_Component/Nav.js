@@ -208,7 +208,7 @@ export default function Nav() {
   return (
     <>
       {!mobileFlag ? (
-        <NavContainer show={showNavbar}>
+        <NavContainer>
           <Link href="/" passHref>
             <Image
               src="/src/Home_IMG/Nav_IMG/Home_Nav_Logo_IMG.png"
@@ -256,7 +256,7 @@ export default function Nav() {
           )}
         </NavContainer>
       ) : (
-        <NavContainer show={showNavbar}>
+        <NavContainer>
           <Link href="/" passHref onClick={() => setIsOpen(false)}>
             <Image
               src="/src/Home_IMG/Nav_IMG/Home_Nav_Logo_IMG.png"
