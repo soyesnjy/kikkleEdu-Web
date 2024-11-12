@@ -23,16 +23,16 @@ const TeacherListPage = () => {
         .then((res) => res.data.data)
         .then((data) => {
           // console.log(data);
-          setTeacherDataArr([
-            ...data.map((el) => {
-              return {
-                id: el.kk_teacher_idx,
-                name: el.kk_teacher_name,
-                introduce: el.kk_teacher_introduction,
-                profileImg: el.kk_teacher_profileImg_path,
-              };
-            }),
-          ]);
+          const tmpArr = data.map((el) => {
+            return {
+              id: el.kk_teacher_idx,
+              name: el.kk_teacher_name,
+              introduce: el.kk_teacher_introduction,
+              profileImg: el.kk_teacher_profileImg_path,
+            };
+          });
+          setTeacherDataArr([...tmpArr]);
+          localStorage.setItem('teacherDataArr', JSON.stringify(tmpArr));
         })
         .catch((err) => console.error(err));
     }
@@ -54,16 +54,16 @@ const TeacherListPage = () => {
       handleTeacherGet({ classTag: teacherClass })
         .then((res) => res.data.data)
         .then((data) => {
-          setTeacherDataArr([
-            ...data.map((el) => {
-              return {
-                id: el.kk_teacher_idx,
-                name: el.kk_teacher_name,
-                introduce: el.kk_teacher_introduction,
-                profileImg: el.kk_teacher_profileImg_path,
-              };
-            }),
-          ]);
+          const tmpArr = data.map((el) => {
+            return {
+              id: el.kk_teacher_idx,
+              name: el.kk_teacher_name,
+              introduce: el.kk_teacher_introduction,
+              profileImg: el.kk_teacher_profileImg_path,
+            };
+          });
+          setTeacherDataArr([...tmpArr]);
+          localStorage.setItem('teacherDataArr', JSON.stringify(tmpArr));
         })
         .catch((err) => console.error(err));
     }

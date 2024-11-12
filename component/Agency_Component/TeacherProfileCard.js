@@ -34,9 +34,12 @@ export default TeacherProfileCard;
 const Wrapper = styled.div`
   position: relative;
   width: 300px;
-  height: 300px;
+  height: 350px;
+
   border-radius: 15px;
+
   overflow: hidden;
+
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 */
   background-color: #cacaca;
 
@@ -44,13 +47,13 @@ const Wrapper = styled.div`
 
   @media (max-width: 768px) {
     width: 160px;
-    height: 170px;
+    height: 200px;
   }
 `;
 
 const StyledImage = styled(Image)`
   opacity: 0.7;
-  z-index: -1; /* 이미지가 가장 아래에 위치하도록 */
+  z-index: 0; /* 이미지가 가장 아래에 위치하도록 */
 `;
 
 const Content = styled.div`
@@ -75,8 +78,6 @@ const Content = styled.div`
   align-items: flex-start;
 
   gap: 1rem;
-
-  z-index: 2;
 
   @media (max-width: 768px) {
     min-height: 30px;

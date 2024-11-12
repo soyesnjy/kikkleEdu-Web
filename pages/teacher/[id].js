@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useRecoilState } from 'recoil';
 import { mobile, log } from '@/store/state';
 import EndSection from '@/component/Home_Component/EndSection';
+import ProgramTeacherContainer from '@/component/Teacher_Componet/ProgramTeacherContainer';
 
 const dummyData = {};
 
@@ -27,8 +28,20 @@ const TeacherDetailPage = () => {
   const [data, setData] = useState(dummyData);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
   const [login, setLogin] = useRecoilState(log);
+  const [teacherDataArr, setTeacherDataArr] = useState([]);
 
-  const [profileImgSrc, setProfileImgSrc] = useState(ramdomDefaultImg());
+  const [profileImgSrc, setProfileImgSrc] = useState('');
+
+  useEffect(() => {
+    if (localStorage.getItem('teacherDataArr')) {
+      setTeacherDataArr([
+        ...JSON.parse(localStorage.getItem('teacherDataArr')),
+      ]);
+    }
+    // return () => {
+    //   localStorage.removeItem('teacherDataArr');
+    // };
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -53,7 +66,7 @@ const TeacherDetailPage = () => {
   useEffect(() => {
     if (data.kk_teacher_profileImg_path) {
       setProfileImgSrc(data.kk_teacher_profileImg_path);
-    }
+    } else setProfileImgSrc(ramdomDefaultImg());
   }, [data.kk_teacher_profileImg_path]);
 
   // const handleGoBack = () => {
@@ -83,11 +96,6 @@ const TeacherDetailPage = () => {
                 : `강사 ${data.kk_teacher_name}입니다!`}
             </MiddleDescription>
           </MiddleTextContainer>
-
-          {/* <MiddleTextContainer>
-            <MiddleSubtitleSmall>연락처</MiddleSubtitleSmall>
-            <MiddleDescription>{data.kk_teacher_phoneNum}</MiddleDescription>
-          </MiddleTextContainer> */}
 
           {mobileFlag && (
             <Image
@@ -129,6 +137,7 @@ const TeacherDetailPage = () => {
             </MiddleDescription>
           </MiddleTextContainer>
         </MiddleContainer>
+
         {!mobileFlag && (
           <MiddleProfileImgContainer>
             <Image
@@ -145,6 +154,14 @@ const TeacherDetailPage = () => {
           </MiddleProfileImgContainer>
         )}
       </MiddleSection>
+      <TeacherListSection>
+        <MiddleSubtitleSmall>강사 리스트</MiddleSubtitleSmall>
+      </TeacherListSection>
+      <ProgramTeacherContainer
+        teacherDataArr={teacherDataArr}
+        mobileFlag={mobileFlag}
+      />
+
       {/* 엔드 섹션 */}
       <EndSection
         Title={`For our child's healthy body \n and heart happiness`}
@@ -166,6 +183,10 @@ const MainContainer = styled.div`
   align-items: center;
 
   gap: 3rem;
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `;
 
 const HeaderSection = styled.section`
@@ -333,6 +354,8 @@ const MiddleSubtitleSmall = styled.h2`
   font-size: 1.5rem;
   font-family: Pretendard;
   font-weight: 700;
+
+  align-self: flex-start;
 `;
 
 const MiddleDescription = styled.p`
@@ -364,6 +387,26 @@ const MiddleProfileImgContainer = styled.div`
   align-items: flex-start;
 
   gap: 3rem;
+`;
+
+const TeacherListSection = styled.div`
+  width: 80vw;
+  padding: 0 4rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 100vw;
+    padding: 2rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+  }
 `;
 
 export default TeacherDetailPage;

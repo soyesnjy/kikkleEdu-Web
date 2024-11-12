@@ -45,6 +45,8 @@ const TopButtonContainer = styled.div`
   position: fixed; // 화면에 요소 고정
   bottom: 5%;
   right: 2%;
+
+  z-index: 100;
 `;
 
 const TopButtonWrap = styled.div`
