@@ -145,7 +145,10 @@ export default function Nav() {
       localStorage.removeItem('agencyType');
       setAgencyType('');
       localStorage.removeItem('userIdx');
-      router.push('/');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('activeTab');
+      localStorage.removeItem('teacherDataArr');
+      router.replace('/');
     });
   }, [router, setLogin]);
 
@@ -182,6 +185,7 @@ export default function Nav() {
           localStorage.removeItem('userIdx');
           localStorage.removeItem('refreshToken');
           localStorage.removeItem('activeTab');
+          localStorage.removeItem('teacherDataArr');
           setIsOpen(false);
 
           router.push('/');
