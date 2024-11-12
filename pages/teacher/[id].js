@@ -9,7 +9,15 @@ import { mobile, log } from '@/store/state';
 import EndSection from '@/component/Home_Component/EndSection';
 import ProgramTeacherContainer from '@/component/Teacher_Componet/ProgramTeacherContainer';
 
-const dummyData = {};
+const dummyData = {
+  kk_teacher_name: '',
+  kk_teacher_introduction: '미승인처리 되었거나 존재하지 않는 강사 정보 입니다',
+  kk_teacher_education: '',
+  kk_teacher_history: '',
+  kk_teacher_location: '',
+  kk_teacher_dayofweek: '',
+  kk_teacher_class_titles: '',
+};
 
 // Default Profile Img return Method
 const ramdomDefaultImg = () => {
@@ -25,7 +33,7 @@ const ramdomDefaultImg = () => {
 const TeacherDetailPage = () => {
   const router = useRouter();
   const { id } = router.query; // URL의 동적 파라미터를 가져옴
-  const [data, setData] = useState(dummyData);
+  const [data, setData] = useState({});
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
   const [login, setLogin] = useRecoilState(log);
   const [teacherDataArr, setTeacherDataArr] = useState([]);
@@ -48,7 +56,12 @@ const TeacherDetailPage = () => {
       handleTeacherGet({ teacherIdx: id })
         .then((res) => res.data)
         .then((data) => {
-          setData(data.data[0]);
+          if (data.data.length) setData(data.data[0]);
+          else setData(dummyData);
+        })
+        .catch((err) => {
+          console.log(err);
+          setData(dummyData);
         });
     }
   }, [id]);
@@ -64,10 +77,10 @@ const TeacherDetailPage = () => {
   }, [login]);
 
   useEffect(() => {
-    if (data.kk_teacher_profileImg_path) {
+    if (data?.kk_teacher_profileImg_path) {
       setProfileImgSrc(data.kk_teacher_profileImg_path);
     } else setProfileImgSrc(ramdomDefaultImg());
-  }, [data.kk_teacher_profileImg_path]);
+  }, [data]);
 
   // const handleGoBack = () => {
   //   router.push('/teacher'); // 강사 List 페이지로 이동
@@ -89,11 +102,11 @@ const TeacherDetailPage = () => {
         <MiddleContainer>
           <MiddleTitle>KK EDU - ballet</MiddleTitle>
           <MiddleTextContainer>
-            <MiddleSubtitle>강사 - {data.kk_teacher_name}</MiddleSubtitle>
+            <MiddleSubtitle>강사 - {data?.kk_teacher_name}</MiddleSubtitle>
             <MiddleDescription>
-              {data.kk_teacher_introduction
-                ? data.kk_teacher_introduction
-                : `강사 ${data.kk_teacher_name}입니다!`}
+              {data?.kk_teacher_introduction
+                ? data?.kk_teacher_introduction
+                : `강사 ${data?.kk_teacher_name}입니다!`}
             </MiddleDescription>
           </MiddleTextContainer>
 
@@ -114,26 +127,26 @@ const TeacherDetailPage = () => {
           <MiddleTextContainer>
             <MiddleSubtitleSmall>경력 및 학력</MiddleSubtitleSmall>
             <MiddleDescription>
-              {data.kk_teacher_education}
+              {data?.kk_teacher_education}
               <br />
-              {data.kk_teacher_history}
+              {data?.kk_teacher_history}
             </MiddleDescription>
           </MiddleTextContainer>
 
           <MiddleTextContainer>
             <MiddleSubtitleSmall>수업 가능 지역</MiddleSubtitleSmall>
-            <MiddleDescription>{data.kk_teacher_location}</MiddleDescription>
+            <MiddleDescription>{data?.kk_teacher_location}</MiddleDescription>
           </MiddleTextContainer>
 
           <MiddleTextContainer>
             <MiddleSubtitleSmall>수업 가능 일정</MiddleSubtitleSmall>
-            <MiddleDescription>{data.kk_teacher_dayofweek}</MiddleDescription>
+            <MiddleDescription>{data?.kk_teacher_dayofweek}</MiddleDescription>
           </MiddleTextContainer>
 
           <MiddleTextContainer>
             <MiddleSubtitleSmall>가능 수업</MiddleSubtitleSmall>
             <MiddleDescription>
-              {data.kk_teacher_class_titles}
+              {data?.kk_teacher_class_titles}
             </MiddleDescription>
           </MiddleTextContainer>
         </MiddleContainer>
