@@ -69,6 +69,13 @@ const classDefaultArr = [
     routePath: '/',
     tagColor: '#7067AA',
   },
+  {
+    imgPath: '/src/Shop_IMG/Shop_Goods_GripTok_IMG_.png',
+    title: `그립톡`,
+    price: 5000,
+    routePath: '/',
+    tagColor: '#9757D7',
+  },
 ];
 
 const Shop = () => {
