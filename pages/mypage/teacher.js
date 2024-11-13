@@ -87,8 +87,8 @@ const MyPage = () => {
     }
     // 기관 로그인 진입 제한
     const agencyType = localStorage.getItem('agencyType');
-    if (!agencyTypeArr.includes(agencyType)) {
-      router.replace('/mypage/teacher');
+    if (agencyTypeArr.includes(agencyType)) {
+      router.replace('/mypage');
       return;
     }
 
