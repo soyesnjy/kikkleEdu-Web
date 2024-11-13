@@ -29,7 +29,7 @@ const possDayArr = ['월', '화', '수', '목', '금', '토', '일'];
 const partTimeArr = [
   { title: '오전\n(10:00~12:00)', value: '오전' },
   { title: '오후\n(1:00~5:00)', value: '오후' },
-  { title: '야간\n(5:00~10:00)', value: '야간' },
+  { title: '야간\n(6:00~10:00)', value: '야간' },
 ];
 const agencyTypeArr = [
   '유치원',

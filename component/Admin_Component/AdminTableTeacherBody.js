@@ -7,7 +7,7 @@ import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
 const partTimeArr = [
   { title: '오전 (10:00~12:00)', value: '오전' },
   { title: '오후 (1:00~5:00)', value: '오후' },
-  { title: '야간 (5:00~10:00)', value: '야간' },
+  { title: '야간 (6:00~10:00)', value: '야간' },
 ];
 
 const AdminTableTeacherBody = ({ data }) => {
