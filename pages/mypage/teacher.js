@@ -75,7 +75,7 @@ const MyPage = () => {
       })
     );
     // 화면 새로고침
-    router.push('/');
+    // router.push('/');
   };
 
   useEffect(() => {

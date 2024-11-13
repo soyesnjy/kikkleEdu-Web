@@ -15,12 +15,32 @@ const TeacherListPage = () => {
 
   const router = useRouter();
 
+  // 로그인 세션 Clear 메서드
+  const loginSessionClear = () => {
+    localStorage.setItem(
+      'log',
+      JSON.stringify({
+        expires: 0, // 로그인 세션 24시간 설정
+      })
+    );
+    // 화면 새로고침
+    router.push('/');
+  };
+
   // 강사 List 조회
   useEffect(() => {
     if (!teacherDataArr.length) {
       // Class Read API 호출 메서드
-      handleTeacherGet({ classTag: teacherClass }) // 추후 기관 타입 recoil 전역변수 넣기
-        .then((res) => res.data.data)
+      handleTeacherGet({ classTag: teacherClass })
+        .then((res) => {
+          // 미승인 회원 처리
+          if (res.status !== 200) {
+            alert(res.message);
+            if (res.status === 401) loginSessionClear();
+            return;
+          }
+          return res.data.data;
+        })
         .then((data) => {
           // console.log(data);
           const tmpArr = data.map((el) => {
