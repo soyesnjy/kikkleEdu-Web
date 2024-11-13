@@ -24,21 +24,33 @@ const TeacherListPage = () => {
       })
     );
     // 화면 새로고침
-    router.push('/');
+    router.push('/login');
   };
 
   // 강사 List 조회
   useEffect(() => {
+    // 로그인 시 메인 페이지로 이동
+    const loginSession = JSON.parse(localStorage.getItem('log'));
+    if (!loginSession) {
+      router.push('/login');
+      return;
+    }
+
     if (!teacherDataArr.length) {
       // Class Read API 호출 메서드
       handleTeacherGet({ classTag: teacherClass })
         .then((res) => {
           // 미승인 회원 처리
-          if (res.status !== 200) {
+          if (res.status === 401) {
             alert(res.message);
-            if (res.status === 401) loginSessionClear();
+            loginSessionClear();
             return;
           }
+          // if (res.status !== 200) {
+          //   // alert(res.message);
+          //   if (res.status === 401) loginSessionClear();
+          //   return;
+          // }
           return res.data.data;
         })
         .then((data) => {
@@ -57,16 +69,6 @@ const TeacherListPage = () => {
         .catch((err) => console.error(err));
     }
   }, []);
-
-  // 기능 잠금
-  useEffect(() => {
-    // 로그인 시 메인 페이지로 이동
-    const loginSession = JSON.parse(localStorage.getItem('log'));
-    if (!loginSession) {
-      router.replace('/login');
-      return;
-    }
-  }, [login]);
 
   // 강사 태그 조회
   useEffect(() => {
