@@ -42,7 +42,7 @@ const dummyTableData = [
 ];
 
 const Administor = () => {
-  const [agencyType, setAgencyType] = useRecoilState(agencyClass);
+  // const [agencyType, setAgencyType] = useRecoilState(agencyClass);
   const [activeTab, setActiveTab] = useState('');
   const [tableData, setTableData] = useState(dummyTableData);
   const [name, setName] = useState('');
@@ -74,12 +74,23 @@ const Administor = () => {
     setData([...formattedData]);
   };
 
-  // 관리자 권한이 없을 경우 메인페이지로 이동
-  useEffect(() => {
-    if (localStorage.getItem('agencyType') !== 'admin') router.replace('/');
-  }, [agencyType]);
+  // // 관리자 권한이 없을 경우 메인페이지로 이동
+  // useEffect(() => {
+  //   if (localStorage.getItem('agencyType') !== 'admin') router.replace('/');
+  // }, [agencyType]);
 
   useEffect(() => {
+    // 관리자 권한이 없을 경우 메인페이지로 이동
+    if (
+      localStorage.getItem('log') === null ||
+      localStorage.getItem('agencyType') === null ||
+      localStorage.getItem('agencyType') !== 'admin'
+    ) {
+      console.log(localStorage.getItem('log'));
+      router.replace('/');
+      return;
+    }
+
     if (localStorage.getItem('activeTab'))
       setActiveTab(localStorage.getItem('activeTab'));
     else setActiveTab('attend');
