@@ -100,6 +100,7 @@ const Message = styled.p`
   font-family: Pretendard;
   font-weight: 400;
   font-size: 12px;
+  text-align: left;
 
   @media (max-width: 768px) {
     font-size: 10px;
