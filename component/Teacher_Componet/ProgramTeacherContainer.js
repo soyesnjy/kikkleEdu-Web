@@ -233,10 +233,14 @@ const DotContainer = styled.div`
 
   @media (max-width: 768px) {
     width: 90vw;
+    min-height: 2rem;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    justify-content: center;
+
+    /* display: grid;
+    grid-template-columns: repeat(12, 2fr); */
   }
 `;
 
