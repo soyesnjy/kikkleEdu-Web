@@ -3,6 +3,20 @@ import styled from 'styled-components';
 import { handleSignupDelete, handleSignupUpdate } from '@/fetchAPI/signupAPI';
 import Swal from 'sweetalert2';
 
+const formatPhoneNumber = (phone) => {
+  // `+82`로 시작하지 않으면 그대로 반환
+  if (!phone?.startsWith('+82')) return phone;
+
+  // 국가번호(+82) 제거하고 나머지 번호만 추출
+  const numbers = phone.slice(3);
+
+  // 뒤에서부터 8자리 추출 (010-xxxx-xxxx 형식)
+  const lastEightDigits = numbers.slice(-8);
+
+  // 4자리씩 나누어 형식에 맞게 조합
+  return `010-${lastEightDigits.slice(0, 4)}-${lastEightDigits.slice(4)}`;
+};
+
 const AdminTableAgencyBody = ({ data }) => {
   const [updateFlag, setUpdateFlag] = useState(false);
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
@@ -112,7 +126,7 @@ const AdminTableAgencyBody = ({ data }) => {
           </TableCell>
           <TableCell>{data.kk_agency_name}</TableCell>
           <TableCell>{data.kk_agency_address}</TableCell>
-          <TableCell>{data.kk_agency_phoneNum}</TableCell>
+          <TableCell>{formatPhoneNumber(data.kk_agency_phoneNum)}</TableCell>
           <TableCell>{data.kk_agency_type}</TableCell>
           {/* <TableCell>
             <a href={data.kk_agency_file_path}>Download</a>
@@ -156,7 +170,7 @@ const AdminTableAgencyBody = ({ data }) => {
           </TableCell>
           <TableCell>
             <StyledInput
-              value={phoneNum}
+              value={formatPhoneNumber(phoneNum)}
               onChange={(e) => setPhoneNum(e.target.value)}
             />
           </TableCell>
