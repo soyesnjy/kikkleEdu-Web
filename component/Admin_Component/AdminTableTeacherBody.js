@@ -10,7 +10,25 @@ const partTimeArr = [
   { title: '야간 (6:00~10:00)', value: '야간' },
 ];
 
-const AdminTableTeacherBody = ({ data }) => {
+const formatPhoneNumber = (phone) => {
+  // `+82`로 시작하지 않으면 그대로 반환
+  if (!phone?.startsWith('+82')) return phone;
+
+  // 국가번호(+82) 제거하고 나머지 번호만 추출
+  const numbers = phone.slice(3);
+
+  // 뒤에서부터 8자리 추출 (010-xxxx-xxxx 형식)
+  const lastEightDigits = numbers.slice(-8);
+
+  // 4자리씩 나누어 형식에 맞게 조합
+  return `010-${lastEightDigits.slice(0, 4)}-${lastEightDigits.slice(4)}`;
+};
+
+// 사용 예시
+console.log(formatPhoneNumber('+821066980509')); // '010-6698-0509'
+console.log(formatPhoneNumber('+8223034420')); // '010-3442-4420'
+
+const AdminTableTeacherBody = ({ data, number }) => {
   const [updateFlag, setUpdateFlag] = useState(false);
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
 
@@ -223,7 +241,7 @@ const AdminTableTeacherBody = ({ data }) => {
           </TableCell>
           <TableCell>{data.kk_teacher_name}</TableCell>
           <TableCell>{data.kk_teacher_introduction}</TableCell>
-          <TableCell>{data.kk_teacher_phoneNum}</TableCell>
+          <TableCell>{formatPhoneNumber(data.kk_teacher_phoneNum)}</TableCell>
           <TableCell>
             {data.kk_teacher_profileImg_path ? (
               <a href={data.kk_teacher_profileImg_path} target="_blank">
@@ -281,7 +299,7 @@ const AdminTableTeacherBody = ({ data }) => {
           </TableCell>
           <TableCell>
             <StyledInput
-              value={phoneNum}
+              value={formatPhoneNumber(phoneNum)}
               onChange={(e) => setPhoneNum(e.target.value)}
             />
           </TableCell>
