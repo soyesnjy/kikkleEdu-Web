@@ -506,7 +506,7 @@ export default function Signup() {
                     }}
                   />
                   <StyledPhoneInput
-                    placeholder="전화 번호"
+                    placeholder="전화 번호 (010-0000-0000)"
                     value={phoneNumber}
                     onChange={setPhoneNumber}
                     defaultCountry="KR"
@@ -814,7 +814,7 @@ export default function Signup() {
                     }}
                   />
                   <StyledPhoneInput
-                    placeholder="전화 번호"
+                    placeholder="전화 번호 (010-0000-0000)"
                     value={phoneNumberA}
                     onChange={setPhoneNumberA}
                     defaultCountry="KR"
