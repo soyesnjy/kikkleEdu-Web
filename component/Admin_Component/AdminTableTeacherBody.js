@@ -274,7 +274,7 @@ const AdminTableTeacherBody = ({ data }) => {
             />
           </TableCell>
           <TableCell>
-            <StyledInput
+            <StyledTextArea
               value={introduce}
               onChange={(e) => setIntroduce(e.target.value)}
             />
@@ -334,13 +334,13 @@ const AdminTableTeacherBody = ({ data }) => {
             </CheckboxGroup>
           </TableCell>
           <TableCell>
-            <StyledInput
+            <StyledTextArea
               value={history}
               onChange={(e) => setHistory(e.target.value)}
             />
           </TableCell>
           <TableCell>
-            <StyledInput
+            <StyledTextArea
               value={education}
               onChange={(e) => setEducation(e.target.value)}
             />
@@ -428,6 +428,10 @@ const Button = styled.button`
 
 const StyledInput = styled.input`
   max-width: 7rem;
+`;
+
+const StyledTextArea = styled.textarea`
+  max-width: 9rem;
 `;
 
 const PreviewImage = styled.img`
