@@ -59,10 +59,6 @@ const AdminTableTeacherBody = ({ data }) => {
     setApproveStatus(data.kk_teacher_approve_status);
   }, [data]);
 
-  // useEffect(() => {
-  //   console.log(typeof approveStatus);
-  // }, [approveStatus]);
-
   // profileImg 변경 핸들러
   const handleProfileImgChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -244,19 +240,23 @@ const AdminTableTeacherBody = ({ data }) => {
           <TableCell>
             {data.kk_teacher_profileImg_path ? (
               <ShowContainer>
-                <StyledA
+                <StyledA href={data.kk_teacher_profileImg_path} target="_blank">
+                  Link
+                </StyledA>
+                <ShowButton
                   // href={data.kk_teacher_profileImg_path}
                   target="_blank"
                   onClick={() => setIsOpen(!isOpen)}
                 >
-                  Show
-                </StyledA>
+                  {isOpen ? 'close' : 'open'}
+                </ShowButton>
                 {isOpen && (
                   <Image
                     src={data.kk_teacher_profileImg_path}
                     alt="Icon"
                     width={56}
                     height={56}
+                    // onLoadingComplete={}
                     style={{ maxWidth: '100%', height: 'auto' }}
                   />
                 )}
@@ -450,10 +450,19 @@ const ShowContainer = styled.div`
   gap: 0.5rem;
 `;
 
-const StyledA = styled.button`
+const StyledA = styled.a`
   text-decoration: none;
 
   font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 700;
+  text-align: left;
+`;
+
+const ShowButton = styled.button`
+  text-decoration: none;
+
+  font-size: 0.7rem;
   font-family: Pretendard;
   font-weight: 700;
   text-align: left;
