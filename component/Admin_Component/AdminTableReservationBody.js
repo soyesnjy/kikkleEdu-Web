@@ -39,20 +39,21 @@ const AdminTableReservationBody = ({ data }) => {
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
   const [isOpen, setIsOpen] = useState(false);
 
+  // const [name, setName] = useState('');
+  // const [partTime, setPartTime] = useState('');
+  // const [phoneNum, setPhoneNum] = useState('');
+
   const [reservationIdx, setReservationIdx] = useState(0);
-  const [name, setName] = useState('');
-  const [phoneNum, setPhoneNum] = useState('');
   const [dateArr, setDateArr] = useState([]);
   const [dayArr, setDayArr] = useState([]);
-  const [partTime, setPartTime] = useState('');
   const [teacherArr, setTeacherArr] = useState([]);
   const [matchingTeacher, setMatchingTeacher] = useState(null);
   const [approveStatus, setApproveStatus] = useState(-1);
 
   useEffect(() => {
     setReservationIdx(data.kk_reservation_idx);
-    setName(data.kk_agency_name);
-    setPhoneNum(data.kk_agency_phoneNum);
+    // setName(data.kk_agency_name);
+    // setPhoneNum(data.kk_agency_phoneNum);
     if (data.kk_reservation_date)
       setDateArr(data.kk_reservation_date.split('/')); // 예약 날짜 Array
     if (data.teacher_info)
@@ -65,7 +66,7 @@ const AdminTableReservationBody = ({ data }) => {
           return { idx: Number(id_value), name: name_value };
         })
       );
-    setPartTime(data.kk_reservation_time);
+    // setPartTime(data.kk_reservation_time);
     setMatchingTeacher(data.kk_teacher_idx);
     setApproveStatus(data.kk_reservation_approve_status);
   }, [data]);
@@ -175,7 +176,7 @@ const AdminTableReservationBody = ({ data }) => {
           <TableCell>{data.kk_agency_phoneNum}</TableCell>
           <TableCell>{data.kk_class_title}</TableCell>
           <TableCell>
-            {dateArr[0]} ~ {dateArr[dateArr.length - 1]} -{' '}
+            [ {dateArr[0]} ~ {dateArr[dateArr.length - 1]} ] -{' '}
             <button
               onClick={(e) => {
                 e.preventDefault();
