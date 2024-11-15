@@ -24,11 +24,7 @@ const formatPhoneNumber = (phone) => {
   return `010-${lastEightDigits.slice(0, 4)}-${lastEightDigits.slice(4)}`;
 };
 
-// 사용 예시
-console.log(formatPhoneNumber('+821066980509')); // '010-6698-0509'
-console.log(formatPhoneNumber('+8223034420')); // '010-3442-4420'
-
-const AdminTableTeacherBody = ({ data, number }) => {
+const AdminTableTeacherBody = ({ data }) => {
   const [updateFlag, setUpdateFlag] = useState(false);
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
 

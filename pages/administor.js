@@ -46,7 +46,7 @@ const Administor = () => {
   const [activeTab, setActiveTab] = useState('');
   const [tableData, setTableData] = useState(dummyTableData);
   const [name, setName] = useState('');
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(-1);
   const [lastPageNum, setLastPageNum] = useState(1);
   const [data, setData] = useState([]); // 파일 데이터
 
@@ -91,53 +91,75 @@ const Administor = () => {
       return;
     }
 
-    if (localStorage.getItem('activeTab'))
-      setActiveTab(localStorage.getItem('activeTab'));
-    else setActiveTab('attend');
+    // localStorage 값으로 변경
+    setActiveTab(localStorage.getItem('activeTab') || 'attend');
+
+    setPage(Number(localStorage.getItem('page')) || 1);
 
     return () => {
       localStorage.removeItem('activeTab');
+      localStorage.removeItem('page');
     };
   }, []);
 
   // 일반 조회 (탭 || 페이지)
   useEffect(() => {
-    if (activeTab === 'teacher') {
-      handleSignupGet({ userClass: activeTab, name, pageNum: page })
-        .then((res) => res.data)
-        .then((data) => {
-          setTableData(data.data);
-          setLastPageNum(data.lastPageNum);
-        });
-    } else if (activeTab === 'agency') {
-      handleSignupGet({ userClass: activeTab, pageNum: page })
-        .then((res) => res.data)
-        .then((data) => {
-          setTableData(data.data);
-          setLastPageNum(data.lastPageNum);
-        });
-    } else if (activeTab === 'reservation') {
-      handleReservationGet({ userClass: activeTab, date: name, pageNum: page })
-        .then((res) => res.data)
-        .then((data) => {
-          setTableData(data.data);
-          setLastPageNum(data.lastPageNum);
-        });
-    } else if (activeTab === 'attend') {
-      handleMypageTeacherAttendGet({
-        // adminIdx: localStorage.getItem('userIdx'),
-        name,
-        pageNum: page,
-      })
-        .then((res) => res.data)
-        .then((data) => {
-          console.log(data);
-          setTableData(data.data);
-          setLastPageNum(data.lastPageNum);
-        });
-    } else initMusicDirectory(activeTab);
-    if (localStorage.getItem('activeTab') !== activeTab) setPage(1); // 탭 변경 시 페이지 초기화
-    localStorage.setItem('activeTab', activeTab);
+    // page 값이 Default가 아닐 경우에만 실행
+    if (page !== -1) {
+      // 강사 승인 요청 관리
+      if (activeTab === 'teacher') {
+        handleSignupGet({ userClass: activeTab, name, pageNum: page })
+          .then((res) => res.data)
+          .then((data) => {
+            setTableData(data.data);
+            setLastPageNum(data.lastPageNum);
+          });
+      }
+      // 기관 승인 요청 관리
+      else if (activeTab === 'agency') {
+        handleSignupGet({ userClass: activeTab, pageNum: page })
+          .then((res) => res.data)
+          .then((data) => {
+            setTableData(data.data);
+            setLastPageNum(data.lastPageNum);
+          });
+      }
+      // 기관 예약 요청 관리
+      else if (activeTab === 'reservation') {
+        handleReservationGet({
+          userClass: activeTab,
+          date: name,
+          pageNum: page,
+        })
+          .then((res) => res.data)
+          .then((data) => {
+            setTableData(data.data);
+            setLastPageNum(data.lastPageNum);
+          });
+      }
+      // 강사 출석 현황
+      else if (activeTab === 'attend') {
+        handleMypageTeacherAttendGet({
+          // adminIdx: localStorage.getItem('userIdx'),
+          name,
+          pageNum: page,
+        })
+          .then((res) => res.data)
+          .then((data) => {
+            setTableData(data.data);
+            setLastPageNum(data.lastPageNum);
+          });
+      }
+      // 미디어 서비스 관리 (음원, 영상, 강의계획서)
+      else initMusicDirectory(activeTab);
+      // 탭 변경 시 페이지 초기화
+      if (localStorage.getItem('activeTab') !== activeTab) {
+        setPage(1);
+        localStorage.setItem('page', 1);
+      }
+      // 탭 저장
+      localStorage.setItem('activeTab', activeTab);
+    }
   }, [activeTab, page]);
 
   // 검색 조회 (디바운싱 적용)

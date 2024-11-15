@@ -11,6 +11,7 @@ const Pagination = ({ page, setPage, lastPageNum }) => {
 
   const handleClick = (pageNum) => {
     setPage(pageNum);
+    localStorage.setItem('page', pageNum);
   };
 
   const handlePrevious = () => {
