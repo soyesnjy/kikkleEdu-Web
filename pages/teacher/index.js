@@ -17,27 +17,59 @@ const TeacherListPage = () => {
 
   // 로그인 세션 Clear 메서드
   const loginSessionClear = () => {
-    localStorage.setItem(
-      'log',
-      JSON.stringify({
-        expires: 0, // 로그인 세션 24시간 설정
-      })
-    );
-    // 화면 새로고침
-    router.push('/login');
+    const loginSession = localStorage.getItem('log');
+    if (loginSession) {
+      localStorage.setItem(
+        'log',
+        JSON.stringify({
+          expires: 0, // 로그인 세션 24시간 설정
+        })
+      );
+      router.back();
+    }
   };
 
   // 강사 List 조회
   useEffect(() => {
-    // 로그인 시 메인 페이지로 이동
+    // 미로그인 시 메인 페이지로 이동
     const loginSession = JSON.parse(localStorage.getItem('log'));
     if (!loginSession) {
       router.push('/login');
       return;
     }
 
-    if (!teacherDataArr.length) {
-      // Class Read API 호출 메서드
+    // if (!teacherDataArr.length) {
+    //   // Class Read API 호출 메서드
+    //   handleTeacherGet({ classTag: teacherClass })
+    //     .then((res) => {
+    //       // 미승인 회원 처리
+    //       if (res.status === 401) {
+    //         alert(res.message);
+    //         loginSessionClear();
+    //         return;
+    //       }
+    //       return res.data.data;
+    //     })
+    //     .then((data) => {
+    //       // console.log(data);
+    //       const tmpArr = data.map((el) => {
+    //         return {
+    //           id: el.kk_teacher_idx,
+    //           name: el.kk_teacher_name,
+    //           introduce: el.kk_teacher_introduction,
+    //           profileImg: el.kk_teacher_profileImg_path,
+    //         };
+    //       });
+    //       setTeacherDataArr([...tmpArr]);
+    //       localStorage.setItem('teacherDataArr', JSON.stringify(tmpArr));
+    //     })
+    //     .catch((err) => console.error(err));
+    // }
+  }, []);
+
+  // 강사 태그 조회
+  useEffect(() => {
+    if (!teacherDataArr.length && teacherClass) {
       handleTeacherGet({ classTag: teacherClass })
         .then((res) => {
           // 미승인 회원 처리
@@ -46,35 +78,8 @@ const TeacherListPage = () => {
             loginSessionClear();
             return;
           }
-          // if (res.status !== 200) {
-          //   // alert(res.message);
-          //   if (res.status === 401) loginSessionClear();
-          //   return;
-          // }
           return res.data.data;
         })
-        .then((data) => {
-          // console.log(data);
-          const tmpArr = data.map((el) => {
-            return {
-              id: el.kk_teacher_idx,
-              name: el.kk_teacher_name,
-              introduce: el.kk_teacher_introduction,
-              profileImg: el.kk_teacher_profileImg_path,
-            };
-          });
-          setTeacherDataArr([...tmpArr]);
-          localStorage.setItem('teacherDataArr', JSON.stringify(tmpArr));
-        })
-        .catch((err) => console.error(err));
-    }
-  }, []);
-
-  // 강사 태그 조회
-  useEffect(() => {
-    if (teacherClass) {
-      handleTeacherGet({ classTag: teacherClass })
-        .then((res) => res.data.data)
         .then((data) => {
           const tmpArr = data.map((el) => {
             return {

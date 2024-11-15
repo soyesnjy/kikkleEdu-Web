@@ -30,7 +30,7 @@ const agencyTypeArr = [
 ];
 
 const MyPage = () => {
-  const [activeTab, setActiveTab] = useState('attend');
+  const [activeTab, setActiveTab] = useState('');
   const [tableData, setTableData] = useState([]);
   const [page, setPage] = useState(1);
   const [lastPageNum, setLastPageNum] = useState(1);
@@ -68,14 +68,16 @@ const MyPage = () => {
 
   // 로그인 세션 Clear 메서드
   const loginSessionClear = () => {
-    localStorage.setItem(
-      'log',
-      JSON.stringify({
-        expires: 0, // 로그인 세션 24시간 설정
-      })
-    );
-    // 화면 새로고침
-    // router.push('/');
+    const loginSession = localStorage.getItem('log');
+    if (loginSession) {
+      localStorage.setItem(
+        'log',
+        JSON.stringify({
+          expires: 0, // 로그인 세션 24시간 설정
+        })
+      );
+      router.back();
+    }
   };
 
   useEffect(() => {
@@ -93,7 +95,9 @@ const MyPage = () => {
     }
 
     // activeTab 설정
-    setActiveTab(localStorage.getItem('activeTab') || 'attend');
+    if (localStorage.getItem('activeTab'))
+      setActiveTab(localStorage.getItem('activeTab'));
+    else setActiveTab('attend');
 
     return () => {
       localStorage.removeItem('activeTab');

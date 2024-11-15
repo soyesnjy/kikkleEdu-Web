@@ -83,17 +83,17 @@ export default function Nav() {
   };
 
   useEffect(() => {
-    const loginSession = localStorage.getItem('log');
-    // 로그인 세션 만료 처리
-    if (loginSession) {
-      const parsedSession = JSON.parse(loginSession);
-      if (new Date(parsedSession.expires) > new Date()) {
-        setLogin(true);
-      } else {
-        // 1시간 세션 만료 처리
-        handleSessionExpired();
-      }
-    }
+    // const loginSession = localStorage.getItem('log');
+    // // 로그인 세션 만료 처리
+    // if (loginSession) {
+    //   const parsedSession = JSON.parse(loginSession);
+    //   if (new Date(parsedSession.expires) > new Date()) {
+    //     setLogin(true);
+    //   } else {
+    //     // 1시간 세션 만료 처리
+    //     handleSessionExpired();
+    //   }
+    // }
     // Resize 상태 처리 (MobileFlag)
     const handleResize = () => {
       // 모바일 반응형 처리
@@ -126,6 +126,21 @@ export default function Nav() {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  // router 변경 시 로그인 만료 여부 체크
+  useEffect(() => {
+    const loginSession = localStorage.getItem('log');
+    // 로그인 세션 만료 처리
+    if (loginSession) {
+      const parsedSession = JSON.parse(loginSession);
+      if (new Date(parsedSession.expires) > new Date()) {
+        setLogin(true);
+      } else {
+        // 1시간 세션 만료 처리
+        handleSessionExpired();
+      }
+    }
+  }, [router]);
 
   // useCallback 적용. 불필요한 리렌더링 제거
   const handleSessionExpired = useCallback(() => {

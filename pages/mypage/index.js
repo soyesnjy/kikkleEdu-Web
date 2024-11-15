@@ -43,7 +43,7 @@ const agencyTypeArr = [
 ];
 
 const MyPage = () => {
-  const [activeTab, setActiveTab] = useState('reservation');
+  const [activeTab, setActiveTab] = useState('');
   const [tableData, setTableData] = useState(dummyTableData);
   const [page, setPage] = useState(1);
   const [lastPageNum, setLastPageNum] = useState(1);
@@ -73,15 +73,18 @@ const MyPage = () => {
     setData([...formattedData]);
   };
 
+  // 로그인 세션 Clear 메서드
   const loginSessionClear = () => {
-    localStorage.setItem(
-      'log',
-      JSON.stringify({
-        expires: 0, // 로그인 세션 24시간 설정
-      })
-    );
-    // 화면 새로고침
-    router.push('/');
+    const loginSession = localStorage.getItem('log');
+    if (loginSession) {
+      localStorage.setItem(
+        'log',
+        JSON.stringify({
+          expires: 0, // 로그인 세션 24시간 설정
+        })
+      );
+      router.back();
+    }
   };
 
   useEffect(() => {
@@ -116,10 +119,11 @@ const MyPage = () => {
       })
         .then((res) => res.data)
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setTableData(data.data);
           setLastPageNum(data.lastPageNum);
-        });
+        })
+        .catch((err) => console.log(err));
     } else if (activeTab === 'instructor') {
       handleMypageTeacherAttendGet({
         agencyIdx: localStorage.getItem('userIdx'),
@@ -127,10 +131,11 @@ const MyPage = () => {
       })
         .then((res) => res.data)
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setTableData(data.data);
           setLastPageNum(data.lastPageNum);
-        });
+        })
+        .catch((err) => console.log(err));
     } else initMusicDirectory(activeTab);
 
     if (localStorage.getItem('activeTab') !== activeTab) setPage(1); // 탭 변경 시 페이지 초기화
