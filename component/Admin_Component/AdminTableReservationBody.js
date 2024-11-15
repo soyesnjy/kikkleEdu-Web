@@ -225,7 +225,7 @@ const AdminTableReservationBody = ({ data }) => {
               <ReservationModalContentContainer>
                 <ReservationModalContentHeaderContainer>
                   <ReservationModalHeaderTitle>
-                    All Reservation Dates (총 {dateArr.length}일)
+                    {`All Reservation Dates\n(총 ${dateArr.length}일)`}
                   </ReservationModalHeaderTitle>
                   <CloseButton
                     onClick={(e) => {
@@ -397,6 +397,8 @@ const ReservationModalHeaderTitle = styled.span`
   font-weight: 700;
   font-size: 1.5rem;
   color: black;
+
+  white-space: pre;
 `;
 
 const CloseButton = styled.button`
