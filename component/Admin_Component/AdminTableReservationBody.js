@@ -71,6 +71,7 @@ const AdminTableReservationBody = ({ data }) => {
   }, [data]);
 
   useEffect(() => {
+    console.log(dateArr);
     if (dateArr.length) {
       setDayArr([...getUniqueWeekdays(dateArr)]);
     }
@@ -212,24 +213,26 @@ const AdminTableReservationBody = ({ data }) => {
             </ButtonContainer>
           </TableCell>
 
-          <ReservationModalContainer isOpen={isOpen}>
-            <ReservationModalContentContainer>
-              <ReservationModalContentHeaderContainer>
-                <ReservationModalHeaderTitle>
-                  All Reservation
-                </ReservationModalHeaderTitle>
-                <CloseButton
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setIsOpen(!isOpen);
-                  }}
-                >
-                  <CloseIcon />
-                </CloseButton>
-              </ReservationModalContentHeaderContainer>
-              <AdminCalendar dateArr={dateArr} />
-            </ReservationModalContentContainer>
-          </ReservationModalContainer>
+          {dayArr.length > 0 && (
+            <ReservationModalContainer isOpen={isOpen}>
+              <ReservationModalContentContainer>
+                <ReservationModalContentHeaderContainer>
+                  <ReservationModalHeaderTitle>
+                    All Reservation
+                  </ReservationModalHeaderTitle>
+                  <CloseButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsOpen(!isOpen);
+                    }}
+                  >
+                    <CloseIcon />
+                  </CloseButton>
+                </ReservationModalContentHeaderContainer>
+                <AdminCalendar dateArr={dateArr} />
+              </ReservationModalContentContainer>
+            </ReservationModalContainer>
+          )}
         </TableRow>
       ) : (
         <TableRow>

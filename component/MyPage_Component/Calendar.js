@@ -28,6 +28,7 @@ const Calendar = ({ setDate, date }) => {
 
   // 렌더링 시 date 갱신
   useEffect(() => {
+    console.log(date);
     setTmpDateArr([...date]);
   }, []);
 

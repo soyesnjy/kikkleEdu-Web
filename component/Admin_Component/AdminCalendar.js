@@ -29,6 +29,7 @@ const AdminCalendar = ({ dateArr }) => {
 
   // 렌더링 시 date 갱신
   useEffect(() => {
+    // console.log(dateArr);
     setTmpDateArr([...dateArr]);
   }, []);
 
@@ -78,7 +79,6 @@ const CalendarContainer = styled.div`
 
   .fc {
     width: 35vw;
-
     direction: ltr;
     text-align: center;
     margin: auto;
@@ -90,8 +90,6 @@ const CalendarContainer = styled.div`
     display: flex;
     justify-content: flex-start;
     align-items: center;
-
-    /* border: 1px solid black; */
   }
 
   .fc-toolbar-title {
@@ -101,8 +99,6 @@ const CalendarContainer = styled.div`
     padding: 10px 1rem;
     font-size: 1rem;
     font-family: AppleSDGothicNeoB00;
-
-    /* border: 1px solid black; */
   }
 
   .fc-prev-button,
@@ -112,14 +108,10 @@ const CalendarContainer = styled.div`
     color: #bdbdbd;
     font-size: 20px;
     cursor: pointer;
-
     padding: 0.2rem;
-
-    /* border: 1px solid black; */
   }
 
   .fc-daygrid-day,
-  .fc-col-header-cell,
   .fc-scrollgrid-sync-inner,
   .fc-scrollgrid,
   .fc-scrollgrid-section,
@@ -133,25 +125,20 @@ const CalendarContainer = styled.div`
     border: none;
   }
 
+  .fc-col-header-cell {
+    font-size: 1rem;
+    color: #888888;
+    font-weight: 700;
+    font-family: Pretendard;
+  }
+
   .fc-daygrid-day {
     background: none;
     padding: 6px;
   }
 
-  .fc-col-header {
-    display: none;
-  }
-
-  /* .fc-col-header-cell {
-    background: none;
-    font-size: 2rem;
-  } */
-
   .fc-daygrid-day-events {
     display: none;
-  }
-
-  .fc-day {
   }
 
   .fc-daygrid-day-frame {
@@ -161,23 +148,12 @@ const CalendarContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-
-    /* cursor: pointer; */
     cursor: auto;
   }
-
-  /* .fc-day-today .fc-daygrid-day-frame {
-    background-color: #9051ff;
-    color: #fff;
-  } */
 
   .fc-daygrid-day.fc-day-today {
     background-color: white;
   }
-
-  /* .fc-daygrid-day-frame:hover {
-    background-color: #e1bee7;
-  } */
 
   .fc-daygrid-day-number {
     width: 100px;
@@ -188,11 +164,6 @@ const CalendarContainer = styled.div`
     font-size: 1.4rem;
   }
 
-  .fc-daygrid-day-number:hover {
-    /* color: #56ccf2; */
-  }
-
-  /* 날짜 범위 강조 스타일 */
   .fc-daygrid-day-frame .highlighted-date-range {
     width: 100%;
     background: linear-gradient(90deg, #4b95a2, #50a58e);
@@ -216,8 +187,8 @@ const CalendarContainer = styled.div`
     }
 
     .fc-col-header-cell {
-      background-color: #f8f8f8;
       font-size: 1rem;
+      color: #888888;
     }
 
     .fc-daygrid-day-number {
@@ -227,12 +198,6 @@ const CalendarContainer = styled.div`
       font-size: 1rem;
       font-family: AppleSDGothicNeoB00;
       font-weight: 600;
-    }
-
-    .fc-daygrid-day-frame {
-    }
-
-    .fc-daygrid-day-frame .highlighted-date-range {
     }
   }
 `;
