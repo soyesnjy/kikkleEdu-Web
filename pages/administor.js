@@ -336,29 +336,38 @@ const Administor = () => {
             {/* Table Body */}
             {activeTab === 'teacher' && (
               <tbody>
-                {tableData.map((data, index) => (
-                  <AdminTableTeacherBody key={index} data={data} />
+                {tableData.map((data) => (
+                  <AdminTableTeacherBody
+                    key={data.kk_teacher_idx}
+                    data={data}
+                  />
                 ))}
               </tbody>
             )}
             {activeTab === 'agency' && (
               <tbody>
-                {tableData.map((data, index) => (
-                  <AdminTableAgencyBody key={index} data={data} />
+                {tableData.map((data) => (
+                  <AdminTableAgencyBody key={data.kk_agency_idx} data={data} />
                 ))}
               </tbody>
             )}
             {activeTab === 'reservation' && (
               <tbody>
-                {tableData.map((data, index) => (
-                  <AdminTableReservationBody key={index} data={data} />
+                {tableData.map((data) => (
+                  <AdminTableReservationBody
+                    key={data.kk_reservation_idx}
+                    data={data}
+                  />
                 ))}
               </tbody>
             )}
             {activeTab === 'attend' && (
               <tbody>
-                {tableData.map((data, index) => (
-                  <TeacherTableAttendBody key={index} data={data} />
+                {tableData.map((data) => (
+                  <TeacherTableAttendBody
+                    key={data.kk_attend_idx}
+                    data={data}
+                  />
                 ))}
               </tbody>
             )}
