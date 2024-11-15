@@ -93,7 +93,6 @@ const Administor = () => {
 
     // localStorage 값으로 변경
     setActiveTab(localStorage.getItem('activeTab') || 'attend');
-
     setPage(Number(localStorage.getItem('page')) || 1);
 
     return () => {

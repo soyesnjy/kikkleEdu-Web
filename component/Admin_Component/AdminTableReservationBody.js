@@ -5,6 +5,7 @@ import {
   handleReservationDelete,
 } from '@/fetchAPI/reservationAPI';
 import Swal from 'sweetalert2';
+import AdminCalendar from './AdminCalendar';
 
 const getUniqueWeekdays = (dateArr) => {
   const weekdays = ['월', '화', '수', '목', '금', '토', '일'];
@@ -36,6 +37,7 @@ const getUniqueWeekdays = (dateArr) => {
 const AdminTableReservationBody = ({ data }) => {
   const [updateFlag, setUpdateFlag] = useState(false);
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
+  const [isOpen, setIsOpen] = useState(false);
 
   const [reservationIdx, setReservationIdx] = useState(0);
   const [name, setName] = useState('');
@@ -172,7 +174,16 @@ const AdminTableReservationBody = ({ data }) => {
           <TableCell>{data.kk_agency_phoneNum}</TableCell>
           <TableCell>{data.kk_class_title}</TableCell>
           <TableCell>
-            {dateArr[0]} ~ {dateArr[dateArr.length - 1]}
+            {dateArr[0]} ~ {dateArr[dateArr.length - 1]} -{' '}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                // alert('개발중...');
+                setIsOpen(!isOpen);
+              }}
+            >
+              전체보기
+            </button>
           </TableCell>
           <TableCell>
             {data.kk_teacher_idx
@@ -200,6 +211,25 @@ const AdminTableReservationBody = ({ data }) => {
               <Button onClick={reservationDeleteHandler}>삭제</Button>
             </ButtonContainer>
           </TableCell>
+
+          <ReservationModalContainer isOpen={isOpen}>
+            <ReservationModalContentContainer>
+              <ReservationModalContentHeaderContainer>
+                <ReservationModalHeaderTitle>
+                  All Reservation
+                </ReservationModalHeaderTitle>
+                <CloseButton
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsOpen(!isOpen);
+                  }}
+                >
+                  <CloseIcon />
+                </CloseButton>
+              </ReservationModalContentHeaderContainer>
+              <AdminCalendar dateArr={dateArr} />
+            </ReservationModalContentContainer>
+          </ReservationModalContainer>
         </TableRow>
       ) : (
         <TableRow>
@@ -304,8 +334,89 @@ const Button = styled.button`
   padding: 0.2rem 0.4rem;
 `;
 
-const StyledInput = styled.input`
-  max-width: 7rem;
+const ReservationModalContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background: #1717174d;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 2;
+
+  display: ${(props) => (props.isOpen ? 'flex' : 'none')};
+  justify-content: center;
+  align-items: center;
+
+  gap: 1rem;
 `;
+
+const ReservationModalContentContainer = styled.div`
+  width: fit-content;
+  height: 80%;
+  background-color: white;
+  border-radius: 16px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  padding: 2rem;
+
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    height: 70%;
+    padding: 1rem;
+  }
+`;
+
+const ReservationModalContentHeaderContainer = styled.div`
+  width: 100%;
+
+  background-color: white;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+
+const ReservationModalHeaderTitle = styled.span`
+  font-family: Pretendard;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: black;
+`;
+
+const CloseButton = styled.button`
+  align-self: flex-end;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+`;
+
+const CloseIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M6 18L18 6M6 6l12 12"
+    />
+  </svg>
+);
+
+// const StyledInput = styled.input`
+//   max-width: 7rem;
+// `;
 
 export default AdminTableReservationBody;
