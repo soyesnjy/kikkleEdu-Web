@@ -5,13 +5,13 @@ import { useRouter } from 'next/router';
 import EndSection from '@/component/Home_Component/EndSection';
 import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
 
-import { useRecoilState } from 'recoil';
-import { log } from '@/store/state';
+// import { useRecoilState } from 'recoil';
+// import { log } from '@/store/state';
 
 const TeacherListPage = () => {
-  const [teacherClass, setTeacherClass] = useState('ballet');
+  const [teacherClass, setTeacherClass] = useState('');
   const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
-  const [login, setLogin] = useRecoilState(log);
+  // const [login, setLogin] = useRecoilState(log);
 
   const router = useRouter();
 
@@ -25,7 +25,7 @@ const TeacherListPage = () => {
           expires: 0, // 로그인 세션 24시간 설정
         })
       );
-      router.back();
+      router.push('/');
     }
   };
 
@@ -34,42 +34,17 @@ const TeacherListPage = () => {
     // 미로그인 시 메인 페이지로 이동
     const loginSession = JSON.parse(localStorage.getItem('log'));
     if (!loginSession) {
+      alert('로그인이 필요한 서비스입니다!');
       router.push('/login');
       return;
     }
 
-    // if (!teacherDataArr.length) {
-    //   // Class Read API 호출 메서드
-    //   handleTeacherGet({ classTag: teacherClass })
-    //     .then((res) => {
-    //       // 미승인 회원 처리
-    //       if (res.status === 401) {
-    //         alert(res.message);
-    //         loginSessionClear();
-    //         return;
-    //       }
-    //       return res.data.data;
-    //     })
-    //     .then((data) => {
-    //       // console.log(data);
-    //       const tmpArr = data.map((el) => {
-    //         return {
-    //           id: el.kk_teacher_idx,
-    //           name: el.kk_teacher_name,
-    //           introduce: el.kk_teacher_introduction,
-    //           profileImg: el.kk_teacher_profileImg_path,
-    //         };
-    //       });
-    //       setTeacherDataArr([...tmpArr]);
-    //       localStorage.setItem('teacherDataArr', JSON.stringify(tmpArr));
-    //     })
-    //     .catch((err) => console.error(err));
-    // }
+    setTeacherClass('ballet');
   }, []);
 
   // 강사 태그 조회
   useEffect(() => {
-    if (!teacherDataArr.length && teacherClass) {
+    if (teacherClass && !teacherDataArr.length) {
       handleTeacherGet({ classTag: teacherClass })
         .then((res) => {
           // 미승인 회원 처리

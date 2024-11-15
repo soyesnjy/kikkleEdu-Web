@@ -76,7 +76,7 @@ const MyPage = () => {
           expires: 0, // 로그인 세션 24시간 설정
         })
       );
-      router.back();
+      router.push('/');
     }
   };
 
