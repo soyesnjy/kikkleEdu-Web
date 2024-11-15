@@ -11,7 +11,6 @@ import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard'
 const TeacherListPage = () => {
   const [teacherClass, setTeacherClass] = useState('');
   const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
-  // const [login, setLogin] = useRecoilState(log);
 
   const router = useRouter();
 
@@ -39,12 +38,13 @@ const TeacherListPage = () => {
       return;
     }
 
-    setTeacherClass('ballet');
+    setTeacherClass(localStorage.getItem('teacherClassTag') || 'ballet');
   }, []);
 
   // 강사 태그 조회
   useEffect(() => {
-    if (teacherClass && !teacherDataArr.length) {
+    if (teacherClass) {
+      localStorage.setItem('teacherClassTag', teacherClass);
       handleTeacherGet({ classTag: teacherClass })
         .then((res) => {
           // 미승인 회원 처리
