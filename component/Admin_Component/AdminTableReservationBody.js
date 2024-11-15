@@ -225,7 +225,7 @@ const AdminTableReservationBody = ({ data }) => {
               <ReservationModalContentContainer>
                 <ReservationModalContentHeaderContainer>
                   <ReservationModalHeaderTitle>
-                    All Reservation Dates
+                    All Reservation Dates (총 {dateArr.length}일)
                   </ReservationModalHeaderTitle>
                   <CloseButton
                     onClick={(e) => {

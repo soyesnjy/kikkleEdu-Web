@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { handleSignupUpdate, handleSignupDelete } from '@/fetchAPI/signupAPI';
 import Swal from 'sweetalert2';
 import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
+import Image from 'next/image';
 
 const partTimeArr = [
   { title: '오전 (10:00~12:00)', value: '오전' },
@@ -40,6 +41,8 @@ const AdminTableTeacherBody = ({ data }) => {
   // const [file, setFile] = useState(null);
   const [approveStatus, setApproveStatus] = useState(-1);
   const [profilePreviewImg, setprofilePreviewImg] = useState(null);
+
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setTeacherIdx(data.kk_teacher_idx);
@@ -240,9 +243,24 @@ const AdminTableTeacherBody = ({ data }) => {
           <TableCell>{formatPhoneNumber(data.kk_teacher_phoneNum)}</TableCell>
           <TableCell>
             {data.kk_teacher_profileImg_path ? (
-              <a href={data.kk_teacher_profileImg_path} target="_blank">
-                Show
-              </a>
+              <ShowContainer>
+                <StyledA
+                  // href={data.kk_teacher_profileImg_path}
+                  target="_blank"
+                  onClick={() => setIsOpen(!isOpen)}
+                >
+                  Show
+                </StyledA>
+                {isOpen && (
+                  <Image
+                    src={data.kk_teacher_profileImg_path}
+                    alt="Icon"
+                    width={56}
+                    height={56}
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                  />
+                )}
+              </ShowContainer>
             ) : (
               'X'
             )}
@@ -421,6 +439,24 @@ const TableCell = styled.td`
     font-size: 0.8rem;
     text-align: center;
   }
+`;
+
+const ShowContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 0.5rem;
+`;
+
+const StyledA = styled.button`
+  text-decoration: none;
+
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 700;
+  text-align: left;
 `;
 
 const Status = styled.span`
