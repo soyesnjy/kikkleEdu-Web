@@ -144,7 +144,7 @@ export default function Login() {
         }
 
         // 뒤로가기
-        router.back();
+        router.push('/');
       });
     } else if (res.status === 401) {
       Swal.fire({
