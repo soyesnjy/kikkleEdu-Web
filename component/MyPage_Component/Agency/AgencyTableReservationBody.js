@@ -30,7 +30,7 @@ const AgencyTableReservationBody = ({ data, setIsOpen }) => {
         {data.kk_reservation_approve_status ? (
           <button onClick={() => setIsOpen(true)}>세금 계산서</button>
         ) : (
-          '미승인'
+          <Status status={data.kk_reservation_approve_status}>대기중...</Status>
         )}
       </TableCell>
     </TableRow>
