@@ -15,6 +15,7 @@ import AgencyTableAttendBody from '@/component/MyPage_Component/Agency/AgencyTab
 import AgencyTablePrivacyBody from '@/component/MyPage_Component/Agency/AgencyTablePrivacyBody';
 import Directory from '@/component/Music_Component/Directory';
 import Pagination from '@/component/Common_Component/Pagination';
+import PayModal from '@/component/MyPage_Component/PayModal';
 
 const dummyTableData = [
   {
@@ -48,6 +49,7 @@ const MyPage = () => {
   const [page, setPage] = useState(1);
   const [lastPageNum, setLastPageNum] = useState(1);
   const [data, setData] = useState([]); // 파일 데이터
+  const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
 
@@ -208,7 +210,11 @@ const MyPage = () => {
             {activeTab === 'reservation' && (
               <tbody>
                 {tableData.map((data, index) => (
-                  <AgencyTableReservationBody key={index} data={data} />
+                  <AgencyTableReservationBody
+                    key={index}
+                    data={data}
+                    setIsOpen={setIsOpen}
+                  />
                 ))}
               </tbody>
             )}
@@ -226,6 +232,7 @@ const MyPage = () => {
         {(activeTab === 'reservation' || activeTab === 'instructor') && (
           <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
         )}
+        <PayModal isOpen={isOpen} setIsOpen={setIsOpen} />
       </MyPageContainer>
     </MasterContainer>
   );

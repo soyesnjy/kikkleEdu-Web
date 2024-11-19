@@ -4,8 +4,8 @@ import styled from 'styled-components';
 // import Swal from 'sweetalert2';
 // import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
 
-const AgencyTableReservationBody = ({ data }) => {
-  const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
+const AgencyTableReservationBody = ({ data, setIsOpen }) => {
+  // const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
 
   useEffect(() => {}, [data]);
 
@@ -26,7 +26,13 @@ const AgencyTableReservationBody = ({ data }) => {
           {data.kk_reservation_approve_status ? '승인' : '미승인'}
         </Status>
       </TableCell>
-      <TableCell>개발중...</TableCell>
+      <TableCell>
+        {data.kk_reservation_approve_status ? (
+          <button onClick={() => setIsOpen(true)}>세금 계산서</button>
+        ) : (
+          '미승인'
+        )}
+      </TableCell>
     </TableRow>
   );
 };

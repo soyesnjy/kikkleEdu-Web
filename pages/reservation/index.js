@@ -23,6 +23,7 @@ import 'react-phone-number-input/style.css';
 // import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
 import Calendar from '@/component/MyPage_Component/Calendar';
 import ReservationTeacherProfileCard from '@/component/Reservation_Component/ReservationTeacherProfileCard';
+import PayModal from '@/component/MyPage_Component/PayModal';
 
 const partTimeArr = [
   { title: '오전 (10:00~12:00)', value: '오전' },
@@ -198,10 +199,6 @@ export default function Reservation() {
     }
     return true;
   };
-  // Fouth 페이지 모달 on/off 메서드
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
 
   const reservationHandler = async (e) => {
     e.preventDefault();
@@ -219,13 +216,13 @@ export default function Reservation() {
 
       if (res.status === 200) {
         Swal.fire({
-          icon: 'success',
-          title: '예약 성공!',
-          text: 'Main Page로 이동합니다',
+          icon: 'question',
+          title: '예약 승인 대기중!',
+          text: 'MyPage로 이동합니다',
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          router.push('/');
+          router.push('/mypage');
         });
       } else if (res.status === 403) {
         Swal.fire({
@@ -241,7 +238,7 @@ export default function Reservation() {
 
       setIsPending(false);
     } catch (error) {
-      console.error('업로드 실패:', error);
+      console.error('예약 요청 실패:', error);
     }
   };
 
@@ -421,7 +418,7 @@ export default function Reservation() {
                     onClick={(e) => {
                       e.preventDefault();
                       // alert('개발중...');
-                      toggleMenu();
+                      setIsOpen(!isOpen);
                     }}
                   >
                     <Image
@@ -449,36 +446,6 @@ export default function Reservation() {
                     카드 결제
                   </PayButton> */}
                 </PayButtonContainer>
-                <PayModalContainer isOpen={isOpen}>
-                  <PayModalContentContainer>
-                    <PayModalContentHeaderContainer>
-                      <PayModalHeaderTitle>
-                        세금계산서 발금 - 담당자
-                      </PayModalHeaderTitle>
-                      <CloseButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          // alert('개발중...');
-                          toggleMenu();
-                        }}
-                      >
-                        <CloseIcon />
-                      </CloseButton>
-                    </PayModalContentHeaderContainer>
-                    <PayModalContentMiddleContainer>
-                      <PayModalMiddleTitle>담당자</PayModalMiddleTitle>
-                      <PayModalMiddleSubtitle>
-                        02-303-4420
-                      </PayModalMiddleSubtitle>
-                    </PayModalContentMiddleContainer>
-
-                    <PayModalButton>
-                      <PayModalA href="tel:02-303-4420">
-                        담당자 전화 연결하기
-                      </PayModalA>
-                    </PayModalButton>
-                  </PayModalContentContainer>
-                </PayModalContainer>
               </PageContainer>
             )}
           </InputContainer>
@@ -524,6 +491,7 @@ export default function Reservation() {
           )}
         </RightFormContainer>
       </FormWrap>
+      <PayModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </ReservationPageContainer>
   );
 }
@@ -983,129 +951,3 @@ const PayButton = styled.button`
     font-size: 20px;
   }
 `;
-
-const PayModalContainer = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background: #1717174d;
-
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 2;
-
-  display: ${(props) => (props.isOpen ? 'flex' : 'none')};
-  justify-content: center;
-  align-items: center;
-
-  gap: 1rem;
-`;
-
-const PayModalContentContainer = styled.div`
-  width: 602px;
-  height: 268px;
-  background-color: white;
-  border-radius: 16px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 2rem;
-
-  gap: 1rem;
-`;
-
-const PayModalContentHeaderContainer = styled.div`
-  width: 100%;
-
-  background-color: white;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-`;
-
-const PayModalHeaderTitle = styled.span`
-  font-family: Pretendard;
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: black;
-`;
-
-const PayModalContentMiddleContainer = styled.div`
-  width: 100%;
-
-  background-color: white;
-
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
-  gap: 1rem;
-`;
-
-const PayModalMiddleTitle = styled.span`
-  background-color: #afc6ff;
-  padding: 0.5rem 2rem;
-  border-radius: 8px;
-
-  font-family: Pretendard;
-  font-weight: 400;
-  font-size: 1rem;
-  color: white;
-`;
-
-const PayModalMiddleSubtitle = styled.span`
-  font-family: Pretendard;
-  font-weight: 700;
-  font-size: 1rem;
-  color: #3870ff;
-`;
-
-const PayModalButton = styled.button`
-  width: 100%;
-  padding: 1rem;
-  background-color: #378e56;
-
-  border: none;
-  border-radius: 12px;
-`;
-
-const PayModalA = styled.a`
-  text-decoration: none;
-
-  font-family: Pretendard;
-  font-weight: 400;
-  font-size: 1.2rem;
-  color: white;
-
-  cursor: pointer;
-`;
-
-const CloseButton = styled.button`
-  align-self: flex-end;
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-bottom: 20px;
-`;
-
-const CloseIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M6 18L18 6M6 6l12 12"
-    />
-  </svg>
-);
