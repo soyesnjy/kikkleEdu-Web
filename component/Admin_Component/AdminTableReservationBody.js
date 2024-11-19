@@ -122,7 +122,7 @@ const AdminTableReservationBody = ({ data }) => {
           ...(areArraysEqual(dateArr, updatedDateArr) && {
             dateArr: updatedDateArr,
           }),
-          attendTrigger: !data.kk_teacher_idx, // attendTrigger: 처음 강사를 매칭시킬 경우 출석 Table Insert Trigger
+          // attendTrigger: !data.kk_teacher_idx, // attendTrigger: 처음 강사를 매칭시킬 경우 출석 Table Insert Trigger
           approveStatus,
         },
       });
@@ -238,7 +238,7 @@ const AdminTableReservationBody = ({ data }) => {
             </ButtonContainer>
           </TableCell>
 
-          {dateArr.length > 0 && (
+          {isOpen && (
             <ReservationModalContainer
               isOpen={isOpen}
               onClick={(e) => {
@@ -329,7 +329,7 @@ const AdminTableReservationBody = ({ data }) => {
               </Button>
             </ButtonContainer>
           </TableCell>
-          {updatedDateArr.length > 0 && (
+          {isUpdateOpen && (
             <ReservationModalContainer
               isOpen={isUpdateOpen}
               onClick={(e) => {
