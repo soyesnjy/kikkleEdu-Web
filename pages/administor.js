@@ -3,8 +3,8 @@
 import styled, { keyframes } from 'styled-components';
 import { useEffect, useState } from 'react';
 
-import { useRecoilState } from 'recoil';
-import { agencyClass } from '../store/state';
+// import { useRecoilState } from 'recoil';
+// import { agencyClass } from '../store/state';
 import { useRouter } from 'next/router';
 
 import { handleSignupGet } from '@/fetchAPI/signupAPI';
@@ -14,13 +14,13 @@ import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
 
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
 import Directory from '@/component/Music_Component/Directory';
 import AdminTableTeacherBody from '@/component/Admin_Component/AdminTableTeacherBody';
 import AdminTableAgencyBody from '@/component/Admin_Component/AdminTableAgencyBody';
 import AdminTableReservationBody from '@/component/Admin_Component/AdminTableReservationBody';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
 import BoardCreate from '@/component/Board_Component/BoardCreate';
-
 import Pagination from '@/component/Common_Component/Pagination';
 
 const dummyTableData = [

@@ -6,6 +6,7 @@ import {
 } from '@/fetchAPI/reservationAPI';
 import Swal from 'sweetalert2';
 import AdminCalendar from './AdminCalendar';
+import Calendar from '@/component/MyPage_Component/Calendar';
 
 const getUniqueWeekdays = (dateArr) => {
   const weekdays = ['월', '화', '수', '목', '금', '토', '일'];
@@ -34,10 +35,28 @@ const getUniqueWeekdays = (dateArr) => {
   return sortDays(uniqueWeekdays);
 };
 
+const areArraysEqual = (arr1, arr2) => {
+  // 배열의 길이가 다르면 true 반환
+  if (arr1.length !== arr2.length) return true;
+
+  // 배열을 정렬한 후 비교
+  const sortedArr1 = [...arr1].sort(); // 원본 배열 변경 방지
+  const sortedArr2 = [...arr2].sort();
+
+  for (let i = 0; i < sortedArr1.length; i++) {
+    if (sortedArr1[i] !== sortedArr2[i]) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 const AdminTableReservationBody = ({ data }) => {
   const [updateFlag, setUpdateFlag] = useState(false);
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
   const [isOpen, setIsOpen] = useState(false);
+  const [isUpdateOpen, setIsUpdateOpen] = useState(false);
 
   // const [name, setName] = useState('');
   // const [partTime, setPartTime] = useState('');
@@ -49,13 +68,16 @@ const AdminTableReservationBody = ({ data }) => {
   const [teacherArr, setTeacherArr] = useState([]);
   const [matchingTeacher, setMatchingTeacher] = useState(null);
   const [approveStatus, setApproveStatus] = useState(-1);
+  const [updatedDateArr, setUpdatedDateArr] = useState([]);
 
   useEffect(() => {
     setReservationIdx(data.kk_reservation_idx);
     // setName(data.kk_agency_name);
     // setPhoneNum(data.kk_agency_phoneNum);
-    if (data.kk_reservation_date)
+    if (data.kk_reservation_date) {
       setDateArr(data.kk_reservation_date.split('/')); // 예약 날짜 Array
+      setUpdatedDateArr(data.kk_reservation_date.split('/')); // 예약 수정 날짜 Array (초기값)
+    }
     if (data.teacher_info)
       setTeacherArr(
         data.teacher_info.split('|').map((el) => {
@@ -97,7 +119,9 @@ const AdminTableReservationBody = ({ data }) => {
         SignUpData: {
           reservationIdx,
           teacherIdx: matchingTeacher,
-          dateArr,
+          ...(areArraysEqual(dateArr, updatedDateArr) && {
+            dateArr: updatedDateArr,
+          }),
           attendTrigger: !data.kk_teacher_idx, // attendTrigger: 처음 강사를 매칭시킬 경우 출석 Table Insert Trigger
           approveStatus,
         },
@@ -214,7 +238,7 @@ const AdminTableReservationBody = ({ data }) => {
             </ButtonContainer>
           </TableCell>
 
-          {dayArr.length > 0 && (
+          {dateArr.length > 0 && (
             <ReservationModalContainer
               isOpen={isOpen}
               onClick={(e) => {
@@ -248,7 +272,17 @@ const AdminTableReservationBody = ({ data }) => {
           <TableCell>{data.kk_agency_phoneNum}</TableCell>
           <TableCell>{data.kk_class_title}</TableCell>
           <TableCell>
-            {dateArr[0]} ~ {dateArr[dateArr.length - 1]}
+            [ {updatedDateArr[0]} ~ {updatedDateArr[updatedDateArr.length - 1]}{' '}
+            ] -{' '}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                // alert('개발중...');
+                setIsUpdateOpen(!isUpdateOpen);
+              }}
+            >
+              날짜수정
+            </button>
           </TableCell>
           <TableCell>
             <select
@@ -295,6 +329,32 @@ const AdminTableReservationBody = ({ data }) => {
               </Button>
             </ButtonContainer>
           </TableCell>
+          {updatedDateArr.length > 0 && (
+            <ReservationModalContainer
+              isOpen={isUpdateOpen}
+              onClick={(e) => {
+                if (e.target !== e.currentTarget) return;
+                setIsUpdateOpen(!isUpdateOpen);
+              }}
+            >
+              <ReservationModalContentContainer>
+                <ReservationModalContentHeaderContainer>
+                  <ReservationModalHeaderTitle>
+                    {`Updated All Reservation Dates\n(총 ${updatedDateArr.length}일)`}
+                  </ReservationModalHeaderTitle>
+                  <CloseButton
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsUpdateOpen(!isUpdateOpen);
+                    }}
+                  >
+                    <CloseIcon />
+                  </CloseButton>
+                </ReservationModalContentHeaderContainer>
+                <Calendar setDate={setUpdatedDateArr} date={updatedDateArr} />
+              </ReservationModalContentContainer>
+            </ReservationModalContainer>
+          )}
         </TableRow>
       )}
     </>

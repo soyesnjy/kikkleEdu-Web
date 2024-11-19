@@ -10,7 +10,7 @@ import {
 } from '@/fetchAPI';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import { log, uid, mobile, agencyClass } from '../store/state';
+import { log, uid, agencyClass } from '../store/state';
 import Swal from 'sweetalert2';
 import { useSearchParams } from 'next/navigation';
 // import GoogleOAuthBtn from '@/component/Login_Componet/googleOAuthBtn';
@@ -449,24 +449,24 @@ const FormContainer = styled.form`
   }
 `;
 
-const OAuthWrap = styled.div`
-  padding: 2rem 2rem 0 2rem;
+// const OAuthWrap = styled.div`
+//   padding: 2rem 2rem 0 2rem;
 
-  border-radius: 40px;
+//   border-radius: 40px;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
 
-  gap: 0.5rem;
+//   gap: 0.5rem;
 
-  @media (max-width: 768px) {
-    margin-top: 1rem;
-    width: 100%;
-    flex-direction: column;
-    padding: 0;
-  }
-`;
+//   @media (max-width: 768px) {
+//     margin-top: 1rem;
+//     width: 100%;
+//     flex-direction: column;
+//     padding: 0;
+//   }
+// `;
 
 const UserClassButtonContainer = styled.div`
   display: flex;
