@@ -297,7 +297,7 @@ const Content = styled.div`
 
   min-height: 300px;
 
-  white-space: pre;
+  white-space: pre-wrap;
 
   font-size: 1rem;
   font-family: Pretendard;
