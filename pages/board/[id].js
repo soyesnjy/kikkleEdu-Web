@@ -208,7 +208,7 @@ const BoardDetail = () => {
               ? post.content
               : null}
           </Content>
-          {/* 댓글 섹션 */}
+          {/* 댓글 */}
           {agencyType === 'admin' && (
             <CommentSection>
               <CommentTitle>관리자용 답글 입력창</CommentTitle>
@@ -217,8 +217,12 @@ const BoardDetail = () => {
             </CommentSection>
           )}
           <ButtonContainer>
-            <Button onClick={() => setUpdateFlag(true)}>수정</Button>
-            {/* 삭제 섹션 */}
+            <Button onClick={handleGoBack}>목록</Button>
+            {/* 수정 */}
+            {agencyType === 'admin' && (
+              <Button onClick={() => setUpdateFlag(true)}>수정</Button>
+            )}
+            {/* 삭제 */}
             {agencyType === 'admin' && (
               <Button onClick={boardDeleteHandler}>삭제</Button>
             )}
