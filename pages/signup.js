@@ -546,7 +546,14 @@ export default function Signup() {
                       </Icon>
                     </StyledCheckbox>
                     <TermsCheckLabel for="checkTerms">
-                      *이용약관에 동의합니다.
+                      *
+                      <a
+                        href="https://www.soyes.kr/soyeskids_privacy_policy"
+                        target="blank"
+                      >
+                        이용약관
+                      </a>
+                      에 동의합니다.
                     </TermsCheckLabel>
                   </TermsCheckboxContainer>
                   <TermsCheckboxContainer>
@@ -568,7 +575,7 @@ export default function Signup() {
                       </Icon>
                     </StyledCheckbox>
                     <TermsCheckLabel for="checkPrivacy">
-                      *개인정보 수집 및 이용에 동의합니다.
+                      *<span>개인정보</span> 수집 및 이용에 동의합니다.
                     </TermsCheckLabel>
                   </TermsCheckboxContainer>
                 </PageContainer>
@@ -1269,6 +1276,25 @@ const TermsCheckLabel = styled.label`
   font-family: Pretendard;
   font-weight: 400;
   text-align: left;
+
+  user-select: none;
+
+  a {
+    color: #378e56;
+    text-decoration: none;
+    font-size: 1rem;
+    font-family: Pretendard;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  span {
+    color: #378e56;
+    font-size: 1rem;
+    font-family: Pretendard;
+    font-weight: 600;
+    text-align: left;
+  }
 `;
 
 const UserPossClassContainer = styled.div`
