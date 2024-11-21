@@ -3,8 +3,11 @@ import { useRouter } from 'next/router'; // Next.js의 useRouter 사용
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { agencyClass } from '../../store/state';
-import { handleBoardGet } from '@/fetchAPI/boardAPI';
-import { handleBoardDelete } from '@/fetchAPI/boardAPI';
+import {
+  handleBoardGet,
+  handleBoardUpdate,
+  handleBoardDelete,
+} from '@/fetchAPI/boardAPI';
 import Swal from 'sweetalert2';
 
 const dummyData = {
@@ -20,18 +23,59 @@ const BoardDetail = () => {
   const [post, setPost] = useState(dummyData);
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
 
+  const [updateFlag, setUpdateFlag] = useState(false);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
   useEffect(() => {
     if (id) {
       handleBoardGet({ boardIdx: id })
         .then((res) => res.data)
         .then((data) => {
           setPost(data.data[0]);
+          setTitle(data.data[0].title);
+          setContent(data.data[0].content);
         });
     }
   }, [id]);
 
   const handleGoBack = () => {
     router.push('/board'); // 목록 페이지로 이동
+  };
+
+  const boardUpdateHandler = async () => {
+    try {
+      const res = await handleBoardUpdate({
+        boardIdx: id,
+        title,
+        content,
+      });
+
+      if (res.status === 200) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Board Update Success!',
+          text: 'Page Reloading...',
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          // 게시글 페이지로 이동
+          router.reload();
+        });
+      } else if (res.status === 403) {
+        Swal.fire({
+          icon: 'error',
+          title: '중복된 이메일입니다',
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Board Update Fail',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const boardDeleteHandler = async () => {
@@ -84,61 +128,103 @@ const BoardDetail = () => {
           </HeaderIntroDiv>
         </HeaderContent>
       </HeaderSection>
-      <DetailContainer>
-        <DetailHeader>
-          <Title>
-            {!post.isPrivate || agencyType === 'admin' ? (
-              post.title
-            ) : (
-              <PrivateLabel>비공개</PrivateLabel>
+      {/* 디테일 섹션 */}
+      {updateFlag ? (
+        <DetailContainer>
+          <DetailHeader>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+            <MetaData>
+              <Author>
+                {!post.isPrivate || agencyType === 'admin' ? (
+                  post.author
+                ) : (
+                  <PrivateLabel>비공개</PrivateLabel>
+                )}
+                {post.isPrivate &&
+                post.authorIdx === Number(localStorage.getItem('userIdx'))
+                  ? post.author
+                  : null}
+              </Author>
+              <Date>{post.date.split('T')[0]}</Date>
+            </MetaData>
+          </DetailHeader>
+          <TextArea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          {/* 댓글 섹션 */}
+          {agencyType === 'admin' && (
+            <CommentSection>
+              <CommentTitle>관리자용 답글 입력창</CommentTitle>
+              <CommentInput placeholder="개발중인 기능입니다" disabled />
+              <Button>등록</Button>
+            </CommentSection>
+          )}
+          <ButtonContainer>
+            <Button onClick={boardUpdateHandler}>확인</Button>
+            {/* 삭제 섹션 */}
+            {agencyType === 'admin' && (
+              <Button onClick={() => setUpdateFlag(false)}>취소</Button>
             )}
-            {post.isPrivate &&
-            post.authorIdx === Number(localStorage.getItem('userIdx'))
-              ? post.title
-              : null}
-          </Title>
-          <MetaData>
-            <Author>
+          </ButtonContainer>
+        </DetailContainer>
+      ) : (
+        <DetailContainer>
+          <DetailHeader>
+            <Title>
               {!post.isPrivate || agencyType === 'admin' ? (
-                post.author
+                post.title
               ) : (
                 <PrivateLabel>비공개</PrivateLabel>
               )}
               {post.isPrivate &&
               post.authorIdx === Number(localStorage.getItem('userIdx'))
-                ? post.author
+                ? post.title
                 : null}
-            </Author>
-            <Date>{post.date.split('T')[0]}</Date>
-          </MetaData>
-        </DetailHeader>
-        <Content>
-          {!post.isPrivate || agencyType === 'admin' ? (
-            post.content
-          ) : (
-            <PrivateLabel>비공개</PrivateLabel>
-          )}
-          {post.isPrivate &&
-          post.authorIdx === Number(localStorage.getItem('userIdx'))
-            ? post.content
-            : null}
-        </Content>
-        {/* 댓글 섹션 */}
-        {agencyType === 'admin' && (
-          <CommentSection>
-            <CommentTitle>관리자용 답글 입력창</CommentTitle>
-            <CommentInput placeholder="개발중인 기능입니다" disabled />
-            <Button>등록</Button>
-          </CommentSection>
-        )}
-        <ButtonContainer>
-          <Button onClick={handleGoBack}>목록</Button>
-          {/* 삭제 섹션 */}
+            </Title>
+            <MetaData>
+              <Author>
+                {!post.isPrivate || agencyType === 'admin' ? (
+                  post.author
+                ) : (
+                  <PrivateLabel>비공개</PrivateLabel>
+                )}
+                {post.isPrivate &&
+                post.authorIdx === Number(localStorage.getItem('userIdx'))
+                  ? post.author
+                  : null}
+              </Author>
+              <Date>{post.date.split('T')[0]}</Date>
+            </MetaData>
+          </DetailHeader>
+          <Content>
+            {!post.isPrivate || agencyType === 'admin' ? (
+              post.content
+            ) : (
+              <PrivateLabel>비공개</PrivateLabel>
+            )}
+            {post.isPrivate &&
+            post.authorIdx === Number(localStorage.getItem('userIdx'))
+              ? post.content
+              : null}
+          </Content>
+          {/* 댓글 섹션 */}
           {agencyType === 'admin' && (
-            <Button onClick={boardDeleteHandler}>삭제</Button>
+            <CommentSection>
+              <CommentTitle>관리자용 답글 입력창</CommentTitle>
+              <CommentInput placeholder="개발중인 기능입니다" disabled />
+              <Button>등록</Button>
+            </CommentSection>
           )}
-        </ButtonContainer>
-      </DetailContainer>
+          <ButtonContainer>
+            <Button onClick={() => setUpdateFlag(true)}>수정</Button>
+            {/* 삭제 섹션 */}
+            {agencyType === 'admin' && (
+              <Button onClick={boardDeleteHandler}>삭제</Button>
+            )}
+          </ButtonContainer>
+        </DetailContainer>
+      )}
     </MasterContainer>
   );
 };
@@ -344,4 +430,31 @@ const CommentInput = styled.textarea`
   resize: none;
 `;
 
+const Input = styled.input`
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+`;
+
+const TextArea = styled.textarea`
+  border: 1px solid #ddd;
+  border-radius: 4px;
+
+  width: 100%;
+  min-height: 500px;
+  padding: 1.1em; /* prevents text jump on Enter keypress */
+  padding-bottom: 0.2em;
+  line-height: 1.6;
+
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+`;
 export default BoardDetail;

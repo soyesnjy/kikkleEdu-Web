@@ -75,7 +75,7 @@ export const handleBoardUpdate = async (input) => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_URL}/board/update`,
-      input,
+      { data: input },
       {
         headers: {
           'Content-Type': 'application/json',
