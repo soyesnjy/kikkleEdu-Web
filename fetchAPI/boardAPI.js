@@ -70,7 +70,7 @@ export const handleBoardDelete = async (query) => {
     };
   }
 };
-// TODO# UPDATE
+// UPDATE
 export const handleBoardUpdate = async (input) => {
   try {
     const response = await axios.post(
