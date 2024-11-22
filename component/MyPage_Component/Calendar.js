@@ -109,7 +109,8 @@ const CalendarContainer = styled.div`
   z-index: 0;
 
   .fc {
-    width: 35vw;
+    width: 50vw;
+    height: 60vh;
 
     direction: ltr;
     text-align: center;
@@ -122,8 +123,6 @@ const CalendarContainer = styled.div`
     display: flex;
     justify-content: flex-start;
     align-items: center;
-
-    /* border: 1px solid black; */
   }
 
   .fc-toolbar-title {
@@ -133,8 +132,6 @@ const CalendarContainer = styled.div`
     padding: 10px 1rem;
     font-size: 1rem;
     font-family: AppleSDGothicNeoB00;
-
-    /* border: 1px solid black; */
   }
 
   .fc-prev-button,
@@ -144,10 +141,7 @@ const CalendarContainer = styled.div`
     color: #bdbdbd;
     font-size: 20px;
     cursor: pointer;
-
     padding: 0.2rem;
-
-    /* border: 1px solid black; */
   }
 
   .fc-daygrid-day,
@@ -165,25 +159,20 @@ const CalendarContainer = styled.div`
     border: none;
   }
 
+  .fc-col-header-cell {
+    font-size: 1rem;
+    color: #888888;
+    font-weight: 700;
+    font-family: Pretendard;
+  }
+
   .fc-daygrid-day {
     background: none;
     padding: 6px;
   }
 
-  .fc-col-header {
-    display: none;
-  }
-
-  /* .fc-col-header-cell {
-    background: none;
-    font-size: 2rem;
-  } */
-
   .fc-daygrid-day-events {
     display: none;
-  }
-
-  .fc-day {
   }
 
   .fc-daygrid-day-frame {
@@ -229,6 +218,36 @@ const CalendarContainer = styled.div`
     background: linear-gradient(90deg, #4b95a2, #50a58e);
     border-radius: 10px;
     color: white;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 0;
+
+    .fc {
+      width: 60vw;
+      height: 60vh;
+    }
+
+    .fc-toolbar-title {
+      padding: 10px 4rem;
+      margin: 0;
+      font-size: 1rem;
+      font-family: AppleSDGothicNeoB00;
+    }
+
+    .fc-col-header-cell {
+      font-size: 1rem;
+      color: #888888;
+    }
+
+    .fc-daygrid-day-number {
+      width: 70px;
+      height: 70px;
+
+      font-size: 1rem;
+      font-family: AppleSDGothicNeoB00;
+      font-weight: 600;
+    }
   }
 
   @media (max-width: 768px) {

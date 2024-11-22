@@ -93,6 +93,7 @@ const CalendarContainer = styled.div`
 
   .fc {
     width: 35vw;
+    /* height: 100vh; */
 
     direction: ltr;
     text-align: center;

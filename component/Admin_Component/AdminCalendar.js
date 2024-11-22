@@ -78,7 +78,8 @@ const CalendarContainer = styled.div`
   z-index: 0;
 
   .fc {
-    width: 35vw;
+    width: 50vw;
+    height: 60vh;
     direction: ltr;
     text-align: center;
     margin: auto;
@@ -158,6 +159,7 @@ const CalendarContainer = styled.div`
   .fc-daygrid-day-number {
     width: 100px;
     height: 100px;
+
     color: #888888;
     font-family: Pretendard;
     font-weight: 700;
@@ -165,10 +167,40 @@ const CalendarContainer = styled.div`
   }
 
   .fc-daygrid-day-frame .highlighted-date-range {
-    width: 100%;
+    /* width: 100%; */
     background: linear-gradient(90deg, #4b95a2, #50a58e);
     border-radius: 10px;
     color: white;
+  }
+
+  @media (max-width: 1440px) {
+    padding: 0;
+
+    .fc {
+      width: 60vw;
+      height: 60vh;
+    }
+
+    .fc-toolbar-title {
+      padding: 10px 4rem;
+      margin: 0;
+      font-size: 1rem;
+      font-family: AppleSDGothicNeoB00;
+    }
+
+    .fc-col-header-cell {
+      font-size: 1rem;
+      color: #888888;
+    }
+
+    .fc-daygrid-day-number {
+      width: 80px;
+      height: 80px;
+
+      font-size: 1rem;
+      font-family: AppleSDGothicNeoB00;
+      font-weight: 600;
+    }
   }
 
   @media (max-width: 768px) {
