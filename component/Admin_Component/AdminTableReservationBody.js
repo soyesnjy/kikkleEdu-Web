@@ -134,10 +134,13 @@ const AdminTableReservationBody = ({ data }) => {
         SignUpData: {
           reservationIdx,
           teacherIdx: matchingTeacher,
-          ...(areArraysEqual(dateArr, updatedDateArr) && {
+          // 날짜 수정 || 첫 강사 매칭일 경우
+          ...((areArraysEqual(dateArr, updatedDateArr) ||
+            !data.kk_teacher_idx) && {
             dateArr: updatedDateArr,
           }),
-          // attendTrigger: !data.kk_teacher_idx, // attendTrigger: 처음 강사를 매칭시킬 경우 출석 Table Insert Trigger
+          // attendTrigger: 처음 강사를 매칭시킬 경우 출석 Table Insert Trigger
+          attendTrigger: !data.kk_teacher_idx,
           approveStatus,
         },
       });
