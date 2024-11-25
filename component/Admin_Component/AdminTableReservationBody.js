@@ -17,6 +17,8 @@ const getUniqueWeekdays = (dateArr) => {
     return acc;
   }, {});
 
+  // console.log(dayIndex);
+
   const sortDays = (arr) => arr.sort((a, b) => dayIndex[a] - dayIndex[b]);
 
   // 날짜를 요일로 변환해 중복 제거 후 정렬
@@ -26,12 +28,11 @@ const getUniqueWeekdays = (dateArr) => {
         .map((dateString) => {
           const date = new Date(dateString);
           if (isNaN(date)) return null; // 유효성 체크
-          return weekdays[date.getDay()];
+          return weekdays[date.getDay() === 0 ? 6 : date.getDay() - 1]; //
         })
         .filter((day) => day !== null) // 유효하지 않은 날짜 필터링
     )
   );
-
   return sortDays(uniqueWeekdays);
 };
 
@@ -50,6 +51,20 @@ const areArraysEqual = (arr1, arr2) => {
   }
 
   return false;
+};
+
+const formatPhoneNumber = (phone) => {
+  // `+82`로 시작하지 않으면 그대로 반환
+  if (!phone?.startsWith('+82')) return phone;
+
+  // 국가번호(+82) 제거하고 나머지 번호만 추출
+  const numbers = phone.slice(3);
+
+  // 뒤에서부터 8자리 추출 (010-xxxx-xxxx 형식)
+  const lastEightDigits = numbers.slice(-8);
+
+  // 4자리씩 나누어 형식에 맞게 조합
+  return `010-${lastEightDigits.slice(0, 4)}-${lastEightDigits.slice(4)}`;
 };
 
 const AdminTableReservationBody = ({ data }) => {
@@ -197,7 +212,7 @@ const AdminTableReservationBody = ({ data }) => {
         <TableRow>
           <TableCell>{data.kk_reservation_idx}</TableCell>
           <TableCell>{data.kk_agency_name}</TableCell>
-          <TableCell>{data.kk_agency_phoneNum}</TableCell>
+          <TableCell>{formatPhoneNumber(data.kk_agency_phoneNum)}</TableCell>
           <TableCell>{data.kk_class_title}</TableCell>
           <TableCell>
             [ {dateArr[0]} ~ {dateArr[dateArr.length - 1]} ] -{' '}
@@ -269,7 +284,7 @@ const AdminTableReservationBody = ({ data }) => {
         <TableRow>
           <TableCell>{data.kk_reservation_idx}</TableCell>
           <TableCell>{data.kk_agency_name}</TableCell>
-          <TableCell>{data.kk_agency_phoneNum}</TableCell>
+          <TableCell>{formatPhoneNumber(data.kk_agency_phoneNum)}</TableCell>
           <TableCell>{data.kk_class_title}</TableCell>
           <TableCell>
             [ {updatedDateArr[0]} ~ {updatedDateArr[updatedDateArr.length - 1]}{' '}
