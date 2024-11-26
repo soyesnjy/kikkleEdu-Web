@@ -41,12 +41,17 @@ const YogaProgramPage = () => {
 
   // 수업 DB 조회
   useEffect(() => {
-    // Class Read API 호출 메서드 - art 고정
-    handleClassGet({ classTag: 'art', classDetail: true })
-      .then((res) => res.data.data)
-      .then((data) => {
-        setClassDataArr([
-          ...data.map((el) => {
+    // 로컬에 programClassData 값이 있는 경우
+    if (localStorage.getItem('programClassData')) {
+      setClassDataArr([
+        ...JSON.parse(localStorage.getItem('programClassData')),
+      ]);
+    } else {
+      // Class Read API 호출 메서드
+      handleClassGet({ classTag: 'art', classDetail: true })
+        .then((res) => res.data.data)
+        .then((data) => {
+          const tuningData = data.map((el) => {
             return {
               title: el.kk_class_title,
               content: el.kk_class_content,
@@ -54,10 +59,19 @@ const YogaProgramPage = () => {
               imgPath: el.kk_class_file_path,
               detailPath: el.kk_class_detail_path,
             };
-          }),
-        ]);
-      })
-      .catch(() => setClassDataArr(classDefaultArr));
+          });
+          localStorage.setItem('programClassData', JSON.stringify(tuningData));
+          setClassDataArr([...tuningData]);
+        })
+        .catch((err) => {
+          console.log(err);
+          setClassDataArr(classDefaultArr);
+        });
+    }
+
+    return () => {
+      localStorage.removeItem('programClassData');
+    };
   }, []);
 
   // selectedClass 설정

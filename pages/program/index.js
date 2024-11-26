@@ -46,12 +46,17 @@ const BalletProgramPage = () => {
 
   // 수업 DB 조회
   useEffect(() => {
-    // Class Read API 호출 메서드 - ballet 고정
-    handleClassGet({ classTag: 'ballet', classDetail: true })
-      .then((res) => res.data.data)
-      .then((data) => {
-        setClassDataArr([
-          ...data.map((el) => {
+    // 로컬에 programClassData 값이 있는 경우
+    if (localStorage.getItem('programClassData')) {
+      setClassDataArr([
+        ...JSON.parse(localStorage.getItem('programClassData')),
+      ]);
+    } else {
+      // Class Read API 호출 메서드
+      handleClassGet({ classTag: 'ballet', classDetail: true })
+        .then((res) => res.data.data)
+        .then((data) => {
+          const tuningData = data.map((el) => {
             return {
               title: el.kk_class_title,
               content: el.kk_class_content,
@@ -59,13 +64,19 @@ const BalletProgramPage = () => {
               imgPath: el.kk_class_file_path,
               detailPath: el.kk_class_detail_path,
             };
-          }),
-        ]);
-      })
-      .catch((err) => {
-        console.log(err);
-        setClassDataArr(classDefaultArr);
-      });
+          });
+          localStorage.setItem('programClassData', JSON.stringify(tuningData));
+          setClassDataArr([...tuningData]);
+        })
+        .catch((err) => {
+          console.log(err);
+          setClassDataArr(classDefaultArr);
+        });
+    }
+
+    return () => {
+      localStorage.removeItem('programClassData');
+    };
   }, []);
 
   // selectedClass 설정
@@ -115,7 +126,7 @@ const BalletProgramPage = () => {
       <EduArtVideoComponent
         sectionData={{
           ...eduSectionData,
-          features: classDataArr.map((el) => el.title),
+          features: classDataArr?.map((el) => el.title),
         }}
       />
       {/* 수업 Detail 섹션 */}

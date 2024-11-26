@@ -164,6 +164,7 @@ export default function Nav() {
       localStorage.removeItem('activeTab');
       localStorage.removeItem('teacherDataArr');
       localStorage.removeItem('teacherClassTag');
+      localStorage.removeItem('programClassData');
       router.replace('/');
     });
   }, [router, setLogin]);
@@ -203,6 +204,7 @@ export default function Nav() {
           localStorage.removeItem('activeTab');
           localStorage.removeItem('teacherDataArr');
           localStorage.removeItem('teacherClassTag');
+          localStorage.removeItem('programClassData');
           setIsOpen(false);
 
           router.push('/');
