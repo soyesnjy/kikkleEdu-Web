@@ -7,7 +7,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import AgencyHeaderSection from '@/component/Agency_Component/AgencyHeaderSection';
-import AgencyProgramCard from '@/component/Home_Component/AgencyProgramCard';
+import AgencyMiddleFirstSection from '@/component/Agency_Component/AgencyMiddleFirstSection';
+
 import ProgramClassContainer from '@/component/Agency_Component/ProgramClassContainer';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
@@ -15,24 +16,6 @@ import EndSection from '@/component/Home_Component/EndSection';
 import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
 
 import Image from 'next/image';
-
-const section_1_Arr = [
-  {
-    imgPath: '/src/Agency_IMG/Icon/Agency_Icon_0_IMG.png',
-    title: 'Program',
-    content: '기관에 맞는 수업프로그램을 찾고 선택',
-  },
-  {
-    imgPath: '/src/Agency_IMG/Icon/Agency_Icon_1_IMG.png',
-    title: 'Teacher',
-    content: '기관에서 선호하는 강사님들을 선택',
-  },
-  {
-    imgPath: '/src/Agency_IMG/Icon/Agency_Icon_2_IMG.png',
-    title: 'Time',
-    content: '원하는 시간, 요일을 선택',
-  },
-];
 
 const classDefaultArr = [
   {
@@ -122,36 +105,8 @@ const KindergartenPage = () => {
         description={`각 기관에 맞는 프로그램을 찾고 강사를 \n 선택하여 예약하는 시스템입니다.`}
         backImgUrl={`/src/Agency_IMG/유치원/Agency_kindergarden_Header_Background_IMG.png`}
       />
-      {/* <HeaderSection>
-        <HeaderContent>
-          <Subtitle>{`"Soyes Kids" \n with kids !!`}</Subtitle>
-          <Description>
-            {`각 기관에 맞는 프로그램을 찾고 강사를 \n 선택하여 예약하는 시스템입니다.`}
-          </Description>
-          <StyledLink href="/reservation">
-            {agency ? (
-              <ReservationButton>
-                예약하기
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </ReservationButton>
-            ) : null}
-          </StyledLink>
-        </HeaderContent>
-      </HeaderSection> */}
       {/* 미들 섹션 - Program, Teacher, Time */}
-      <MiddleSectionFirst>
-        {section_1_Arr.map((el, index) => {
-          const { imgPath, title, content } = el;
-          return (
-            <AgencyProgramCard
-              key={index}
-              imgPath={imgPath}
-              title={title}
-              content={content}
-            />
-          );
-        })}
-      </MiddleSectionFirst>
+      <AgencyMiddleFirstSection />
       {/* 미들 섹션 - 예약하기 */}
       {agency ? (
         <MiddleSectionReservation>
