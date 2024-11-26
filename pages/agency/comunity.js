@@ -56,6 +56,8 @@ const classDefaultArr = [
 
 const youtubeUrl = '//www.youtube.com/embed/-n3X-_FmRk8';
 
+const agencyType = '아파트 커뮤니티 센터';
+
 const ComunityPage = () => {
   const [agency, setAgency] = useRecoilState(agencyClass);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
@@ -123,20 +125,17 @@ const ComunityPage = () => {
       {/* 미들 섹션 - 예약하기 */}
       {agency ? (
         <AgencyMiddleReservationSection
-          agency={`아파트 커뮤니티 센터`}
+          agency={agencyType}
           backcolor={`#f29494`}
         />
       ) : null}
 
       {/* 미들 섹션 - 수업 영상 */}
-      <AgencyMiddleSecondSection
-        agency={`아파트 커뮤니티센터`}
-        youtubeUrl={youtubeUrl}
-      />
+      <AgencyMiddleSecondSection agency={agencyType} youtubeUrl={youtubeUrl} />
 
       {/* 미들 섹션 - 수업 프로그램 */}
       <AgencyMiddleThirdSection
-        agency={`아파트 커뮤니티센터`}
+        agency={agencyType}
         mobileFlag={mobileFlag}
         classDataArr={classDataArr}
       />

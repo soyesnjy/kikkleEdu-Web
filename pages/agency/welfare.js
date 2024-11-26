@@ -56,6 +56,8 @@ const classDefaultArr = [
 
 const youtubeUrl = '//www.youtube.com/embed/Cb0jnKtZP4o';
 
+const agencyType = '아동복지 센터';
+
 const WelfarePage = () => {
   const [agency, setAgency] = useRecoilState(agencyClass);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
@@ -123,20 +125,17 @@ const WelfarePage = () => {
       {/* 미들 섹션 - 예약하기 */}
       {agency ? (
         <AgencyMiddleReservationSection
-          agency={`아동복지 센터`}
+          agency={agencyType}
           backcolor={`#417505`}
         />
       ) : null}
 
       {/* 미들 섹션 - 수업 영상 */}
-      <AgencyMiddleSecondSection
-        agency={`아동복지 센터`}
-        youtubeUrl={youtubeUrl}
-      />
+      <AgencyMiddleSecondSection agency={agencyType} youtubeUrl={youtubeUrl} />
 
       {/* 미들 섹션 - 수업 프로그램 */}
       <AgencyMiddleThirdSection
-        agency={`아동복지 센터`}
+        agency={agencyType}
         mobileFlag={mobileFlag}
         classDataArr={classDataArr}
       />

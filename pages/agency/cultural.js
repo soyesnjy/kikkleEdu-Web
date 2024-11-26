@@ -56,6 +56,8 @@ const classDefaultArr = [
 
 const youtubeUrl = '//www.youtube.com/embed/-n3X-_FmRk8';
 
+const agencyType = '문화센터';
+
 const CulturalPage = () => {
   const [agency, setAgency] = useRecoilState(agencyClass);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
@@ -123,17 +125,17 @@ const CulturalPage = () => {
       {/* 미들 섹션 - 예약하기 */}
       {agency ? (
         <AgencyMiddleReservationSection
-          agency={`문화센터`}
+          agency={agencyType}
           backcolor={`#4a90e2`}
         />
       ) : null}
 
       {/* 미들 섹션 - 수업 영상 */}
-      <AgencyMiddleSecondSection agency={`문화센터`} youtubeUrl={youtubeUrl} />
+      <AgencyMiddleSecondSection agency={agencyType} youtubeUrl={youtubeUrl} />
 
       {/* 미들 섹션 - 수업 프로그램 */}
       <AgencyMiddleThirdSection
-        agency={`문화센터`}
+        agency={agencyType}
         mobileFlag={mobileFlag}
         classDataArr={classDataArr}
       />

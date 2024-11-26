@@ -56,6 +56,8 @@ const classDefaultArr = [
 
 const youtubeUrl = '//www.youtube.com/embed/Cb0jnKtZP4o';
 
+const agencyType = '초등학교';
+
 const ElementPage = () => {
   const [agency, setAgency] = useRecoilState(agencyClass);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
@@ -123,17 +125,17 @@ const ElementPage = () => {
       {/* 미들 섹션 - 예약하기 */}
       {agency ? (
         <AgencyMiddleReservationSection
-          agency={`초등학교`}
+          agency={agencyType}
           backcolor={`#f5a623`}
         />
       ) : null}
 
       {/* 미들 섹션 - 수업 영상 */}
-      <AgencyMiddleSecondSection agency={`초등학교`} youtubeUrl={youtubeUrl} />
+      <AgencyMiddleSecondSection agency={agencyType} youtubeUrl={youtubeUrl} />
 
       {/* 미들 섹션 - 수업 프로그램 */}
       <AgencyMiddleThirdSection
-        agency={`초등학교`}
+        agency={agencyType}
         mobileFlag={mobileFlag}
         classDataArr={classDataArr}
       />
