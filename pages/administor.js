@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 
 import { handleSignupGet } from '@/fetchAPI/signupAPI';
 import { handleReservationGet } from '@/fetchAPI/reservationAPI';
-import { handleDirectoryRead } from '@/fetchAPI/directory';
+import { handleDirectoryRead } from '@/fetchAPI/directoryAPI';
 import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
 
 import { useTranslation } from 'next-i18next';

@@ -7,7 +7,7 @@ import {
   handleDirectoryCreate,
   // handleVideoCreate,
   handleVideoV2Create,
-} from '@/fetchAPI/directory';
+} from '@/fetchAPI/directoryAPI';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import DropdownTreeSelect from 'react-dropdown-tree-select';

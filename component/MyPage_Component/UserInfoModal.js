@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
-import { handleCalendarResult } from '@/fetchAPI';
+import { handleCalendarResult } from '@/fetchAPI/loginAPI';
 // import { useSession } from "next-auth/react";
 import TestCard from './TestCard';
 import ResultCard from './ResultCard';

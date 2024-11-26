@@ -1,7 +1,7 @@
 /* eslint-disable no-unreachable */
 import styled from 'styled-components';
 import { useTranslation } from 'next-i18next';
-import { loginAPI_OAuth_URL_Kakao } from '@/fetchAPI';
+import { loginAPI_OAuth_URL_Kakao } from '@/fetchAPI/loginAPI';
 
 // Component usage
 const KakaoOAuthBtn = ({ setUrl }) => {

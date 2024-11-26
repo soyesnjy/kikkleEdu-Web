@@ -6,7 +6,7 @@ import {
   handleMypageAgencyReservationGet,
   handleMypageTeacherAttendGet,
 } from '@/fetchAPI/mypageAPI';
-import { handleDirectoryRead } from '@/fetchAPI/directory';
+import { handleDirectoryRead } from '@/fetchAPI/directoryAPI';
 
 // import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { handleDirectoryDelete } from '@/fetchAPI/directory';
+import { handleDirectoryDelete } from '@/fetchAPI/directoryAPI';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import DropdownTreeSelect from 'react-dropdown-tree-select';

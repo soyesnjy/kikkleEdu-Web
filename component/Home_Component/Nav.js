@@ -9,7 +9,7 @@ import { log, mobile, uid, agencyClass } from '../../store/state';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import { logoutAPI } from '@/fetchAPI';
+import { logoutAPI } from '@/fetchAPI/loginAPI';
 import { useTranslation } from 'next-i18next';
 import Image from 'next/image';
 

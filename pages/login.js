@@ -7,7 +7,7 @@ import {
   loginAPI,
   loginAPI_OAuth_Approve_Google,
   loginAPI_OAuth_Approve_Kakao,
-} from '@/fetchAPI';
+} from '@/fetchAPI/loginAPI';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { log, uid, agencyClass } from '../store/state';

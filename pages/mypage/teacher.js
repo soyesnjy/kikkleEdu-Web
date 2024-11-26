@@ -7,7 +7,7 @@ import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { useRouter } from 'next/router';
 
 import Directory from '@/component/Music_Component/Directory';
-import { handleDirectoryRead } from '@/fetchAPI/directory';
+import { handleDirectoryRead } from '@/fetchAPI/directoryAPI';
 // import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';

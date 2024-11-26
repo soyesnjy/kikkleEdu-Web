@@ -1,6 +1,6 @@
 /* eslint-disable no-unreachable */
 import styled from 'styled-components';
-import { loginAPI_OAuth_URL } from '@/fetchAPI';
+import { loginAPI_OAuth_URL } from '@/fetchAPI/loginAPI';
 import { useTranslation } from 'next-i18next';
 // Component usage
 const GoogleOAuthBtn = ({ setUrl }) => {
