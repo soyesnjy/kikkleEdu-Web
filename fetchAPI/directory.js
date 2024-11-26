@@ -4,7 +4,7 @@ import axios from 'axios';
 export const handleDirectoryRead = async (query) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/directory?${query?.form ? `form=${query?.form}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/directory/read?${query?.form ? `form=${query?.form}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
