@@ -164,7 +164,6 @@ export default function Nav() {
       localStorage.removeItem('activeTab');
       localStorage.removeItem('teacherDataArr');
       localStorage.removeItem('teacherClassTag');
-      localStorage.removeItem('programClassData');
       router.replace('/');
     });
   }, [router, setLogin]);
@@ -178,14 +177,6 @@ export default function Nav() {
     }).then((result) => {
       if (result.isConfirmed) {
         logoutAPI();
-        // 히스토리 정보 삭제 - 잘 안되네...
-        // if (typeof window !== 'undefined') {
-        //   window.history.pushState(
-        //     {},
-        //     document.title,
-        //     window.location.pathname
-        //   );
-        // }
         Swal.fire({
           icon: 'success',
           title: 'LogOut Success!',
@@ -204,7 +195,6 @@ export default function Nav() {
           localStorage.removeItem('activeTab');
           localStorage.removeItem('teacherDataArr');
           localStorage.removeItem('teacherClassTag');
-          localStorage.removeItem('programClassData');
           setIsOpen(false);
 
           router.push('/');

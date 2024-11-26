@@ -68,21 +68,25 @@ const KindergartenPage = () => {
 
   useEffect(() => {
     // 강사 Read API 호출 메서드
-    if (!teacherDataArr.length) {
+    if (localStorage.getItem('agencyTeacherData')) {
+      setTeacherDataArr([
+        ...JSON.parse(localStorage.getItem('agencyTeacherData')),
+      ]);
+    } else {
       handleTeacherGet({ classType: '유치원' })
         .then((res) => res.data.data)
         .then((data) => {
           // console.log(data);
-          setTeacherDataArr([
-            ...data.map((el) => {
-              return {
-                id: el.kk_teacher_idx,
-                name: el.kk_teacher_name,
-                introduce: el.kk_teacher_introduction,
-                profileImg: el.kk_teacher_profileImg_path,
-              };
-            }),
-          ]);
+          const tuningData = data.map((el) => {
+            return {
+              id: el.kk_teacher_idx,
+              name: el.kk_teacher_name,
+              introduce: el.kk_teacher_introduction,
+              profileImg: el.kk_teacher_profileImg_path,
+            };
+          });
+          localStorage.setItem('agencyTeacherData', JSON.stringify(tuningData));
+          setTeacherDataArr([...tuningData]);
         })
         .catch((err) => {
           console.error(err);
@@ -90,26 +94,32 @@ const KindergartenPage = () => {
         });
     }
     // 수업 Read API 호출 메서드
-    if (!classDataArr.length) {
+    if (localStorage.getItem('agencyClassData')) {
+      setClassDataArr([...JSON.parse(localStorage.getItem('agencyClassData'))]);
+    } else {
       handleClassGet({ classType: '유치원' })
         .then((res) => res.data.data)
         .then((data) => {
-          setClassDataArr([
-            ...data.map((el) => {
-              return {
-                idx: el.kk_class_idx,
-                title: el.kk_class_title,
-                imgPath: el.kk_class_file_path,
-                routePath: `/program${el.kk_class_tag === 'ballet' ? '' : `/${el.kk_class_tag}`}?cName=${el.kk_class_title}`,
-              };
-            }),
-          ]);
+          const tuningData = data.map((el) => {
+            return {
+              idx: el.kk_class_idx,
+              title: el.kk_class_title,
+              imgPath: el.kk_class_file_path,
+              routePath: `/program${el.kk_class_tag === 'ballet' ? '' : `/${el.kk_class_tag}`}?cName=${el.kk_class_title}`,
+            };
+          });
+          localStorage.setItem('agencyClassData', JSON.stringify(tuningData));
+          setClassDataArr([...tuningData]);
         })
         .catch((err) => {
           console.error(err);
           setClassDataArr(classDefaultArr);
         });
     }
+    return () => {
+      localStorage.removeItem('agencyTeacherData');
+      localStorage.removeItem('agencyClassData');
+    };
   }, []);
 
   return (
