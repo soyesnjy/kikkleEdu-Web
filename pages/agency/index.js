@@ -12,10 +12,19 @@ import AgencyMiddleReservationSection from '@/component/Agency_Component/AgencyM
 import AgencyMiddleSecondSection from '@/component/Agency_Component/AgencyMiddleSecondSection';
 import AgencyMiddleThirdSection from '@/component/Agency_Component/AgencyMiddleThirdSection';
 import AgencyMiddleFourthSection from '@/component/Agency_Component/AgencyMiddleFourthSection';
+import EndSection from '@/component/Home_Component/EndSection';
 
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
-import EndSection from '@/component/Home_Component/EndSection';
+
+const teacherDefaultArr = [
+  {
+    id: -1,
+    name: '통신에러',
+    introduce: '',
+    profileImg: '',
+  },
+];
 
 const classDefaultArr = [
   {
@@ -47,7 +56,6 @@ const classDefaultArr = [
 
 const youtubeUrl = '//www.youtube.com/embed/-n3X-_FmRk8';
 
-// 유치원 페이지 - Default
 const KindergartenPage = () => {
   const [agency, setAgency] = useRecoilState(agencyClass);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
@@ -74,7 +82,10 @@ const KindergartenPage = () => {
             }),
           ]);
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          console.error(err);
+          setTeacherDataArr(teacherDefaultArr);
+        });
     }
     // 수업 Read API 호출 메서드
     if (!classDataArr.length) {
@@ -92,7 +103,10 @@ const KindergartenPage = () => {
             }),
           ]);
         })
-        .catch(() => setClassDataArr(classDefaultArr));
+        .catch((err) => {
+          console.error(err);
+          setClassDataArr(classDefaultArr);
+        });
     }
   }, []);
 
@@ -143,8 +157,6 @@ const KindergartenPage = () => {
   );
 };
 
-export default KindergartenPage;
-
 const MainContainer = styled.div`
   width: 100%;
   padding: 1rem 0 0 0;
@@ -158,98 +170,4 @@ const MainContainer = styled.div`
   gap: 1rem;
 `;
 
-const Description = styled.p`
-  color: #313131;
-
-  font-size: 1.2rem;
-  font-family: Pretendard;
-  font-weight: 400;
-
-  white-space: pre;
-
-  @media (max-width: 1080px) {
-    text-align: center;
-  }
-`;
-
-const MiddleSectionTitle = styled.h2`
-  color: #313131;
-
-  font-size: 3rem;
-  font-family: Pretendard;
-  font-weight: 700;
-
-  @media (max-width: 1080px) {
-    font-size: 24px;
-  }
-`;
-
-const MiddleSectionSubtitle = styled.h2`
-  color: #7067aa;
-
-  font-size: 18px;
-  font-family: Nunito;
-  font-weight: 700;
-
-  @media (max-width: 1080px) {
-    font-size: 12px;
-  }
-`;
-
-const MiddleSectionThird = styled.section`
-  width: 100%;
-  min-height: 262px;
-
-  background-color: white;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-
-  gap: 1rem;
-
-  @media (max-width: 1080px) {
-    width: 100%;
-    flex-direction: column;
-    padding: 2rem;
-  }
-`;
-
-const MiddleSectionFourth = styled.section`
-  width: 100vw;
-  min-height: 100vh;
-
-  background-color: white;
-
-  background-image: url('/src/Agency_IMG/Agency_kindergarden_Teacher_Background_IMG.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  gap: 1rem;
-
-  @media (max-width: 1080px) {
-    width: 100%;
-    flex-direction: column;
-    padding: 2rem;
-  }
-`;
-
-const TeacherContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  gap: 1rem;
-  margin-top: 3rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
+export default KindergartenPage;
