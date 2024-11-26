@@ -69,6 +69,7 @@ const YogaProgramPage = () => {
         });
     }
 
+    // 페이지 언마운트 시 로컬 스토리지 programClassData값 제거
     return () => {
       localStorage.removeItem('programClassData');
     };
