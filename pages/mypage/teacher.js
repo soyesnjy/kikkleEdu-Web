@@ -213,6 +213,7 @@ const MyPage = () => {
               </tbody>
             )}
           </Table>
+          {/* 회원 수정 탭 */}
           {activeTab === 'privacy' && (
             <TeacherTablePrivacyBody data={teacherData} />
           )}
