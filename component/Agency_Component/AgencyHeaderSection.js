@@ -2,7 +2,13 @@ import styled from 'styled-components';
 import Link from 'next/link';
 
 // 기관 페이지 5종에 들어가는 HeaderSection
-const AgencyHeaderSection = ({ agency, title, description, backImgUrl }) => {
+const AgencyHeaderSection = ({
+  agency,
+  title,
+  description,
+  backImgUrl,
+  btncolor,
+}) => {
   return (
     <HeaderSection backImgUrl={backImgUrl}>
       <HeaderContent>
@@ -10,7 +16,7 @@ const AgencyHeaderSection = ({ agency, title, description, backImgUrl }) => {
         <Description>{description}</Description>
         <StyledLink href="/reservation">
           {agency ? (
-            <ReservationButton>
+            <ReservationButton btncolor={btncolor}>
               예약하기
               <span className="material-symbols-outlined">arrow_forward</span>
             </ReservationButton>
@@ -110,7 +116,7 @@ const StyledLink = styled(Link)`
 `;
 
 const ReservationButton = styled.button`
-  background-color: #45b26b;
+  background-color: ${(props) => props.btncolor};
   border-radius: 2rem;
   border: none;
 

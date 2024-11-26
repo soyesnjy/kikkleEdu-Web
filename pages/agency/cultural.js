@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 
 import AgencyHeaderSection from '@/component/Agency_Component/AgencyHeaderSection';
 import AgencyMiddleFirstSection from '@/component/Agency_Component/AgencyMiddleFirstSection';
+import AgencyMiddleReservationSection from '@/component/Agency_Component/AgencyMiddleReservationSection';
+import AgencyMiddleSecondSection from '@/component/Agency_Component/AgencyMiddleSecondSection';
 
 import ProgramClassContainer from '@/component/Agency_Component/ProgramClassContainer';
 import EndSection from '@/component/Home_Component/EndSection';
@@ -100,48 +102,20 @@ const CulturalPage = () => {
         title={`"Soyes Kids" \n with kids !!`}
         description={`각 기관에 맞는 프로그램을 찾고 강사를 \n 선택하여 예약하는 시스템입니다.`}
         backImgUrl={`/src/Agency_IMG/문화센터/Agency_cultural_Header_Background_IMG.png`}
+        btncolor={`#4a90e2`}
       />
       {/* 미들 섹션 - 1 */}
       <AgencyMiddleFirstSection />
       {/* 미들 섹션 - 예약하기 */}
       {agency ? (
-        <MiddleSectionReservation>
-          <ReservationButtonContainer>
-            <ReservationTextContainer>
-              <ReservationButtonTitle>
-                문화센터 수업 예약하기
-              </ReservationButtonTitle>
-              <ReservationButtonSubTitle>
-                손쉽게 수업을 예약해보세요.
-              </ReservationButtonSubTitle>
-            </ReservationTextContainer>
-            <StyledLink href="/reservation">
-              <Image
-                src="/src/Agency_IMG/Agency_Reservation_Icon_IMG.png"
-                alt="Icon"
-                width={102}
-                height={102}
-                style={{ maxWidth: '100%', height: 'auto' }}
-              />
-            </StyledLink>
-          </ReservationButtonContainer>
-        </MiddleSectionReservation>
+        <AgencyMiddleReservationSection
+          agency={`문화센터`}
+          backcolor={`#4a90e2`}
+        />
       ) : null}
 
       {/* 미들 섹션 - 수업 영상 */}
-      <MiddleSectionSecond>
-        <MiddleSectionSubtitle>Our Program Video</MiddleSectionSubtitle>
-        <MiddleSectionTitle>문화센터 수업 영상</MiddleSectionTitle>
-        <VideoContent>
-          <iframe
-            src={youtubeUrl} // 수업 영상 유튜브 링크
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
-          />
-        </VideoContent>
-      </MiddleSectionSecond>
+      <AgencyMiddleSecondSection agency={`문화센터`} youtubeUrl={youtubeUrl} />
       {/* 미들 섹션 - 수업 프로그램 */}
       <MiddleSectionThird>
         <MiddleSectionSubtitle>Our Program Image</MiddleSectionSubtitle>

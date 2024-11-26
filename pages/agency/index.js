@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
-import Link from 'next/link';
+
 import { agencyClass, mobile } from '@/store/state';
 import { useRecoilState } from 'recoil';
 import { useState, useEffect } from 'react';
@@ -8,14 +8,14 @@ import { useRouter } from 'next/router';
 
 import AgencyHeaderSection from '@/component/Agency_Component/AgencyHeaderSection';
 import AgencyMiddleFirstSection from '@/component/Agency_Component/AgencyMiddleFirstSection';
+import AgencyMiddleReservationSection from '@/component/Agency_Component/AgencyMiddleReservationSection';
+import AgencyMiddleSecondSection from '@/component/Agency_Component/AgencyMiddleSecondSection';
 
 import ProgramClassContainer from '@/component/Agency_Component/ProgramClassContainer';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
 import EndSection from '@/component/Home_Component/EndSection';
 import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
-
-import Image from 'next/image';
 
 const classDefaultArr = [
   {
@@ -104,47 +104,22 @@ const KindergartenPage = () => {
         title={`"Soyes Kids" \n with kids !!`}
         description={`각 기관에 맞는 프로그램을 찾고 강사를 \n 선택하여 예약하는 시스템입니다.`}
         backImgUrl={`/src/Agency_IMG/유치원/Agency_kindergarden_Header_Background_IMG.png`}
+        btncolor={`#45b26b`}
       />
-      {/* 미들 섹션 - Program, Teacher, Time */}
+      {/* 미들 섹션 - Frist */}
       <AgencyMiddleFirstSection />
+
       {/* 미들 섹션 - 예약하기 */}
       {agency ? (
-        <MiddleSectionReservation>
-          <ReservationButtonContainer>
-            <ReservationTextContainer>
-              <ReservationButtonTitle>
-                유치원 수업 예약하기
-              </ReservationButtonTitle>
-              <ReservationButtonSubTitle>
-                손쉽게 수업을 예약해보세요.
-              </ReservationButtonSubTitle>
-            </ReservationTextContainer>
-            <StyledLink href="/reservation">
-              <Image
-                src="/src/Agency_IMG/Agency_Reservation_Icon_IMG.png"
-                alt="Icon"
-                width={102}
-                height={102}
-                style={{ maxWidth: '100%', height: 'auto' }}
-              />
-            </StyledLink>
-          </ReservationButtonContainer>
-        </MiddleSectionReservation>
+        <AgencyMiddleReservationSection
+          agency={`유치원`}
+          backcolor={`#45b26b`}
+        />
       ) : null}
+
       {/* 미들 섹션 - 수업 영상 */}
-      <MiddleSectionSecond>
-        <MiddleSectionSubtitle>Our Program Video</MiddleSectionSubtitle>
-        <MiddleSectionTitle>유치원 수업 영상</MiddleSectionTitle>
-        <VideoContent>
-          <iframe
-            src={youtubeUrl} // 수업 영상 유튜브 링크
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
-          />
-        </VideoContent>
-      </MiddleSectionSecond>
+      <AgencyMiddleSecondSection agency={`유치원`} youtubeUrl={youtubeUrl} />
+
       {/* 미들 섹션 - 수업 프로그램 */}
       <MiddleSectionThird>
         <MiddleSectionSubtitle>Our Program Image</MiddleSectionSubtitle>
@@ -219,114 +194,6 @@ const Description = styled.p`
   }
 `;
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-`;
-
-const MiddleSectionFirst = styled.section`
-  width: 100vw;
-  min-height: 262px;
-
-  background-color: white;
-  padding: 3rem;
-
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-
-  @media (max-width: 1080px) {
-    width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 2rem;
-  }
-`;
-
-const MiddleSectionReservation = styled.section`
-  width: 100vw;
-  min-height: 262px;
-
-  background-color: white;
-  padding: 3rem;
-
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-
-  @media (max-width: 1080px) {
-    width: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 2rem;
-  }
-`;
-
-const ReservationButtonContainer = styled.div`
-  width: 80%;
-  min-height: 216px;
-  border-radius: 32px;
-
-  padding: 4rem;
-  background-color: #45b26b;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  @media (max-width: 1080px) {
-    width: 100%;
-    align-items: center;
-    padding: 2rem;
-  }
-`;
-
-const ReservationTextContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: flex-start;
-
-  gap: 3rem;
-
-  @media (max-width: 1080px) {
-    gap: 1.5rem;
-  }
-`;
-const ReservationButtonTitle = styled.div`
-  font-size: 2rem;
-  font-family: Pretendard;
-  font-weight: 700;
-
-  color: white;
-`;
-const ReservationButtonSubTitle = styled.div`
-  font-size: 1rem;
-  font-family: Pretendard;
-  font-weight: 400;
-
-  color: white;
-`;
-
-const MiddleSectionSecond = styled.section`
-  width: 100vw;
-  min-height: 262px;
-
-  background-color: white;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-
-  gap: 1rem;
-
-  @media (max-width: 1080px) {
-    width: 100%;
-    flex-direction: column;
-    padding: 2rem;
-  }
-`;
-
 const MiddleSectionTitle = styled.h2`
   color: #313131;
 
@@ -348,28 +215,6 @@ const MiddleSectionSubtitle = styled.h2`
 
   @media (max-width: 1080px) {
     font-size: 12px;
-  }
-`;
-
-const VideoContent = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  margin-top: 2rem;
-
-  iframe {
-    width: 900px;
-    height: 528px;
-  }
-  min-height: 360px;
-
-  @media (max-width: 1080px) {
-    iframe {
-      width: 100%;
-      height: 328px;
-    }
   }
 `;
 
