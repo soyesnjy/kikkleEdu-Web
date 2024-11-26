@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
+import AgencyHeaderSection from '@/component/Agency_Component/AgencyHeaderSection';
 import AgencyProgramCard from '@/component/Home_Component/AgencyProgramCard';
 import ProgramClassContainer from '@/component/Agency_Component/ProgramClassContainer';
 import EndSection from '@/component/Home_Component/EndSection';
@@ -111,23 +112,12 @@ const ElementPage = () => {
   return (
     <MainContainer>
       {/* 헤더 섹션 */}
-      <HeaderSection>
-        <HeaderContent>
-          <Subtitle>{`"Soyes Kids" \n with kids !!`}</Subtitle>
-          <Description>
-            {`각 기관에 맞는 프로그램을 찾고 강사를 \n 선택하여 예약하는 시스템입니다.`}
-          </Description>
-          {/* <StyledLink href={agency ? '/reservation' : '/login'}> */}
-          <StyledLink href="/reservation">
-            {agency ? (
-              <ReservationButton>
-                예약하기
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </ReservationButton>
-            ) : null}
-          </StyledLink>
-        </HeaderContent>
-      </HeaderSection>
+      <AgencyHeaderSection
+        agency={agency}
+        title={`"Soyes Kids" \n with kids !!`}
+        description={`각 기관에 맞는 프로그램을 찾고 강사를 \n 선택하여 예약하는 시스템입니다.`}
+        backImgUrl={`/src/Agency_IMG/초등학교/Agency_element_Header_Background_IMG.png`}
+      />
       {/* 미들 섹션 - 1 */}
       <MiddleSectionFirst>
         {section_1_Arr.map((el, index) => {

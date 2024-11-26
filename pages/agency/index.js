@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
+import AgencyHeaderSection from '@/component/Agency_Component/AgencyHeaderSection';
 import AgencyProgramCard from '@/component/Home_Component/AgencyProgramCard';
 import ProgramClassContainer from '@/component/Agency_Component/ProgramClassContainer';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
@@ -63,6 +64,7 @@ const classDefaultArr = [
 
 const youtubeUrl = '//www.youtube.com/embed/-n3X-_FmRk8';
 
+// 유치원 페이지 - Default
 const KindergartenPage = () => {
   const [agency, setAgency] = useRecoilState(agencyClass);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
@@ -114,7 +116,13 @@ const KindergartenPage = () => {
   return (
     <MainContainer>
       {/* 헤더 섹션 */}
-      <HeaderSection>
+      <AgencyHeaderSection
+        agency={agency}
+        title={`"Soyes Kids" \n with kids !!`}
+        description={`각 기관에 맞는 프로그램을 찾고 강사를 \n 선택하여 예약하는 시스템입니다.`}
+        backImgUrl={`/src/Agency_IMG/유치원/Agency_kindergarden_Header_Background_IMG.png`}
+      />
+      {/* <HeaderSection>
         <HeaderContent>
           <Subtitle>{`"Soyes Kids" \n with kids !!`}</Subtitle>
           <Description>
@@ -129,7 +137,7 @@ const KindergartenPage = () => {
             ) : null}
           </StyledLink>
         </HeaderContent>
-      </HeaderSection>
+      </HeaderSection> */}
       {/* 미들 섹션 - Program, Teacher, Time */}
       <MiddleSectionFirst>
         {section_1_Arr.map((el, index) => {
@@ -242,76 +250,6 @@ const MainContainer = styled.div`
   gap: 1rem;
 `;
 
-const HeaderSection = styled.section`
-  width: 100vw;
-  height: 52.65vw;
-  position: relative;
-
-  background-image: url('/src/Agency_IMG/유치원/Agency_kindergarden_Header_Background_IMG.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  padding: 0 4rem 0 4rem;
-
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
-  gap: 1rem;
-
-  @media (max-width: 1080px) {
-    min-height: 471px;
-    padding: 3rem 0rem;
-    justify-content: center;
-    align-items: flex-start;
-    background-position: 80%;
-  }
-`;
-
-const HeaderContent = styled.div`
-  position: absolute;
-  top: 10%;
-  left: 0;
-
-  width: 40%;
-  padding: 4rem 4rem 4rem 8rem;
-
-  background: rgba(0, 0, 0, 0.1); /* 반투명 배경 */
-  backdrop-filter: blur(25px); /* 블러 효과 */
-  border-radius: 0 2rem 2rem 0;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2rem;
-
-  @media (max-width: 1080px) {
-    background: rgba(255, 255, 255, 0.2);
-    width: 90%;
-    padding: 1.5rem;
-    position: inherit;
-    align-items: center;
-    border-radius: 2rem;
-    gap: 1rem;
-  }
-`;
-
-const Subtitle = styled.h2`
-  color: #333;
-
-  font-size: 4rem;
-  font-family: Nunito;
-  font-weight: 700;
-
-  white-space: pre;
-
-  @media (max-width: 1080px) {
-    font-size: 2.3rem;
-    text-align: center;
-  }
-`;
-
 const Description = styled.p`
   color: #313131;
 
@@ -328,29 +266,6 @@ const Description = styled.p`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-`;
-
-const ReservationButton = styled.button`
-  background-color: #45b26b;
-  border-radius: 2rem;
-  border: none;
-
-  margin-top: 1rem;
-  padding: 1rem 2rem;
-
-  color: white;
-  font-size: 1.2rem;
-  font-family: Pretendard;
-  font-weight: 600;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  gap: 0.4rem;
-
-  cursor: pointer;
-  z-index: 1;
 `;
 
 const MiddleSectionFirst = styled.section`
