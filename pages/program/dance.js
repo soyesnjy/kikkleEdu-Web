@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 
+import { useSearchParams } from 'next/navigation';
 import { agencyClass } from '@/store/state';
 import { useRecoilState } from 'recoil';
-// import { useRouter } from 'next/router';
-
 import { useState, useEffect } from 'react';
+
+import ProgramHeaderSection from '@/component/Program_Componet/ProgramHeaderSection';
+
 import LessonSection from '@/component/Home_Component/LessonSection';
 import EduArtVideoComponent from '@/component/Home_Component/EduArtVideoComponent';
 import EndSection from '@/component/Home_Component/EndSection';
@@ -104,18 +105,12 @@ const DanceProgramPage = () => {
   return (
     <MainContainer>
       {/* 헤더 섹션 */}
-      <HeaderSection>
-        <HeaderContent>
-          <Title>Kids Class edu</Title>
-          <Subtitle>댄스 교육</Subtitle>
-          <Description>
-            신나는 음악에 맞춰 자유롭게 표현하는 KPOP댄스 클래스
-          </Description>
-          <HeaderIntroDiv>
-            소예키즈 소개 - <GreenColorSpan>댄스 교육</GreenColorSpan>
-          </HeaderIntroDiv>
-        </HeaderContent>
-      </HeaderSection>
+      <ProgramHeaderSection
+        programType={`댄스`}
+        description={`신나는 음악에 맞춰 자유롭게 표현하는 KPOP댄스 클래스`}
+        backImgUrl={`/src/Program_IMG/Dance/Program_Header_Dance_Background_IMG.png`}
+      />
+
       {/* 수업 카테고리 */}
       <MiddleSection>
         <SearchContainer>

@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 
+import { useSearchParams } from 'next/navigation';
 import { agencyClass } from '@/store/state';
 import { useRecoilState } from 'recoil';
-// import { useRouter } from 'next/router';
-
 import { useState, useEffect } from 'react';
+
+import ProgramHeaderSection from '@/component/Program_Componet/ProgramHeaderSection';
+
 import LessonSection from '@/component/Home_Component/LessonSection';
 import EduArtVideoComponent from '@/component/Home_Component/EduArtVideoComponent';
 import EndSection from '@/component/Home_Component/EndSection';
@@ -104,16 +105,12 @@ const YogaProgramPage = () => {
   return (
     <MainContainer>
       {/* 헤더 섹션 */}
-      <HeaderSection>
-        <HeaderContent>
-          <Title>Kids Class edu</Title>
-          <Subtitle>요가 교육</Subtitle>
-          <Description>몸과 마음이 편안해지는 힐링요가클래스</Description>
-          <HeaderIntroDiv>
-            소예키즈 소개 - <GreenColorSpan>요가 교육</GreenColorSpan>
-          </HeaderIntroDiv>
-        </HeaderContent>
-      </HeaderSection>
+      <ProgramHeaderSection
+        programType={`요가`}
+        description={`몸과 마음이 편안해지는 힐링요가클래스`}
+        backImgUrl={`/src/Program_IMG/Yoga/Program_Header_Yoga_Background_IMG.png`}
+      />
+
       {/* 수업 카테고리 */}
       <MiddleSection>
         <SearchContainer>
