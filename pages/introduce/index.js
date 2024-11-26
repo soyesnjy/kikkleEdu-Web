@@ -32,6 +32,8 @@ const HistoryPage = () => {
             width={178}
             height={213}
             style={{ maxWidth: '100%', height: 'auto' }}
+            placeholder="blur"
+            blurDataURL="/src/loding.gif"
           />
         )}
         <MiddleContainer>

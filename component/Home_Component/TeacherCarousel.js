@@ -104,6 +104,8 @@ const TeacherCarousel = () => {
                     // height: 'auto',
                     borderRadius: '50%',
                   }}
+                  placeholder="blur"
+                  blurDataURL="/src/loding.gif"
                 />
                 <ProfileName>{profile.name}</ProfileName>
                 <ProfileDescription>
