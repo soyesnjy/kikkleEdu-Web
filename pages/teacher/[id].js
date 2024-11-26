@@ -1,16 +1,13 @@
-import axios from 'axios';
-import cookie from 'cookie';
-
+// import axios from 'axios';
+// import cookie from 'cookie';
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import Image from 'next/image';
-
 import { useRouter } from 'next/router'; // Next.js의 useRouter 사용
+import styled from 'styled-components';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
+import Image from 'next/image';
 
 import { useRecoilState } from 'recoil';
 import { mobile, log } from '@/store/state';
-
 import EndSection from '@/component/Home_Component/EndSection';
 import ProgramTeacherContainer from '@/component/Teacher_Componet/ProgramTeacherContainer';
 
@@ -35,40 +32,42 @@ const ramdomDefaultImg = () => {
   return imgArr[Math.floor(Math.random() * imgArr.length)];
 };
 
-// SSR - 데이터 패칭
-export async function getServerSideProps(context) {
-  const { id } = context.query; // URL에서 ID를 추출
-  const cookies = cookie.parse(context.req.headers.cookie || '');
-  let data = dummyData;
+// // SSR - 데이터 패칭
+// export async function getServerSideProps(context) {
+//   const { id } = context.query; // URL에서 ID를 추출
+//   const cookies = cookie.parse(context.req.headers.cookie || '');
+//   let data = dummyData;
 
-  try {
-    // 강사 Detail Data
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/teacher/read?teacherIdx=${id}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.refreshToken}`,
-        },
-        withCredentials: true,
-      }
-    );
+//   try {
+//     // 강사 Detail Data
+//     const res = await axios.get(
+//       `${process.env.NEXT_PUBLIC_URL}/teacher/read?teacherIdx=${id}`,
+//       {
+//         headers: {
+//           'Content-Type': 'application/json',
+//           Authorization: `Bearer ${cookies.refreshToken}`,
+//         },
+//         withCredentials: true,
+//       }
+//     );
 
-    const result = res.data.data;
-    if (result?.length) {
-      data = result[0];
-    }
-  } catch (err) {
-    console.error(err.response);
-  }
+//     const result = res.data.data;
+//     if (result?.length) {
+//       data = result[0];
+//     }
+//   } catch (err) {
+//     console.error(err.response);
+//   }
 
-  return {
-    props: { data }, // 서버에서 가져온 데이터를 페이지로 전달
-  };
-}
+//   return {
+//     props: { data }, // 서버에서 가져온 데이터를 페이지로 전달
+//   };
+// }
 
-const TeacherDetailPage = ({ data }) => {
+const TeacherDetailPage = () => {
   const router = useRouter();
+  const { id } = router.query; // URL의 동적 파라미터를 가져옴
+  const [data, setData] = useState({});
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
   const [login, setLogin] = useRecoilState(log);
   const [teacherDataArr, setTeacherDataArr] = useState([]);
@@ -80,8 +79,25 @@ const TeacherDetailPage = ({ data }) => {
         ...JSON.parse(localStorage.getItem('teacherDataArr')),
       ]);
     }
+    // return () => {
+    //   localStorage.removeItem('teacherDataArr');
+    // };
   }, []);
 
+  useEffect(() => {
+    if (id) {
+      handleTeacherGet({ teacherIdx: id })
+        .then((res) => res.data)
+        .then((data) => {
+          if (data.data.length) setData(data.data[0]);
+          else setData(dummyData);
+        })
+        .catch((err) => {
+          console.log(err);
+          setData(dummyData);
+        });
+    }
+  }, [id]);
   // 기능 잠금
   useEffect(() => {
     // 로그인 시 메인 페이지로 이동
@@ -97,6 +113,10 @@ const TeacherDetailPage = ({ data }) => {
       setProfileImgSrc(data.kk_teacher_profileImg_path);
     } else setProfileImgSrc(ramdomDefaultImg());
   }, [data]);
+
+  // const handleGoBack = () => {
+  //   router.push('/teacher'); // 강사 List 페이지로 이동
+  // };
 
   return (
     <MainContainer>
