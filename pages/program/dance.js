@@ -17,28 +17,8 @@ import { handleClassGet } from '@/fetchAPI/classAPI';
 
 const classDefaultArr = [
   {
-    imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_1_Background_IMG.png',
-    title: '스토리발레(창의발레)',
-    routePath: '/',
-  },
-  {
-    imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_2_Background_IMG.png',
-    title: '체험형 원데이 프로그램',
-    routePath: '/',
-  },
-  {
-    imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_3_Background_IMG.png',
-    title: '발표회 프로그램',
-    routePath: '/',
-  },
-  {
-    imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_4_Background_IMG.png',
-    title: 'KPOP 방송댄스 프로그램',
-    routePath: '/',
-  },
-  {
-    imgPath: '/src/Agency_IMG/Agency_kindergarden_Program_5_Background_IMG.png',
-    title: '세계의 춤 프로그램',
+    imgPath: '',
+    title: '서버 통신 실패',
     routePath: '/',
   },
 ];
