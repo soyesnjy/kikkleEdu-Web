@@ -1,12 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
+
 import { useEffect, useState } from 'react';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { useRouter } from 'next/router';
+
 import EndSection from '@/component/Home_Component/EndSection';
 import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
-
-// import { useRecoilState } from 'recoil';
-// import { log } from '@/store/state';
 
 const TeacherListPage = () => {
   const [teacherClass, setTeacherClass] = useState('');
@@ -43,7 +43,11 @@ const TeacherListPage = () => {
 
   // 강사 태그 조회
   useEffect(() => {
-    if (teacherClass) {
+    // 태그가 변경될 경우
+    if (
+      teacherClass &&
+      teacherClass !== localStorage.getItem('teacherClassTag')
+    ) {
       localStorage.setItem('teacherClassTag', teacherClass);
       handleTeacherGet({ classTag: teacherClass })
         .then((res) => {
@@ -68,6 +72,13 @@ const TeacherListPage = () => {
           localStorage.setItem('teacherDataArr', JSON.stringify(tmpArr));
         })
         .catch((err) => console.error(err));
+    }
+    // local에 teacherDataArr값이 있는 경우
+    else if (localStorage.getItem('teacherDataArr')) {
+      setTeacherDataArr([
+        ...JSON.parse(localStorage.getItem('teacherDataArr')),
+      ]);
+      return;
     }
   }, [teacherClass]);
 

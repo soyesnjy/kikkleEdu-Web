@@ -57,6 +57,8 @@ const NavListContainer = styled.div`
   justify-content: center;
   align-items: center;
 
+  user-select: none;
+
   @media (max-width: 768px) {
     align-items: center;
   }
