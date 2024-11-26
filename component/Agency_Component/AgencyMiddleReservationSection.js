@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 
-// 기관 페이지 5종에 들어가는 MiddleFirstSection
+// 기관 페이지 5종에 들어가는 MiddleReservationSection
 const AgencyMiddleReservationSection = ({ agency, backcolor }) => {
   return (
     <MiddleSectionReservation>

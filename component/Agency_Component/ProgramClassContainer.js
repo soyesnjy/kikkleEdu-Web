@@ -96,7 +96,7 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
   return (
     <Container>
       <ProgramContainer
-        length={classDataArr.length}
+        length={classDataArr?.length || 0}
         ref={containerRef}
         onMouseDown={onDragStart}
         onMouseMove={onDragMove}
@@ -111,7 +111,7 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
             <span className="material-symbols-outlined">arrow_back</span>
           </Button>
         )}
-        {classDataArr.map((el) => {
+        {classDataArr?.map((el) => {
           const { title, imgPath, routePath, idx } = el;
           return (
             <ProgramContentContainer

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-// 기관 페이지 5종에 들어가는 MiddleFirstSection
+// 기관 페이지 5종에 들어가는 MiddleSecondSection
 const AgencyMiddleSecondSection = ({ agency, youtubeUrl }) => {
   return (
     <MiddleSectionSecond>

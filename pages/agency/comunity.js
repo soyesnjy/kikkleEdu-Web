@@ -9,8 +9,9 @@ import AgencyHeaderSection from '@/component/Agency_Component/AgencyHeaderSectio
 import AgencyMiddleFirstSection from '@/component/Agency_Component/AgencyMiddleFirstSection';
 import AgencyMiddleReservationSection from '@/component/Agency_Component/AgencyMiddleReservationSection';
 import AgencyMiddleSecondSection from '@/component/Agency_Component/AgencyMiddleSecondSection';
+import AgencyMiddleThirdSection from '@/component/Agency_Component/AgencyMiddleThirdSection';
+import AgencyMiddleFourthSection from '@/component/Agency_Component/AgencyMiddleFourthSection';
 
-import ProgramClassContainer from '@/component/Agency_Component/ProgramClassContainer';
 import EndSection from '@/component/Home_Component/EndSection';
 import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
 
@@ -108,7 +109,7 @@ const ComunityPage = () => {
       {/* 미들 섹션 - 예약하기 */}
       {agency ? (
         <AgencyMiddleReservationSection
-          agency={`커뮤니티센터`}
+          agency={`아파트 커뮤니티 센터`}
           backcolor={`#f29494`}
         />
       ) : null}
@@ -120,40 +121,18 @@ const ComunityPage = () => {
       />
 
       {/* 미들 섹션 - 수업 프로그램 */}
-      <MiddleSectionThird>
-        <MiddleSectionSubtitle>Our Program Image</MiddleSectionSubtitle>
-        <MiddleSectionTitle>아파트 커뮤니티센터 프로그램</MiddleSectionTitle>
-        <Description>
-          {mobileFlag
-            ? `아이들이 재미있게 체험할 수 있는 \n 다양한 소예키즈의 교육프로그램`
-            : `아이들이 재미있게 체험할 수 있는 다양한 소예키즈의 교육프로그램`}
-        </Description>
-        <ProgramClassContainer
-          classDataArr={classDataArr}
-          mobileFlag={mobileFlag}
-        />
-      </MiddleSectionThird>
+      <AgencyMiddleThirdSection
+        agency={`아파트 커뮤니티센터`}
+        mobileFlag={mobileFlag}
+        classDataArr={classDataArr}
+      />
+
       {/* 미들 섹션 - 수업 강사 */}
-      <MiddleSectionFourth>
-        <MiddleSectionSubtitle>OUR PROGRAM CLASS</MiddleSectionSubtitle>
-        <MiddleSectionTitle>수업 강사</MiddleSectionTitle>
-        <TeacherContainer>
-          {teacherDataArr.length > 0
-            ? teacherDataArr.map((el) => {
-                const { id, name, introduce, profileImg } = el;
-                return (
-                  <TeacherProfileCard
-                    key={id}
-                    name={name}
-                    introduce={introduce}
-                    imgUrl={profileImg}
-                    onClick={() => router.push(`/teacher/${id}`)}
-                  />
-                );
-              })
-            : ''}
-        </TeacherContainer>
-      </MiddleSectionFourth>
+      <AgencyMiddleFourthSection
+        router={router}
+        teacherDataArr={teacherDataArr}
+      />
+
       {/* 엔드 섹션 */}
       <EndSection
         Title={`For our child's healthy body \n and heart happiness`}
