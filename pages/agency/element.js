@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import axios from 'axios';
+
 import styled from 'styled-components';
 
 import { agencyClass, mobile } from '@/store/state';
 import { useRecoilState } from 'recoil';
-import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import AgencyHeaderSection from '@/component/Agency_Component/AgencyHeaderSection';
@@ -14,8 +15,10 @@ import AgencyMiddleThirdSection from '@/component/Agency_Component/AgencyMiddleT
 import AgencyMiddleFourthSection from '@/component/Agency_Component/AgencyMiddleFourthSection';
 import EndSection from '@/component/Home_Component/EndSection';
 
-import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
-import { handleClassGet } from '@/fetchAPI/classAPI';
+// CSR
+// import { useState, useEffect } from 'react';
+// import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
+// import { handleClassGet } from '@/fetchAPI/classAPI';
 
 const teacherDefaultArr = [
   {
@@ -58,69 +61,69 @@ const youtubeUrl = '//www.youtube.com/embed/Cb0jnKtZP4o';
 
 const agencyType = '초등학교';
 
-const ElementPage = () => {
+const ElementPage = ({ teacherDataArr, classDataArr }) => {
   const [agency, setAgency] = useRecoilState(agencyClass);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
-  const [classDataArr, setClassDataArr] = useState([]);
-  const [teacherDataArr, setTeacherDataArr] = useState([]);
+  // const [classDataArr, setClassDataArr] = useState([]);
+  // const [teacherDataArr, setTeacherDataArr] = useState([]);
   const router = useRouter();
 
   // 강사 List 조회
-  useEffect(() => {
-    // 강사 Read API 호출 메서드
-    if (localStorage.getItem('agencyTeacherData')) {
-      setTeacherDataArr([
-        ...JSON.parse(localStorage.getItem('agencyTeacherData')),
-      ]);
-    } else {
-      handleTeacherGet({ classType: '초등학교' })
-        .then((res) => res.data.data)
-        .then((data) => {
-          // console.log(data);
-          const tuningData = data.map((el) => {
-            return {
-              id: el.kk_teacher_idx,
-              name: el.kk_teacher_name,
-              introduce: el.kk_teacher_introduction,
-              profileImg: el.kk_teacher_profileImg_path,
-            };
-          });
-          localStorage.setItem('agencyTeacherData', JSON.stringify(tuningData));
-          setTeacherDataArr([...tuningData]);
-        })
-        .catch((err) => {
-          console.error(err);
-          setTeacherDataArr(teacherDefaultArr);
-        });
-    }
-    // 수업 Read API 호출 메서드
-    if (localStorage.getItem('agencyClassData')) {
-      setClassDataArr([...JSON.parse(localStorage.getItem('agencyClassData'))]);
-    } else {
-      handleClassGet({ classType: '초등학교' })
-        .then((res) => res.data.data)
-        .then((data) => {
-          const tuningData = data.map((el) => {
-            return {
-              idx: el.kk_class_idx,
-              title: el.kk_class_title,
-              imgPath: el.kk_class_file_path,
-              routePath: `/program${el.kk_class_tag === 'ballet' ? '' : `/${el.kk_class_tag}`}?cName=${el.kk_class_title}`,
-            };
-          });
-          localStorage.setItem('agencyClassData', JSON.stringify(tuningData));
-          setClassDataArr([...tuningData]);
-        })
-        .catch((err) => {
-          console.error(err);
-          setClassDataArr(classDefaultArr);
-        });
-    }
-    return () => {
-      localStorage.removeItem('agencyTeacherData');
-      localStorage.removeItem('agencyClassData');
-    };
-  }, []);
+  // useEffect(() => {
+  //   // 강사 Read API 호출 메서드
+  //   if (localStorage.getItem('agencyTeacherData')) {
+  //     setTeacherDataArr([
+  //       ...JSON.parse(localStorage.getItem('agencyTeacherData')),
+  //     ]);
+  //   } else {
+  //     handleTeacherGet({ classType: '초등학교' })
+  //       .then((res) => res.data.data)
+  //       .then((data) => {
+  //         // console.log(data);
+  //         const tuningData = data.map((el) => {
+  //           return {
+  //             id: el.kk_teacher_idx,
+  //             name: el.kk_teacher_name,
+  //             introduce: el.kk_teacher_introduction,
+  //             profileImg: el.kk_teacher_profileImg_path,
+  //           };
+  //         });
+  //         localStorage.setItem('agencyTeacherData', JSON.stringify(tuningData));
+  //         setTeacherDataArr([...tuningData]);
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //         setTeacherDataArr(teacherDefaultArr);
+  //       });
+  //   }
+  //   // 수업 Read API 호출 메서드
+  //   if (localStorage.getItem('agencyClassData')) {
+  //     setClassDataArr([...JSON.parse(localStorage.getItem('agencyClassData'))]);
+  //   } else {
+  //     handleClassGet({ classType: '초등학교' })
+  //       .then((res) => res.data.data)
+  //       .then((data) => {
+  //         const tuningData = data.map((el) => {
+  //           return {
+  //             idx: el.kk_class_idx,
+  //             title: el.kk_class_title,
+  //             imgPath: el.kk_class_file_path,
+  //             routePath: `/program${el.kk_class_tag === 'ballet' ? '' : `/${el.kk_class_tag}`}?cName=${el.kk_class_title}`,
+  //           };
+  //         });
+  //         localStorage.setItem('agencyClassData', JSON.stringify(tuningData));
+  //         setClassDataArr([...tuningData]);
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //         setClassDataArr(classDefaultArr);
+  //       });
+  //   }
+  //   return () => {
+  //     localStorage.removeItem('agencyTeacherData');
+  //     localStorage.removeItem('agencyClassData');
+  //   };
+  // }, []);
 
   return (
     <MainContainer>
@@ -167,6 +170,72 @@ const ElementPage = () => {
     </MainContainer>
   );
 };
+
+export async function getStaticProps() {
+  let teacherDataArr = [],
+    classDataArr = [];
+  try {
+    // 강사 Data (Agency)
+    const teacherRes = await axios.get(
+      `${process.env.NEXT_PUBLIC_URL}/teacher/read?classType=${agencyType}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }
+    );
+    // 수업 Data (Agency)
+    const classRes = await axios.get(
+      `${process.env.NEXT_PUBLIC_URL}/class/read?classType=${agencyType}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }
+    );
+
+    const teacherResult = teacherRes.data.data;
+    const classResult = classRes.data.data;
+
+    if (teacherResult?.length) {
+      teacherDataArr = [
+        ...teacherResult.map((el) => {
+          return {
+            id: el.kk_teacher_idx,
+            name: el.kk_teacher_name,
+            introduce: el.kk_teacher_introduction,
+            profileImg: el.kk_teacher_profileImg_path,
+          };
+        }),
+      ];
+    }
+
+    if (classResult?.length) {
+      classDataArr = [
+        ...classResult.map((el) => {
+          return {
+            idx: el.kk_class_idx,
+            title: el.kk_class_title,
+            imgPath: el.kk_class_file_path,
+            routePath: `/program${el.kk_class_tag === 'ballet' ? '' : `/${el.kk_class_tag}`}?cName=${el.kk_class_title}`,
+          };
+        }),
+      ];
+    }
+  } catch (err) {
+    console.error(err.response);
+    // Default값 삽입
+    teacherDataArr = teacherDefaultArr;
+    classDataArr = classDefaultArr;
+  }
+
+  return {
+    props: { teacherDataArr, classDataArr },
+    revalidate: 10,
+  };
+}
 
 const MainContainer = styled.div`
   width: 100%;
