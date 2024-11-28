@@ -1,10 +1,13 @@
 import styled from 'styled-components';
+
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { handleClassGet } from '@/fetchAPI/classAPI';
-import EndSection from '@/component/Home_Component/EndSection';
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
+
+import { handleClassGet } from '@/fetchAPI/classAPI';
+
+import EndSection from '@/component/Home_Component/EndSection';
 
 const classDefaultArr = [
   {

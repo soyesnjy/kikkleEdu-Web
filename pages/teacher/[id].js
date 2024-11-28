@@ -116,13 +116,10 @@ const TeacherDetailPage = () => {
     }
   }, [login]);
 
+  // 이미지 삽입 (옵셔널 체이닝)
   useEffect(() => {
-    if (data?.kk_teacher_profileImg_path) {
-      setProfileImgSrc(data.kk_teacher_profileImg_path);
-    } else {
-      setTimeout(() => {
-        setProfileImgSrc(ramdomDefaultImg());
-      }, 1500);
+    if (data?.kk_teacher_profileImg_path !== undefined) {
+      setProfileImgSrc(data.kk_teacher_profileImg_path || ramdomDefaultImg());
     }
   }, [data]);
 

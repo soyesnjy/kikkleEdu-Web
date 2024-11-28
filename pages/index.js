@@ -81,7 +81,6 @@ const section_5to9_Arr = [
 
 // SSR
 export async function getServerSideProps() {
-  // console.log(cookies);
   let data = [];
   try {
     // 강사 Data (Main Page)
