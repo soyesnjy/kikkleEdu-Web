@@ -176,7 +176,7 @@ export async function getStaticProps() {
   try {
     // 강사 Data (Main Page)
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/teacher/read?main=true}`,
+      `${process.env.NEXT_PUBLIC_URL}/teacher/read?main=true`,
       {
         headers: {
           'Content-Type': 'application/json',
