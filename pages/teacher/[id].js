@@ -153,6 +153,7 @@ const TeacherDetailPage = () => {
 
           {mobileFlag && (
             <Image
+              key={profileImgSrc}
               src={profileImgSrc}
               alt=""
               width={390}
@@ -197,6 +198,7 @@ const TeacherDetailPage = () => {
         {!mobileFlag && (
           <MiddleProfileImgContainer>
             <Image
+              key={profileImgSrc}
               src={profileImgSrc}
               alt=""
               width={390}
