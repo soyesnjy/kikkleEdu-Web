@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 // SSR
 // import axios from 'axios';
 // import cookie from 'cookie';
@@ -117,7 +119,11 @@ const TeacherDetailPage = () => {
   useEffect(() => {
     if (data?.kk_teacher_profileImg_path) {
       setProfileImgSrc(data.kk_teacher_profileImg_path);
-    } else setProfileImgSrc(ramdomDefaultImg());
+    } else {
+      setTimeout(() => {
+        setProfileImgSrc(ramdomDefaultImg());
+      }, 1500);
+    }
   }, [data]);
 
   // const handleGoBack = () => {

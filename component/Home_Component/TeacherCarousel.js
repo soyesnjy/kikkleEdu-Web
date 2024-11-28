@@ -2,40 +2,44 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import Image from 'next/image';
 
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
 
-const TeacherCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0); // 가운데 카드로 시작
-  const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+// CSR
+// import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 
+const TeacherCarousel = ({ teacherDataArr }) => {
+  // CSR
+  // const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
+
+  const [currentIndex, setCurrentIndex] = useState(0); // 가운데 카드로 시작
+  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
   const router = useRouter();
 
+  // CSR
   // 강사 List 조회
-  useEffect(() => {
-    if (!teacherDataArr.length) {
-      // 강사 Read API 호출 메서드
-      handleTeacherGet({ main: true })
-        .then((res) => res.data.data)
-        .then((data) => {
-          setTeacherDataArr([
-            ...data.map((el) => {
-              return {
-                id: el.kk_teacher_idx,
-                name: el.kk_teacher_name,
-                introduce: el.kk_teacher_introduction,
-                profileImg: el.kk_teacher_profileImg_path,
-              };
-            }),
-          ]);
-        })
-        .catch((err) => console.error(err));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!teacherDataArr.length) {
+  //     // 강사 Read API 호출 메서드
+  //     handleTeacherGet({ main: true })
+  //       .then((res) => res.data.data)
+  //       .then((data) => {
+  //         setTeacherDataArr([
+  //           ...data.map((el) => {
+  //             return {
+  //               id: el.kk_teacher_idx,
+  //               name: el.kk_teacher_name,
+  //               introduce: el.kk_teacher_introduction,
+  //               profileImg: el.kk_teacher_profileImg_path,
+  //             };
+  //           }),
+  //         ]);
+  //       })
+  //       .catch((err) => console.error(err));
+  //   }
+  // }, []);
 
   const handlePrevClick = () => {
     setCurrentIndex((prevIndex) =>

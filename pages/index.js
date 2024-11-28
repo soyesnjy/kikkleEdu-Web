@@ -1,5 +1,5 @@
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react-hooks/exhaustive-deps */
+import axios from 'axios';
+
 import styled from 'styled-components';
 
 import EducationCard from '@/component/Home_Component/EducationCard';
@@ -79,8 +79,47 @@ const section_5to9_Arr = [
   },
 ];
 
+// SSR
+export async function getServerSideProps() {
+  // console.log(cookies);
+  let data = [];
+  try {
+    // 강사 Data (Main Page)
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_URL}/teacher/read?main=true}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      }
+    );
+
+    const result = res.data.data;
+    if (result?.length) {
+      data = [
+        ...result.map((el) => {
+          return {
+            id: el.kk_teacher_idx,
+            name: el.kk_teacher_name,
+            introduce: el.kk_teacher_introduction,
+            profileImg: el.kk_teacher_profileImg_path,
+          };
+        }),
+      ];
+      // data = result[0];
+    }
+  } catch (err) {
+    console.error(err.response);
+  }
+
+  return {
+    props: { data }, // 서버에서 가져온 데이터를 페이지로 전달
+  };
+}
+
 // Home 페이지
-export default function Home() {
+export default function Home({ data }) {
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
   const router = useRouter();
 
@@ -158,7 +197,7 @@ export default function Home() {
       })}
       {/* 섹션10 */}
       <SectionTenth>
-        <TeacherCarousel />
+        <TeacherCarousel teacherDataArr={data} />
       </SectionTenth>
       {/* 엔드 섹션 */}
       <EndSection
