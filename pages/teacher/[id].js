@@ -37,8 +37,10 @@ const ramdomDefaultImg = () => {
 // SSR
 export async function getServerSideProps(context) {
   const { id } = context.query; // URL에서 ID를 추출
-  const cookies = cookie.parse(context.req.headers.cookie || '');
+  const cookies = context.req.cookies;
   let data = dummyData;
+
+  console.log(cookies);
 
   try {
     // 강사 Detail Data
