@@ -52,7 +52,7 @@ export async function getServerSideProps(context) {
       {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${JSON.stringify(context.req.headers)}`,
+          Authorization: `Bearer ${JSON.stringify(context.req.headers['x-vercel-sc-headers'])}`,
         },
         withCredentials: true,
       }
