@@ -215,13 +215,16 @@ const TeacherDetailPage = () => {
           </MiddleProfileImgContainer>
         )}
       </MiddleSection>
-      <TeacherListSection>
-        <MiddleSubtitleSmall>강사 리스트</MiddleSubtitleSmall>
-      </TeacherListSection>
-      <ProgramTeacherContainer
-        teacherDataArr={teacherDataArr}
-        mobileFlag={mobileFlag}
-      />
+      {/* localStorage 강사 데이터가 있는 경우 */}
+      {teacherDataArr.length > 0 && (
+        <TeacherListSection>
+          <MiddleSubtitleSmall>강사 리스트</MiddleSubtitleSmall>
+          <ProgramTeacherContainer
+            teacherDataArr={teacherDataArr}
+            mobileFlag={mobileFlag}
+          />
+        </TeacherListSection>
+      )}
 
       {/* 엔드 섹션 */}
       <EndSection

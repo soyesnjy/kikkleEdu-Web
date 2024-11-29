@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 
 const LessonSection = ({ title, subtitle, imgUrl, type, routePath, info }) => {
-  const router = useRouter();
   return (
     <SectionContainer>
       {type === 'left' ? (
@@ -12,13 +11,9 @@ const LessonSection = ({ title, subtitle, imgUrl, type, routePath, info }) => {
           <ContentContainer>
             <Title>{`${title}`}</Title>
             <Subtitle>{`${subtitle}`}</Subtitle>
-            <Button
-              onClick={() => {
-                router.push(routePath);
-              }}
-            >
-              바로 가기
-            </Button>
+            <Link href={routePath}>
+              <Button>바로 가기</Button>
+            </Link>
           </ContentContainer>
           <ImageContainer>
             <Overlay />
@@ -46,13 +41,9 @@ const LessonSection = ({ title, subtitle, imgUrl, type, routePath, info }) => {
           <ContentContainer>
             <Title>{`${title}`}</Title>
             <Subtitle>{`${subtitle}`}</Subtitle>
-            <Button
-              onClick={() => {
-                router.push(routePath);
-              }}
-            >
-              바로 가기
-            </Button>
+            <Link href={routePath}>
+              <Button>바로 가기</Button>
+            </Link>
           </ContentContainer>
         </>
       ) : (

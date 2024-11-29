@@ -1,20 +1,14 @@
-import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import Link from 'next/link';
 
 export default function EndSection({ Title, btnTitle, routePath }) {
-  const router = useRouter();
-
   return (
     <EndContainer>
       {Title && <EndTitle>{Title}</EndTitle>}
       {btnTitle && routePath && (
-        <Button
-          onClick={() => {
-            router.push(routePath);
-          }}
-        >
-          {btnTitle}
-        </Button>
+        <Link href={routePath}>
+          <Button>{btnTitle}</Button>
+        </Link>
       )}
     </EndContainer>
   );

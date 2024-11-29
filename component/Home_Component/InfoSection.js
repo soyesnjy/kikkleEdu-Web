@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
+
 import { useRecoilState } from 'recoil';
 import { mobile } from '../../store/state';
 
 const InfoSection = () => {
-  const router = useRouter();
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   return (
@@ -17,13 +17,9 @@ const InfoSection = () => {
             ? `소예키즈는 어린이들의 \n 창의성발달, 신체발달, 사회성 발달, 정서발달에 \n 가치실현을 목표로 하고 있습니다.`
             : `소예키즈는 어린이들의 \n 창의성발달, 신체발달, \n 사회성 발달, 정서발달에 \n 가치실현을 \n 목표로 하고 있습니다.`}
         </Text>
-        <Button
-          onClick={() => {
-            router.push('/introduce');
-          }}
-        >
-          소예키즈 소개
-        </Button>
+        <Link href={'/introduce'}>
+          <Button>소예키즈 소개</Button>
+        </Link>
         <CactusIcon />
       </ContentContainer>
     </SectionContainer>

@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
@@ -17,7 +17,6 @@ const TeacherCarousel = ({ teacherDataArr }) => {
   // const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
   const [currentIndex, setCurrentIndex] = useState(0); // 가운데 카드로 시작
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
-  const router = useRouter();
 
   // CSR
   // 강사 List 조회
@@ -116,11 +115,9 @@ const TeacherCarousel = ({ teacherDataArr }) => {
                 <ProfileDescription>
                   {profile.introduce || `강사 ${profile.name}입니다!`}
                 </ProfileDescription>
-                <ReadMoreButton
-                  onClick={() => router.push(`/teacher/${profile.id}`)}
-                >
-                  Read More
-                </ReadMoreButton>
+                <Link href={`/teacher/${profile.id}`}>
+                  <ReadMoreButton>Read More</ReadMoreButton>
+                </Link>
               </ProfileCard>
             ))}
           </ProfilesContainer>

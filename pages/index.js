@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 import styled from 'styled-components';
+import Link from 'next/link';
 
+import Background from '@/component/Common_Component/Background';
 import EducationCard from '@/component/Home_Component/EducationCard';
 import EduArtComponent from '@/component/Home_Component/EduArtComponent';
 import InfoSection from '@/component/Home_Component/InfoSection';
@@ -11,7 +13,6 @@ import EndSection from '@/component/Home_Component/EndSection';
 
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
-import { useRouter } from 'next/router';
 
 const section_1_Arr = [
   {
@@ -82,25 +83,28 @@ const section_5to9_Arr = [
 // Home 페이지
 export default function Home({ teacherDataArr }) {
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
-  const router = useRouter();
 
   return (
     <MasterContainer>
       {/* 인트로 섹션 */}
       <IntroSection>
+        <Background
+          imgPath={
+            mobileFlag
+              ? `/src/Home_IMG/Home_Intro_Background_Mobile_IMG.png`
+              : `/src/Home_IMG/Home_Intro_Background_IMG.png`
+          }
+          imgAlt={'Main Background Img'}
+        />
         <ReadContainer>
           <H1>Kids Class Edu</H1>
           {!mobileFlag && (
-            <div>
+            <>
               <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
-              <Button
-                onClick={() => {
-                  router.push('/introduce/content');
-                }}
-              >
-                Read More
-              </Button>
-            </div>
+              <Link href={'/introduce/content'}>
+                <Button>Read More</Button>
+              </Link>
+            </>
           )}
         </ReadContainer>
       </IntroSection>
@@ -108,13 +112,9 @@ export default function Home({ teacherDataArr }) {
       {mobileFlag && (
         <FirstMobileContainer>
           <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
-          <Button
-            onClick={() => {
-              router.push('/introduce/content');
-            }}
-          >
-            Read More
-          </Button>
+          <Link href={'/introduce/content'}>
+            <Button>Read More</Button>
+          </Link>
         </FirstMobileContainer>
       )}
       {/* 섹션1 */}
@@ -220,14 +220,15 @@ const MasterContainer = styled.div`
 
 const IntroSection = styled.section`
   width: 100vw;
-  height: 59vw; /* 16:9 비율 유지 (100 / 16 * 9) */
+  min-height: 59vw;
+  /* 16:9 비율 유지 (100 / 16 * 9) */
   position: relative;
 
-  background-color: white;
+  /* background-color: white;
   background-image: url('/src/Home_IMG/Home_Intro_Background_IMG.png');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
 
   padding: 3rem;
   display: flex;
@@ -237,13 +238,13 @@ const IntroSection = styled.section`
   gap: 1rem;
 
   @media (max-width: 768px) {
-    background-color: white;
+    /* background-color: white;
     background-image: url('/src/Home_IMG/Home_Intro_Background_Mobile_IMG.png');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
 
-    height: 76vw;
+    min-height: 76vw;
     flex-direction: column;
     justify-content: flex-start;
     padding: 1.3rem 0.8rem;
@@ -425,41 +426,3 @@ const SectionTenth = styled.section`
     background-size: cover;
   }
 `;
-
-// const EndSection = styled.section`
-//   width: 100vw;
-//   height: 100vh;
-//   background-color: white;
-//   position: relative;
-
-//   background-image: url('/src/Home_IMG/Home_Last_Background_IMG.png');
-//   background-size: contain;
-//   background-position: center;
-//   background-repeat: no-repeat;
-
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   align-items: center;
-
-//   @media (max-width: 728px) {
-//     width: 100%;
-//     background-image: url('/src/Home_IMG/Home_Last_Background_Mobile_IMG.png');
-//     background-size: cover;
-//     background-position: center;
-//     background-repeat: no-repeat;
-//   }
-// `;
-
-// const EndTitle = styled.h1`
-//   width: 70%;
-//   text-align: center;
-//   font-size: 3rem;
-//   font-family: Nunito;
-//   font-weight: 600;
-//   color: #171717;
-
-//   @media (max-width: 768px) {
-//     font-size: 24px;
-//   }
-// `;
