@@ -7,6 +7,7 @@ import Image from 'next/image';
 
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
+import { loadingImg } from '@/component/Common_Component/LoadingBase64';
 
 // CSR
 // import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
@@ -109,7 +110,7 @@ const TeacherCarousel = ({ teacherDataArr }) => {
                     borderRadius: '50%',
                   }}
                   placeholder="blur"
-                  blurDataURL="/src/loding.gif"
+                  blurDataURL={loadingImg}
                 />
                 <ProfileName>{profile.name}</ProfileName>
                 <ProfileDescription>

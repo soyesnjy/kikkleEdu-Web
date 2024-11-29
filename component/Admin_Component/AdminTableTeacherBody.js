@@ -4,6 +4,7 @@ import { handleSignupUpdate, handleSignupDelete } from '@/fetchAPI/signupAPI';
 import Swal from 'sweetalert2';
 import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
 import Image from 'next/image';
+import { loadingImg } from '@/component/Common_Component/LoadingBase64';
 
 const partTimeArr = [
   { title: '오전 (10:00~12:00)', value: '오전' },
@@ -259,7 +260,7 @@ const AdminTableTeacherBody = ({ data }) => {
                     // onLoadingComplete={}
                     style={{ maxWidth: '100%', height: 'auto' }}
                     placeholder="blur"
-                    blurDataURL="/src/loding.gif"
+                    blurDataURL={loadingImg}
                   />
                 )}
               </ShowContainer>

@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import Image from 'next/image';
+import { loadingImg } from '@/component/Common_Component/LoadingBase64';
+
 import IntroductionCarousel from '@/component/Introduction_Component/IntroductionCarousel';
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
-// import { useRouter } from 'next/router';
+
 import EndSection from '@/component/Home_Component/EndSection';
 
 const HistoryPage = () => {
@@ -33,7 +35,7 @@ const HistoryPage = () => {
             height={213}
             style={{ maxWidth: '100%', height: 'auto' }}
             placeholder="blur"
-            blurDataURL="/src/loding.gif"
+            blurDataURL={loadingImg}
           />
         )}
         <MiddleContainer>

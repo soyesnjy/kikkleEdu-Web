@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'; // Next.js의 useRouter 사용
 import styled from 'styled-components';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import Image from 'next/image';
+import { loadingImg } from '@/component/Common_Component/LoadingBase64';
 
 import { useRecoilState } from 'recoil';
 import { mobile, log } from '@/store/state';
@@ -164,7 +165,7 @@ const TeacherDetailPage = () => {
                 borderRadius: '24px',
               }}
               placeholder="blur"
-              blurDataURL="/src/loding.gif"
+              blurDataURL={loadingImg}
             />
           )}
 
@@ -209,7 +210,7 @@ const TeacherDetailPage = () => {
                 borderRadius: '24px',
               }}
               placeholder="blur"
-              blurDataURL="/src/loding.gif"
+              blurDataURL={loadingImg}
             />
           </MiddleProfileImgContainer>
         )}

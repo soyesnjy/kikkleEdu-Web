@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
+import { loadingImg } from '@/component/Common_Component/LoadingBase64';
 
 const TeacherProfileCard = ({ name, introduce, imgUrl, onClick }) => {
   const [imageSrc, setImageSrc] = useState(null);
@@ -20,7 +21,7 @@ const TeacherProfileCard = ({ name, introduce, imgUrl, onClick }) => {
           height={300}
           style={{ maxWidth: '100%', height: '100%' }}
           placeholder="blur"
-          blurDataURL="/src/loding.gif"
+          blurDataURL={loadingImg}
         />
       )}
       <Content>
