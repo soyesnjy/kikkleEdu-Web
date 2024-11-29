@@ -253,14 +253,14 @@ const AdminTableTeacherBody = ({ data }) => {
                 </ShowButton>
                 {isOpen && (
                   <Image
+                    key={data.kk_teacher_profileImg_path}
                     src={data.kk_teacher_profileImg_path}
                     alt="Icon"
                     width={56}
                     height={56}
-                    // onLoadingComplete={}
                     style={{ maxWidth: '100%', height: 'auto' }}
                     placeholder="blur"
-                    blurDataURL={loadingImg}
+                    blurDataURL={`/src/loding.gif`}
                   />
                 )}
               </ShowContainer>

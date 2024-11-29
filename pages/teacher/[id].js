@@ -165,7 +165,7 @@ const TeacherDetailPage = () => {
                 borderRadius: '24px',
               }}
               placeholder="blur"
-              blurDataURL={loadingImg}
+              blurDataURL={`/src/loding.gif`}
             />
           )}
 
@@ -210,7 +210,7 @@ const TeacherDetailPage = () => {
                 borderRadius: '24px',
               }}
               placeholder="blur"
-              blurDataURL={loadingImg}
+              blurDataURL={`/src/loding.gif`}
             />
           </MiddleProfileImgContainer>
         )}
