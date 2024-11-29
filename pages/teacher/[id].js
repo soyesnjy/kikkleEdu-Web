@@ -43,11 +43,8 @@ export async function getServerSideProps(context) {
   const cookies = context.req.cookies;
   let data = dummyData;
 
-  console.log(
-    JSON.parse(context.req.headers['x-vercel-sc-headers']).Authorization.split(
-      ' '
-    )[1]
-  );
+  console.log(JSON.parse(context.req.headers));
+  console.log(`cookies: ${cookies}`);
 
   try {
     // 강사 Detail Data
