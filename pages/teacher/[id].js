@@ -52,7 +52,7 @@ export async function getServerSideProps(context) {
       {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${context}`,
+          Authorization: `Bearer ${JSON.stringify(context)}`,
         },
         withCredentials: true,
       }
