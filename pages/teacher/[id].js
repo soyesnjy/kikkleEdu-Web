@@ -44,7 +44,9 @@ export async function getServerSideProps(context) {
   let data = dummyData;
 
   console.log(
-    JSON.parse(context.req.headers['x-vercel-sc-headers']).Authorization
+    JSON.parse(context.req.headers['x-vercel-sc-headers']).Authorization.split(
+      ' '
+    )[1]
   );
 
   try {
@@ -54,7 +56,7 @@ export async function getServerSideProps(context) {
       {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${cookies.refreshToken ? cookies.refreshToken : JSON.parse(JSON.stringify(context.req.headers['x-vercel-sc-headers']['Authorization']))}`,
+          Authorization: `Bearer ${cookies.refreshToken ? cookies.refreshToken : JSON.parse(context.req.headers['x-vercel-sc-headers']).Authorization.split(' ')[1]}`,
         },
         withCredentials: true,
       }
