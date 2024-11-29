@@ -43,7 +43,7 @@ export async function getServerSideProps(context) {
   const cookies = context.req.cookies;
   let data = dummyData;
 
-  console.log(JSON.parse(context.req.headers));
+  console.log(context.req.headers);
   console.log(`cookies: ${cookies}`);
 
   try {
