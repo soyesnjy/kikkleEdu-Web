@@ -43,7 +43,7 @@ export async function getServerSideProps(context) {
   const cookies = context.req.cookies;
   let data = dummyData;
 
-  console.log(context);
+  // console.log(context.req.headers);
 
   try {
     // 강사 Detail Data
@@ -52,7 +52,7 @@ export async function getServerSideProps(context) {
       {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${JSON.stringify(context)}`,
+          Authorization: `Bearer ${JSON.stringify(context.req.headers)}`,
         },
         withCredentials: true,
       }
