@@ -170,7 +170,7 @@ export default function Home({ teacherDataArr }) {
   );
 }
 
-// SSR
+// ISR
 export async function getStaticProps() {
   let teacherDataArr = [];
   try {

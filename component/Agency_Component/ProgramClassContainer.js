@@ -27,8 +27,8 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
   };
 
   const dotActiveHandler = (index, length) => {
-    const scrollWidth = containerRef.current.scrollWidth;
-    const scrollLeft = containerRef.current.scrollLeft;
+    const scrollWidth = containerRef?.current?.scrollWidth;
+    const scrollLeft = containerRef?.current?.scrollLeft;
 
     return (
       (scrollWidth / length) * index <= scrollLeft * 1.2 &&

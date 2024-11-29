@@ -80,6 +80,7 @@ const TeacherDetailPage = () => {
   const [teacherDataArr, setTeacherDataArr] = useState([]);
   const [profileImgSrc, setProfileImgSrc] = useState('');
 
+  // CSR
   useEffect(() => {
     if (localStorage.getItem('teacherDataArr')) {
       setTeacherDataArr([
@@ -91,7 +92,6 @@ const TeacherDetailPage = () => {
     // };
   }, []);
 
-  // CSR
   useEffect(() => {
     if (id) {
       handleTeacherGet({ teacherIdx: id })
