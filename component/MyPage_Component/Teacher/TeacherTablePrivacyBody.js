@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {
   handleSignupDelete,
   handleSignupUpdate,
-  handleSignupUpdate_v2,
+  // handleSignupUpdate_v2,
 } from '@/fetchAPI/signupAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
 import Image from 'next/image';
@@ -78,7 +78,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
   useEffect(() => {
     if (!possClassArr.length) {
       // Class Read API 호출 메서드
-      handleClassGet()
+      handleClassGet({})
         .then((res) => res.data.data)
         .then((data) => {
           // console.log(data);
