@@ -58,6 +58,15 @@ export default function BoardList() {
   const handleItemClick = (id) => {
     router.push(`/board/${id}`); // 게시글 ID로 이동
   };
+  // 로그인 권한이 없는 상태에서의 접근 시 login 페이지로 redirect
+  useEffect(() => {
+    const loginSession = JSON.parse(localStorage.getItem('log'));
+    if (!loginSession) {
+      alert('로그인이 필요한 서비스입니다!');
+      router.replace('/login');
+      return;
+    }
+  }, [login]);
 
   useEffect(() => {
     if (login) {
@@ -69,14 +78,6 @@ export default function BoardList() {
         });
     }
   }, [page, login]);
-
-  // 로그인 권한이 없는 상태에서의 접근 시 login 페이지로 redirect
-  useEffect(() => {
-    const loginSession = JSON.parse(localStorage.getItem('log'));
-    if (!loginSession) {
-      router.replace('/login');
-    }
-  }, [login]);
 
   return (
     <MainContainer>

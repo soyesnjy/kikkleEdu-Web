@@ -34,7 +34,7 @@ const TeacherListPage = () => {
     const loginSession = JSON.parse(localStorage.getItem('log'));
     if (!loginSession) {
       alert('로그인이 필요한 서비스입니다!');
-      router.push('/login');
+      router.replace('/login');
       return;
     }
 
