@@ -5,7 +5,7 @@ export const handleMypageTeacherAttendGet = async (query) => {
   const { agencyIdx, userIdx, name, pageNum } = query;
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/mypage/teacher/read?
+      `${process.env.NEXT_PUBLIC_URL}/mypage/teacher/attend/read?
 ${agencyIdx ? `agencyIdx=${agencyIdx}&` : ''}
 ${userIdx ? `userIdx=${userIdx}&` : ''}
 ${name ? `name=${name}&` : ''}
@@ -32,7 +32,7 @@ ${pageNum ? `pageNum=${pageNum}&` : ''}`,
 export const handleMypageAgencyReservationGet = async (query) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/mypage/agency/read?${query?.userIdx ? `userIdx=${query?.userIdx}&` : ''}${query?.name ? `name=${query?.name}&` : ''}${query?.pageNum ? `pageNum=${query?.pageNum}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/mypage/agency/attend/read?${query?.userIdx ? `userIdx=${query?.userIdx}&` : ''}${query?.name ? `name=${query?.name}&` : ''}${query?.pageNum ? `pageNum=${query?.pageNum}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ export const handleMypageCreate = async (post) => {
 export const handleMypageUpdate = async (post) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_URL}/mypage/teacher/update`,
+      `${process.env.NEXT_PUBLIC_URL}/mypage/teacher/attend/update`,
       post,
       {
         headers: {

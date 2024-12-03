@@ -107,11 +107,9 @@ const Administor = () => {
     if (page !== -1) {
       // 강사 승인 요청 관리
       if (activeTab === 'teacher') {
-        console.log('teacher Click');
         handleSignupGet({ userClass: activeTab, name, pageNum: page })
           .then((res) => res.data)
           .then((data) => {
-            console.log('teacher Return Success!');
             setTableData([...data.data]);
             setLastPageNum(data.lastPageNum);
           });
