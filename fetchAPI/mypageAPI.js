@@ -2,9 +2,14 @@ import axios from 'axios';
 
 // Teacher Attend READ
 export const handleMypageTeacherAttendGet = async (query) => {
+  const { agencyIdx, userIdx, name, pageNum } = query;
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/mypage/teacher/read?${query?.agencyIdx ? `agencyIdx=${query?.agencyIdx}&` : ''}${query?.userIdx ? `userIdx=${query?.userIdx}&` : ''}${query?.name ? `name=${query?.name}&` : ''}${query?.pageNum ? `pageNum=${query?.pageNum}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/mypage/teacher/read?
+${agencyIdx ? `agencyIdx=${agencyIdx}&` : ''}
+${userIdx ? `userIdx=${userIdx}&` : ''}
+${name ? `name=${name}&` : ''}
+${pageNum ? `pageNum=${pageNum}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',

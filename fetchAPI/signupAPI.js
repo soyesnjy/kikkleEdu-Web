@@ -3,9 +3,13 @@ import axios from 'axios';
 // READ
 // 2024.08.22: 쿼리 삽입 기능 추가
 export const handleSignupGet = async (query) => {
+  const { userClass, name, pageNum } = query;
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/signup/read?${query?.userClass ? `userClass=${query?.userClass}&` : ''}${query?.name ? `name=${query?.name}&` : ''}${query?.pageNum ? `pageNum=${query?.pageNum}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/signup/read?
+${userClass ? `userClass=${userClass}&` : ''}
+${name ? `name=${name}&` : ''}
+${pageNum ? `pageNum=${pageNum}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',

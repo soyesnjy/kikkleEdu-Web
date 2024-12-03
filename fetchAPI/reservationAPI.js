@@ -2,9 +2,12 @@ import axios from 'axios';
 
 // READ
 export const handleReservationGet = async (query) => {
+  const { date, pageNum } = query;
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/reservation/read?${query?.date ? `date=${query?.date}&` : ''}${query?.pageNum ? `pageNum=${query?.pageNum}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/reservation/read?
+${date ? `date=${date}&` : ''}
+${pageNum ? `pageNum=${pageNum}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -25,7 +28,6 @@ export const handleReservationGet = async (query) => {
 };
 // CREATE
 export const handleReservationCreate = async (input) => {
-  console.log(input);
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_URL}/reservation/create`,

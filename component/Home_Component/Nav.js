@@ -174,9 +174,9 @@ export default function Nav() {
       showDenyButton: true,
       confirmButtonText: 'Yes',
       denyButtonText: `No`,
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        logoutAPI();
+        await logoutAPI();
         Swal.fire({
           icon: 'success',
           title: 'LogOut Success!',

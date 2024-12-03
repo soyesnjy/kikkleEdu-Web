@@ -2,10 +2,27 @@ import axios from 'axios';
 
 // READ
 // 2024.08.22: 쿼리 삽입 기능 추가
+// 2024.12.03: 구조 분해 할당 로직으로 변경
 export const handleTeacherGet = async (query) => {
+  const {
+    main,
+    classType,
+    teacherIdx,
+    classIdx,
+    dayofweek,
+    partTime,
+    classTag,
+  } = query;
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/teacher/read?${query?.classType ? `classType=${query?.classType}&` : ''}${query?.main ? `main=${query?.main}&` : ''}${query?.teacherIdx ? `teacherIdx=${query?.teacherIdx}&` : ''}${query?.classIdx ? `classIdx=${query?.classIdx}&` : ''}${query?.dayofweek ? `dayofweek=${query?.dayofweek}&` : ''}${query?.partTime ? `partTime=${query?.partTime}&` : ''}${query?.classTag ? `classTag=${query?.classTag}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/teacher/read?
+${main ? `main=${main}&` : ''}
+${classType ? `classType=${classType}&` : ''}
+${teacherIdx ? `teacherIdx=${teacherIdx}&` : ''}
+${classIdx ? `classIdx=${classIdx}&` : ''}
+${dayofweek ? `dayofweek=${dayofweek}&` : ''}
+${partTime ? `partTime=${partTime}&` : ''}
+${classTag ? `classTag=${classTag}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',

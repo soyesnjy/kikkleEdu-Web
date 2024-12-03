@@ -3,10 +3,15 @@ import axios from 'axios';
 // READ
 // 2024.08.22: classType 쿼리 추가
 // 2024.10.02: classTag 쿼리 추가
+// 2024.12.03: 구조 분해 할당 로직으로 변경
 export const handleClassGet = async (query) => {
+  const { classDetail, classTag, classType } = query;
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/class/read?${query?.classDetail ? `classDetail=${query?.classDetail}&` : ''}${query?.classTag ? `classTag=${query?.classTag}&` : ''}${query?.classType ? `classType=${query?.classType}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/class/read?
+${classDetail ? `classDetail=${classDetail}&` : ''}
+${classTag ? `classTag=${classTag}&` : ''}
+${classType ? `classType=${classType}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',

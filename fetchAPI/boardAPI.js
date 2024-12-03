@@ -1,10 +1,14 @@
 import axios from 'axios';
 
 // READ
+// 2024.12.03: 구조 분해 할당 로직으로 변경
 export const handleBoardGet = async (query) => {
+  const { boardIdx, pageNum } = query;
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/board/read?${query?.boardIdx ? `boardIdx=${query?.boardIdx}&` : ''}${query?.pageNum ? `pageNum=${query?.pageNum}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/board/read?
+${boardIdx ? `boardIdx=${boardIdx}&` : ''}
+${pageNum ? `pageNum=${pageNum}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
