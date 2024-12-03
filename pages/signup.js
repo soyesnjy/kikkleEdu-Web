@@ -129,7 +129,7 @@ export default function Signup() {
   useEffect(() => {
     if (!possClassArr.length) {
       // Class Read API 호출 메서드
-      handleClassGet()
+      handleClassGet({})
         .then((res) => res.data.data)
         .then((data) => {
           // console.log(data);
