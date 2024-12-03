@@ -1,14 +1,14 @@
 /* eslint-disable no-constant-condition */
 /* eslint-disable react-hooks/exhaustive-deps */
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { FlexContainer } from '../../styled-component/common';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 
 // 아바타 관련 전역 변수
 import { useRecoilState } from 'recoil';
 import { log } from '../../store/state';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 
 import { handleBoardGet } from '@/fetchAPI/boardAPI';
 
@@ -17,33 +17,17 @@ import { useRouter } from 'next/router';
 import BoardItem from '@/component/Board_Component/BoardItem';
 import Pagination from '@/component/Common_Component/Pagination';
 
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// import { useTranslation } from 'next-i18next';
+// import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const dummyPosts = [
   {
-    number: 0,
-    title: '공지입니다',
-    author: '소예키즈',
-    date: '2020-12-15',
+    number: -1,
+    title: 'Network Error 발생',
+    author: '',
+    date: '1999-00-00',
     isNotice: true,
     isPrivate: false,
-  },
-  {
-    number: 1,
-    title: '공지2입니다',
-    author: '소예키즈',
-    date: '2020-12-15',
-    isNotice: true,
-    isPrivate: false,
-  },
-  {
-    number: 0,
-    title: '[MBC 뉴스 24] 프로그램 제발 좀 다시 신설해 주세요~~~',
-    author: '노지용',
-    date: '2024-09-04',
-    isNotice: false,
-    isPrivate: true,
   },
 ];
 
@@ -58,26 +42,28 @@ export default function BoardList() {
   const handleItemClick = (id) => {
     router.push(`/board/${id}`); // 게시글 ID로 이동
   };
+
   // 로그인 권한이 없는 상태에서의 접근 시 login 페이지로 redirect
   useEffect(() => {
+    // 로그인 필요
     const loginSession = JSON.parse(localStorage.getItem('log'));
     if (!loginSession) {
       alert('로그인이 필요한 서비스입니다!');
       router.replace('/login');
       return;
     }
-  }, [login]);
 
-  useEffect(() => {
-    if (login) {
-      handleBoardGet({ pageNum: page })
-        .then((res) => res.data)
-        .then((data) => {
-          setPosts(data.data);
-          setLastPageNum(data.lastPageNum);
-        });
-    }
-  }, [page, login]);
+    handleBoardGet({ pageNum: page })
+      .then((res) => res.data)
+      .then((data) => {
+        setPosts(data.data);
+        setLastPageNum(data.lastPageNum);
+      })
+      .catch((err) => {
+        console.log(err);
+        setPosts(dummyPosts);
+      });
+  }, [login, page]);
 
   return (
     <MainContainer>
@@ -128,13 +114,13 @@ export default function BoardList() {
   );
 }
 
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['review', 'nav'])),
-    },
-  };
-}
+// export async function getStaticProps({ locale }) {
+//   return {
+//     props: {
+//       ...(await serverSideTranslations(locale, ['review', 'nav'])),
+//     },
+//   };
+// }
 
 const MainContainer = styled.div`
   width: 100%;
