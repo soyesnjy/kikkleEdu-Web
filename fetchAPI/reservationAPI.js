@@ -16,7 +16,7 @@ ${pageNum ? `pageNum=${pageNum}&` : ''}`,
         withCredentials: true,
       }
     );
-    // console.log(response);
+    // console.log(response.data);
     return response;
   } catch (err) {
     console.error(err);

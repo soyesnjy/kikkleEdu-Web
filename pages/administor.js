@@ -12,8 +12,8 @@ import { handleReservationGet } from '@/fetchAPI/reservationAPI';
 import { handleDirectoryRead } from '@/fetchAPI/directoryAPI';
 import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
 
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// import { useTranslation } from 'next-i18next';
+// import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import Directory from '@/component/Music_Component/Directory';
 import AdminTableTeacherBody from '@/component/Admin_Component/AdminTableTeacherBody';
@@ -44,7 +44,7 @@ const dummyTableData = [
 const Administor = () => {
   // const [agencyType, setAgencyType] = useRecoilState(agencyClass);
   const [activeTab, setActiveTab] = useState('');
-  const [tableData, setTableData] = useState(dummyTableData);
+  const [tableData, setTableData] = useState([]);
   const [name, setName] = useState('');
   const [page, setPage] = useState(-1);
   const [lastPageNum, setLastPageNum] = useState(1);
@@ -107,10 +107,12 @@ const Administor = () => {
     if (page !== -1) {
       // 강사 승인 요청 관리
       if (activeTab === 'teacher') {
+        console.log('teacher Click');
         handleSignupGet({ userClass: activeTab, name, pageNum: page })
           .then((res) => res.data)
           .then((data) => {
-            setTableData(data.data);
+            console.log('teacher Return Success!');
+            setTableData([...data.data]);
             setLastPageNum(data.lastPageNum);
           });
       }
@@ -119,7 +121,7 @@ const Administor = () => {
         handleSignupGet({ userClass: activeTab, pageNum: page })
           .then((res) => res.data)
           .then((data) => {
-            setTableData(data.data);
+            setTableData([...data.data]);
             setLastPageNum(data.lastPageNum);
           });
       }
@@ -132,7 +134,7 @@ const Administor = () => {
         })
           .then((res) => res.data)
           .then((data) => {
-            setTableData(data.data);
+            setTableData([...data.data]);
             setLastPageNum(data.lastPageNum);
           });
       }
@@ -145,7 +147,7 @@ const Administor = () => {
         })
           .then((res) => res.data)
           .then((data) => {
-            setTableData(data.data);
+            setTableData([...data.data]);
             setLastPageNum(data.lastPageNum);
           });
       }
@@ -338,7 +340,7 @@ const Administor = () => {
               <tbody>
                 {tableData.map((data) => (
                   <AdminTableTeacherBody
-                    key={data.kk_teacher_idx}
+                    key={JSON.stringify(data)}
                     data={data}
                   />
                 ))}
@@ -347,7 +349,10 @@ const Administor = () => {
             {activeTab === 'agency' && (
               <tbody>
                 {tableData.map((data) => (
-                  <AdminTableAgencyBody key={data.kk_agency_idx} data={data} />
+                  <AdminTableAgencyBody
+                    key={JSON.stringify(data)}
+                    data={data}
+                  />
                 ))}
               </tbody>
             )}
@@ -355,7 +360,7 @@ const Administor = () => {
               <tbody>
                 {tableData.map((data) => (
                   <AdminTableReservationBody
-                    key={data.kk_reservation_idx}
+                    key={JSON.stringify(data)}
                     data={data}
                   />
                 ))}
@@ -365,7 +370,7 @@ const Administor = () => {
               <tbody>
                 {tableData.map((data) => (
                   <TeacherTableAttendBody
-                    key={data.kk_attend_idx}
+                    key={JSON.stringify(data)}
                     data={data}
                   />
                 ))}
@@ -389,13 +394,13 @@ const Administor = () => {
 };
 
 // Translation 파일 적용
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common', 'nav'])), // 파일 다중 적용 가능
-    },
-  };
-}
+// export async function getStaticProps({ locale }) {
+//   return {
+//     props: {
+//       ...(await serverSideTranslations(locale, ['common', 'nav'])), // 파일 다중 적용 가능
+//     },
+//   };
+// }
 
 // styled-component의 animation 설정 방법 (keyframes 메서드 사용)
 const MasterContainer = styled.div`

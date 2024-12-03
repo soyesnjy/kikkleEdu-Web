@@ -26,7 +26,7 @@ const AdminTableAgencyBody = ({ data }) => {
   const [address, setAddress] = useState('');
   const [phoneNum, setPhoneNum] = useState('');
   const [type, setType] = useState('');
-  const [file, setFile] = useState(null); // 기관 첨부파일
+  // const [file, setFile] = useState(null); // 기관 첨부파일
   const [approveStatus, setApproveStatus] = useState(-1);
 
   useEffect(() => {
