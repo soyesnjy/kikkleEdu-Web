@@ -134,7 +134,7 @@ const TeacherTableAttendBody = ({ data, page }) => {
         <Button
           onClick={attendUpdateHandler}
           disabled={!attendTrigger}
-          attendTrigger={attendTrigger}
+          attendtrigger={attendTrigger}
         >
           저장하기
         </Button>
@@ -223,7 +223,7 @@ const CheckboxLabel = styled.span`
 `;
 
 const Button = styled.button`
-  background-color: ${(props) => (props.attendTrigger ? '#61b15a' : '#CACACA')};
+  background-color: ${(props) => (props.attendtrigger ? '#61b15a' : '#CACACA')};
   color: white;
   padding: 0.4rem 0.8rem;
   border: none;
