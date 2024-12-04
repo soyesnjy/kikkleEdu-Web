@@ -13,6 +13,7 @@ import EndSection from '@/component/Home_Component/EndSection';
 
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
+import { ScrollAnimation } from '@/component/Home_Component/ScrollAnimation';
 
 const section_1_Arr = [
   {
@@ -87,27 +88,30 @@ export default function Home({ teacherDataArr }) {
   return (
     <MasterContainer>
       {/* 인트로 섹션 */}
-      <IntroSection>
-        <Background
-          imgPath={
-            mobileFlag
-              ? `/src/Home_IMG/Home_Intro_Background_Mobile_IMG.png`
-              : `/src/Home_IMG/Home_Intro_Background_IMG.png`
-          }
-          imgAlt={'Main Background Img'}
-        />
-        <ReadContainer>
-          <H1>Kids Class Edu</H1>
-          {!mobileFlag && (
-            <>
-              <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
-              <Link href={'/introduce/content'}>
-                <Button>Read More</Button>
-              </Link>
-            </>
-          )}
-        </ReadContainer>
-      </IntroSection>
+      <ScrollAnimation startingPoint="bottom" duration={0.4}>
+        <IntroSection>
+          <Background
+            imgPath={
+              mobileFlag
+                ? `/src/Home_IMG/Home_Intro_Background_Mobile_IMG.png`
+                : `/src/Home_IMG/Home_Intro_Background_IMG.png`
+            }
+            imgAlt={'Main Background Img'}
+          />
+          <ReadContainer>
+            <H1>Kids Class Edu</H1>
+            {!mobileFlag && (
+              <>
+                <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
+                <Link href={'/introduce/content'}>
+                  <Button>Read More</Button>
+                </Link>
+              </>
+            )}
+          </ReadContainer>
+        </IntroSection>
+      </ScrollAnimation>
+
       {/* 모바일용 섹션 */}
       {mobileFlag && (
         <FirstMobileContainer>
@@ -118,48 +122,59 @@ export default function Home({ teacherDataArr }) {
         </FirstMobileContainer>
       )}
       {/* 섹션1 */}
-      <SectionFirst>
-        {section_1_Arr.map((el, index) => {
-          const { imgPath, title, content } = el;
-          return (
-            <EducationCard
-              key={index}
-              imgPath={imgPath}
-              title={title}
-              content={content}
-            />
-          );
-        })}
-      </SectionFirst>
+      <ScrollAnimation startingPoint="bottom" duration={1}>
+        <SectionFirst>
+          {section_1_Arr.map((el, index) => {
+            const { imgPath, title, content } = el;
+            return (
+              <EducationCard
+                key={index}
+                imgPath={imgPath}
+                title={title}
+                content={content}
+              />
+            );
+          })}
+        </SectionFirst>
+      </ScrollAnimation>
       {/* 섹션2 */}
-      <SectionSecond>
-        <EduArtComponent sectionData={section_2_Data} />
-      </SectionSecond>
+      <ScrollAnimation startingPoint="bottom" duration={1}>
+        <SectionSecond>
+          <EduArtComponent sectionData={section_2_Data} />
+        </SectionSecond>
+      </ScrollAnimation>
       {/* 섹션4 */}
-      <SectionFourth>
-        <InfoSection />
-      </SectionFourth>
+      <ScrollAnimation startingPoint="bottom" duration={1}>
+        <SectionFourth>
+          <InfoSection />
+        </SectionFourth>
+      </ScrollAnimation>
       {/* 섹션5~8 */}
       {section_5to9_Arr.map((el, index) => {
         return (
-          <SectionFifthtoNineth
+          <ScrollAnimation
             key={index}
-            backgroundcolor={el.backgroundColor}
+            startingPoint={index % 2 ? 'right' : 'left'}
+            delay={0.1}
           >
-            <LessonSection
-              title={el.title}
-              subtitle={el.subtitle}
-              imgUrl={el.imgUrl}
-              type={mobileFlag ? 'left' : index % 2 ? 'right' : 'left'}
-              routePath={el.routePath}
-            />
-          </SectionFifthtoNineth>
+            <SectionFifthtoNineth backgroundcolor={el.backgroundColor}>
+              <LessonSection
+                title={el.title}
+                subtitle={el.subtitle}
+                imgUrl={el.imgUrl}
+                type={mobileFlag ? 'left' : index % 2 ? 'right' : 'left'}
+                routePath={el.routePath}
+              />
+            </SectionFifthtoNineth>
+          </ScrollAnimation>
         );
       })}
       {/* 섹션10 */}
-      <SectionTenth>
-        <TeacherCarousel teacherDataArr={teacherDataArr} />
-      </SectionTenth>
+      <ScrollAnimation startingPoint="bottom">
+        <SectionTenth>
+          <TeacherCarousel teacherDataArr={teacherDataArr} />
+        </SectionTenth>
+      </ScrollAnimation>
       {/* 엔드 섹션 */}
       <EndSection
         Title={`For our child's healthy body \n and heart happiness`}
