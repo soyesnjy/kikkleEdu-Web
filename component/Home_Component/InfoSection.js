@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { useRecoilState } from 'recoil';
 import { mobile } from '../../store/state';
+import { ScrollAnimation } from '@/component/Home_Component/ScrollAnimation';
 
 const InfoSection = () => {
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
@@ -11,7 +12,9 @@ const InfoSection = () => {
   return (
     <SectionContainer>
       <ContentContainer>
-        <RhinoIcon />
+        <ScrollAnimation startingPoint="right" duration={1}>
+          <RhinoIcon />
+        </ScrollAnimation>
         <Text>
           {!mobileFlag
             ? `소예키즈는 어린이들의 \n 창의성발달, 신체발달, 사회성 발달, 정서발달에 \n 가치실현을 목표로 하고 있습니다.`
@@ -20,7 +23,9 @@ const InfoSection = () => {
         <Link href={'/introduce'}>
           <Button>소예키즈 소개</Button>
         </Link>
-        <CactusIcon />
+        <ScrollAnimation startingPoint="left" duration={1}>
+          <CactusIcon />
+        </ScrollAnimation>
       </ContentContainer>
     </SectionContainer>
   );

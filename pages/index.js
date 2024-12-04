@@ -88,30 +88,27 @@ export default function Home({ teacherDataArr }) {
   return (
     <MasterContainer>
       {/* 인트로 섹션 */}
-      <ScrollAnimation startingPoint="bottom" duration={0.4}>
-        <IntroSection>
-          <Background
-            imgPath={
-              mobileFlag
-                ? `/src/Home_IMG/Home_Intro_Background_Mobile_IMG.png`
-                : `/src/Home_IMG/Home_Intro_Background_IMG.png`
-            }
-            imgAlt={'Main Background Img'}
-          />
-          <ReadContainer>
-            <H1>Kids Class Edu</H1>
-            {!mobileFlag && (
-              <>
-                <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
-                <Link href={'/introduce/content'}>
-                  <Button>Read More</Button>
-                </Link>
-              </>
-            )}
-          </ReadContainer>
-        </IntroSection>
-      </ScrollAnimation>
-
+      <IntroSection>
+        <Background
+          imgPath={
+            mobileFlag
+              ? `/src/Home_IMG/Home_Intro_Background_Mobile_IMG.png`
+              : `/src/Home_IMG/Home_Intro_Background_IMG.png`
+          }
+          imgAlt={'Main Background Img'}
+        />
+        <ReadContainer>
+          <H1>Kids Class Edu</H1>
+          {!mobileFlag && (
+            <>
+              <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
+              <Link href={'/introduce/content'}>
+                <Button>Read More</Button>
+              </Link>
+            </>
+          )}
+        </ReadContainer>
+      </IntroSection>
       {/* 모바일용 섹션 */}
       {mobileFlag && (
         <FirstMobileContainer>
@@ -122,23 +119,23 @@ export default function Home({ teacherDataArr }) {
         </FirstMobileContainer>
       )}
       {/* 섹션1 */}
-      <ScrollAnimation startingPoint="bottom" duration={1}>
-        <SectionFirst>
-          {section_1_Arr.map((el, index) => {
-            const { imgPath, title, content } = el;
-            return (
-              <EducationCard
-                key={index}
-                imgPath={imgPath}
-                title={title}
-                content={content}
-              />
-            );
-          })}
-        </SectionFirst>
-      </ScrollAnimation>
+      <SectionFirst>
+        {section_1_Arr.map((el, index) => {
+          const { imgPath, title, content } = el;
+          return (
+            <EducationCard
+              key={index}
+              delay={0.1 * (index + 1)}
+              imgPath={imgPath}
+              title={title}
+              content={content}
+            />
+          );
+        })}
+      </SectionFirst>
+
       {/* 섹션2 */}
-      <ScrollAnimation startingPoint="bottom" duration={1}>
+      <ScrollAnimation startingPoint="bottom" delay={0.2} duration={1}>
         <SectionSecond>
           <EduArtComponent sectionData={section_2_Data} />
         </SectionSecond>
@@ -170,7 +167,7 @@ export default function Home({ teacherDataArr }) {
         );
       })}
       {/* 섹션10 */}
-      <ScrollAnimation startingPoint="bottom">
+      <ScrollAnimation startingPoint="bottom" delay={0.2}>
         <SectionTenth>
           <TeacherCarousel teacherDataArr={teacherDataArr} />
         </SectionTenth>

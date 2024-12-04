@@ -1,22 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
+import { ScrollAnimation } from '@/component/Home_Component/ScrollAnimation';
 
-const EducationCard = ({ imgPath, title, content }) => {
+const EducationCard = ({ imgPath, title, content, delay }) => {
   return (
-    <CardContainer>
-      <Image
-        src={imgPath}
-        alt="Icon"
-        width={100}
-        height={100}
-        style={{ maxWidth: '100%', height: 'auto' }}
-      />
-      <TextContainer>
-        <Title>{title}</Title>
-        <Content>{content}</Content>
-      </TextContainer>
-    </CardContainer>
+    <ScrollAnimation startingPoint="bottom" delay={delay} repeat={true}>
+      <CardContainer>
+        <Image
+          src={imgPath}
+          alt="Icon"
+          width={100}
+          height={100}
+          style={{ maxWidth: '100%', height: 'auto' }}
+        />
+        <TextContainer>
+          <Title>{title}</Title>
+          <Content>{content}</Content>
+        </TextContainer>
+      </CardContainer>
+    </ScrollAnimation>
   );
 };
 
