@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { useRecoilState } from 'recoil';
 import { mobile } from '../../store/state';
-import { ScrollAnimation } from '@/component/Home_Component/Scroll Animation/ScrollAnimation';
+import { ScrollAnimation } from '@/component/Home_Component/Scroll_Animation/ScrollAnimation';
 
 const InfoSection = () => {
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);

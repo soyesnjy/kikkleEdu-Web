@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
-import { ScrollAnimation } from '@/component/Home_Component/Scroll Animation/ScrollAnimation';
+import { ScrollAnimation } from '@/component/Home_Component/Scroll_Animation/ScrollAnimation';
 
 const EducationCard = ({ imgPath, title, content, delay }) => {
   return (
