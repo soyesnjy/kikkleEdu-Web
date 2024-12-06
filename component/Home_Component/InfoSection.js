@@ -12,7 +12,7 @@ const InfoSection = () => {
   return (
     <SectionContainer>
       <ContentContainer>
-        <ScrollAnimation startingPoint="right" duration={1}>
+        <ScrollAnimation startingPoint="right" duration={1} repeat={true}>
           <RhinoIcon />
         </ScrollAnimation>
         <Text>
@@ -23,7 +23,7 @@ const InfoSection = () => {
         <Link href={'/introduce'}>
           <Button>소예키즈 소개</Button>
         </Link>
-        <ScrollAnimation startingPoint="left" duration={1}>
+        <ScrollAnimation startingPoint="left" duration={1} repeat={true}>
           <CactusIcon />
         </ScrollAnimation>
       </ContentContainer>

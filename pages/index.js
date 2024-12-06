@@ -136,13 +136,18 @@ export default function Home({ teacherDataArr }) {
       </SectionFirst>
 
       {/* 섹션2 */}
-      <ScrollAnimation startingPoint="bottom" delay={0.2} duration={1}>
+      <ScrollAnimation
+        startingPoint="bottom"
+        delay={0.2}
+        duration={1}
+        repeat={true}
+      >
         <SectionSecond>
           <EduArtComponent sectionData={section_2_Data} />
         </SectionSecond>
       </ScrollAnimation>
       {/* 섹션4 */}
-      <ScrollAnimation startingPoint="bottom" duration={1}>
+      <ScrollAnimation startingPoint="bottom" duration={1} repeat={true}>
         <SectionFourth>
           <InfoSection />
         </SectionFourth>

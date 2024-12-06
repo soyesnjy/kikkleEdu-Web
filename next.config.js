@@ -22,3 +22,14 @@ const nextConfig = {
 };
 
 module.exports = withPWA(nextConfig);
+
+// Module 방식 => next.config.js(X) / next.config.mjs(O)
+// import nextPWA from 'next-pwa';
+
+// const withPWA = nextPWA({
+//   dest: 'public',
+//   register: true,
+//   skipWaiting: true,
+// });
+
+// export default withPWA(nextConfig);
