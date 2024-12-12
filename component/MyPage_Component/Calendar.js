@@ -27,10 +27,10 @@ const Calendar = ({ setDate, date }) => {
   // const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   // 렌더링 시 date 갱신
-  useEffect(() => {
-    console.log(date);
-    setTmpDateArr([...date]);
-  }, []);
+  // useEffect(() => {
+  //   console.log(date);
+  //   setTmpDateArr([...date]);
+  // }, [date]);
 
   const handleDateClick = (arg) => {
     const dateObj = new Date(arg.dateStr);

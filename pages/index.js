@@ -223,7 +223,7 @@ export async function getStaticProps() {
 
   return {
     props: { teacherDataArr }, // 서버에서 가져온 데이터를 페이지로 전달
-    revalidate: 10,
+    revalidate: 10, // 데이터 갱신 쿨타임 10초
   };
 }
 

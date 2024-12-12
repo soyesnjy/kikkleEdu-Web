@@ -55,7 +55,7 @@ const navList_info = [
     title: '게시판',
     items: [
       { href: '/shop', label: '상점' },
-      { href: '/board', label: '문의하기' },
+      { href: '/board', label: '공지사항' },
     ],
   },
 ];
