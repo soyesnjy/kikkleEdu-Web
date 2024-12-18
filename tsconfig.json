@@ -12,7 +12,11 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": ".", // 프로젝트 루트 디렉토리를 기준으로 설정
+    "paths": {
+      "@/*": ["./*"] // @/ 경로를 루트 디렉토리에 매핑
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
