@@ -14,24 +14,28 @@ class MyDocument extends Document {
     //     // Useful for wrapping in a per-page basis
     //     enhanceComponent: (Component) => Component,
     //   });
+    try {
+      ctx.renderPage = () =>
+        originalRenderPage({
+          enhanceApp: (App) => (props) =>
+            sheet.collectStyles(<App {...props} />),
+        });
 
-    ctx.renderPage = () =>
-      originalRenderPage({
-        enhanceApp: (App) => (props) => sheet.collectStyles(<App {...props} />),
-      });
+      // Run the parent `getInitialProps`, it now includes the custom `renderPage`
+      const initialProps = await Document.getInitialProps(ctx);
 
-    // Run the parent `getInitialProps`, it now includes the custom `renderPage`
-    const initialProps = await Document.getInitialProps(ctx);
-
-    return {
-      ...initialProps,
-      styles: (
-        <>
-          {initialProps.styles}
-          {sheet.getStyleElement()}
-        </>
-      ),
-    };
+      return {
+        ...initialProps,
+        styles: (
+          <>
+            {initialProps.styles}
+            {sheet.getStyleElement()}
+          </>
+        ),
+      };
+    } finally {
+      sheet.seal(); // Ensure the stylesheet is properly sealed
+    }
   }
 
   render() {

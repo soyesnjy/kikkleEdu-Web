@@ -19,6 +19,9 @@ const nextConfig = {
     // 빌드 중 ESLint 오류를 무시합니다.
     ignoreDuringBuilds: true,
   },
+  compiler: {
+    styledComponents: true, // styled-components의 SWC 지원 활성화
+  },
 };
 
 module.exports = withPWA(nextConfig);
