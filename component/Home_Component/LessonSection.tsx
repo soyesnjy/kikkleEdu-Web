@@ -3,7 +3,24 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const LessonSection = ({ title, subtitle, imgUrl, type, routePath, info }) => {
+// Home Page Props Type 지정
+type LessonSectionProps = {
+  title: string;
+  subtitle: string;
+  imgUrl: string;
+  routePath: string;
+  type: string;
+  info: string;
+};
+
+const LessonSection = ({
+  title,
+  subtitle,
+  imgUrl,
+  type,
+  routePath,
+  info,
+}: LessonSectionProps) => {
   return (
     <SectionContainer>
       {type === 'left' ? (

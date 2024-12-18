@@ -1,3 +1,4 @@
+import React from 'react';
 import axios from 'axios';
 
 import styled from 'styled-components';
@@ -15,10 +16,32 @@ import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
 import { ScrollAnimation } from '@/component/Home_Component/Scroll_Animation/ScrollAnimation';
 
-const section_1_Arr = [
+// Client Teacher Data Type 지정
+type SectionFirstType = {
+  imgPath: string;
+  title: string;
+  content: string;
+};
+
+type SectionSecondType = {
+  title: string;
+  content: string;
+  features: string[];
+  imgPath: string;
+};
+
+type SectionFifthToNinethType = {
+  title: string;
+  subtitle: string;
+  imgUrl: string;
+  routePath: string;
+  backgroundColor?: string;
+};
+
+const section_1_Arr: SectionFirstType[] = [
   {
     imgPath: '/src/Home_IMG/Icon_IMG/Home_Icon_1_IMG.png',
-    title: 'Kids education',
+    title: 'Kids Education',
     content:
       '아동에게 맞는 다양한 움직임 프로그램 기술과 예술이 결합된 프로그램',
   },
@@ -34,14 +57,14 @@ const section_1_Arr = [
   },
 ];
 
-const section_2_Data = {
+const section_2_Data: SectionSecondType = {
   title: 'EDU ART',
   content: '우리아이의 건강한 몸과 마음의 행복을 위해',
   features: ['social', 'physical', 'creativity', 'self-confidence'],
   imgPath: '/src/Home_IMG/Home_Section_2_IMG.png',
 };
 
-const section_5to9_Arr = [
+const section_5to9_Arr: SectionFifthToNinethType[] = [
   {
     title: '유치원 수업',
     subtitle:
@@ -81,10 +104,23 @@ const section_5to9_Arr = [
   },
 ];
 
+// Client Teacher Data Type 지정
+type ClientTeacherDataType = {
+  id: number;
+  name: string;
+  introduce: string;
+  profileImg: string;
+};
+
+// Home Page Props Type 지정
+type HomeProps = {
+  teacherDataArr: ClientTeacherDataType[];
+};
+
 // Test
 // Home 페이지
-export default function Home({ teacherDataArr }) {
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+export default function Home({ teacherDataArr }: HomeProps) {
+  const [mobileFlag, setMobileFlag] = useRecoilState<boolean>(mobile);
 
   return (
     <MasterContainer>
@@ -99,33 +135,34 @@ export default function Home({ teacherDataArr }) {
           imgAlt={'Main Background Img'}
         />
         <ReadContainer>
-          <H1>Kids Class Edu</H1>
+          <H1>{`Kids Class Edu`}</H1>
+          {/* 웹 */}
           {!mobileFlag && (
             <>
-              <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
+              <H4>{`우리아이의 건강한 몸과 마음의 행복을 위해`}</H4>
               <Link href={'/introduce/content'}>
-                <Button>Read More</Button>
+                <Button>{`Read More`}</Button>
               </Link>
             </>
           )}
         </ReadContainer>
       </IntroSection>
-      {/* 모바일용 섹션 */}
+      {/* 모바일 */}
       {mobileFlag && (
         <FirstMobileContainer>
-          <H4>우리아이의 건강한 몸과 마음의 행복을 위해</H4>
+          <H4>{`우리아이의 건강한 몸과 마음의 행복을 위해`}</H4>
           <Link href={'/introduce/content'}>
-            <Button>Read More</Button>
+            <Button>{`Read More`}</Button>
           </Link>
         </FirstMobileContainer>
       )}
       {/* 섹션1 */}
       <SectionFirst>
-        {section_1_Arr.map((el, index) => {
+        {section_1_Arr.map((el: SectionFirstType, index: number) => {
           const { imgPath, title, content } = el;
           return (
             <EducationCard
-              key={index}
+              key={`${title}_${content}`} // 고유 Key값 지정
               delay={0.1 * (index + 1)}
               imgPath={imgPath}
               title={title}
@@ -153,20 +190,22 @@ export default function Home({ teacherDataArr }) {
         </SectionFourth>
       </ScrollAnimation>
       {/* 섹션5~8 */}
-      {section_5to9_Arr.map((el, index) => {
+      {section_5to9_Arr.map((el: SectionFifthToNinethType, index: number) => {
+        const { title, subtitle, imgUrl, routePath } = el;
         return (
           <ScrollAnimation
-            key={index}
+            key={`${routePath}_${index}`}
             startingPoint={index % 2 ? 'right' : 'left'}
             delay={0.1}
           >
-            <SectionFifthtoNineth backgroundcolor={el.backgroundColor}>
+            <SectionFifthtoNineth backgroundColor={el.backgroundColor}>
               <LessonSection
-                title={el.title}
-                subtitle={el.subtitle}
-                imgUrl={el.imgUrl}
+                title={title}
+                subtitle={subtitle}
+                imgUrl={imgUrl}
                 type={mobileFlag ? 'left' : index % 2 ? 'right' : 'left'}
-                routePath={el.routePath}
+                routePath={routePath}
+                info={undefined}
               />
             </SectionFifthtoNineth>
           </ScrollAnimation>
@@ -188,6 +227,14 @@ export default function Home({ teacherDataArr }) {
   );
 }
 
+// Server Teacher Data Type 지정
+type ServerTeacherDataType = {
+  kk_teacher_idx: number;
+  kk_teacher_name: string;
+  kk_teacher_introduction: string;
+  kk_teacher_profileImg_path: string;
+};
+
 // ISR
 export async function getStaticProps() {
   let teacherDataArr = [];
@@ -203,10 +250,10 @@ export async function getStaticProps() {
       }
     );
 
-    const result = res.data.data;
+    const result: ServerTeacherDataType[] = res.data.data;
     if (result?.length) {
       teacherDataArr = [
-        ...result.map((el) => {
+        ...result.map((el: ServerTeacherDataType) => {
           return {
             id: el.kk_teacher_idx,
             name: el.kk_teacher_name,
@@ -226,6 +273,11 @@ export async function getStaticProps() {
     revalidate: 10, // 데이터 갱신 쿨타임 10초
   };
 }
+
+// SectionFifthtoNineth 컴포넌트 Type 지정
+type SectionFifthtoNinethProps = {
+  backgroundColor: string;
+};
 
 const MasterContainer = styled.div`
   background-color: white;
@@ -403,13 +455,13 @@ const SectionFourth = styled.section`
   }
 `;
 
-const SectionFifthtoNineth = styled.section`
+const SectionFifthtoNineth = styled.section<SectionFifthtoNinethProps>`
   width: 100vw;
   min-height: 50vh;
 
   margin: 10rem 0;
 
-  background-color: ${(props) => props.backgroundcolor || 'white'};
+  background-color: ${(props) => props.backgroundColor || 'white'};
 
   display: flex;
   justify-content: center;

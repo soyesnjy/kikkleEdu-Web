@@ -2,7 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 
-const EduArtComponent = ({ sectionData }) => {
+type sectionDataType = {
+  title: string;
+  content: string;
+  features: string[];
+  imgPath: string;
+};
+
+// EduArtComponent Props Type 지정
+type EduArtComponentProps = {
+  sectionData: sectionDataType;
+};
+
+const EduArtComponent = ({ sectionData }: EduArtComponentProps) => {
   const { title, content, features, imgPath } = sectionData;
   return (
     <Container>
@@ -11,15 +23,15 @@ const EduArtComponent = ({ sectionData }) => {
         <RightSection>
           <Content>{content}</Content>
           <FeatureList>
-            {features?.map((feature, index) => (
-              <FeatureItem key={index}>
+            {features?.map((feature: string, index: number) => (
+              <FeatureItem key={`${feature}_${index}`}>
                 <Image
                   src="/src/Home_IMG/Icon_IMG/Home_Icon_4_IMG.png"
                   alt="Home_Intro_Picture_IMG"
                   width={24}
                   height={24}
                   style={{ maxWidth: '100%', height: 'auto' }}
-                />{' '}
+                />
                 {feature}
               </FeatureItem>
             ))}

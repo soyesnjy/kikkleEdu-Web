@@ -9,71 +9,56 @@ import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
 import { loadingImg } from '@/component/Common_Component/LoadingBase64';
 
-// CSR
-// import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
+// Teacher Data Type 지정
+type TeacherDataType = {
+  id: number;
+  name: string;
+  introduce: string;
+  profileImg: string;
+};
 
-const TeacherCarousel = ({ teacherDataArr }) => {
-  // CSR
-  // const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
+// TeacherCarousel 컴포넌트 Props Type 지정
+type TeacherCarouselProps = {
+  teacherDataArr: TeacherDataType[];
+};
+
+const TeacherCarousel = ({ teacherDataArr }: TeacherCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0); // 가운데 카드로 시작
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
-  // CSR
-  // 강사 List 조회
-  // useEffect(() => {
-  //   if (!teacherDataArr.length) {
-  //     // 강사 Read API 호출 메서드
-  //     handleTeacherGet({ main: true })
-  //       .then((res) => res.data.data)
-  //       .then((data) => {
-  //         setTeacherDataArr([
-  //           ...data.map((el) => {
-  //             return {
-  //               id: el.kk_teacher_idx,
-  //               name: el.kk_teacher_name,
-  //               introduce: el.kk_teacher_introduction,
-  //               profileImg: el.kk_teacher_profileImg_path,
-  //             };
-  //           }),
-  //         ]);
-  //       })
-  //       .catch((err) => console.error(err));
-  //   }
-  // }, []);
-
-  const handlePrevClick = () => {
+  const handlePrevClick = (): void => {
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? teacherDataArr.length - 1 : prevIndex - 1
     );
   };
 
-  const handleNextClick = () => {
+  const handleNextClick = (): void => {
     setCurrentIndex((prevIndex) =>
       prevIndex === teacherDataArr.length - 1 ? 0 : prevIndex + 1
     );
   };
 
-  const handleDotClick = (index) => {
+  const handleDotClick = (index: number) => {
     setCurrentIndex(index);
   };
 
-  const getTranslateStyle = () => {
+  const getTranslateStyle = (): string => {
     if (currentIndex < Math.ceil(teacherDataArr.length / 2))
       return `translateX(calc(0%))`;
     else if (currentIndex >= Math.ceil(teacherDataArr.length / 2))
       return `translateX(calc(-${Math.ceil(teacherDataArr.length / 2) * (100 / 3)}%))`;
   };
 
-  const getTranslateStyle_Mobile = () => {
+  const getTranslateStyle_Mobile = (): string => {
     return `translateX(calc(-${currentIndex * 33.2}%))`;
   };
 
   return (
     <Section>
-      <Title>강사 프로필</Title>
+      <Title>{`강사 프로필`}</Title>
       <Description>
-        다양한 예술 장르의 전공과 경력을 보유하고 계신 소예키즈의 키클에듀
-        가입강사들을 찾아봐주세요.
+        {`다양한 예술 장르의 전공과 경력을 보유하고 계신 소예키즈의 키클에듀
+        가입강사들을 찾아봐주세요.`}
       </Description>
       <CarouselContainer>
         <Button onClick={handlePrevClick} dir={'pre'}>
@@ -88,7 +73,7 @@ const TeacherCarousel = ({ teacherDataArr }) => {
               transition: 'transform 0.5s ease-in-out',
             }}
           >
-            {teacherDataArr.map((profile, index) => (
+            {teacherDataArr.map((profile: TeacherDataType, index: number) => (
               <ProfileCard
                 key={profile.id}
                 active={index === currentIndex ? 'true' : null}
@@ -102,10 +87,6 @@ const TeacherCarousel = ({ teacherDataArr }) => {
                   width={103}
                   height={103}
                   style={{
-                    // minWidth: '103px',
-                    // minHeight: '103px',
-                    // maxWidth: '100%',
-                    // height: 'auto',
                     borderRadius: '50%',
                   }}
                   placeholder="blur"
@@ -116,7 +97,7 @@ const TeacherCarousel = ({ teacherDataArr }) => {
                   {profile.introduce || `강사 ${profile.name}입니다!`}
                 </ProfileDescription>
                 <Link href={`/teacher/${profile.id}`}>
-                  <ReadMoreButton>Read More</ReadMoreButton>
+                  <ReadMoreButton>{`Read More`}</ReadMoreButton>
                 </Link>
               </ProfileCard>
             ))}
@@ -127,7 +108,7 @@ const TeacherCarousel = ({ teacherDataArr }) => {
         </Button>
       </CarouselContainer>
       <Dots>
-        {teacherDataArr.map((_, index) => (
+        {teacherDataArr.map((_, index: number) => (
           <Dot
             key={index}
             active={index === currentIndex ? 'true' : null}
@@ -141,7 +122,10 @@ const TeacherCarousel = ({ teacherDataArr }) => {
 
 export default TeacherCarousel;
 
-// Styled Components
+// SectionFifthtoNineth 컴포넌트 Type 지정
+type ActivePropertyCommonType = {
+  active: string;
+};
 
 const Section = styled.section`
   text-align: center;
@@ -201,7 +185,7 @@ const ProfilesContainer = styled.div`
   min-height: 300px;
 `;
 
-const ProfileCard = styled.div`
+const ProfileCard = styled.div<ActivePropertyCommonType>`
   width: 379px;
   min-height: 487px;
   background-color: ${(props) => (props.active ? 'white' : 'transparent')};
@@ -311,7 +295,7 @@ const Dots = styled.div`
   }
 `;
 
-const Dot = styled.div`
+const Dot = styled.div<ActivePropertyCommonType>`
   width: 10px;
   height: 10px;
   border-radius: 50%;

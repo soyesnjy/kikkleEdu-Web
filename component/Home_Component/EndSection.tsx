@@ -1,7 +1,19 @@
 import styled from 'styled-components';
 import Link from 'next/link';
+import React from 'react';
 
-export default function EndSection({ Title, btnTitle, routePath }) {
+// End Section Type 지정
+type EndSectionType = {
+  Title: string;
+  btnTitle: string;
+  routePath: string;
+};
+
+export default function EndSection({
+  Title,
+  btnTitle,
+  routePath,
+}: EndSectionType) {
   return (
     <EndContainer>
       {Title && <EndTitle>{Title}</EndTitle>}
