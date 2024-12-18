@@ -83,17 +83,6 @@ export default function Nav() {
   };
 
   useEffect(() => {
-    // const loginSession = localStorage.getItem('log');
-    // // 로그인 세션 만료 처리
-    // if (loginSession) {
-    //   const parsedSession = JSON.parse(loginSession);
-    //   if (new Date(parsedSession.expires) > new Date()) {
-    //     setLogin(true);
-    //   } else {
-    //     // 1시간 세션 만료 처리
-    //     handleSessionExpired();
-    //   }
-    // }
     // Resize 상태 처리 (MobileFlag)
     const handleResize = () => {
       // 모바일 반응형 처리
@@ -121,6 +110,7 @@ export default function Nav() {
     if (!agencyType && localStorage.getItem('agencyType'))
       setAgencyType(localStorage.getItem('agencyType'));
 
+    // 언마운트 시점에 이벤트 삭제
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
