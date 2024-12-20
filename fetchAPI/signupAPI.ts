@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 // READ
-// 2024.08.22: 쿼리 삽입 기능 추가
 export const handleSignupGet = async (query) => {
   const { userClass, name, pageNum } = query;
   try {
@@ -28,8 +27,48 @@ ${pageNum ? `pageNum=${pageNum}&` : ''}`,
     };
   }
 };
+
+// handleSignupCreate API 요청 데이터 타입 지정
+type SignupCreateRequestDataType = {
+  SignUpData: {
+    // 공통
+    pUid: string;
+    userClass: string;
+    passWord: string;
+    name: string;
+    phoneNumber: string;
+    // 강사
+    possLocal?: string;
+    possClass?: string[];
+    possDay?: string[];
+    possTime?: string[];
+    introduce?: string;
+    career?: string;
+    education?: string;
+    fileData?: {
+      fileName: string;
+      fileType: string;
+      baseData: string | ArrayBuffer;
+    };
+    // 기관
+    address?: string;
+    typeA?: string;
+  };
+};
+
+// handleSignupCreate API 반환 데이터 타입 지정
+type SignupCreateResponseDataType = {
+  message?: string;
+  status: number;
+  data?: {
+    message: string;
+  };
+};
+
 // CREATE
-export const handleSignupCreate = async (post) => {
+export const handleSignupCreate = async (
+  post: SignupCreateRequestDataType
+): Promise<SignupCreateResponseDataType> => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_URL}/signup/create`,
@@ -49,8 +88,10 @@ export const handleSignupCreate = async (post) => {
   } catch (err) {
     console.log(err);
     return {
-      message: err.response.data.message,
       status: err.response.status,
+      data: {
+        message: err.response.data.message,
+      },
     };
   }
   // // console.log(url, post);
@@ -99,7 +140,6 @@ export const handleSignupUpdate = async (post) => {
     };
   }
 };
-
 // DELETE
 export const handleSignupDelete = async (query) => {
   try {
