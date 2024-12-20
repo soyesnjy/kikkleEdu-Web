@@ -1,25 +1,25 @@
-/* eslint-disable no-unreachable */
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from 'react';
 import styled from 'styled-components';
+import Image from 'next/image';
+import Link from 'next/link';
+
 import { useEffect, useState } from 'react';
-import {
-  loginAPI,
-  loginAPI_OAuth_Approve_Google,
-  loginAPI_OAuth_Approve_Kakao,
-} from '@/fetchAPI/loginAPI';
+// import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { log, uid, agencyClass } from '../store/state';
-import Swal from 'sweetalert2';
-import { useSearchParams } from 'next/navigation';
+
+import {
+  loginAPI,
+  // loginAPI_OAuth_Approve_Google,
+  // loginAPI_OAuth_Approve_Kakao,
+} from '@/fetchAPI/loginAPI';
+
 // import GoogleOAuthBtn from '@/component/Login_Componet/googleOAuthBtn';
 // import KakaoOAuthBtn from '@/component/Login_Componet/kakaoOAuthBtn';
 
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Image from 'next/image';
-import Link from 'next/link';
+import Swal from 'sweetalert2';
 
 // 로그인 만료시간 설정 (hour 시간)
 const expireSetHourFunc = (hour) => {
@@ -28,22 +28,21 @@ const expireSetHourFunc = (hour) => {
 };
 
 export default function Login() {
-  const { t } = useTranslation('login');
-  const [userClass, setUserClass] = useState('teacher');
+  const [id, setId] = useState<string>('');
+  const [pwd, setPwd] = useState<string>('');
+  const [userClass, setUserClass] = useState<string>('teacher');
+  // const [url, setUrl] = useState('');
 
-  const [id, setId] = useState('');
-  const [userId, setUserId] = useRecoilState(uid);
-  const [pwd, setPwd] = useState('');
-  const [login, setLogin] = useRecoilState(log);
-  const [url, setUrl] = useState('');
-  const [agencyType, setAgencyType] = useRecoilState(agencyClass);
+  const [userId, setUserId] = useRecoilState<string>(uid);
+  const [login, setLogin] = useRecoilState<boolean>(log);
+  const [agencyType, setAgencyType] = useRecoilState<string>(agencyClass);
   // const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
-  const router = useRouter();
+  // const searchParams = useSearchParams();
+  // const code = searchParams.get('code');
+  // const type = searchParams.get('type');
 
-  const searchParams = useSearchParams();
-  const code = searchParams.get('code');
-  const type = searchParams.get('type');
+  const router = useRouter();
 
   // 일반 로그인
   const submitHandler = async (e) => {
@@ -51,7 +50,7 @@ export default function Login() {
     if (!id || !pwd) {
       Swal.fire({
         icon: 'error',
-        title: t('login_input_empty_title'),
+        title: `입력값이 비어 있습니다!`,
         showConfirmButton: false,
         timer: 1000,
       });
@@ -69,8 +68,8 @@ export default function Login() {
     if (res.status === 200) {
       Swal.fire({
         icon: 'success',
-        title: t('login_success_title'),
-        text: t('login_success_text'),
+        title: `로그인 성공!`,
+        text: `메인 페이지로 이동합니다`,
         showConfirmButton: false,
         timer: 1500,
       }).then(() => {
@@ -82,7 +81,7 @@ export default function Login() {
             expires: expireSetHourFunc(24), // 로그인 세션 24시간 설정
           })
         );
-        // userIdx 저장
+        // userIdx 저장s
         localStorage.setItem('userIdx', res.data.userIdx);
 
         // refreshToken 저장
@@ -118,116 +117,130 @@ export default function Login() {
     } else {
       Swal.fire({
         icon: 'error',
-        title: t('login_fail_title'),
-        text: t('login_fail_text'),
+        title: `로그인 실패`,
+        text: `일치하는 입력값이 없습니다`,
       });
     }
   };
+
   // TODO# 구글 로그인
-  const oauthGoogleHandler = async () => {
-    if (code) {
-      try {
-        const res = await loginAPI_OAuth_Approve_Google({ code });
-        console.log(res.status);
-        if (res.status === 200) {
-          Swal.fire({
-            icon: 'success',
-            title: t('login_success_title'),
-            text: t('login_success_text'),
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            setLogin(true);
-            localStorage.setItem(
-              'log',
-              JSON.stringify({
-                expires: expireSetHourFunc(24),
-              })
-            );
-            localStorage.setItem('id', res.data.id);
-            setUserId(res.data.id);
-            router.push('/');
-          });
-        } else if (res.status === 401) {
-          Swal.fire({
-            icon: 'info',
-            title: '생성 요청',
-            text: '계정 생성 요청이 완료되었습니다',
-          });
-        } else if (res.status === 402) {
-          Swal.fire({
-            icon: 'question',
-            title: '승인 대기',
-            text: '관리자에 의해 승인 대기 중인 계정입니다',
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: t('login_fail_title'),
-            text: t('login_fail_text'),
-          });
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  };
+  // const oauthGoogleHandler = async () => {
+  //   if (code) {
+  //     try {
+  //       const res = await loginAPI_OAuth_Approve_Google({ code });
+  //       console.log(res.status);
+  //       if (res.status === 200) {
+  //         Swal.fire({
+  //           icon: 'success',
+  //           title: t('login_success_title'),
+  //           text: t('login_success_text'),
+  //           showConfirmButton: false,
+  //           timer: 1500,
+  //         }).then(() => {
+  //           setLogin(true);
+  //           localStorage.setItem(
+  //             'log',
+  //             JSON.stringify({
+  //               expires: expireSetHourFunc(24),
+  //             })
+  //           );
+  //           localStorage.setItem('id', res.data.id);
+  //           setUserId(res.data.id);
+  //           router.push('/');
+  //         });
+  //       } else if (res.status === 401) {
+  //         Swal.fire({
+  //           icon: 'info',
+  //           title: '생성 요청',
+  //           text: '계정 생성 요청이 완료되었습니다',
+  //         });
+  //       } else if (res.status === 402) {
+  //         Swal.fire({
+  //           icon: 'question',
+  //           title: '승인 대기',
+  //           text: '관리자에 의해 승인 대기 중인 계정입니다',
+  //         });
+  //       } else {
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: t('login_fail_title'),
+  //           text: t('login_fail_text'),
+  //         });
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   }
+  // };
   // TODO# 카카오 로그인
-  const oauthKakaoHandler = async () => {
-    if (code) {
-      try {
-        const res = await loginAPI_OAuth_Approve_Kakao({ code });
-        console.log(res.data);
+  // const oauthKakaoHandler = async () => {
+  //   if (code) {
+  //     try {
+  //       const res = await loginAPI_OAuth_Approve_Kakao({ code });
+  //       console.log(res.data);
 
-        if (res.status === 200) {
-          Swal.fire({
-            icon: 'success',
-            title: t('login_success_title'),
-            text: t('login_success_text'),
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            setLogin(true);
-            localStorage.setItem(
-              'log',
-              JSON.stringify({
-                expires: expireSetHourFunc(24),
-              })
-            );
-            localStorage.setItem('id', res.data.id);
-            setUserId(res.data.id);
-            router.push('/');
-          });
-        } else if (res.status === 401) {
-          Swal.fire({
-            icon: 'info',
-            title: '생성 요청',
-            text: '계정 생성 요청이 완료되었습니다',
-          });
-        } else if (res.status === 402) {
-          Swal.fire({
-            icon: 'question',
-            title: '승인 대기',
-            text: '관리자에의해 승인 대기중인 계정입니다',
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: t('login_fail_title'),
-            text: t('login_fail_text'),
-          });
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  };
+  //       if (res.status === 200) {
+  //         Swal.fire({
+  //           icon: 'success',
+  //           title: t('login_success_title'),
+  //           text: t('login_success_text'),
+  //           showConfirmButton: false,
+  //           timer: 1500,
+  //         }).then(() => {
+  //           setLogin(true);
+  //           localStorage.setItem(
+  //             'log',
+  //             JSON.stringify({
+  //               expires: expireSetHourFunc(24),
+  //             })
+  //           );
+  //           localStorage.setItem('id', res.data.id);
+  //           setUserId(res.data.id);
+  //           router.push('/');
+  //         });
+  //       } else if (res.status === 401) {
+  //         Swal.fire({
+  //           icon: 'info',
+  //           title: '생성 요청',
+  //           text: '계정 생성 요청이 완료되었습니다',
+  //         });
+  //       } else if (res.status === 402) {
+  //         Swal.fire({
+  //           icon: 'question',
+  //           title: '승인 대기',
+  //           text: '관리자에의해 승인 대기중인 계정입니다',
+  //         });
+  //       } else {
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: t('login_fail_title'),
+  //           text: t('login_fail_text'),
+  //         });
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
-    }
-  }, []);
+  // 소셜 로그인 관련
+  // useEffect(() => {
+  //   if (window.Kakao && !window.Kakao.isInitialized()) {
+  //     window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   if (url) {
+  //     window.location.href = url;
+  //   }
+  // }, [url]);
+
+  // useEffect(() => {
+  //   if (!code) return;
+  //   if (type === 'kakao') oauthKakaoHandler();
+  //   else oauthGoogleHandler();
+  // }, [code]);
 
   useEffect(() => {
     const loginSession = JSON.parse(localStorage.getItem('log'));
@@ -236,18 +249,6 @@ export default function Login() {
       return;
     }
   }, [login]);
-
-  useEffect(() => {
-    if (url) {
-      window.location.href = url;
-    }
-  }, [url]);
-
-  useEffect(() => {
-    if (!code) return;
-    if (type === 'kakao') oauthKakaoHandler();
-    else oauthGoogleHandler();
-  }, [code]);
 
   return (
     <LoginPageContainer>
@@ -259,14 +260,14 @@ export default function Login() {
           height={12}
           style={{ maxWidth: '100%', height: 'auto' }}
         />
-        <H1>{t('login_title')}</H1>
-        <H3>키클에듀에 오신 것을 환영합니다.</H3>
+        <H1>{`로그인`}</H1>
+        <H3>{`키클에듀에 오신 것을 환영합니다.`}</H3>
         <UserClassButtonContainer>
           <UserClassButton
             selected={userClass === 'teacher'}
             value="teacher"
-            onClick={(e) => {
-              setUserClass(e.target.value);
+            onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+              setUserClass(e.currentTarget.value);
             }}
           >
             강사
@@ -274,8 +275,8 @@ export default function Login() {
           <UserClassButton
             selected={userClass === 'agency'}
             value="agency"
-            onClick={(e) => {
-              setUserClass(e.target.value);
+            onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+              setUserClass(e.currentTarget.value);
             }}
           >
             기관
@@ -296,9 +297,7 @@ export default function Login() {
               value={pwd}
               onChange={(e) => setPwd(e.target.value)}
             />
-            <LoginButton onClick={submitHandler}>
-              {t('login_submit')}
-            </LoginButton>
+            <LoginButton onClick={submitHandler}>{`로그인`}</LoginButton>
             {/* <StyledLink href="#">비밀번호를 잊으셨나요?</StyledLink> */}
             {/* {userClass === 'teacher' && (
               <Image
@@ -326,13 +325,11 @@ export default function Login() {
   );
 }
 
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['login', 'nav'])),
-    },
-  };
-}
+// SectionFifthtoNineth 컴포넌트 Type 지정
+type UserClassButtonType = {
+  selected: boolean;
+  value: string;
+};
 
 const LoginPageContainer = styled.main`
   width: 100vw;
@@ -408,15 +405,11 @@ const FormContainer = styled.form`
 
 // const OAuthWrap = styled.div`
 //   padding: 2rem 2rem 0 2rem;
-
 //   border-radius: 40px;
-
 //   display: flex;
 //   justify-content: center;
 //   align-items: center;
-
 //   gap: 0.5rem;
-
 //   @media (max-width: 768px) {
 //     margin-top: 1rem;
 //     width: 100%;
@@ -436,7 +429,7 @@ const UserClassButtonContainer = styled.div`
   }
 `;
 
-const UserClassButton = styled.button`
+const UserClassButton = styled.button<UserClassButtonType>`
   width: 100%;
   background-color: ${(props) =>
     props.selected ? '#45b26b' : 'rgba(255, 255, 255, 0.01)'};
