@@ -39,7 +39,7 @@ type SignupCreateRequestDataType = {
     phoneNumber: string;
     // 강사
     possLocal?: string;
-    possClass?: string[];
+    possClass?: number[];
     possDay?: string[];
     possTime?: string[];
     introduce?: string;

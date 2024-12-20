@@ -39,43 +39,43 @@ const titleMap = {
 
 // SignUp 페이지
 export default function Signup() {
-  const [possClassArr, setPossClassArr] = useState([]);
-  const [userClass, setUserClass] = useState('teacher');
-  const [pageNumber, setPageNumber] = useState(0); // 강사 페이지 번호
-  const [pageNumberA, setPageNumberA] = useState(0); // 기관 페이지 번호
-  const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
+  const [possClassArr, setPossClassArr] = useState([]); // 수업 DB 정보
+  const [userClass, setUserClass] = useState<string>('teacher');
+  const [pageNumber, setPageNumber] = useState<number>(0); // 강사 페이지 번호
+  const [pageNumberA, setPageNumberA] = useState<number>(0); // 기관 페이지 번호
+  const [isPending, setIsPending] = useState<boolean>(false); // 회원가입 버튼 활성화 state
   // 비밀번호 관련 state
-  const [checkPwd_1, setCheckPwd_1] = useState(false);
-  const [checkPwd_2, setCheckPwd_2] = useState(false);
-  const [checkPwd_3, setCheckPwd_3] = useState(false);
+  const [checkPwd_1, setCheckPwd_1] = useState<boolean>(false);
+  const [checkPwd_2, setCheckPwd_2] = useState<boolean>(false);
+  const [checkPwd_3, setCheckPwd_3] = useState<boolean>(false);
   // 동의항목 관련 state
-  const [checkTerms, setCheckTerms] = useState(false);
-  const [checkPrivacy, setCheckPrivacy] = useState(false);
+  const [checkTerms, setCheckTerms] = useState<boolean>(false);
+  const [checkPrivacy, setCheckPrivacy] = useState<boolean>(false);
 
   // 강사 가입정보
   // (First Page)
-  const [email, setEmail] = useState(''); // kk_teacher_uid
-  const [pwd, setPwd] = useState(''); // kk_teacher_pwd
-  const [name, setName] = useState(''); // kk_teacher_name
-  const [phoneNumber, setPhoneNumber] = useState(''); // kk_teacher_phoneNum
+  const [email, setEmail] = useState<string>(''); // 강사 uid
+  const [pwd, setPwd] = useState<string>(''); // 강사 Password
+  const [name, setName] = useState<string>(''); // 강사 Name
+  const [phoneNumber, setPhoneNumber] = useState<string>(''); // 강사 PhoneNumber
   // (Second Page)
-  const [possLocal, setPossLocal] = useState(''); // kk_teacher_location
-  const [possClass, setPossClass] = useState([]); // 희망 수업
-  const [possDay, setPossDay] = useState([]); // kk_teacher_history
-  const [possTime, setPossTime] = useState([]); // kk_teacher_time
+  const [possLocal, setPossLocal] = useState<string>(''); // 강사 희망 지역
+  const [possClass, setPossClass] = useState<number[]>([]); // 강사 희망 수업
+  const [possDay, setPossDay] = useState<string[]>([]); // 강사 희망 요일
+  const [possTime, setPossTime] = useState<string[]>([]); // 강사 희망 시간대
   // (Third Page)
-  const [introduce, setIntroduce] = useState(''); // kk_teacher_history
-  const [career, setCareer] = useState(''); // kk_teacher_history
-  const [education, setEducation] = useState(''); // kk_teacher_education
-  const [file, setFile] = useState(null); // kk_teacher_file_path
+  const [introduce, setIntroduce] = useState<string>(''); // 강사 소개
+  const [career, setCareer] = useState<string>(''); // 강사 경력
+  const [education, setEducation] = useState<string>(''); // 강사 학력
+  const [file, setFile] = useState(null); // 강사 자료
 
   // 기관 가입정보
-  const [emailA, setEmailA] = useState('');
-  const [pwdA, setPwdA] = useState('');
-  const [nameA, setNameA] = useState('');
-  const [addressA, setAddressA] = useState('');
-  const [phoneNumberA, setPhoneNumberA] = useState('');
-  const [typeA, setTypeA] = useState('');
+  const [emailA, setEmailA] = useState<string>('');
+  const [pwdA, setPwdA] = useState<string>('');
+  const [nameA, setNameA] = useState<string>('');
+  const [addressA, setAddressA] = useState<string>('');
+  const [phoneNumberA, setPhoneNumberA] = useState<string>('');
+  const [typeA, setTypeA] = useState<string>('');
   // const [fileA, setFileA] = useState(null);
 
   // Recoil 전역 변수
@@ -83,10 +83,6 @@ export default function Signup() {
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   const router = useRouter();
-
-  // const minlengthStd = 8;
-  // const maxlengthStd = 15;
-  // const regex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 및 한글 자모를 포함하는 정규 표현식
 
   // Pwd Check Method
   const checkPwd = (pwd: string) => {
@@ -159,20 +155,22 @@ export default function Signup() {
   }, [pwd]);
 
   // title Text 변환 메서드
-  const titleTransHandler = (title) => {
+  const titleTransHandler = (title: string) => {
     return title.split(' ').join('\n');
   };
-  const isValidEmail = (email) => {
+
+  const isValidEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   };
-  const isValidTeacher = (email) => {
+
+  const isValidTeacher = (email: string) => {
     return email.startsWith('TC_');
   };
 
   // 강사 페이지 체크
   // First 페이지 체크 메서드
-  const pageCheckFirst = () => {
+  const pageCheckFirst = (): boolean => {
     if (!email) {
       alert('ID를 입력하세요');
       return false;
@@ -204,7 +202,7 @@ export default function Signup() {
     return true;
   };
   // Second 페이지 체크 메서드
-  const pageCheckSecond = () => {
+  const pageCheckSecond = (): boolean => {
     if (!possClass.length) {
       alert('희망 수업을 선택하세요');
       return false;
@@ -224,7 +222,7 @@ export default function Signup() {
     return true;
   };
   // Third 페이지 체크 메서드
-  const pageCheckThird = () => {
+  const pageCheckThird = (): boolean => {
     if (!career) {
       alert('경력을 입력하세요');
       return false;
@@ -242,7 +240,7 @@ export default function Signup() {
 
   // 기관 페이지 체크
   // First 페이지 체크 메서드
-  const agencyPageCheckFirst = () => {
+  const agencyPageCheckFirst = (): boolean => {
     if (!emailA) {
       alert('이메일을 입력하세요');
       return false;
@@ -267,7 +265,7 @@ export default function Signup() {
     return true;
   };
   // Second 페이지 체크 메서드
-  const agencyPageCheckSecond = () => {
+  const agencyPageCheckSecond = (): boolean => {
     if (!typeA) {
       alert('기관 유형을 선택하세요');
       return false;
@@ -280,7 +278,9 @@ export default function Signup() {
   };
 
   // 강사 회원가입 핸들러
-  const signupHandler = async (e) => {
+  const signupHandler = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     // 회원가입 형식 체크
     if (pageNumber === 2 && !pageCheckThird()) return;
