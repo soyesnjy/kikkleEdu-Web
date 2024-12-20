@@ -1,37 +1,26 @@
-/* eslint-disable no-unreachable */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
+import React from 'react';
 import styled from 'styled-components';
-// import Image from 'next/image';
-import { useEffect, useState } from 'react';
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { handleSignupCreate } from '@/fetchAPI/signupAPI';
-// SweetAlert2
-import Swal from 'sweetalert2';
 import { useRecoilState } from 'recoil';
 import { log, mobile } from '@/store/state';
 
+import { handleSignupCreate } from '@/fetchAPI/signupAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
-
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
 import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
 import PostBtn from '@/component/SignUp_Component/PostBtn';
 import LoadingDots from '@/component/SignUp_Component/LoadingDot';
+import Swal from 'sweetalert2';
 // import Page from '@/component/Motion_Paging/Page';
 
-const possLocalArr = ['서울', '부산', '기타'];
-const possDayArr = ['월', '화', '수', '목', '금', '토', '일'];
-const partTimeArr = [
-  { title: '오전\n(10:00~12:00)', value: '오전' },
-  { title: '오후\n(1:00~5:00)', value: '오후' },
-  { title: '야간\n(6:00~10:00)', value: '야간' },
-];
-const agencyTypeArr = [
+const possLocalArr: string[] = ['서울', '부산', '기타'];
+const possDayArr: string[] = ['월', '화', '수', '목', '금', '토', '일'];
+const agencyTypeArr: string[] = [
   '유치원',
   '초등학교',
   '문화센터',
@@ -39,6 +28,11 @@ const agencyTypeArr = [
   '아동복지센터',
 ];
 
+const partTimeArr = [
+  { title: '오전\n(10:00~12:00)', value: '오전' },
+  { title: '오후\n(1:00~5:00)', value: '오후' },
+  { title: '야간\n(6:00~10:00)', value: '야간' },
+];
 const titleMap = {
   2: '스토리 (창의) 발레',
 };
@@ -95,7 +89,7 @@ export default function Signup() {
   // const regex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 및 한글 자모를 포함하는 정규 표현식
 
   // Pwd Check Method
-  const checkPwd = (pwd) => {
+  const checkPwd = (pwd: string) => {
     if (!pwd) {
       setCheckPwd_1(false);
       setCheckPwd_2(false);
@@ -138,6 +132,9 @@ export default function Signup() {
               return { id: el.kk_class_idx, title: el.kk_class_title };
             }),
           ]);
+        })
+        .catch(() => {
+          setPossClassArr([]);
         });
     }
   }, []);
@@ -165,7 +162,6 @@ export default function Signup() {
   const titleTransHandler = (title) => {
     return title.split(' ').join('\n');
   };
-
   const isValidEmail = (email) => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
@@ -351,57 +347,6 @@ export default function Signup() {
     // 회원가입 버튼 비활성화
     setIsPending(true);
 
-    // const reader = new FileReader();
-    // reader.onloadend = async () => {
-    //   const base64Data = reader.result;
-    //   try {
-    //     const res = await handleSignupCreate({
-    //       SignUpData: {
-    //         pUid: emailA,
-    //         userClass,
-    //         passWord: pwdA,
-    //         name: nameA,
-    //         phoneNumber: phoneNumberA,
-    //         address: addressA,
-    //         typeA,
-    //         fileData: {
-    //           fileName: fileA.name,
-    //           fileType: fileA.type,
-    //           baseData: base64Data,
-    //         },
-    //       },
-    //     });
-
-    //     if (res.status === 200) {
-    //       Swal.fire({
-    //         icon: 'success',
-    //         title: 'Sign Up Success!',
-    //         text: 'Login Page로 이동합니다',
-    //         showConfirmButton: false,
-    //         timer: 1500,
-    //       }).then(() => {
-    //         // useRouter 인스턴스의 push 메서드를 통해 페이지 이동 가능
-    //         router.push('/login');
-    //       });
-    //     } else if (res.status === 403) {
-    //       Swal.fire({
-    //         icon: 'error',
-    //         title: '중복된 이메일입니다',
-    //       });
-    //     } else {
-    //       Swal.fire({
-    //         icon: 'error',
-    //         title: 'Sign Up Fail',
-    //       });
-    //     }
-    //   } catch (error) {
-    //     console.error('업로드 실패:', error);
-    //   }
-    //   // 회원가입 버튼 활성화
-    //   setIsPending(false);
-    // };
-    // reader.readAsDataURL(fileA);
-
     try {
       const res = await handleSignupCreate({
         SignUpData: {
@@ -448,26 +393,26 @@ export default function Signup() {
     <SignUpPageContainer>
       <FormWrap>
         <div>
-          <H1>키클에듀 id를 생성하세요.</H1>
-          <H4>개인정보는 회원가입 확인에만 이용됩니다.</H4>
+          <H1>{`키클에듀 id를 생성하세요.`}</H1>
+          <H4>{`개인정보는 회원가입 확인에만 이용됩니다.`}</H4>
           <UserClassButtonContainer>
             <UserClassButton
               selected={userClass === 'teacher'}
               value="teacher"
               onClick={(e) => {
-                setUserClass(e.target.value);
+                setUserClass(e.currentTarget.value);
               }}
             >
-              강사
+              {`강사`}
             </UserClassButton>
             <UserClassButton
               selected={userClass === 'agency'}
               value="agency"
               onClick={(e) => {
-                setUserClass(e.target.value);
+                setUserClass(e.currentTarget.value);
               }}
             >
-              기관
+              {`기관`}
             </UserClassButton>
           </UserClassButtonContainer>
         </div>
@@ -477,7 +422,7 @@ export default function Signup() {
               {/* 회원가입 First Page */}
               {pageNumber === 0 && (
                 <PageContainer>
-                  <H5>* 표시는 필수 입력 정보입니다</H5>
+                  <H5>{`* 표시는 필수 입력 정보입니다`}</H5>
                   <SignUpInput
                     id="name"
                     placeholder="*성함"
@@ -513,18 +458,18 @@ export default function Signup() {
                   />
 
                   <PwdCheckContainer>
-                    <H5>비밀번호 요구사항</H5>
+                    <H5>{`비밀번호 요구사항`}</H5>
                     <PwdCheckText check={checkPwd_1}>
                       <span className="material-symbols-outlined">check</span>{' '}
-                      8글자 이상
+                      {`8글자 이상`}
                     </PwdCheckText>
                     <PwdCheckText check={checkPwd_2}>
                       <span className="material-symbols-outlined">check</span>{' '}
-                      영문,숫자,기호 중 2개 이상의 조합
+                      {`영문,숫자,기호 중 2개 이상의 조합`}
                     </PwdCheckText>
                     <PwdCheckText check={checkPwd_3}>
                       <span className="material-symbols-outlined">check</span>{' '}
-                      이메일 주소가 포함되면 안됩니다
+                      {`이메일 주소가 포함되면 안됩니다`}
                     </PwdCheckText>
                   </PwdCheckContainer>
                   <TermsCheckboxContainer>
@@ -532,12 +477,12 @@ export default function Signup() {
                       id="checkTerms"
                       checked={checkTerms}
                       onChange={(e) => {
-                        setCheckTerms(e.target.checked);
+                        setCheckTerms(e.currentTarget.checked);
                       }}
                     />
                     <StyledCheckbox
-                      checked={checkTerms}
-                      onClick={(e) => {
+                      check={checkTerms}
+                      onClick={() => {
                         setCheckTerms(!checkTerms);
                       }}
                     >
@@ -545,15 +490,15 @@ export default function Signup() {
                         <polyline points="20 6 9 17 4 12" />
                       </Icon>
                     </StyledCheckbox>
-                    <TermsCheckLabel for="checkTerms">
-                      *
+                    <TermsCheckLabel htmlFor="checkTerms">
+                      {`*`}
                       <a
                         href="https://www.soyes.kr/soyeskids_privacy_policy"
                         target="blank"
                       >
-                        이용약관
+                        {`이용약관`}
                       </a>
-                      에 동의합니다.
+                      {`에 동의합니다.`}
                     </TermsCheckLabel>
                   </TermsCheckboxContainer>
                   <TermsCheckboxContainer>
@@ -565,8 +510,8 @@ export default function Signup() {
                       }}
                     />
                     <StyledCheckbox
-                      checked={checkPrivacy}
-                      onClick={(e) => {
+                      check={checkPrivacy}
+                      onClick={() => {
                         setCheckPrivacy(!checkPrivacy);
                       }}
                     >
@@ -574,8 +519,9 @@ export default function Signup() {
                         <polyline points="20 6 9 17 4 12" />
                       </Icon>
                     </StyledCheckbox>
-                    <TermsCheckLabel for="checkPrivacy">
-                      *<span>개인정보</span> 수집 및 이용에 동의합니다.
+                    <TermsCheckLabel htmlFor="checkPrivacy">
+                      {`*`}
+                      <span>{`개인정보`}</span> {`수집 및 이용에 동의합니다.`}
                     </TermsCheckLabel>
                   </TermsCheckboxContainer>
                 </PageContainer>
@@ -583,8 +529,8 @@ export default function Signup() {
               {/* 회원가입 Second Page */}
               {pageNumber === 1 && (
                 <PageContainer>
-                  <H5>* 표시는 필수 입력 정보입니다</H5>
-                  <H4>* 희망 수업</H4>
+                  <H5>{`* 표시는 필수 입력 정보입니다`}</H5>
+                  <H4>{`* 희망 수업`}</H4>
                   <UserPossClassContainer
                     rowcount={Math.ceil(possClassArr.length / 5)}
                   >
@@ -605,11 +551,10 @@ export default function Signup() {
                             else
                               setPossClass([
                                 ...possClass,
-                                Number(e.target.value),
+                                Number(e.currentTarget.value),
                               ]);
                           }}
                           selected={possClass.includes(id)}
-                          type="class"
                         >
                           {mobileFlag
                             ? id === 2 // 스토리(창의)발레 수업명에 한해 변환
@@ -620,7 +565,7 @@ export default function Signup() {
                       );
                     })}
                   </UserPossClassContainer>
-                  <H4>* 희망 지역</H4>
+                  <H4>{`* 희망 지역`}</H4>
                   <UserPossClassContainer
                     rowcount={Math.ceil(possLocalArr.length / 5)}
                   >
@@ -632,7 +577,7 @@ export default function Signup() {
                           onClick={(e) => {
                             e.preventDefault();
                             // 지역 선택
-                            setPossLocal(e.target.value);
+                            setPossLocal(e.currentTarget.value);
                           }}
                           selected={possLocal === possLocalName}
                         >
@@ -641,7 +586,7 @@ export default function Signup() {
                       );
                     })}
                   </UserPossClassContainer>
-                  <H4>* 희망 날짜 </H4>
+                  <H4>{`* 희망 날짜`}</H4>
                   <UserPossClassContainer rowcount={1} dayCheck={true}>
                     {possDayArr.map((possDayName, index) => {
                       return (
@@ -656,7 +601,8 @@ export default function Signup() {
                                 ...possDay.filter((el) => el !== possDayName),
                               ]);
                             // 선택
-                            else setPossDay([...possDay, e.target.value]);
+                            else
+                              setPossDay([...possDay, e.currentTarget.value]);
                           }}
                           selected={possDay.includes(possDayName)}
                         >
@@ -665,7 +611,7 @@ export default function Signup() {
                       );
                     })}
                   </UserPossClassContainer>
-                  <H4>* 희망 시간대 </H4>
+                  <H4>{`* 희망 시간대`}</H4>
                   <UserPossClassContainer rowcount={1} dayCheck={true}>
                     {partTimeArr.map((partTime, index) => {
                       return (
@@ -684,7 +630,8 @@ export default function Signup() {
                                 ),
                               ]);
                             // 선택
-                            else setPossTime([...possTime, e.target.value]);
+                            else
+                              setPossTime([...possTime, e.currentTarget.value]);
                           }}
                           // selected={possTime === partTime.value}
                           selected={possTime.includes(partTime.value)}
@@ -699,8 +646,8 @@ export default function Signup() {
               {/* 회원가입 Third Page */}
               {pageNumber === 2 && (
                 <PageContainer>
-                  <H5>* 표시는 필수 입력 정보입니다</H5>
-                  <H4>* 강사 소개 (본인 소개글)</H4>
+                  <H5>{`* 표시는 필수 입력 정보입니다`}</H5>
+                  <H4>{`* 강사 소개 (본인 소개글)`}</H4>
                   <UserInfoRowContainer>
                     <SignUpInput
                       id="introduce"
@@ -708,11 +655,11 @@ export default function Signup() {
                       type="text"
                       value={introduce}
                       onChange={(e) => {
-                        setIntroduce(e.target.value);
+                        setIntroduce(e.currentTarget.value);
                       }}
                     />
                   </UserInfoRowContainer>
-                  <H4>* 경력 & 학력</H4>
+                  <H4>{`* 경력 & 학력`}</H4>
                   <UserInfoRowContainer>
                     <SignUpInput
                       id="career"
@@ -720,7 +667,7 @@ export default function Signup() {
                       type="text"
                       value={career}
                       onChange={(e) => {
-                        setCareer(e.target.value);
+                        setCareer(e.currentTarget.value);
                       }}
                     />
                     <SignUpInput
@@ -729,24 +676,24 @@ export default function Signup() {
                       type="text"
                       value={education}
                       onChange={(e) => {
-                        setEducation(e.target.value);
+                        setEducation(e.currentTarget.value);
                       }}
                     />
                   </UserInfoRowContainer>
-                  <H4>* 필수요청 서류 탭 (ZIP파일 제출)</H4>
+                  <H4>{`* 필수요청 서류 탭 (ZIP파일 제출)`}</H4>
                   <FileUploadComponent setFile={setFile} file={file} />
-                  <H5>+ 필수 서류 확인하기</H5>
+                  <H5>{`+ 필수 서류 확인하기`}</H5>
                   <FileCheckText>
                     <span className="material-symbols-outlined">check</span>
-                    이력서 / 신분증 / 통장사본 / 보건증
+                    {`이력서 / 신분증 / 통장사본 / 보건증`}
                   </FileCheckText>
                   <FileCheckText>
                     <span className="material-symbols-outlined">check</span>
-                    졸업 증명서(재학증명서) / 경력 증명서
+                    {`졸업 증명서(재학증명서) / 경력 증명서`}
                   </FileCheckText>
                   <FileCheckText>
                     <span className="material-symbols-outlined">check</span>
-                    프로필 사진
+                    {`프로필 사진`}
                   </FileCheckText>
                 </PageContainer>
               )}
@@ -759,7 +706,7 @@ export default function Signup() {
                       setPageNumber(pageNumber - 1);
                     }}
                   >
-                    이전 단계
+                    {`이전 단계`}
                   </SignUpButton>
                 )}
                 {/* 다음 버튼 */}
@@ -773,7 +720,7 @@ export default function Signup() {
                       setPageNumber(pageNumber + 1);
                     }}
                   >
-                    다음 단계
+                    {`다음 단계`}
                   </SignUpButton>
                 )}
                 {/* 가입 버튼 */}
@@ -792,14 +739,14 @@ export default function Signup() {
             <InputContainer>
               {pageNumberA === 0 && (
                 <PageContainer>
-                  <H5>* 표시는 필수 입력 정보입니다</H5>
+                  <H5>{`* 표시는 필수 입력 정보입니다`}</H5>
                   <SignUpInput
                     id="name"
                     placeholder="* 기관명"
                     type="text"
                     value={nameA}
                     onChange={(e) => {
-                      setNameA(e.target.value);
+                      setNameA(e.currentTarget.value);
                     }}
                   />
                   <SignUpInput
@@ -808,7 +755,7 @@ export default function Signup() {
                     type="email"
                     value={emailA}
                     onChange={(e) => {
-                      setEmailA(e.target.value);
+                      setEmailA(e.currentTarget.value);
                     }}
                   />
                   <SignUpInput
@@ -817,7 +764,7 @@ export default function Signup() {
                     type="password"
                     value={pwdA}
                     onChange={(e) => {
-                      setPwdA(e.target.value);
+                      setPwdA(e.currentTarget.value);
                     }}
                   />
                   <StyledPhoneInput
@@ -853,7 +800,7 @@ export default function Signup() {
                           onClick={(e) => {
                             e.preventDefault();
                             // 지역 선택
-                            setTypeA(e.target.value);
+                            setTypeA(e.currentTarget.value);
                           }}
                           selected={typeA === agencyTypeName}
                         >
@@ -910,13 +857,22 @@ export default function Signup() {
   );
 }
 
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['signup', 'nav'])),
-    },
-  };
-}
+type SelectedType = {
+  selected: boolean;
+};
+
+type CheckType = {
+  check: boolean;
+};
+
+type IsPendingType = {
+  isPending?: boolean;
+};
+
+type PossButtonType = {
+  dayCheck?: boolean;
+  rowcount: number;
+};
 
 const SignUpPageContainer = styled.main`
   width: 100vw;
@@ -1114,7 +1070,7 @@ const SignUpButtonContainer = styled.div`
   margin-top: 1rem;
 `;
 
-const SignUpButton = styled.button`
+const SignUpButton = styled.button<IsPendingType>`
   width: 360px;
 
   background-color: ${(props) => (props.isPending ? '#45b26b' : '#606c76')};
@@ -1160,7 +1116,7 @@ const UserClassButtonContainer = styled.div`
   }
 `;
 
-const UserClassButton = styled.button`
+const UserClassButton = styled.button<SelectedType>`
   background-color: ${(props) =>
     props.selected ? '#45b26b' : 'rgba(255, 255, 255, 0.01)'};
   border: 1px solid #45b26b;
@@ -1209,7 +1165,7 @@ const PwdCheckContainer = styled.div`
   }
 `;
 
-const PwdCheckText = styled.div`
+const PwdCheckText = styled.div<CheckType>`
   color: ${(props) => (props.check ? '#00bba3' : '#758592')};
 
   display: flex;
@@ -1235,7 +1191,7 @@ const TermsCheckboxContainer = styled.div`
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   border: 0;
   clip: rect(0 0 0 0);
-  clippath: inset(50%);
+  /* clippath: inset(50%); */
   height: 1px;
   margin: -1px;
   overflow: hidden;
@@ -1251,26 +1207,26 @@ const Icon = styled.svg`
   stroke-width: 3px;
 `;
 
-const StyledCheckbox = styled.div`
+const StyledCheckbox = styled.div<CheckType>`
   display: inline-block;
   width: 26px;
   height: 26px;
-  background: ${(props) => (props.checked ? '#008000' : 'white')};
+  background: ${(props) => (props.check ? '#008000' : 'white')};
   border-radius: 5px;
   transition: all 150ms;
-  border: 2px solid ${(props) => (props.checked ? '#008000' : '#ccc')};
+  border: 2px solid ${(props) => (props.check ? '#008000' : '#ccc')};
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${Icon} {
-    visibility: ${(props) => (props.checked ? 'visible' : 'hidden')};
+    visibility: ${(props) => (props.check ? 'visible' : 'hidden')};
   }
 `;
 
 const TermsCheckLabel = styled.label`
   margin-left: 8px;
-  color: ${(props) => (props.checked ? '#99cc99' : '#cccccc')};
+  color: #cccccc;
 
   font-size: 1rem;
   font-family: Pretendard;
@@ -1297,7 +1253,7 @@ const TermsCheckLabel = styled.label`
   }
 `;
 
-const UserPossClassContainer = styled.div`
+const UserPossClassContainer = styled.div<PossButtonType>`
   display: grid;
   grid-template-columns: ${(props) =>
     props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(4, 1fr)'};
@@ -1314,7 +1270,7 @@ const UserPossClassContainer = styled.div`
   }
 `;
 
-const UserPossClassButton = styled.button`
+const UserPossClassButton = styled.button<SelectedType>`
   background-color: ${(props) =>
     props.selected ? '#45b26b' : 'rgba(255, 255, 255, 0.01)'};
   border: 1px solid #45b26b;

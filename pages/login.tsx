@@ -330,7 +330,6 @@ export default function Login() {
 // UserClassButtonType 컴포넌트 Type 지정
 type UserClassButtonType = {
   selected: boolean;
-  value: string;
 };
 
 const LoginPageContainer = styled.main`
