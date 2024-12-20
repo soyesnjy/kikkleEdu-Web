@@ -22,7 +22,7 @@ import {
 import Swal from 'sweetalert2';
 
 // 로그인 만료시간 설정 (hour 시간)
-const expireSetHourFunc = (hour) => {
+const expireSetHourFunc = (hour: number) => {
   const today = new Date();
   return today.setHours(today.getHours() + hour);
 };
@@ -45,7 +45,9 @@ export default function Login() {
   const router = useRouter();
 
   // 일반 로그인
-  const submitHandler = async (e) => {
+  const submitHandler = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): Promise<void> => {
     e.preventDefault();
     if (!id || !pwd) {
       Swal.fire({
@@ -270,7 +272,7 @@ export default function Login() {
               setUserClass(e.currentTarget.value);
             }}
           >
-            강사
+            {`강사`}
           </UserClassButton>
           <UserClassButton
             selected={userClass === 'agency'}
@@ -279,7 +281,7 @@ export default function Login() {
               setUserClass(e.currentTarget.value);
             }}
           >
-            기관
+            {`기관`}
           </UserClassButton>
         </UserClassButtonContainer>
         <FormContainer>
@@ -316,8 +318,8 @@ export default function Login() {
             ) : (
               ''
             )} */}
-            <H4>아직 키클에듀 회원이 아니신가요?</H4>
-            <StyledLink href="/signup">회원가입</StyledLink>
+            <H4>{`아직 키클에듀 회원이 아니신가요?`}</H4>
+            <StyledLink href="/signup">{`회원가입`}</StyledLink>
           </InputContainer>
         </FormContainer>
       </FormWrap>
@@ -325,7 +327,7 @@ export default function Login() {
   );
 }
 
-// SectionFifthtoNineth 컴포넌트 Type 지정
+// UserClassButtonType 컴포넌트 Type 지정
 type UserClassButtonType = {
   selected: boolean;
   value: string;
