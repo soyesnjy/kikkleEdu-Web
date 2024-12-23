@@ -11,7 +11,7 @@ import { handleSignupCreate } from '@/fetchAPI/signupAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
 
 import 'react-phone-number-input/style.css';
-import PhoneInput from 'react-phone-number-input';
+import PhoneInput from 'react-phone-number-input'; // react-phone-number-input 라이브러리 사용
 import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
 import PostBtn from '@/component/SignUp_Component/PostBtn';
 import LoadingDots from '@/component/SignUp_Component/LoadingDot';
@@ -28,11 +28,12 @@ const agencyTypeArr: string[] = [
   '아동복지센터',
 ];
 
-const partTimeArr = [
+const partTimeArr: { title: string; value: string }[] = [
   { title: '오전\n(10:00~12:00)', value: '오전' },
   { title: '오후\n(1:00~5:00)', value: '오후' },
   { title: '야간\n(6:00~10:00)', value: '야간' },
 ];
+
 const titleMap = {
   2: '스토리 (창의) 발레',
 };
@@ -41,7 +42,7 @@ const titleMap = {
 export default function Signup() {
   const [possClassArr, setPossClassArr] = useState([]); // 수업 DB 정보
   const [userClass, setUserClass] = useState<string>('teacher');
-  const [pageNumber, setPageNumber] = useState<number>(0); // 강사 페이지 번호
+  const [pageNumber, setPageNumber] = useState<number>(2); // 강사 페이지 번호
   const [pageNumberA, setPageNumberA] = useState<number>(0); // 기관 페이지 번호
   const [isPending, setIsPending] = useState<boolean>(false); // 회원가입 버튼 활성화 state
   // 비밀번호 관련 state
@@ -137,8 +138,10 @@ export default function Signup() {
 
   useEffect(() => {
     // 로그인 시 메인 페이지로 이동
-    const loginSession = JSON.parse(localStorage.getItem('log'));
-    if (loginSession) {
+    const loginSession: { expires: string } = JSON.parse(
+      localStorage.getItem('log')
+    );
+    if (loginSession?.expires) {
       router.replace('/');
       return;
     }
@@ -399,7 +402,7 @@ export default function Signup() {
             <UserClassButton
               selected={userClass === 'teacher'}
               value="teacher"
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                 setUserClass(e.currentTarget.value);
               }}
             >
@@ -408,7 +411,7 @@ export default function Signup() {
             <UserClassButton
               selected={userClass === 'agency'}
               value="agency"
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
                 setUserClass(e.currentTarget.value);
               }}
             >
@@ -540,7 +543,9 @@ export default function Signup() {
                         <UserPossClassButton
                           key={index}
                           value={id}
-                          onClick={(e) => {
+                          onClick={(
+                            e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                          ) => {
                             e.preventDefault();
                             // 선택 취소
                             if (possClass.includes(id))
@@ -574,7 +579,9 @@ export default function Signup() {
                         <UserPossClassButton
                           key={index}
                           value={possLocalName}
-                          onClick={(e) => {
+                          onClick={(
+                            e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                          ) => {
                             e.preventDefault();
                             // 지역 선택
                             setPossLocal(e.currentTarget.value);
@@ -593,7 +600,9 @@ export default function Signup() {
                         <UserPossClassButton
                           key={index}
                           value={possDayName}
-                          onClick={(e) => {
+                          onClick={(
+                            e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                          ) => {
                             e.preventDefault();
                             // 선택 취소
                             if (possDay.includes(possDayName))
@@ -618,7 +627,9 @@ export default function Signup() {
                         <UserPossClassButton
                           key={index}
                           value={partTime.value}
-                          onClick={(e) => {
+                          onClick={(
+                            e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                          ) => {
                             e.preventDefault();
                             // 시간대 선택
                             // setPossTime(e.target.value);
@@ -797,7 +808,9 @@ export default function Signup() {
                         <UserPossClassButton
                           key={index}
                           value={agencyTypeName}
-                          onClick={(e) => {
+                          onClick={(
+                            e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+                          ) => {
                             e.preventDefault();
                             // 지역 선택
                             setTypeA(e.currentTarget.value);

@@ -1,25 +1,27 @@
-import React, { useRef } from 'react';
+import React, { ChangeEvent, useRef } from 'react';
 import styled from 'styled-components';
 
 const FileUploadComponent = ({ file, setFile }) => {
   const fileInputRef = useRef(null);
 
-  // 버튼 클릭 핸들러 (해당 버튼 클릭 시 Input 태그를 클릭한 것으로 간주)
-  const handleButtonClick = (e) => {
+  // 버튼 클릭 핸들러 (해당 버튼 클릭 시 HiddenFileInput 컴포넌트를 클릭한 것으로 간주)
+  const handleButtonClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     fileInputRef.current.click();
   };
 
   // 파일 변경 핸들러
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files[0];
     setFile(file);
   };
 
   return (
     <FileInputContainer>
       <FileName>{file?.name}</FileName>
-      <CustomButton onClick={handleButtonClick}>첨부</CustomButton>
+      <CustomButton onClick={handleButtonClick}>{`첨부`}</CustomButton>
       <HiddenFileInput ref={fileInputRef} onChange={handleFileChange} />
     </FileInputContainer>
   );

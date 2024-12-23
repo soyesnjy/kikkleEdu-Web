@@ -2,28 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 
+// 다음 우편번호 서비스 스크립트 URL
 const scriptUrl =
   'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
 
-const PostBtn = ({ setAddressA }) => {
+// PostBtn 컴포넌트 Props 타입 정의
+type PostBtnPropsType = {
+  setAddressA: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const PostBtn = ({ setAddressA }: PostBtnPropsType) => {
   const open = useDaumPostcodePopup(scriptUrl);
 
-  const handleComplete = (data) => {
-    let fullAddress = data.address;
-
-    // let extraAddress = '';
-    // if (data.addressType === 'R') {
-    //   if (data.bname !== '') {
-    //     extraAddress += data.bname;
-    //   }
-    //   if (data.buildingName !== '') {
-    //     extraAddress +=
-    //       extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
-    //   }
-    //   fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
-    // }
-
-    // console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+  const handleComplete = (data: { address: string }) => {
+    const fullAddress = data.address;
     setAddressA(fullAddress);
   };
 
@@ -33,7 +25,7 @@ const PostBtn = ({ setAddressA }) => {
 
   return (
     <Button type="button" onClick={handleClick}>
-      찾기
+      {`찾기`}
     </Button>
   );
 };
