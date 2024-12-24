@@ -42,7 +42,7 @@ const titleMap = {
 export default function Signup() {
   const [possClassArr, setPossClassArr] = useState([]); // 수업 DB 정보
   const [userClass, setUserClass] = useState<string>('teacher');
-  const [pageNumber, setPageNumber] = useState<number>(2); // 강사 페이지 번호
+  const [pageNumber, setPageNumber] = useState<number>(0); // 강사 페이지 번호
   const [pageNumberA, setPageNumberA] = useState<number>(0); // 기관 페이지 번호
   const [isPending, setIsPending] = useState<boolean>(false); // 회원가입 버튼 활성화 state
   // 비밀번호 관련 state
