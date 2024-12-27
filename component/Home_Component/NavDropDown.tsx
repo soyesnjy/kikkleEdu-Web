@@ -1,26 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
 import Image from 'next/image';
 
-// const dummyData = {
-//   title: '소예키즈 소개',
-//   items: [
-//     { href: '/introduce', label: '회사연혁' },
-//     { href: '/introduce/content', label: '소예키즈 콘텐츠' },
-//     { href: '/introduce/patent', label: '특허 및 저작권' },
-//     { href: '/introduce/partner', label: '파트너사' },
-//     { href: '/introduce/map', label: '주소 및 약도' },
-//   ],
-// };
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
-const NavDropDown = ({ toggleMenu, navItem }) => {
+type NavDropDownComponentType = {
+  navItem: { title: string; items: { href: string; label: string }[] };
+  toggleMenu: () => void;
+};
+
+const NavDropDown = ({ toggleMenu, navItem }: NavDropDownComponentType) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-
-  // console.log(navItem);
-  // const { title, items } = navItem;
 
   const toggleDropDown = () => {
     setIsOpen(!isOpen);
@@ -43,7 +35,7 @@ const NavDropDown = ({ toggleMenu, navItem }) => {
           const { label, href } = el;
           return (
             <NavDropDownLabel
-              key={index}
+              key={`NavDropDownLabel_${href}_${label}_${index}`}
               selected={router.pathname === href}
               onClick={() => {
                 // toggleDropDown();
@@ -61,7 +53,13 @@ const NavDropDown = ({ toggleMenu, navItem }) => {
 
 export default NavDropDown;
 
-// Styled Components
+type NavDropDownTitleType = {
+  isOpen?: boolean;
+};
+
+type NavDropDownLabelType = {
+  selected?: boolean;
+};
 
 const NavDropDownContainer = styled.div`
   width: 100%;
@@ -96,7 +94,7 @@ const NavDropDownHeaderContainer = styled.div`
   }
 `;
 
-const NavDropDownTitle = styled.div`
+const NavDropDownTitle = styled.div<NavDropDownTitleType>`
   text-align: left;
   color: ${(props) => (props.isOpen ? '#45B26B' : 'black')};
 
@@ -108,7 +106,7 @@ const NavDropDownTitle = styled.div`
   }
 `;
 
-const NavDropDownLabel = styled.div`
+const NavDropDownLabel = styled.div<NavDropDownLabelType>`
   text-align: left;
   color: ${(props) => (props.selected ? '#45B26B' : 'black')};
 

@@ -1,19 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
+import Image from 'next/image';
 import Link from 'next/link';
-import NavList from './NavList';
-import NavModal from './NavModal';
+
+import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useRouter } from 'next/router';
 
 import { useRecoilState } from 'recoil';
 import { log, mobile, uid, agencyClass } from '../../store/state';
-import { useRouter } from 'next/router';
-import Swal from 'sweetalert2';
-import { useEffect, useState, useCallback, useMemo } from 'react';
-import { logoutAPI } from '@/fetchAPI/loginAPI';
-import { useTranslation } from 'next-i18next';
-import Image from 'next/image';
 
-const navList_info = [
+import { logoutAPI } from '@/fetchAPI/loginAPI';
+import NavList from './NavList';
+import NavMobile from './NavMobile';
+import Swal from 'sweetalert2';
+
+type NavListInfoType = {
+  title: string;
+  items: { href: string; label: string }[];
+};
+
+type MenuItemType = {
+  href: string;
+  label: string;
+};
+
+const navList_info: NavListInfoType[] = [
   {
     title: '소예키즈 소개',
     items: [
@@ -21,7 +32,6 @@ const navList_info = [
       { href: '/introduce/content', label: '소예키즈 콘텐츠' },
       { href: '/introduce/patent', label: '특허 및 상표권' },
       { href: '/introduce/partner', label: '파트너사' },
-      // { href: '/introduce/ceo', label: '대표이사' },
       { href: '/introduce/map', label: '주소 및 약도' },
     ],
   },
@@ -47,8 +57,6 @@ const navList_info = [
       { href: '/program/yoga', label: '요가 교육' },
       { href: '/program/pila', label: '필라테스 교육' },
       { href: '/program/art', label: '미술 교육' },
-      // { href: '/program', label: '마음챙김심리 교육' },
-      // { href: '/program', label: '음악 교육' },
     ],
   },
   {
@@ -62,78 +70,27 @@ const navList_info = [
 
 export default function Nav() {
   const router = useRouter();
-  const { t } = useTranslation('nav');
   const currentPath = router.pathname;
+
   const [login, setLogin] = useRecoilState(log);
   const [userId, setUserId] = useRecoilState(uid);
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
-
-  const [showNavbar, setShowNavbar] = useState(false);
-  // Resize 상태 처리
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
-  const [windowSize, setWindowSize] = useState({
-    width: undefined,
-    height: undefined,
-  });
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [mobileNavisOpen, setMobileNavisOpen] = useState(false);
 
+  // Mobile Nav isOpen Toggle Handler
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setMobileNavisOpen(!mobileNavisOpen);
   };
 
-  useEffect(() => {
-    // Resize 상태 처리 (MobileFlag)
-    const handleResize = () => {
-      // 모바일 반응형 처리
-      window.innerWidth <= 728 ? setMobileFlag(true) : setMobileFlag(false);
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    };
-    // Nav바 스크롤 이벤트
-    const handleScroll = () => {
-      if (window.scrollY > 400) {
-        setShowNavbar(true);
-      } else {
-        setShowNavbar(false);
-      }
-    };
+  // 전역 상태 MobileFlag 처리 - 모바일 반응형 플래그
+  const handleResize = (): void => {
+    window.innerWidth <= 728 ? setMobileFlag(true) : setMobileFlag(false);
+  };
 
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('scroll', handleScroll);
-
-    // 새로고침 시, localStorage 값 recoil 전역변수에 갱신
-    if (localStorage.getItem('id')) setUserId(localStorage.getItem('id'));
-    if (!agencyType && localStorage.getItem('agencyType'))
-      setAgencyType(localStorage.getItem('agencyType'));
-
-    // 언마운트 시점에 이벤트 삭제
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  // router 변경 시 로그인 만료 여부 체크
-  useEffect(() => {
-    const loginSession = localStorage.getItem('log');
-    // 로그인 세션 만료 처리
-    if (loginSession) {
-      const parsedSession = JSON.parse(loginSession);
-      if (new Date(parsedSession.expires) > new Date()) {
-        setLogin(true);
-      } else {
-        // 1시간 세션 만료 처리
-        handleSessionExpired();
-      }
-    }
-  }, [router]);
-
-  // useCallback 적용. 불필요한 리렌더링 제거
-  const handleSessionExpired = useCallback(() => {
+  // Login Session Expired Handler - useCallback 적용
+  const handleSessionExpired = useCallback((): void => {
     Swal.fire({
       icon: 'error',
       title: '로그인 세션 만료!',
@@ -158,7 +115,8 @@ export default function Nav() {
     });
   }, [router, setLogin]);
 
-  const logoutHandler = useCallback(() => {
+  // Logout Handler - useCallback 적용
+  const logoutHandler = useCallback((): void => {
     Swal.fire({
       title: 'Do you want to LogOut?',
       showDenyButton: true,
@@ -185,7 +143,7 @@ export default function Nav() {
           localStorage.removeItem('activeTab');
           localStorage.removeItem('teacherDataArr');
           localStorage.removeItem('teacherClassTag');
-          setIsOpen(false);
+          setMobileNavisOpen(false);
 
           router.push('/');
         });
@@ -193,7 +151,8 @@ export default function Nav() {
     });
   }, [router, setLogin]);
 
-  const menuItems = useMemo(
+  // Login Menu Items - useMemo 적용
+  const menuItems: MenuItemType[] = useMemo(
     () => [
       {
         href:
@@ -205,11 +164,42 @@ export default function Nav() {
         label: agencyType === 'admin' ? 'ADMIN PAGE' : 'MY PAGE',
       },
     ],
-    [t, agencyType]
+    [agencyType]
   );
 
+  useEffect(() => {
+    // 모바일 반응형 플래그 resize 이벤트로 설정
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    // 새로고침 시, localStorage 값 recoil 전역변수에 갱신
+    if (localStorage.getItem('id')) setUserId(localStorage.getItem('id'));
+    if (!agencyType && localStorage.getItem('agencyType'))
+      setAgencyType(localStorage.getItem('agencyType'));
+
+    // Unmoiunt 시, 이벤트 제거
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // router 변경 시 로그인 만료 여부 체크
+  useEffect(() => {
+    const loginSession = localStorage.getItem('log');
+    // 로그인 세션 만료 처리
+    if (loginSession) {
+      const parsedSession = JSON.parse(loginSession);
+      if (new Date(parsedSession.expires) > new Date()) {
+        setLogin(true);
+      } else {
+        // 1시간 세션 만료 처리
+        handleSessionExpired();
+      }
+    }
+  }, [router]);
+
   return (
-    <>
+    <NavMasterContainer>
       {!mobileFlag ? (
         <NavContainer>
           <Link href="/" passHref>
@@ -226,7 +216,7 @@ export default function Nav() {
               const { title, items } = el;
               return (
                 <NavList
-                  key={`${title}-${index}`}
+                  key={`Nav_${title}-${index}`}
                   title={title}
                   items={items}
                 />
@@ -236,32 +226,35 @@ export default function Nav() {
 
           {login ? (
             <NavUl>
-              {menuItems.map((item) => (
-                <NavLi key={item.href}>
-                  <Link href={item.href} passHref>
-                    <NavBtn
-                      login={login ? 'true' : null}
-                      selected={item.href === currentPath}
-                    >
-                      {item.label}
-                    </NavBtn>
-                  </Link>
-                </NavLi>
-              ))}
+              {menuItems.map((item) => {
+                const { href, label } = item;
+                return (
+                  <NavLi key={`Nav_${href}_${label}`}>
+                    <Link href={href} passHref>
+                      <NavBtn
+                        login={login ? 'true' : null}
+                        selected={href === currentPath}
+                      >
+                        {label}
+                      </NavBtn>
+                    </Link>
+                  </NavLi>
+                );
+              })}
               <NavLi>
-                <NavBtn onClick={logoutHandler}>LOGOUT</NavBtn>
+                <NavBtn onClick={logoutHandler}>{`LOGOUT`}</NavBtn>
               </NavLi>
             </NavUl>
           ) : (
             <NavUl>
               <NavLi>
                 <Link href="/login" passHref>
-                  <NavBtn>LOGIN</NavBtn>
+                  <NavBtn>{`LOGIN`}</NavBtn>
                 </Link>
               </NavLi>
               <NavLi>
                 <Link href="/signup" passHref>
-                  <NavBtn>SIGN UP</NavBtn>
+                  <NavBtn>{`SIGN UP`}</NavBtn>
                 </Link>
               </NavLi>
             </NavUl>
@@ -269,7 +262,7 @@ export default function Nav() {
         </NavContainer>
       ) : (
         <NavContainer>
-          <Link href="/" passHref onClick={() => setIsOpen(false)}>
+          <Link href="/" passHref onClick={() => setMobileNavisOpen(false)}>
             <Image
               src="/src/Home_IMG/Nav_IMG/Home_Nav_Logo_IMG.png"
               alt={'soyes_logo'}
@@ -278,19 +271,34 @@ export default function Nav() {
               style={{ maxWidth: '100%', height: 'auto' }}
             />
           </Link>
-          <NavModal
-            isOpen={isOpen}
+          <NavMobile
+            isOpen={mobileNavisOpen}
             toggleMenu={toggleMenu}
-            login={login}
             logoutHandler={logoutHandler}
             navList_info={navList_info}
             menuItems={menuItems}
           />
         </NavContainer>
       )}
-    </>
+    </NavMasterContainer>
   );
 }
+
+type NavBtnType = {
+  login?: string;
+  selected?: boolean;
+};
+
+const NavMasterContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 2rem;
+`;
 
 const NavContainer = styled.div`
   width: 100vw;
@@ -363,21 +371,19 @@ const NavListContainer = styled.div`
   }
 `;
 
-const NavBtn = styled.button`
+const NavBtn = styled.button<NavBtnType>`
   background-color: ${(props) => (props.login ? '#45b26b' : 'white')};
   color: ${(props) => (props.login ? 'white' : '#45b26b')};
-  font-family: Nunito;
+  padding: 0.7rem 3rem;
 
+  display: inline-block;
   border: 1px solid #45b26b;
   border-radius: 10px;
 
-  padding: 0.7rem 3rem;
-
+  font-family: Nunito;
+  font-size: 16px;
   text-align: center;
   text-decoration: none;
-
-  display: inline-block;
-  font-size: 16px;
 
   white-space: nowrap;
 

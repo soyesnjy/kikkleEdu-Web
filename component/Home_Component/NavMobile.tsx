@@ -1,22 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import Link from 'next/link';
-import NavDropDown from './NavDropDown';
-// import { useSession } from "next-auth/react";
 
-const NavModal = ({
+import { useRecoilState } from 'recoil';
+import { log } from '../../store/state';
+
+import NavDropDown from './NavDropDown';
+
+type NavMobileComponentType = {
+  isOpen: boolean;
+  navList_info: { title: string; items: { href: string; label: string }[] }[];
+  menuItems: { href: string; label: string }[];
+  toggleMenu: () => void; // isOpen Toggle Handler
+  logoutHandler: () => void; // Logout Handler
+};
+
+const NavMobile = ({
   isOpen,
-  toggleMenu,
-  login,
-  logoutHandler,
   navList_info,
   menuItems,
-}) => {
+  toggleMenu,
+  logoutHandler,
+}: NavMobileComponentType) => {
+  const [login, setLogin] = useRecoilState(log);
+
   return (
     <NavMenuContainer>
-      {/* 로고 */}
+      {/* Logo */}
       <NavMobileBtn onClick={toggleMenu}>
         <Image
           src="/src/Home_IMG/Nav_IMG/Home_Nav_Combine_3_IMG.png"
@@ -26,41 +38,53 @@ const NavModal = ({
           style={{ maxWidth: '100%', height: 'auto' }}
         />
       </NavMobileBtn>
-      {/* Menu Section */}
+      {/* SideMenu Section */}
       <SideMenu isOpen={isOpen}>
-        {/* 닫기버튼 */}
+        {/* Close Btn */}
         <CloseButton onClick={toggleMenu}>
           <CloseIcon />
         </CloseButton>
         <MenuList>
           {navList_info.map((el, index) => {
             return (
-              <NavDropDown key={index} toggleMenu={toggleMenu} navItem={el} />
+              <NavDropDown
+                key={`${JSON.stringify(el)}_${index}`}
+                toggleMenu={toggleMenu}
+                navItem={el}
+              />
             );
           })}
         </MenuList>
         {/* End Section */}
         {login ? (
           <NavEndContainer>
-            {/* <Link href="/mypage" passHref>
-              <NavMobileButton onClick={toggleMenu}>MY PAGE</NavMobileButton>
-            </Link> */}
-            {menuItems.map((item, index) => (
-              <Link key={index} href={item.href} passHref>
-                <NavMobileButton onClick={toggleMenu}>
-                  {item.label}
-                </NavMobileButton>
-              </Link>
-            ))}
-            <NavMobileButton onClick={logoutHandler}>LOGOUT</NavMobileButton>
+            {menuItems.map((item, index) => {
+              const { href, label } = item;
+              return (
+                <Link
+                  key={`NavMobile_${href}_${label}_${index}`}
+                  href={href}
+                  passHref
+                >
+                  <NavMobileButton onClick={toggleMenu}>
+                    {label}
+                  </NavMobileButton>
+                </Link>
+              );
+            })}
+            <NavMobileButton
+              onClick={logoutHandler}
+            >{`LOGOUT`}</NavMobileButton>
           </NavEndContainer>
         ) : (
           <NavEndContainer>
             <Link href="/login" passHref>
-              <NavMobileButton onClick={toggleMenu}>LOGIN</NavMobileButton>
+              <NavMobileButton onClick={toggleMenu}>{`LOGIN`}</NavMobileButton>
             </Link>
             <Link href="/signup" passHref>
-              <NavMobileButton onClick={toggleMenu}>SIGNUP</NavMobileButton>
+              <NavMobileButton
+                onClick={toggleMenu}
+              >{`SIGN UP`}</NavMobileButton>
             </Link>
           </NavEndContainer>
         )}
@@ -69,11 +93,19 @@ const NavModal = ({
   );
 };
 
+type SideMenuType = {
+  isOpen?: boolean;
+};
+
+type NavMobileBtnType = {
+  login?: string;
+};
+
 const NavMenuContainer = styled.div`
   z-index: 3;
 `;
 
-const NavMobileBtn = styled.button`
+const NavMobileBtn = styled.button<NavMobileBtnType>`
   background-color: ${(props) => (props.login ? '#45b26b' : 'white')};
   color: ${(props) => (props.login ? 'white' : '#45b26b')};
   font-family: Nunito;
@@ -112,19 +144,21 @@ const NavEndContainer = styled.div`
   transition: 0.3s;
 `;
 
-const SideMenu = styled.div`
+const SideMenu = styled.div<SideMenuType>`
   position: fixed;
   top: 0;
   right: 0;
   width: 80%;
   height: 100%;
+
   background-color: white;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(100%)')};
   transition: transform 0.3s ease-in-out;
+
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 1.2rem;
 
   overflow-y: auto;
 `;
@@ -186,4 +220,4 @@ const CloseIcon = () => (
   </svg>
 );
 
-export default NavModal;
+export default NavMobile;

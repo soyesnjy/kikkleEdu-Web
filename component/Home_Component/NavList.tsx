@@ -4,15 +4,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState, useEffect, useRef } from 'react';
 
-export default function NavList({ title, items }) {
+type NavListComponentType = {
+  title: string;
+  items: { href: string; label: string }[];
+};
+
+export default function NavList({ title, items }: NavListComponentType) {
+  const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const currentPath = router.pathname;
   const [showMenu, setShowMenu] = useState(false);
-  const menuRef = useRef();
 
   // 메뉴 외부 클릭 핸들러
-  const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
+  const handleClickOutside = (e: MouseEvent) => {
+    // 마우스 이벤트 타겟이 NavListContainer(menuRef) 외부의 요소일 경우 메뉴 닫기
+    if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
       setShowMenu(false);
     }
   };
@@ -24,30 +30,36 @@ export default function NavList({ title, items }) {
     };
   }, []);
 
-  // Resize 상태 처리
-
   return (
-    <NavListContainer>
+    <NavListContainer ref={menuRef}>
       <NavBtn onClick={() => setShowMenu(!showMenu)}>{title}</NavBtn>
       {items.length > 0 && showMenu && (
-        <NavMenuContainer ref={menuRef}>
-          {items.map((item) => (
-            <NavLiMenu key={item.href}>
-              <Link href={item.href} passHref>
-                <NavBtn
-                  selected={item.href === currentPath}
-                  onClick={() => setShowMenu(false)}
-                >
-                  {item.label}
-                </NavBtn>
-              </Link>
-            </NavLiMenu>
-          ))}
+        <NavMenuContainer>
+          {items.map((item) => {
+            const { href, label } = item;
+            return (
+              <NavLiMenu key={href}>
+                <Link href={href} passHref>
+                  <NavBtn
+                    selected={href === currentPath}
+                    onClick={() => setShowMenu(false)}
+                  >
+                    {label}
+                  </NavBtn>
+                </Link>
+              </NavLiMenu>
+            );
+          })}
         </NavMenuContainer>
       )}
     </NavListContainer>
   );
 }
+
+type NavBtnType = {
+  login?: string;
+  selected?: boolean;
+};
 
 const NavListContainer = styled.div`
   position: relative;
@@ -96,7 +108,7 @@ const NavMenuContainer = styled.div`
   }
 `;
 
-const NavBtn = styled.button`
+const NavBtn = styled.button<NavBtnType>`
   background-color: white;
   color: black;
   font-family: Pretendard;
