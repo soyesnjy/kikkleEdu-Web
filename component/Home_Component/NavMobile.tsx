@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useRef } from 'react';
 
 import { useRecoilState } from 'recoil';
 import { log } from '../../store/state';
@@ -11,24 +12,43 @@ import NavDropDown from './NavDropDown';
 
 type NavMobileComponentType = {
   isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void; // isOpen Setter
   navList_info: { title: string; items: { href: string; label: string }[] }[];
   menuItems: { href: string; label: string }[];
-  toggleMenu: () => void; // isOpen Toggle Handler
   logoutHandler: () => void; // Logout Handler
 };
 
 const NavMobile = ({
   isOpen,
+  setIsOpen,
   navList_info,
   menuItems,
-  toggleMenu,
   logoutHandler,
 }: NavMobileComponentType) => {
   const [login, setLogin] = useRecoilState(log);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  // 메뉴 외부 클릭 핸들러
+  const handleClickOutside = (e: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <NavMenuContainer>
-      {/* Logo */}
+    <NavMenuContainer ref={menuRef}>
+      {/* Btn */}
       <NavMobileBtn onClick={toggleMenu}>
         <Image
           src="/src/Home_IMG/Nav_IMG/Home_Nav_Combine_3_IMG.png"

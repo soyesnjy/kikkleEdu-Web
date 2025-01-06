@@ -30,23 +30,25 @@ const NavDropDown = ({ toggleMenu, navItem }: NavDropDownComponentType) => {
           style={{ maxWidth: '100%', height: 'auto' }}
         />
       </NavDropDownHeaderContainer>
-      {isOpen &&
-        navItem?.items.map((el, index) => {
-          const { label, href } = el;
-          return (
-            <NavDropDownLabel
-              key={`NavDropDownLabel_${href}_${label}_${index}`}
-              selected={router.pathname === href}
-              onClick={() => {
-                // toggleDropDown();
-                toggleMenu();
-                router.replace(href);
-              }}
-            >
-              {label}
-            </NavDropDownLabel>
-          );
-        })}
+      <>
+        {isOpen &&
+          navItem?.items.map((el, index) => {
+            const { label, href } = el;
+            return (
+              <NavDropDownLabel
+                key={`NavDropDownLabel_${href}_${label}_${index}`}
+                selected={router.pathname === href}
+                onClick={() => {
+                  // toggleDropDown();
+                  toggleMenu();
+                  router.replace(href);
+                }}
+              >
+                {label}
+              </NavDropDownLabel>
+            );
+          })}
+      </>
     </NavDropDownContainer>
   );
 };

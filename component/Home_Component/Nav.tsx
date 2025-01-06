@@ -79,11 +79,6 @@ export default function Nav() {
 
   const [mobileNavisOpen, setMobileNavisOpen] = useState(false);
 
-  // Mobile Nav isOpen Toggle Handler
-  const toggleMenu = () => {
-    setMobileNavisOpen(!mobileNavisOpen);
-  };
-
   // 전역 상태 MobileFlag 처리 - 모바일 반응형 플래그
   const handleResize = (): void => {
     window.innerWidth <= 728 ? setMobileFlag(true) : setMobileFlag(false);
@@ -273,7 +268,7 @@ export default function Nav() {
           </Link>
           <NavMobile
             isOpen={mobileNavisOpen}
-            toggleMenu={toggleMenu}
+            setIsOpen={setMobileNavisOpen}
             logoutHandler={logoutHandler}
             navList_info={navList_info}
             menuItems={menuItems}
