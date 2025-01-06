@@ -72,7 +72,7 @@ const HeaderContent = styled.div`
   justify-content: center;
   gap: 0.5rem;
 
-  z-index: 2;
+  z-index: 1;
 
   @media (max-width: 768px) {
     justify-content: flex-start;
