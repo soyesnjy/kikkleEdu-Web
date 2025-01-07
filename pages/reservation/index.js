@@ -433,9 +433,71 @@ export default function Reservation() {
             {/* 예약 확인 */}
             {pageNumber === 3 && (
               <PageContainer>
-                {Object.values(groupDatesByMonth(dateArr))}
+                <Form>
+                  <FormRow color={true}>
+                    <Label>수업</Label>
+                    <TextContainer>
+                      <CheckText>
+                        {
+                          possClassArr.filter(
+                            (el) => el.id === selectedClass
+                          )[0].title
+                        }
+                      </CheckText>
+                    </TextContainer>
+                  </FormRow>
+                  <FormRow>
+                    <Label>날짜</Label>
+                    <DateTextContainer>
+                      <DateTextSubContainer>
+                        {Object.entries(groupDatesByMonth(dateArr)).map(
+                          ([month, days]) => (
+                            <Row key={month}>
+                              <Month>{`${month}월`}</Month>
+                              <Days>
+                                {days.sort((a, b) => a - b).join(', ')}일
+                              </Days>
+                            </Row>
+                          )
+                        )}
+                      </DateTextSubContainer>
+                    </DateTextContainer>
+                  </FormRow>
+                  <FormRow>
+                    <Label>시간</Label>
+                    <TextContainer>
+                      <CheckText>
+                        {
+                          partTimeArr.filter((el) =>
+                            el.title.includes(partTime)
+                          )[0].title
+                        }
+                      </CheckText>
+                    </TextContainer>
+                  </FormRow>
+                  <FormRow>
+                    <Label>강사</Label>
+                    <TextContainer>
+                      <CheckText>
+                        {selectedTeacher
+                          .map(
+                            (id) =>
+                              possTeacherArr.filter((el) => el.id === id)[0]
+                                .name
+                          )
+                          .join(' / ')}
+                      </CheckText>
+                    </TextContainer>
+                  </FormRow>
+                  <FormRow bottomColor={true}>
+                    <Label>결제</Label>
+                    <TextContainer>
+                      <CheckText>{`대기중...`}</CheckText>
+                    </TextContainer>
+                  </FormRow>
+                </Form>
                 <PayButtonContainer>
-                  <PayButton
+                  {/* <PayButton
                     onClick={(e) => {
                       e.preventDefault();
                       // alert('개발중...');
@@ -450,7 +512,7 @@ export default function Reservation() {
                       style={{ maxWidth: '100%', height: 'auto' }}
                     />
                     세금계산서 발급
-                  </PayButton>
+                  </PayButton> */}
                   {/* <PayButton
                     onClick={(e) => {
                       e.preventDefault();
@@ -963,4 +1025,107 @@ const PayButton = styled.button`
     min-height: 53px;
     font-size: 20px;
   }
+`;
+
+const Form = styled.div`
+  width: 70vw;
+  display: flex;
+  flex-direction: column;
+`;
+
+const FormRow = styled.div`
+  display: flex;
+  align-items: center;
+
+  gap: 1rem;
+  border-top: ${(props) =>
+    props.color ? '2.5px solid #45B26B' : '1px solid #ddd'};
+  border-bottom: ${(props) => (props.bottomColor ? '2px solid #45B26B' : '')};
+  padding: 0.5rem 0;
+`;
+
+const Label = styled.div`
+  height: 100%;
+  flex: 1;
+
+  min-width: 80px;
+  font-family: Pretendard;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #45b26b;
+`;
+
+const TextContainer = styled.div`
+  flex: 4;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-left: 1px solid #ddd;
+
+  padding: 1rem 0;
+`;
+
+const CheckText = styled.div`
+  width: 100%;
+  padding: 0.3rem 0;
+
+  font-family: Pretendard;
+  font-weight: 600;
+  font-size: 0.9rem;
+
+  border: none;
+  text-align: center;
+`;
+
+const DateTextContainer = styled.div`
+  flex: 4;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-left: 1px solid #ddd;
+
+  padding: 1rem 0;
+`;
+
+const DateTextSubContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Month = styled.div`
+  padding: 0.3rem 0;
+  padding-right: 1.5rem;
+
+  font-family: Pretendard;
+  font-weight: 600;
+  font-size: 0.9rem;
+
+  border: none;
+  text-align: left;
+
+  white-space: pre-wrap;
+`;
+
+const Days = styled.div`
+  padding: 0.3rem 0;
+
+  font-family: Pretendard;
+  font-weight: 600;
+  font-size: 0.9rem;
+
+  border: none;
+  text-align: right;
+
+  white-space: pre-wrap;
+  flex-grow: 1;
 `;
