@@ -5,11 +5,6 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction'; // dateClick 사용을 위한 플러그인
 
-// import { useRecoilState } from 'recoil';
-// import { mobile } from '@/store/state';
-
-// import { koreanLocale } from '@fullcalendar/core/locales/ko'; // 추가된 한국어 로케일
-
 // const events = [{ title: 'Meeting', start: new Date() }];
 
 // const renderEventContent = (eventInfo) => (
@@ -25,11 +20,9 @@ import interactionPlugin from '@fullcalendar/interaction'; // dateClick 사용�
 
 const AdminCalendar = ({ dateArr }) => {
   const [tmpDateArr, setTmpDateArr] = useState([]);
-  // const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   // 렌더링 시 date 갱신
   useEffect(() => {
-    // console.log(dateArr);
     setTmpDateArr([...dateArr]);
   }, []);
 
@@ -57,7 +50,8 @@ const AdminCalendar = ({ dateArr }) => {
     <CalendarContainer>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
+        initialDate={dateArr[0]} // 초기 표시할 Month 날짜
+        initialView="dayGridMonth" // 월별로 보기
         weekends={true}
         // dateClick={handleDateClick}
         headerToolbar={{

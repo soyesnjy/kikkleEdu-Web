@@ -32,11 +32,27 @@ const partTimeArr = [
 ];
 
 const pageTitleArr = [
-  '1. 수업 선택하기',
-  '2. 날짜/시간 선택하기',
-  '3. 강사 선택하기',
-  '4. 결제',
+  '수업 선택하기',
+  '날짜/시간 선택하기',
+  '강사 선택하기',
+  '예약 확인하기',
 ];
+
+// 날짜 월별 정리 객체 반환 메서드
+const groupDatesByMonth = (dates) => {
+  return dates.reduce((acc, date) => {
+    const dateObj = new Date(date);
+    const month = dateObj.getMonth() + 1; // 0부터 시작하므로 1을 더해줌
+    const day = dateObj.getDate(); // 일자 추출
+
+    if (!acc[month]) {
+      acc[month] = [];
+    }
+
+    acc[month].push(day);
+    return acc;
+  }, {});
+};
 
 // 날짜 -> 요일 변환 메서드
 const getUniqueWeekdays = (dateArr) => {
@@ -139,20 +155,24 @@ export default function Reservation() {
         })
         .catch(() => setPossTeacherArr([]));
     }
-    switch (pageNumber) {
-      case 0:
-        setNavText('수업 선택하기');
-        break;
-      case 1:
-        setNavText('날짜/시간 선택하기');
-        break;
-      case 2:
-        setNavText('강사 선택하기');
-        break;
-      case 3:
-        setNavText('결제');
-        break;
-    }
+    // 페이지별 NavText 변경
+    setNavText(pageTitleArr[pageNumber]);
+
+    // switch (pageNumber) {
+    //   case 0:
+    //     setNavText(pageTitleArr[0]);
+    //     break;
+    //   case 1:
+    //     setNavText('날짜/시간 선택하기');
+    //     break;
+    //   case 2:
+    //     setNavText('강사 선택하기');
+    //     break;
+    //   case 3:
+    //     setNavText('예약 확인하기');
+    //     break;
+    // }
+
     // 화면 최상단으로 올리기
     if (!window.scrollY) return;
     window.scrollTo({
@@ -257,7 +277,7 @@ export default function Reservation() {
               {pageTitleArr.map((el, index) => {
                 return (
                   <StepText key={index} seleced={pageNumber === index}>
-                    {el}
+                    {`${index + 1}. ${el}`}
                   </StepText>
                 );
               })}
@@ -410,9 +430,10 @@ export default function Reservation() {
                 </ClassContainer>
               </PageContainer>
             )}
-            {/* 결제 */}
+            {/* 예약 확인 */}
             {pageNumber === 3 && (
               <PageContainer>
+                {Object.values(groupDatesByMonth(dateArr))}
                 <PayButtonContainer>
                   <PayButton
                     onClick={(e) => {
@@ -495,14 +516,6 @@ export default function Reservation() {
     </ReservationPageContainer>
   );
 }
-
-// export async function getStaticProps({ locale }) {
-//   return {
-//     props: {
-//       ...(await serverSideTranslations(locale, ['signup', 'nav'])),
-//     },
-//   };
-// }
 
 const ReservationPageContainer = styled.main`
   width: 100vw;
