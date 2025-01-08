@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unreachable */
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 
 // import { useRecoilState } from 'recoil';
@@ -21,25 +21,26 @@ import AdminTableAgencyBody from '@/component/Admin_Component/AdminTableAgencyBo
 import AdminTableReservationBody from '@/component/Admin_Component/AdminTableReservationBody';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
 import BoardCreate from '@/component/Board_Component/BoardCreate';
+import AdminScheduler from '@/component/Admin_Component/AdminScheduler';
 import Pagination from '@/component/Common_Component/Pagination';
 
-const dummyTableData = [
-  {
-    title: '○○수업',
-    instructor: '김하나',
-    date: '2024-07-01 ~ 2024-08-01',
-    contact: '010-0000-0000',
-    paymentStatus: '결제 완료',
-  },
-  {
-    title: '○○수업',
-    instructor: '김하나',
-    date: '2024-07-01 ~ 2024-08-01',
-    contact: '010-0000-0000',
-    paymentStatus: '결제 전',
-  },
-  // 추가 데이터
-];
+// const dummyTableData = [
+//   {
+//     title: '○○수업',
+//     instructor: '김하나',
+//     date: '2024-07-01 ~ 2024-08-01',
+//     contact: '010-0000-0000',
+//     paymentStatus: '결제 완료',
+//   },
+//   {
+//     title: '○○수업',
+//     instructor: '김하나',
+//     date: '2024-07-01 ~ 2024-08-01',
+//     contact: '010-0000-0000',
+//     paymentStatus: '결제 전',
+//   },
+//   // 추가 데이터
+// ];
 
 const Administor = () => {
   // const [agencyType, setAgencyType] = useRecoilState(agencyClass);
@@ -261,6 +262,12 @@ const Administor = () => {
             >
               공지사항 관리
             </TabButton>
+            <TabButton
+              active={activeTab === 'schedule'}
+              onClick={() => handleTabClick('schedule')}
+            >
+              강사 스케줄 관리
+            </TabButton>
           </div>
           <input value={name} onChange={(e) => setName(e.target.value)} />
         </Tabs>
@@ -379,6 +386,7 @@ const Administor = () => {
           {activeTab === 'video' && <Directory data={data} form={activeTab} />}
           {activeTab === 'class' && <Directory data={data} form={activeTab} />}
           {activeTab === 'notice' && <BoardCreate />}
+          {activeTab === 'schedule' && <AdminScheduler />}
         </TableContainer>
         {(activeTab === 'teacher' ||
           activeTab === 'agency' ||
