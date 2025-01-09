@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import Modal from 'react-modal';
 import AdminTooltip from './AdminTooltip';
 
+const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
+
 const AdminScheduler = () => {
   const [tooltipVisible, setTooltipVisible] = useState(null);
   const [tooltipVecter, setTooltipVecter] = useState('right');
@@ -37,6 +39,7 @@ const AdminScheduler = () => {
   ]);
   const [newEvent, setNewEvent] = useState({
     title: '',
+    dayAndTime: '',
     courseName: '',
     participants: '',
     times: '',
@@ -89,6 +92,7 @@ const AdminScheduler = () => {
       title: newEvent.title,
       start: newEvent.date,
       extendedProps: {
+        dayAndTime: `${dayArr[new Date(newEvent.date).getDay()]}요일/ ${newEvent.date.split('T')[1]} ~ ${newEvent.dayAndTime}`,
         courseName: newEvent.courseName,
         participants: newEvent.participants,
         times: newEvent.times,
@@ -130,6 +134,25 @@ const AdminScheduler = () => {
         evt.id === Number(updatedEvent.id)
           ? { ...evt, start: updatedEvent.start }
           : evt
+      )
+    );
+  };
+
+  // Tooltip 수정 핸들러
+  const handleEventUpdate = (event) => {
+    console.log('Tooltip Update!');
+
+    // 수정된 start 정보만 반영
+
+    console.log('updatedEvent: ', event);
+
+    // 서버로 업데이트 요청
+    // updateStartOnServer(updatedEvent);
+
+    // 로컬 상태 업데이트 (start만 변경)
+    setEvents((prevEvents) =>
+      prevEvents.map((evt) =>
+        evt.id === Number(event.id) ? { ...evt, ...event } : evt
       )
     );
   };
@@ -245,12 +268,11 @@ const AdminScheduler = () => {
               {tooltipVisible === eventId && (
                 <AdminTooltip
                   vector={tooltipVecter}
+                  id={eventId}
                   title={arg.event.title}
+                  start={arg.event.start}
                   event={eventProps}
-                  onEdit={(e) => {
-                    e.stopPropagation();
-                    console.log('Tooltip Update!');
-                  }}
+                  onEdit={handleEventUpdate}
                 />
               )}
             </>
@@ -268,7 +290,7 @@ const AdminScheduler = () => {
           minute: '2-digit',
           hour12: false, // 24시간 표기법
         }}
-        // slotDuration="01:00:00" // 슬롯 단위: 1시간
+        // slotDuration="00:10:00" // 슬롯 단위: 1시간
         eventDurationEditable={false} // 이벤트 길이 조정 불가
       />
 
@@ -289,6 +311,10 @@ const AdminScheduler = () => {
                 setNewEvent({ ...newEvent, title: e.target.value })
               }
             />
+          </label>
+          <label>
+            요일/시간: {dayArr[new Date(newEvent.date).getDay()]}요일/
+            {newEvent.date.split('T')[1]?.slice(0, 6)} ~ ?
           </label>
           <label>
             강좌명:
@@ -356,7 +382,7 @@ const Container = styled.div`
   }
 
   .fc-timegrid-slot {
-    height: 30px;
+    height: 25px;
   }
 
   .fc-timegrid-col-events {
