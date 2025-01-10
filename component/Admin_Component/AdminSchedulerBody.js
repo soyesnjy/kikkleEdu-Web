@@ -6,13 +6,12 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import styled from 'styled-components';
 import Modal from 'react-modal';
-import AdminTooltip from './AdminTooltip';
+import AdminEvents from './AdminEvents';
 
 const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
 
-const AdminScheduler = () => {
+const AdminSchedulerBody = () => {
   const [tooltipVisible, setTooltipVisible] = useState(null);
-  const [tooltipVecter, setTooltipVecter] = useState('right');
   const [events, setEvents] = useState([
     {
       id: 1,
@@ -66,25 +65,6 @@ const AdminScheduler = () => {
     });
   };
 
-  // 툴팁 토글
-  //   const toggleTooltip = (eventId) => {
-  //     setTooltipVisible((prev) => (prev === eventId ? null : eventId));
-  //   };
-
-  const toggleTooltip = (eventId, vector) => {
-    setTooltipVisible((prev) => (prev === eventId ? null : eventId));
-    setTooltipVecter(vector); // 클릭 위치에 따라 방향 설정
-  };
-
-  const handleClick = (e, eventId) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = e.clientX; // 클릭한 화면의 X 좌표
-    const midPoint = rect.left + rect.width / 2; // 컴포넌트의 중앙 좌표
-
-    // 클릭 위치에 따라 left/right 설정
-    const vector = clickX < midPoint ? 'left' : 'right';
-    toggleTooltip(eventId, vector);
-  };
   // 이벤트 추가
   const handleAddEvent = async () => {
     const newEventData = {
@@ -138,25 +118,6 @@ const AdminScheduler = () => {
     );
   };
 
-  // Tooltip 수정 핸들러
-  const handleEventUpdate = (event) => {
-    console.log('Tooltip Update!');
-
-    // 수정된 start 정보만 반영
-
-    console.log('updatedEvent: ', event);
-
-    // 서버로 업데이트 요청
-    // updateStartOnServer(updatedEvent);
-
-    // 로컬 상태 업데이트 (start만 변경)
-    setEvents((prevEvents) =>
-      prevEvents.map((evt) =>
-        evt.id === Number(event.id) ? { ...evt, ...event } : evt
-      )
-    );
-  };
-
   // 이벤트 삭제
   const deleteEvent = async (eventId) => {
     console.log('Deleting event with ID:', eventId);
@@ -189,7 +150,8 @@ const AdminScheduler = () => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (tooltipVisible && e.key === 'Delete') {
-        deleteEvent(tooltipVisible);
+        // deleteEvent(tooltipVisible);
+        console.log(tooltipVisible);
       }
     };
 
@@ -253,29 +215,14 @@ const AdminScheduler = () => {
         dateClick={(info) => openModal(info.dateStr)} // 모달 열기
         events={events}
         eventContent={(arg) => {
-          const eventId = arg.event.id;
-          const eventProps = arg.event.extendedProps;
           return (
-            <>
-              <StyledEvent
-                onClick={(e) => {
-                  handleClick(e, eventId);
-                }}
-                selected={tooltipVisible === eventId}
-              >
-                <b>{arg.event.title}</b>
-              </StyledEvent>
-              {tooltipVisible === eventId && (
-                <AdminTooltip
-                  vector={tooltipVecter}
-                  id={eventId}
-                  title={arg.event.title}
-                  start={arg.event.start}
-                  event={eventProps}
-                  onEdit={handleEventUpdate}
-                />
-              )}
-            </>
+            <AdminEvents
+              eventId={arg.event.id}
+              eventTitle={arg.event.title}
+              eventStart={arg.event.start}
+              eventProps={arg.event.extendedProps}
+              setEvents={setEvents}
+            />
           );
         }}
         // eventDidMount={handleEventDidMount} // 이벤트 배치 후 실행
@@ -482,4 +429,4 @@ const StyledEvent = styled.div`
   }
 `;
 
-export default AdminScheduler;
+export default AdminSchedulerBody;

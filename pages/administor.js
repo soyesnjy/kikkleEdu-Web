@@ -21,7 +21,7 @@ import AdminTableAgencyBody from '@/component/Admin_Component/AdminTableAgencyBo
 import AdminTableReservationBody from '@/component/Admin_Component/AdminTableReservationBody';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
 import BoardCreate from '@/component/Board_Component/BoardCreate';
-import AdminScheduler from '@/component/Admin_Component/AdminScheduler';
+import AdminSchedulerBody from '@/component/Admin_Component/AdminSchedulerBody';
 import Pagination from '@/component/Common_Component/Pagination';
 
 // const dummyTableData = [
@@ -386,7 +386,7 @@ const Administor = () => {
           {activeTab === 'video' && <Directory data={data} form={activeTab} />}
           {activeTab === 'class' && <Directory data={data} form={activeTab} />}
           {activeTab === 'notice' && <BoardCreate />}
-          {activeTab === 'schedule' && <AdminScheduler />}
+          {activeTab === 'schedule' && <AdminSchedulerBody />}
         </TableContainer>
         {(activeTab === 'teacher' ||
           activeTab === 'agency' ||

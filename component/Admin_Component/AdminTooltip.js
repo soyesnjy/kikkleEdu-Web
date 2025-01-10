@@ -18,18 +18,6 @@ const timeCalulate = (date, time = 0) => {
 
 const AdminTooltip = ({ vector, id, title, start, event, onEdit }) => {
   const [updateIsOpen, setUpdateIsOpen] = useState(false);
-  const [updatedEvent, setUpdatedEvent] = useState({
-    id: Number(id),
-    title: 'Math Class',
-    start,
-    extendedProps: {
-      courseName: 'Mathematics',
-      participants: 20,
-      times: 2,
-      notes: 'Room 103',
-    },
-  });
-
   const [updatedTitle, setUpdatedTitle] = useState('');
   const [updatedCourseName, setUpdatedCourseName] = useState('');
   const [updatedParticipants, setUpdatedParticipants] = useState(0);
