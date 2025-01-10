@@ -1,5 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+new Date(); /* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect, useRef } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -9,9 +9,9 @@ import Modal from 'react-modal';
 import AdminEvents from './AdminEvents';
 
 const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
+const today = new Date();
 
 const AdminSchedulerBody = () => {
-  const [tooltipVisible, setTooltipVisible] = useState(null);
   const [events, setEvents] = useState([
     {
       id: 1,
@@ -47,6 +47,49 @@ const AdminSchedulerBody = () => {
   });
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedDate, setSelectedDate] = useState(today); // 선택된 날짜 상태
+
+  const selectedDateRef = useRef(selectedDate); // 실시간 selectedDate 참조
+  const aCalendarRef = useRef(null); // A캘린더의 ref
+  const bCalendarRef = useRef(null); // B캘린더의 ref
+
+  // selectedDate 상태 업데이트와 동시에 참조 업데이트
+  const updateSelectedDate = (date) => {
+    setSelectedDate(date);
+    selectedDateRef.current = date; // 상태와 참조 동기화
+  };
+
+  // B캘린더 날짜 클릭 시 A캘린더와 동기화
+  const handleDateClick = (info) => {
+    const newDate = new Date(info.date);
+    updateSelectedDate(newDate); // 선택된 날짜 업데이트
+
+    if (aCalendarRef.current) {
+      aCalendarRef.current.getApi().gotoDate(newDate); // A캘린더 날짜 이동
+    }
+  };
+
+  // A캘린더 날짜 변경 시 B캘린더와 동기화
+  const handleDatesSet = (info) => {
+    const startDate = new Date(info.start);
+    const endDate = new Date(info.end);
+    const selectedMonth = selectedDateRef?.current?.getMonth();
+
+    let newData = startDate;
+
+    // start와 end의 Month가 다를 경우 selectedDate 기준으로 결정
+    if (startDate.getMonth() !== endDate.getMonth()) {
+      newData = selectedMonth === startDate.getMonth() ? startDate : endDate;
+    }
+
+    // 이번주가 클릭된 경우
+    // if (today <= endDate && today >= startDate)
+    //   updateSelectedDate(null);
+
+    if (bCalendarRef.current) {
+      bCalendarRef.current.getApi().gotoDate(newData); // B캘린더 날짜 이동
+    }
+  };
 
   // 모달 열기
   const openModal = (date) => {
@@ -118,21 +161,6 @@ const AdminSchedulerBody = () => {
     );
   };
 
-  // 이벤트 삭제
-  const deleteEvent = async (eventId) => {
-    console.log('Deleting event with ID:', eventId);
-
-    // 서버 삭제 요청
-    // await deleteEventFromServer(eventId);
-
-    // 로컬 상태 업데이트
-    setEvents((prevEvents) =>
-      prevEvents.filter((event) => event.id !== Number(eventId))
-    );
-
-    setTooltipVisible(null); // 툴팁 닫기
-  };
-
   // 검색 필터
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
@@ -146,100 +174,104 @@ const AdminSchedulerBody = () => {
     );
   };
 
-  // 키보드 이벤트로 삭제 기능
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (tooltipVisible && e.key === 'Delete') {
-        // deleteEvent(tooltipVisible);
-        console.log(tooltipVisible);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [tooltipVisible]);
-
   // events 로그 출력
   useEffect(() => {
     console.log('events:', events);
   }, [events]);
 
-  const handleEventDidMount = (info) => {
-    // 각 이벤트의 부모 요소인 .fc-timegrid-event-harness 수정
-    const harness = info.el.closest('.fc-timegrid-event-harness');
-    if (harness) {
-      // 가로 정렬 제거
-      harness.style.width = '100%';
-      harness.style.left = '0';
+  // B캘린더 DayCell Render 메서드
+  const renderDayCell = (arg) => {
+    const dateObj = new Date(arg.date);
+    // Day Cell 클릭 시 isHighlighted 트리거 On
+    const isHighlighted =
+      selectedDate && dateObj.toDateString() === selectedDate.toDateString(); // 선택된 날짜와 비교
 
-      // 부모 컨테이너에서 모든 이벤트를 세로로 재배치
-      const parent = harness.parentNode;
-      const children = parent.querySelectorAll('.fc-timegrid-event-harness');
-
-      children.forEach((child, index) => {
-        child.style.transform = `translateY(${index}%)`; // 세로로 정렬
-        child.style.position = 'absolute';
-      });
-
-      // 부모 컨테이너 높이 조정
-      parent.style.position = 'relative';
-      parent.style.height = `${children.length * 100}%`;
-
-      const timeSlot = parent.closest('.fc-timegrid-slot');
-      if (timeSlot) {
-        timeSlot.style.height = `${children.length * 50}px`;
-      }
-    }
+    return (
+      <div
+        className={`fc-daygrid-day-frame ${
+          isHighlighted ? 'highlighted-date-range' : ''
+        }`}
+      >
+        {dateObj.getDate()}
+      </div>
+    );
   };
 
   return (
     <Container>
-      <SearchInput
-        type="text"
-        placeholder="Search by Teacher Name"
-        value={searchQuery}
-        onChange={handleSearch}
-      />
-
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView="timeGridWeek"
-        headerToolbar={{
-          left: 'prev,next today',
-          center: 'title',
-          right: 'timeGridWeek,dayGridMonth',
-        }}
-        slotMinTime="06:00:00"
-        slotMaxTime="24:00:00"
-        allDaySlot={false}
-        dateClick={(info) => openModal(info.dateStr)} // 모달 열기
-        events={events}
-        eventContent={(arg) => {
-          return (
-            <AdminEvents
-              eventId={arg.event.id}
-              eventTitle={arg.event.title}
-              eventStart={arg.event.start}
-              eventProps={arg.event.extendedProps}
-              setEvents={setEvents}
-            />
-          );
-        }}
-        // eventDidMount={handleEventDidMount} // 이벤트 배치 후 실행
-        editable={true}
-        eventOverlap={true}
-        slotEventOverlap={false} // 이벤트가 겹치지 않고 새로 배치
-        eventDrop={handleEventDrop} // Drag&Drop Handler: start 정보 수정
-        eventOrder="title"
-        locale="ko"
-        slotLabelFormat={{
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false, // 24시간 표기법
-        }}
-        // slotDuration="00:10:00" // 슬롯 단위: 1시간
-        eventDurationEditable={false} // 이벤트 길이 조정 불가
-      />
+      <MiniCalendarWrapper>
+        <FullCalendar
+          ref={bCalendarRef} // B캘린더 ref
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          selectable={true}
+          dateClick={handleDateClick} // 날짜 클릭 이벤트 핸들러
+          headerToolbar={{
+            left: 'prev',
+            center: 'title',
+            right: 'next',
+          }}
+          dayCellContent={renderDayCell} // 커스텀 dayCellContent
+          locale="ko"
+        />
+      </MiniCalendarWrapper>
+      <SchedulerWrapper>
+        <SearchInput
+          type="text"
+          placeholder="Search by Teacher Name"
+          value={searchQuery}
+          onChange={handleSearch}
+        />
+        <FullCalendar
+          ref={aCalendarRef} // A캘린더 ref
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          initialView="timeGridWeek"
+          headerToolbar={{
+            left: 'prev,next customToday',
+            center: 'title',
+            right: 'timeGridWeek,dayGridMonth',
+          }}
+          customButtons={{
+            customToday: {
+              text: '오늘',
+              click: () => {
+                aCalendarRef.current?.getApi().gotoDate(today); // 오늘 날짜로 이동
+                updateSelectedDate(today); // 선택된 날짜 초기화
+              },
+            },
+          }}
+          slotMinTime="06:00:00"
+          slotMaxTime="24:00:00"
+          allDaySlot={false}
+          datesSet={handleDatesSet} // 날짜 이동 이벤트 핸들러
+          dateClick={(info) => openModal(info.dateStr)} // 모달 열기
+          events={events}
+          eventContent={(arg) => {
+            return (
+              <AdminEvents
+                eventId={arg.event.id}
+                eventTitle={arg.event.title}
+                eventStart={arg.event.start}
+                eventProps={arg.event.extendedProps}
+                setEvents={setEvents}
+              />
+            );
+          }}
+          editable={true}
+          eventOverlap={true}
+          slotEventOverlap={false} // 이벤트가 겹치지 않고 새로 배치
+          eventDrop={handleEventDrop} // Drag&Drop Handler: start 정보 수정
+          eventOrder="title"
+          locale="ko"
+          slotLabelFormat={{
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false, // 24시간 표기법
+          }}
+          // slotDuration="00:10:00" // 슬롯 단위: 1시간
+          eventDurationEditable={false} // 이벤트 길이 조정
+        />
+      </SchedulerWrapper>
 
       {/* 모달 */}
       <StyledModal
@@ -315,11 +347,60 @@ const AdminSchedulerBody = () => {
 
 // Styled Components
 const Container = styled.div`
+  display: flex;
+  position: relative;
+  z-index: 0;
+
+  gap: 2rem;
+`;
+
+const MiniCalendarWrapper = styled.div`
+  .fc {
+    width: 300px;
+    height: 400px;
+
+    direction: ltr;
+    text-align: left;
+    margin: auto;
+    font-family: AppleSDGothicNeoB00;
+  }
+
+  .fc-daygrid-day-frame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .fc-daygrid-day-events {
+    display: none;
+  }
+
+  .fc-daygrid-day-number {
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    /* color: #888888;
+    font-family: Pretendard;
+    font-weight: 700;
+    font-size: 1.4rem; */
+  }
+
+  .highlighted-date-range {
+    background: linear-gradient(90deg, #4b95a2, #50a58e);
+    border-radius: 10px;
+    color: white;
+  }
+`;
+
+const SchedulerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   position: relative;
   z-index: 0;
 
   .fc {
-    width: 70vw;
+    width: 65vw;
     height: auto;
 
     direction: ltr;
@@ -400,32 +481,6 @@ const ModalContent = styled.div`
     &:hover {
       background-color: #0056b3;
     }
-  }
-`;
-
-const EventContainer = styled.div`
-  display: flex;
-  flex-direction: column; /* 이벤트를 세로로 쌓기 */
-  height: 100%; /* 전체 셀 높이 사용 */
-`;
-
-const StyledEvent = styled.div`
-  width: 100%;
-  height: 100%;
-  position: relative; /* 툴팁 기준이 되는 부모 컴포넌트 */
-
-  border: ${(props) => (props.selected ? '2px solid red' : '1px solid #ccc')};
-  border-radius: 4px;
-  padding: 5px;
-  margin-bottom: 5px;
-  font-size: 12px;
-
-  z-index: 1;
-
-  cursor: pointer;
-
-  b {
-    font-size: 14px;
   }
 `;
 

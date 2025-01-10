@@ -64,7 +64,9 @@ const AdminEvents = ({
     const handleKeyDown = (e) => {
       if (isOpen && e.key === 'Delete') {
         e.stopPropagation(); // 이벤트 전파 차단
-        deleteEvent(eventId);
+        if (confirm('삭제 하시겠습니까?') === true) {
+          deleteEvent(eventId);
+        }
       }
     };
 
