@@ -79,7 +79,9 @@ const AdminSchedulerBody = () => {
     let newData = startDate;
 
     // start와 end의 Month가 다를 경우 selectedDate 기준으로 결정
-    if (startDate.getMonth() !== endDate.getMonth()) {
+    if (info.view.type === 'dayGridMonth') {
+      newData = info.view.currentStart;
+    } else if (startDate.getMonth() !== endDate.getMonth()) {
       newData = selectedMonth === startDate.getMonth() ? startDate : endDate;
     }
 
