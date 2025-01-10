@@ -1,11 +1,12 @@
-new Date(); /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/exhaustive-deps */
+import styled from 'styled-components';
 import React, { useState, useEffect, useRef } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import styled from 'styled-components';
 import Modal from 'react-modal';
+
 import AdminEvents from './AdminEvents';
 
 const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
@@ -81,10 +82,6 @@ const AdminSchedulerBody = () => {
     if (startDate.getMonth() !== endDate.getMonth()) {
       newData = selectedMonth === startDate.getMonth() ? startDate : endDate;
     }
-
-    // 이번주가 클릭된 경우
-    // if (today <= endDate && today >= startDate)
-    //   updateSelectedDate(null);
 
     if (bCalendarRef.current) {
       bCalendarRef.current.getApi().gotoDate(newData); // B캘린더 날짜 이동
@@ -233,7 +230,7 @@ const AdminSchedulerBody = () => {
           }}
           customButtons={{
             customToday: {
-              text: '오늘',
+              text: 'Today',
               click: () => {
                 aCalendarRef.current?.getApi().gotoDate(today); // 오늘 날짜로 이동
                 updateSelectedDate(today); // 선택된 날짜 초기화
@@ -293,7 +290,7 @@ const AdminSchedulerBody = () => {
           </label>
           <label>
             요일/시간: {dayArr[new Date(newEvent.date).getDay()]}요일/
-            {newEvent.date.split('T')[1]?.slice(0, 6)} ~ ?
+            {newEvent.date && newEvent.date.split('T')[1]?.slice(0, 6)} ~ ?
           </label>
           <label>
             강좌명:
