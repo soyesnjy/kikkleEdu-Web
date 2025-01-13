@@ -112,9 +112,12 @@ const AdminSchedulerBody = () => {
     setModalOpen(false);
     setNewEvent({
       title: '',
+      dayAndTime: '',
       courseName: '',
       participants: '',
+      times: '',
       notes: '',
+      backgroundColor: '',
       date: '',
     });
   };
@@ -360,7 +363,7 @@ const AdminSchedulerBody = () => {
               }
             />
           </label>
-          <label>Notes:</label>
+          <label>Notes</label>
           <textarea
             value={newEvent.notes}
             onChange={(e) =>
