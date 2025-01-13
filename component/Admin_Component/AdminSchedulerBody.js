@@ -25,7 +25,7 @@ const AdminSchedulerBody = () => {
     {
       id: 1,
       title: 'Math Class',
-      start: '2025-01-15T08:00:00',
+      start: '2025-01-15T11:00:00',
       extendedProps: {
         courseName: 'Mathematics',
         participants: 20,
@@ -37,7 +37,7 @@ const AdminSchedulerBody = () => {
     {
       id: 2,
       title: 'English Class',
-      start: '2025-01-15T08:10:00',
+      start: '2025-01-15T11:10:00',
       extendedProps: {
         courseName: 'English Literature',
         participants: 15,
@@ -275,8 +275,8 @@ const AdminSchedulerBody = () => {
               },
             },
           }}
-          slotMinTime="06:00:00"
-          slotMaxTime="24:00:00"
+          slotMinTime="10:00:00"
+          slotMaxTime="22:00:00"
           allDaySlot={false}
           datesSet={handleDatesSet} // 날짜 이동 이벤트 핸들러
           dateClick={(info) => {
@@ -468,7 +468,7 @@ const SchedulerWrapper = styled.div`
   .fc {
     padding: 1rem;
     width: 65vw;
-    height: auto;
+    height: 90vh;
 
     direction: ltr;
     text-align: left;
