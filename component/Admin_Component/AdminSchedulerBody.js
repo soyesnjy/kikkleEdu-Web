@@ -17,18 +17,18 @@ const AdminSchedulerBody = () => {
     {
       id: 1,
       title: 'Math Class',
-      start: '2025-01-08T10:00:00',
+      start: '2025-01-15T10:00:00',
       extendedProps: {
         courseName: 'Mathematics',
         participants: 20,
         times: 2,
-        notes: 'Room 101',
+        notes: '직접 메모가 가능한 메모장으로 기타메모부분',
       },
     },
     {
       id: 2,
       title: 'English Class',
-      start: '2025-01-08T11:00:00',
+      start: '2025-01-15T11:00:00',
       extendedProps: {
         courseName: 'English Literature',
         participants: 15,
