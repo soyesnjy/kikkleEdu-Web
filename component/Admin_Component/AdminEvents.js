@@ -106,8 +106,8 @@ const StyledEvent = styled.div`
 
   border: ${(props) => (props.selected ? '2px solid red' : '1px solid #ccc')};
   border-radius: 4px;
-  padding: 5px;
-  margin-bottom: 5px;
+  padding: 3px;
+
   font-size: 12px;
 
   z-index: 1;
@@ -115,7 +115,10 @@ const StyledEvent = styled.div`
   cursor: pointer;
 
   b {
-    font-size: 14px;
+    font-size: 0.7rem;
+    font-family: Pretendard;
+    font-weight: 600;
+    text-align: left;
   }
 `;
 

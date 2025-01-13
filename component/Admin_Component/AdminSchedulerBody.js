@@ -11,30 +11,40 @@ import AdminEvents from './AdminEvents';
 
 const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
 const today = new Date();
+const colors = [
+  { label: '파란색', value: '#A3BCFF' },
+  { label: '핑크색', value: '#FFA3F6' },
+  { label: '주황색', value: '#FF7A00' },
+  { label: '초록색', value: '#2BB215' },
+  { label: '하늘색', value: '#55D0F6' },
+  { label: '살구색', value: '#FFC9A3' },
+];
 
 const AdminSchedulerBody = () => {
   const [events, setEvents] = useState([
     {
       id: 1,
       title: 'Math Class',
-      start: '2025-01-15T10:00:00',
+      start: '2025-01-15T08:00:00',
       extendedProps: {
         courseName: 'Mathematics',
         participants: 20,
         times: 2,
         notes: '직접 메모가 가능한 메모장으로 기타메모부분',
       },
+      backgroundColor: '#FFA3F6',
     },
     {
       id: 2,
       title: 'English Class',
-      start: '2025-01-15T11:00:00',
+      start: '2025-01-15T08:10:00',
       extendedProps: {
         courseName: 'English Literature',
         participants: 15,
         times: 3,
         notes: 'Room 202',
       },
+      backgroundColor: '#FF7A00',
     },
   ]);
   const [newEvent, setNewEvent] = useState({
@@ -44,11 +54,13 @@ const AdminSchedulerBody = () => {
     participants: '',
     times: '',
     notes: '',
+    backgroundColor: '',
     date: '',
   });
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDate, setSelectedDate] = useState(today); // 선택된 날짜 상태
+  const [scheduleForm, setScheduleForm] = useState('week');
 
   const selectedDateRef = useRef(selectedDate); // 실시간 selectedDate 참조
   const aCalendarRef = useRef(null); // A캘린더의 ref
@@ -120,6 +132,7 @@ const AdminSchedulerBody = () => {
         times: newEvent.times,
         notes: newEvent.notes,
       },
+      backgroundColor: newEvent.backgroundColor,
     };
 
     // 서버로 이벤트 추가가 요청
@@ -132,6 +145,7 @@ const AdminSchedulerBody = () => {
         id: prevEvents.length + 1,
       },
     ]);
+
     closeModal();
   };
 
@@ -214,7 +228,7 @@ const AdminSchedulerBody = () => {
           locale="ko"
         />
       </MiniCalendarWrapper>
-      <SchedulerWrapper>
+      <SchedulerWrapper form={scheduleForm}>
         <SearchInput
           type="text"
           placeholder="Search by Teacher Name"
@@ -226,16 +240,35 @@ const AdminSchedulerBody = () => {
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="timeGridWeek"
           headerToolbar={{
-            left: 'prev,next customToday',
-            center: 'title',
-            right: 'timeGridWeek,dayGridMonth',
+            left: 'prev,next,title,customToday',
+            // center: 'title',
+            right: 'customWeek,customMonth',
+          }}
+          titleFormat={{
+            year: undefined, // 연도 표시 제거
+            month: 'long', // 월 이름 전체 (e.g., January)
+            day: 'numeric', // 날짜 (e.g., 1)
           }}
           customButtons={{
             customToday: {
-              text: 'Today',
+              text: 'today',
               click: () => {
                 aCalendarRef.current?.getApi().gotoDate(today); // 오늘 날짜로 이동
                 updateSelectedDate(today); // 선택된 날짜 초기화
+              },
+            },
+            customWeek: {
+              text: '주간', // "timeGridWeek" 버튼의 텍스트 변경
+              click: () => {
+                setScheduleForm('week');
+                aCalendarRef.current?.getApi().changeView('timeGridWeek');
+              },
+            },
+            customMonth: {
+              text: '월간', // "dayGridMonth" 버튼의 텍스트 변경
+              click: () => {
+                setScheduleForm('month');
+                aCalendarRef.current?.getApi().changeView('dayGridMonth');
               },
             },
           }}
@@ -243,7 +276,9 @@ const AdminSchedulerBody = () => {
           slotMaxTime="24:00:00"
           allDaySlot={false}
           datesSet={handleDatesSet} // 날짜 이동 이벤트 핸들러
-          dateClick={(info) => openModal(info.dateStr)} // 모달 열기
+          dateClick={(info) => {
+            if (scheduleForm === 'week') openModal(info.dateStr);
+          }} // 모달 열기
           events={events}
           eventContent={(arg) => {
             return (
@@ -256,8 +291,8 @@ const AdminSchedulerBody = () => {
               />
             );
           }}
-          editable={true}
-          eventOverlap={true}
+          editable={scheduleForm === 'week'} // week Form일 경우에만 편집 가능
+          eventOverlap={scheduleForm === 'week'} // week Form일 경우에만 편집 가능
           slotEventOverlap={false} // 이벤트가 겹치지 않고 새로 배치
           eventDrop={handleEventDrop} // Drag&Drop Handler: start 정보 수정
           eventOrder="title"
@@ -267,7 +302,8 @@ const AdminSchedulerBody = () => {
             minute: '2-digit',
             hour12: false, // 24시간 표기법
           }}
-          // slotDuration="00:10:00" // 슬롯 단위: 1시간
+          slotDuration="00:10:00" // 슬롯 단위: 1시간
+          defaultTimedEventDuration="00:10:00" // 이벤트 기본 지속 시간 10분
           eventDurationEditable={false} // 이벤트 길이 조정
         />
       </SchedulerWrapper>
@@ -324,16 +360,40 @@ const AdminSchedulerBody = () => {
               }
             />
           </label>
-          <label>
-            Notes:
-            <input
-              type="text"
-              value={newEvent.notes}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, notes: e.target.value })
-              }
-            />
-          </label>
+          <label>Notes:</label>
+          <textarea
+            value={newEvent.notes}
+            onChange={(e) =>
+              setNewEvent({ ...newEvent, notes: e.target.value })
+            }
+          />
+          <ColorSelectWrapper selectedColor={newEvent.backgroundColor}>
+            <label>
+              색상:
+              <select
+                value={newEvent.backgroundColor}
+                onChange={(e) =>
+                  setNewEvent({
+                    ...newEvent,
+                    backgroundColor: e.target.value,
+                  })
+                }
+              >
+                <option value="" disabled>
+                  색상을 선택하세요
+                </option>
+                {colors.map((color) => (
+                  <option
+                    key={color.value}
+                    value={color.value}
+                    style={{ backgroundColor: color.value, color: '#000' }}
+                  >
+                    {color.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </ColorSelectWrapper>
           <button onClick={handleAddEvent}>Add Event</button>
           <button onClick={closeModal} style={{ marginTop: '10px' }}>
             Cancel
@@ -390,6 +450,10 @@ const MiniCalendarWrapper = styled.div`
     border-radius: 10px;
     color: white;
   }
+
+  /* .fc-day-other {
+    visibility: hidden;
+  } */
 `;
 
 const SchedulerWrapper = styled.div`
@@ -399,6 +463,7 @@ const SchedulerWrapper = styled.div`
   z-index: 0;
 
   .fc {
+    padding: 1rem;
     width: 65vw;
     height: auto;
 
@@ -409,26 +474,100 @@ const SchedulerWrapper = styled.div`
   }
 
   .fc-timegrid-slot {
-    height: 25px;
+    border-bottom: 1px solid #ddd; /* 슬롯 경계선 */
+  }
+  .fc-timegrid-axis-cushion {
+    font-size: 12px; /* 라벨 텍스트 크기 조정 */
   }
 
-  .fc-timegrid-col-events {
-    display: flex !important; /* 강제로 플렉스 컨테이너로 설정 */
-    flex-direction: column !important; /* 세로 정렬 */
-    align-items: flex-start !important; /* 왼쪽 정렬 */
-  }
-
-  .fc-timegrid-event-harness {
+  .fc-daygrid-day-events {
+    height: 100px;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .fc-event {
     width: 100%;
-    height: 100%;
   }
 
   .fc-event-main {
     width: 100%;
     height: 100%;
+  }
+
+  .fc-toolbar-title {
+    width: 200px;
+    display: inline;
+    padding-left: 1rem;
+
+    font-size: 1.2rem;
+    font-family: Pretendard;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .fc-toolbar-chunk {
+    div {
+      display: flex; /* 버튼들을 가로 정렬 */
+      justify-content: center;
+      align-items: center;
+      gap: 0.2rem; /* 버튼 간 간격 */
+    }
+  }
+
+  .fc-customToday-button {
+    border: none; /* 테두리 제거 */
+    border-radius: 4px; /* 둥근 모서리 */
+    padding: 0.3rem 1rem; /* 버튼 내부 여백 */
+    cursor: pointer; /* 클릭 가능 커서 */
+
+    font-size: 1rem;
+    font-family: Pretendard;
+    font-weight: 400;
+    text-align: left;
+
+    background-color: #f0f0f0;
+    color: black;
+
+    &:hover {
+      background-color: #378e56;
+    }
+  }
+
+  .fc-customWeek-button {
+    padding: 0.3rem 1.2rem;
+    font-size: 1rem;
+    font-family: Pretendard;
+    font-weight: 400;
+    text-align: left;
+
+    border: none;
+
+    background-color: ${(props) =>
+      props.form === 'week' ? '#378E56' : '#F0F0F0'};
+    color: ${(props) => (props.form === 'week' ? 'white' : 'black')};
+
+    &:hover {
+      background-color: #378e56;
+    }
+  }
+
+  .fc-customMonth-button {
+    padding: 0.3rem 1.2rem;
+    font-size: 1rem;
+    font-family: Pretendard;
+    font-weight: 400;
+    text-align: left;
+
+    border: none;
+
+    background-color: ${(props) =>
+      props.form === 'month' ? '#378E56' : '#F0F0F0'};
+    color: ${(props) => (props.form === 'month' ? 'white' : 'black')};
+
+    &:hover {
+      background-color: #378e56;
+    }
   }
 `;
 
@@ -480,6 +619,27 @@ const ModalContent = styled.div`
     &:hover {
       background-color: #0056b3;
     }
+  }
+`;
+
+const ColorSelectWrapper = styled.div`
+  position: relative;
+  width: 200px;
+
+  select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: ${(props) => props.selectedColor || '#fff'};
+    color: ${(props) => (props.selectedColor ? '#fff' : '#000')};
+    cursor: pointer;
+    appearance: none; /* 기본 드롭다운 화살표 제거 */
+  }
+
+  option {
+    background-color: ${(props) => props.color || '#fff'} !important;
+    color: #000;
   }
 `;
 
