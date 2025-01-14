@@ -126,10 +126,14 @@ const AdminSchedulerBody = () => {
 
   // 이벤트 추가
   const handleAddEvent = async () => {
+    const startDate = new Date(newEvent.date);
+    const endDate = new Date(startDate.getTime() + 50 * 60 * 1000); // start + 50분
+
     const newEventData = {
       id: events.length + 1, // 임시 ID (서버에서 제공 시 업데이트 가능)
       title: newEvent.title,
       start: newEvent.date,
+      end: endDate.toISOString(),
       extendedProps: {
         dayAndTime: `${dayArr[new Date(newEvent.date).getDay()]}요일/ ${newEvent.date.split('T')[1]} ~ ${newEvent.dayAndTime}`,
         courseName: newEvent.courseName,
