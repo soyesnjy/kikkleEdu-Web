@@ -182,11 +182,6 @@ const TooltipContainer = styled.div`
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 15px;
 
-  /* position: absolute;
-  top: -5%;
-  left: ${(props) => (props.vector === 'left' ? '' : '105%')};
-  right: ${(props) => (props.vector === 'left' ? '105%' : '')}; */
-
   font-size: 14px;
   color: #333;
 

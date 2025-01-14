@@ -65,53 +65,12 @@ const AdminSchedulerBody = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDate, setSelectedDate] = useState(today); // 선택된 날짜
   const [selectedEventId, setSelectedEventId] = useState(-1); // 선택된 eventID
-  const [scheduleForm, setScheduleForm] = useState('week');
-
+  const [scheduleForm, setScheduleForm] = useState('week'); // 스케줄폼 (week || month)
   const [tooltip, setTooltip] = useState({
     visible: false,
     content: null,
     position: { top: 0, left: 0 },
   });
-
-  const handleEventClick = (info) => {
-    const { id, title, start, end, extendedProps } = info.event;
-    console.log(new Date(start).getDay());
-    if (tooltip.visible && tooltip.content.id === id) {
-      closeTooltip();
-      setSelectedEventId(-1);
-      return;
-    }
-    const rect = info.el.getBoundingClientRect(); // 이벤트 요소의 위치 계산
-    const tooltipPosition = {
-      top: rect.top + window.scrollY + rect.height / 2 - 60, // 중앙 Y
-      left: rect.left + window.scrollX + rect.width, // 오른쪽에 표시
-    };
-
-    // 마지막 주(토요일)인 경우
-    if (new Date(start).getDay() === 6) {
-      delete tooltipPosition.left; // 왼쪽 위치 제거
-      tooltipPosition.left = rect.left + window.scrollX - 250; // 툴팁을 왼쪽으로 표시
-    }
-    setSelectedEventId(id);
-    setTooltip({
-      visible: true,
-      content: {
-        id,
-        title,
-        start,
-        end,
-        eventProps: extendedProps,
-      },
-      position: tooltipPosition,
-    });
-  };
-
-  const closeTooltip = () =>
-    setTooltip({
-      visible: false,
-      content: null,
-      position: { top: 0, left: 0 },
-    });
 
   const selectedDateRef = useRef(selectedDate); // 실시간 selectedDate 참조
   const aCalendarRef = useRef(null); // A캘린더의 ref
@@ -171,13 +130,47 @@ const AdminSchedulerBody = () => {
     });
   };
 
-  // 툴팁 리셋
+  // 툴팁 리셋 핸들러
   const handleResetTooptip = () => {
     setSelectedEventId(-1);
     setTooltip({
       visible: false,
       content: null,
       position: { top: 0, left: 0 },
+    });
+  };
+  // 이벤트 클릭 핸들러 (툴팁 관련 위치 계산)
+  const handleEventClick = (info) => {
+    const { id, title, start, end, extendedProps } = info.event;
+
+    // 툴팁이 켜진 경우 끄기 (토글)
+    if (tooltip.visible && tooltip.content.id === id) {
+      handleResetTooptip();
+      return;
+    }
+    // 이벤트 요소의 위치 계산
+    const rect = info.el.getBoundingClientRect();
+    const tooltipPosition = {
+      top: rect.top + window.scrollY + rect.height / 2 - 60, // 중앙 Y
+      left: rect.left + window.scrollX + rect.width, // 오른쪽에 표시
+    };
+
+    // 이벤트가 마지막 주(토요일)인 경우
+    if (new Date(start).getDay() === 6) {
+      delete tooltipPosition.left; // 왼쪽 위치 제거
+      tooltipPosition.left = rect.left + window.scrollX - 250; // 툴팁을 왼쪽으로 표시
+    }
+    setSelectedEventId(id);
+    setTooltip({
+      visible: true,
+      content: {
+        id,
+        title,
+        start,
+        end,
+        eventProps: extendedProps,
+      },
+      position: tooltipPosition,
     });
   };
 
@@ -216,7 +209,7 @@ const AdminSchedulerBody = () => {
     closeModal();
   };
 
-  // 이벤트 드래그 후 start 정보만 수정
+  // 이벤트 Drop 핸들러 start 정보만 수정
   const handleEventDrop = (info) => {
     const { event } = info;
     const startDate = new Date(event.start);
@@ -248,7 +241,7 @@ const AdminSchedulerBody = () => {
     );
     handleResetTooptip();
   };
-  // Tooltip 수정 핸들러
+  // 이벤트 수정 핸들러
   const handleEventUpdate = (event) => {
     console.log('Tooltip Update!');
 
@@ -265,6 +258,20 @@ const AdminSchedulerBody = () => {
         evt.id === Number(event.id) ? { ...evt, ...event } : evt
       )
     );
+    handleResetTooptip();
+  };
+  // 이벤트 삭제
+  const deleteEvent = async (eventId) => {
+    console.log('Deleting event with ID:', eventId);
+
+    // 서버 삭제 요청
+    // await deleteEventFromServer(eventId);
+
+    // 로컬 상태 업데이트
+    setEvents((prevEvents) =>
+      prevEvents.filter((event) => event.id !== Number(eventId))
+    );
+
     handleResetTooptip();
   };
   // 검색 필터
@@ -285,8 +292,10 @@ const AdminSchedulerBody = () => {
     console.log('events:', events);
   }, [events]);
 
-  // 스케줄러 스크롤 시 툴팁 제거 이벤트 추가
+  // scheduleForm 변경: 툴팁 리셋 + 스케줄러 스크롤 시 툴팁 제거 이벤트 추가
   useEffect(() => {
+    handleResetTooptip();
+
     const calendarElement = aCalendarRef.current?.getApi().el;
     const scroller = calendarElement.querySelector(
       '.fc-scroller-liquid-absolute'
@@ -303,21 +312,6 @@ const AdminSchedulerBody = () => {
       }
     };
   }, [scheduleForm]);
-
-  // 이벤트 삭제
-  const deleteEvent = async (eventId) => {
-    console.log('Deleting event with ID:', eventId);
-
-    // 서버 삭제 요청
-    // await deleteEventFromServer(eventId);
-
-    // 로컬 상태 업데이트
-    setEvents((prevEvents) =>
-      prevEvents.filter((event) => event.id !== Number(eventId))
-    );
-
-    handleResetTooptip();
-  };
 
   // Delete 삭제 기능
   useEffect(() => {
@@ -435,11 +429,13 @@ const AdminSchedulerBody = () => {
                   eventId={arg.event.id}
                   eventTitle={arg.event.title}
                   eventStart={arg.event.start}
-                  eventEnd={arg.event.end}
-                  eventProps={arg.event.extendedProps}
-                  setEvents={setEvents}
+                  eventBackColor={arg.event.backgroundColor}
+                  scheduleForm={scheduleForm}
                   selectedEventId={selectedEventId}
-                  setSelectedEventId={setSelectedEventId}
+                  // eventEnd={arg.event.end}
+                  // eventProps={arg.event.extendedProps}
+                  // setEvents={setEvents}
+                  // setSelectedEventId={setSelectedEventId}
                 />
               );
             }}
@@ -447,7 +443,7 @@ const AdminSchedulerBody = () => {
             eventOverlap={scheduleForm === 'week'} // week Form일 경우에만 편집 가능
             slotEventOverlap={false} // 이벤트가 겹치지 않고 새로 배치
             eventDrop={handleEventDrop} // Drag&Drop Handler: start 정보 수정
-            eventOrder="title"
+            eventOrder="start" // start 순으로 정렬
             slotLabelFormat={{
               hour: '2-digit',
               minute: '2-digit',
@@ -550,17 +546,13 @@ const AdminSchedulerBody = () => {
             </button>
           </ModalContent>
         </StyledModal>
-        {/* New 툴팁 */}
       </Container>
+      {/* New 툴팁 */}
       {tooltip.visible && tooltip.content && (
-        <div
-          style={{
-            position: 'absolute',
-            top: tooltip.position.top,
-            left: tooltip.position.left,
-            zIndex: 1000,
-          }}
+        <AdminTooltipContainer
           onClick={(e) => e.stopPropagation()} // 툴팁 닫기 방지
+          top={tooltip.position.top}
+          left={tooltip.position.left}
         >
           <AdminTooltip
             id={tooltip.content.id}
@@ -568,9 +560,9 @@ const AdminSchedulerBody = () => {
             start={tooltip.content.start}
             end={tooltip.content.end}
             event={tooltip.content.eventProps}
-            onEdit={handleEventUpdate}
+            onEdit={handleEventUpdate} // 툴팁에서 이벤트 내용 수정
           />
-        </div>
+        </AdminTooltipContainer>
       )}
     </>
   );
@@ -661,18 +653,6 @@ const SchedulerWrapper = styled.div`
   .fc-event {
     width: 100%;
   }
-  .fc-timegrid-col-events {
-    .fc-timegrid-event-harness {
-      z-index: 1;
-    }
-  }
-  /* .fc-timegrid-event-harness {
-    a {
-      div {
-        z-index: 1;
-      }
-    }
-  } */
 
   .fc-event-main {
     width: 100%;
@@ -825,6 +805,13 @@ const ColorSelectWrapper = styled.div`
     background-color: ${(props) => props.color || '#fff'} !important;
     color: #000;
   }
+`;
+
+const AdminTooltipContainer = styled.div`
+  position: absolute;
+  top: ${(props) => `${props.top}px`};
+  left: ${(props) => `${props.left}px`};
+  z-index: 1000;
 `;
 
 export default AdminSchedulerBody;
