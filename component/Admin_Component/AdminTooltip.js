@@ -5,7 +5,7 @@ const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
 
 const timeCalulate = (date, time = 0) => {
   const dateObj = new Date(date);
-  if (time) dateObj.setMinutes(dateObj.getMinutes() + 30 * time);
+  if (time) dateObj.setMinutes(dateObj.getMinutes() + 50);
 
   // const year = dateObj.getFullYear();
   // const month = ('0' + (dateObj.getMonth() + 1)).slice(-2);

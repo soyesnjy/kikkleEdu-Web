@@ -26,6 +26,7 @@ const AdminSchedulerBody = () => {
       id: 1,
       title: 'Math Class',
       start: '2025-01-15T11:00:00',
+      end: '2025-01-15T11:50:00',
       extendedProps: {
         courseName: 'Mathematics',
         participants: 20,
@@ -38,6 +39,7 @@ const AdminSchedulerBody = () => {
       id: 2,
       title: 'English Class',
       start: '2025-01-15T11:10:00',
+      end: '2025-01-15T12:00:00',
       extendedProps: {
         courseName: 'English Literature',
         participants: 15,
@@ -155,11 +157,14 @@ const AdminSchedulerBody = () => {
   // 이벤트 드래그 후 start 정보만 수정
   const handleEventDrop = (info) => {
     const { event } = info;
+    const startDate = new Date(event.start);
+    const endDate = new Date(startDate.getTime() + 50 * 60 * 1000); // 50분 후 계산
 
     // 수정된 start 정보만 반영
     const updatedEvent = {
-      id: event.id,
-      start: event.start.toISOString(),
+      id: Number(event.id),
+      start: startDate.toISOString(),
+      end: endDate.toISOString(),
     };
 
     console.log('updatedEvent: ', updatedEvent);
@@ -171,7 +176,7 @@ const AdminSchedulerBody = () => {
     setEvents((prevEvents) =>
       prevEvents.map((evt) =>
         evt.id === Number(updatedEvent.id)
-          ? { ...evt, start: updatedEvent.start }
+          ? { ...evt, start: updatedEvent.start, end: updatedEvent.end }
           : evt
       )
     );
@@ -306,6 +311,7 @@ const AdminSchedulerBody = () => {
             hour12: false, // 24시간 표기법
           }}
           slotDuration="00:10:00" // 슬롯 단위: 1시간
+          // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
           defaultTimedEventDuration="00:10:00" // 이벤트 기본 지속 시간 10분
           eventDurationEditable={false} // 이벤트 길이 조정
         />
