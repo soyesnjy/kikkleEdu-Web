@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import AdminTooltip from './AdminTooltip';
 
@@ -10,8 +10,9 @@ const AdminEvents = ({
   eventEnd,
   eventProps,
   setEvents,
+  selectedEventId,
+  setSelectedEventId,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [tooltipVecter, setTooltipVecter] = useState('right');
 
   // Tooltip 좌우 위치 확정 핸들러
@@ -22,8 +23,7 @@ const AdminEvents = ({
 
     // 클릭 위치에 따라 left/right 설정
     const vector = clickX < midPoint ? 'left' : 'right';
-    // toggleTooltip(eventId, vector);
-    setIsOpen(!isOpen);
+    setSelectedEventId(eventId); // 툴팁 열기
     setTooltipVecter(vector); // 클릭 위치에 따라 방향 설정
   };
   // Tooltip 수정 핸들러
@@ -45,48 +45,22 @@ const AdminEvents = ({
     );
   };
 
-  // 이벤트 삭제
-  const deleteEvent = async (eventId) => {
-    console.log('Deleting event with ID:', eventId);
-
-    // 서버 삭제 요청
-    // await deleteEventFromServer(eventId);
-
-    // 로컬 상태 업데이트
-    setEvents((prevEvents) =>
-      prevEvents.filter((event) => event.id !== Number(eventId))
-    );
-
-    setIsOpen(false); // 툴팁 닫기
-  };
-
-  // Delete 삭제 기능
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (isOpen && e.key === 'Delete') {
-        e.stopPropagation(); // 이벤트 전파 차단
-        if (confirm('삭제 하시겠습니까?') === true) {
-          deleteEvent(eventId);
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, eventId]);
-
   return (
     <>
       <Event
         onClick={(e) => {
           e.stopPropagation(); // 클릭 이벤트 전파 차단
+          if (selectedEventId === eventId) {
+            setSelectedEventId(-1);
+            return;
+          }
           handleTooltipVectorConfirm(e);
         }}
-        selected={isOpen}
+        selected={selectedEventId === eventId}
       >
         <b>{eventTitle}</b>
       </Event>
-      {isOpen && (
+      {selectedEventId === eventId && (
         <AdminTooltip
           vector={tooltipVecter}
           id={eventId}

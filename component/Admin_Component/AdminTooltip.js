@@ -188,6 +188,8 @@ const TooltipContainer = styled.div`
 
   font-size: 14px;
   color: #333;
+
+  z-index: auto;
 `;
 
 const Header = styled.div`

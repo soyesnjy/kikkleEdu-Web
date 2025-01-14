@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 import React, { useState, useEffect, useRef } from 'react';
+
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import Modal from 'react-modal';
 
+import Modal from 'react-modal';
 import AdminEvents from './AdminEvents';
 
 const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
@@ -26,7 +27,7 @@ const AdminSchedulerBody = () => {
       id: 1,
       title: 'Math Class',
       start: '2025-01-15T11:00:00',
-      // end: '2025-01-15T11:50:00',
+      end: '2025-01-15T11:50:00',
       extendedProps: {
         courseName: 'Mathematics',
         participants: 20,
@@ -39,7 +40,7 @@ const AdminSchedulerBody = () => {
       id: 2,
       title: 'English Class',
       start: '2025-01-15T11:10:00',
-      // end: '2025-01-15T12:00:00',
+      end: '2025-01-15T12:00:00',
       extendedProps: {
         courseName: 'English Literature',
         participants: 15,
@@ -61,7 +62,8 @@ const AdminSchedulerBody = () => {
   });
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedDate, setSelectedDate] = useState(today); // 선택된 날짜 상태
+  const [selectedDate, setSelectedDate] = useState(today); // 선택된 날짜
+  const [selectedEventId, setSelectedEventId] = useState(-1); // 선택된 eventID
   const [scheduleForm, setScheduleForm] = useState('week');
 
   const selectedDateRef = useRef(selectedDate); // 실시간 selectedDate 참조
@@ -73,7 +75,6 @@ const AdminSchedulerBody = () => {
     setSelectedDate(date);
     selectedDateRef.current = date; // 상태와 참조 동기화
   };
-
   // B캘린더 날짜 클릭 시 A캘린더와 동기화
   const handleDateClick = (info) => {
     const newDate = new Date(info.date);
@@ -83,7 +84,6 @@ const AdminSchedulerBody = () => {
       aCalendarRef.current.getApi().gotoDate(newDate); // A캘린더 날짜 이동
     }
   };
-
   // A캘린더 날짜 변경 시 B캘린더와 동기화
   const handleDatesSet = (info) => {
     const startDate = new Date(info.start);
@@ -133,7 +133,7 @@ const AdminSchedulerBody = () => {
       id: events.length + 1, // 임시 ID (서버에서 제공 시 업데이트 가능)
       title: newEvent.title,
       start: newEvent.date,
-      // end: endDate.toISOString(),
+      end: endDate.toISOString(),
       extendedProps: {
         dayAndTime: `${dayArr[new Date(newEvent.date).getDay()]}요일/ ${newEvent.date.split('T')[1]} ~ ${newEvent.dayAndTime}`,
         courseName: newEvent.courseName,
@@ -168,7 +168,7 @@ const AdminSchedulerBody = () => {
     const updatedEvent = {
       id: Number(event.id),
       start: startDate.toISOString(),
-      // end: endDate.toISOString(),
+      end: endDate.toISOString(),
     };
 
     console.log('updatedEvent: ', updatedEvent);
@@ -183,7 +183,7 @@ const AdminSchedulerBody = () => {
           ? {
               ...evt,
               start: updatedEvent.start,
-              // end: updatedEvent.end
+              end: updatedEvent.end,
             }
           : evt
       )
@@ -208,6 +208,36 @@ const AdminSchedulerBody = () => {
     console.log('events:', events);
   }, [events]);
 
+  // 이벤트 삭제
+  const deleteEvent = async (eventId) => {
+    console.log('Deleting event with ID:', eventId);
+
+    // 서버 삭제 요청
+    // await deleteEventFromServer(eventId);
+
+    // 로컬 상태 업데이트
+    setEvents((prevEvents) =>
+      prevEvents.filter((event) => event.id !== Number(eventId))
+    );
+
+    setSelectedEventId(-1);
+  };
+
+  // Delete 삭제 기능
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (selectedEventId && e.key === 'Delete') {
+        e.stopPropagation(); // 이벤트 전파 차단
+        if (confirm('삭제 하시겠습니까?') === true) {
+          deleteEvent(selectedEventId);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedEventId]);
+
   // B캘린더 DayCell Render 메서드
   const renderDayCell = (arg) => {
     const dateObj = new Date(arg.date);
@@ -228,6 +258,7 @@ const AdminSchedulerBody = () => {
 
   return (
     <Container>
+      {/* 미니 달력 */}
       <MiniCalendarWrapper>
         <FullCalendar
           ref={bCalendarRef} // B캘린더 ref
@@ -244,6 +275,7 @@ const AdminSchedulerBody = () => {
           locale="ko"
         />
       </MiniCalendarWrapper>
+      {/* 메인 스케줄러 */}
       <SchedulerWrapper form={scheduleForm}>
         <SearchInput
           type="text"
@@ -290,6 +322,9 @@ const AdminSchedulerBody = () => {
           }}
           slotMinTime="10:00:00"
           slotMaxTime="22:00:00"
+          slotDuration="00:10:00" // 슬롯 단위: 1시간
+          defaultTimedEventDuration="00:10:00" // 이벤트 기본 지속 시간 10분
+          // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
           allDaySlot={false}
           datesSet={handleDatesSet} // 날짜 이동 이벤트 핸들러
           dateClick={(info) => {
@@ -305,6 +340,8 @@ const AdminSchedulerBody = () => {
                 eventEnd={arg.event.end}
                 eventProps={arg.event.extendedProps}
                 setEvents={setEvents}
+                selectedEventId={selectedEventId}
+                setSelectedEventId={setSelectedEventId}
               />
             );
           }}
@@ -313,20 +350,17 @@ const AdminSchedulerBody = () => {
           slotEventOverlap={false} // 이벤트가 겹치지 않고 새로 배치
           eventDrop={handleEventDrop} // Drag&Drop Handler: start 정보 수정
           eventOrder="title"
-          locale="ko"
           slotLabelFormat={{
             hour: '2-digit',
             minute: '2-digit',
             hour12: false, // 24시간 표기법
           }}
-          slotDuration="00:10:00" // 슬롯 단위: 1시간
-          defaultTimedEventDuration="00:10:00" // 이벤트 기본 지속 시간 10분
-          // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
           eventDurationEditable={false} // 이벤트 길이 조정
+          locale="ko"
         />
       </SchedulerWrapper>
 
-      {/* 모달 */}
+      {/* 이벤트 추가 모달 */}
       <StyledModal
         isOpen={modalOpen}
         onRequestClose={closeModal}
@@ -502,6 +536,10 @@ const SchedulerWrapper = styled.div`
     height: 100px;
     overflow-x: hidden;
     overflow-y: auto;
+  }
+
+  .fc-timegrid-event-harness {
+    z-index: 1;
   }
 
   .fc-event {
