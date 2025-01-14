@@ -76,7 +76,7 @@ const AdminEvents = ({
 
   return (
     <>
-      <StyledEvent
+      <Event
         onClick={(e) => {
           e.stopPropagation(); // 클릭 이벤트 전파 차단
           handleTooltipVectorConfirm(e);
@@ -84,7 +84,7 @@ const AdminEvents = ({
         selected={isOpen}
       >
         <b>{eventTitle}</b>
-      </StyledEvent>
+      </Event>
       {isOpen && (
         <AdminTooltip
           vector={tooltipVecter}
@@ -99,8 +99,7 @@ const AdminEvents = ({
   );
 };
 
-const StyledEvent = styled.div`
-  width: 100%;
+const Event = styled.div`
   height: 100%;
   position: relative; /* 툴팁 기준이 되는 부모 컴포넌트 */
 
@@ -108,13 +107,14 @@ const StyledEvent = styled.div`
   border-radius: 4px;
   padding: 3px;
 
-  font-size: 12px;
-
   z-index: 1;
 
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   b {
+    width: 160px;
     font-size: 0.7rem;
     font-family: Pretendard;
     font-weight: 600;

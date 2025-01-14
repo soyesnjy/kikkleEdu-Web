@@ -64,7 +64,7 @@ const AdminTooltip = ({ vector, id, title, start, event, onEdit }) => {
                     onEdit({
                       id: Number(id),
                       title: updatedTitle,
-                      start,
+                      // start,
                       extendedProps: {
                         courseName: updatedCourseName,
                         participants: updatedParticipants,
@@ -198,7 +198,9 @@ const Header = styled.div`
 `;
 
 const Title = styled.div`
+  width: 170px;
   font-weight: bold;
+  overflow: auto;
 `;
 
 const EditButtonContainer = styled.div`
