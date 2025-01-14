@@ -388,6 +388,13 @@ const AdminSchedulerBody = () => {
               month: 'long', // 월 이름 전체 (e.g., January)
               day: 'numeric', // 날짜 (e.g., 1)
             }}
+            // dayHeaderFormat={{
+            //   weekday: 'short', // 요일: "화", "수" 등
+            //   day: '2-digit', // 날짜: 14, 15 등
+            // }}
+            dayHeaderContent={(arg) =>
+              `${scheduleForm === 'week' ? arg.date.getDate() : ''} ${dayArr[arg.date.getDay()]}`
+            }
             customButtons={{
               customToday: {
                 text: 'today',
@@ -411,8 +418,21 @@ const AdminSchedulerBody = () => {
                 },
               },
             }}
+            slotLabelFormat={{
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false, // 24시간 표기법
+            }}
+            slotLabelContent={(arg) => {
+              // 기존 시간 표시와 함께 추가 텍스트를 삽입
+              return (
+                <SlotLabelContainer>
+                  <SlotLabelContent>{arg.text}</SlotLabelContent>{' '}
+                </SlotLabelContainer>
+              );
+            }}
             slotMinTime="10:00:00"
-            slotMaxTime="22:00:00"
+            slotMaxTime="23:00:00"
             slotDuration="00:10:00" // 슬롯 단위: 1시간
             defaultTimedEventDuration="00:10:00" // 이벤트 기본 지속 시간 10분
             // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
@@ -444,13 +464,9 @@ const AdminSchedulerBody = () => {
             slotEventOverlap={false} // 이벤트가 겹치지 않고 새로 배치
             eventDrop={handleEventDrop} // Drag&Drop Handler: start 정보 수정
             eventOrder="start" // start 순으로 정렬
-            slotLabelFormat={{
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false, // 24시간 표기법
-            }}
             eventDurationEditable={false} // 이벤트 길이 조정
             locale="ko"
+            height="auto"
           />
         </SchedulerWrapper>
 
@@ -650,87 +666,125 @@ const SchedulerWrapper = styled.div`
     overflow-y: auto;
   }
 
-  .fc-event {
-    width: 100%;
+  // timegrid today 관련
+  .fc-timegrid-col.fc-day-today {
+    background-color: #eaf0ff;
+    border: 2px solid #45b26b;
   }
 
-  .fc-event-main {
-    width: 100%;
-    height: 100%;
-  }
-
-  .fc-toolbar-title {
-    width: 200px;
-    display: inline;
-    padding-left: 1rem;
-
-    font-size: 1.2rem;
-    font-family: Pretendard;
-    font-weight: 600;
-    text-align: left;
-  }
-
+  // toolbar 관련
   .fc-toolbar-chunk {
     div {
       display: flex; /* 버튼들을 가로 정렬 */
       justify-content: center;
       align-items: center;
-      gap: 0.2rem; /* 버튼 간 간격 */
+      gap: 0.4rem; /* 버튼 간 간격 */
+    }
+    // 이전, 다음 버튼
+    .fc-prev-button,
+    .fc-next-button {
+      padding: 0.3rem 0.5rem; /* 버튼 내부 여백 */
+      border: none; /* 테두리 제거 */
+      border-radius: 4px; /* 둥근 모서리 */
+      background-color: #f0f0f0;
+      color: #787878;
+
+      box-shadow: 0px 1.94px 2.58px 0px #00000040;
+
+      &:hover {
+        background-color: #378e56;
+      }
+    }
+    // 날짜 title
+    .fc-toolbar-title {
+      width: 200px;
+      display: inline;
+      padding-left: 1rem;
+
+      font-size: 1.2rem;
+      font-family: Pretendard;
+      font-weight: 600;
+      text-align: left;
+    }
+    // 오늘 버튼
+    .fc-customToday-button {
+      border: none; /* 테두리 제거 */
+      border-radius: 4px; /* 둥근 모서리 */
+      padding: 0.3rem 1rem; /* 버튼 내부 여백 */
+      cursor: pointer; /* 클릭 가능 커서 */
+
+      font-size: 1rem;
+      font-family: Pretendard;
+      font-weight: 400;
+      text-align: left;
+
+      background-color: #f0f0f0;
+      color: black;
+
+      box-shadow: 0px 1.94px 2.58px 0px #00000040;
+
+      &:hover {
+        background-color: #378e56;
+      }
+    }
+    // 주간 버튼
+    .fc-customWeek-button {
+      padding: 0.3rem 1.2rem;
+      font-size: 1rem;
+      font-family: Pretendard;
+      font-weight: 400;
+      text-align: left;
+
+      border: none;
+
+      background-color: ${(props) =>
+        props.form === 'week' ? '#378E56' : '#F0F0F0'};
+      color: ${(props) => (props.form === 'week' ? 'white' : 'black')};
+
+      box-shadow: 0px 1.94px 2.58px 0px #00000040;
+
+      &:hover {
+        background-color: #378e56;
+      }
+    }
+    // 월간 버튼
+    .fc-customMonth-button {
+      padding: 0.3rem 1.2rem;
+
+      font-size: 1rem;
+      font-family: Pretendard;
+      font-weight: 400;
+      text-align: left;
+
+      border: none;
+
+      background-color: ${(props) =>
+        props.form === 'month' ? '#378E56' : '#F0F0F0'};
+      color: ${(props) => (props.form === 'month' ? 'white' : 'black')};
+
+      box-shadow: 0px 1.94px 2.58px 0px #00000040;
+
+      &:hover {
+        background-color: #378e56;
+      }
     }
   }
 
-  .fc-customToday-button {
-    border: none; /* 테두리 제거 */
-    border-radius: 4px; /* 둥근 모서리 */
-    padding: 0.3rem 1rem; /* 버튼 내부 여백 */
-    cursor: pointer; /* 클릭 가능 커서 */
+  // header 관련
+  .fc-col-header-cell {
+    background-color: #f2f2f2;
+    padding: 0.5rem 0;
 
-    font-size: 1rem;
-    font-family: Pretendard;
-    font-weight: 400;
-    text-align: left;
+    .fc-scrollgrid-sync-inner {
+      padding-left: 0.4rem;
+      text-align: left;
 
-    background-color: #f0f0f0;
-    color: black;
-
-    &:hover {
-      background-color: #378e56;
-    }
-  }
-
-  .fc-customWeek-button {
-    padding: 0.3rem 1.2rem;
-    font-size: 1rem;
-    font-family: Pretendard;
-    font-weight: 400;
-    text-align: left;
-
-    border: none;
-
-    background-color: ${(props) =>
-      props.form === 'week' ? '#378E56' : '#F0F0F0'};
-    color: ${(props) => (props.form === 'week' ? 'white' : 'black')};
-
-    &:hover {
-      background-color: #378e56;
-    }
-  }
-
-  .fc-customMonth-button {
-    padding: 0.3rem 1.2rem;
-    font-size: 1rem;
-    font-family: Pretendard;
-    font-weight: 400;
-    text-align: left;
-
-    border: none;
-
-    background-color: ${(props) =>
-      props.form === 'month' ? '#378E56' : '#F0F0F0'};
-    color: ${(props) => (props.form === 'month' ? 'white' : 'black')};
-
-    &:hover {
-      background-color: #378e56;
+      a {
+        font-size: 1rem;
+        font-family: Pretendard;
+        font-weight: 600;
+        text-align: left;
+      }
     }
   }
 `;
@@ -812,6 +866,17 @@ const AdminTooltipContainer = styled.div`
   top: ${(props) => `${props.top}px`};
   left: ${(props) => `${props.left}px`};
   z-index: 1000;
+`;
+
+const SlotLabelContainer = styled.div`
+  padding: 0.3rem 0.7rem;
+`;
+
+const SlotLabelContent = styled.span`
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+  text-align: left;
 `;
 
 export default AdminSchedulerBody;
