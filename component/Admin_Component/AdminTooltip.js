@@ -1,11 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
 
-const timeCalulate = (date, time = 0) => {
+const timeCalulate = (date) => {
   const dateObj = new Date(date);
-  if (time) dateObj.setMinutes(dateObj.getMinutes() + 50);
 
   // const year = dateObj.getFullYear();
   // const month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
@@ -16,7 +16,7 @@ const timeCalulate = (date, time = 0) => {
   return `${hour}:${min}`;
 };
 
-const AdminTooltip = ({ vector, id, title, start, event, onEdit }) => {
+const AdminTooltip = ({ vector, id, title, start, end, event, onEdit }) => {
   const [updateIsOpen, setUpdateIsOpen] = useState(false);
   const [updatedTitle, setUpdatedTitle] = useState('');
   const [updatedCourseName, setUpdatedCourseName] = useState('');
@@ -92,7 +92,7 @@ const AdminTooltip = ({ vector, id, title, start, event, onEdit }) => {
             <Label>요일/시간</Label>
             <Value>
               {dayArr[new Date(start).getDay()]}요일 / {timeCalulate(start)} ~{' '}
-              {timeCalulate(start, event.times)}
+              {timeCalulate(end)}
             </Value>
           </DetailRow>
           <DetailRow>
@@ -146,7 +146,7 @@ const AdminTooltip = ({ vector, id, title, start, event, onEdit }) => {
             <Label>요일/시간</Label>
             <Value>
               {dayArr[new Date(start).getDay()]}요일 / {timeCalulate(start)} ~{' '}
-              {timeCalulate(start, event.times)}
+              {timeCalulate(end)}
             </Value>
           </DetailRow>
           <DetailRow>

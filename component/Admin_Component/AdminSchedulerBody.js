@@ -26,7 +26,7 @@ const AdminSchedulerBody = () => {
       id: 1,
       title: 'Math Class',
       start: '2025-01-15T11:00:00',
-      end: '2025-01-15T11:50:00',
+      // end: '2025-01-15T11:50:00',
       extendedProps: {
         courseName: 'Mathematics',
         participants: 20,
@@ -39,7 +39,7 @@ const AdminSchedulerBody = () => {
       id: 2,
       title: 'English Class',
       start: '2025-01-15T11:10:00',
-      end: '2025-01-15T12:00:00',
+      // end: '2025-01-15T12:00:00',
       extendedProps: {
         courseName: 'English Literature',
         participants: 15,
@@ -133,7 +133,7 @@ const AdminSchedulerBody = () => {
       id: events.length + 1, // 임시 ID (서버에서 제공 시 업데이트 가능)
       title: newEvent.title,
       start: newEvent.date,
-      end: endDate.toISOString(),
+      // end: endDate.toISOString(),
       extendedProps: {
         dayAndTime: `${dayArr[new Date(newEvent.date).getDay()]}요일/ ${newEvent.date.split('T')[1]} ~ ${newEvent.dayAndTime}`,
         courseName: newEvent.courseName,
@@ -168,7 +168,7 @@ const AdminSchedulerBody = () => {
     const updatedEvent = {
       id: Number(event.id),
       start: startDate.toISOString(),
-      end: endDate.toISOString(),
+      // end: endDate.toISOString(),
     };
 
     console.log('updatedEvent: ', updatedEvent);
@@ -180,7 +180,11 @@ const AdminSchedulerBody = () => {
     setEvents((prevEvents) =>
       prevEvents.map((evt) =>
         evt.id === Number(updatedEvent.id)
-          ? { ...evt, start: updatedEvent.start, end: updatedEvent.end }
+          ? {
+              ...evt,
+              start: updatedEvent.start,
+              // end: updatedEvent.end
+            }
           : evt
       )
     );
@@ -298,6 +302,7 @@ const AdminSchedulerBody = () => {
                 eventId={arg.event.id}
                 eventTitle={arg.event.title}
                 eventStart={arg.event.start}
+                eventEnd={arg.event.end}
                 eventProps={arg.event.extendedProps}
                 setEvents={setEvents}
               />
@@ -315,8 +320,8 @@ const AdminSchedulerBody = () => {
             hour12: false, // 24시간 표기법
           }}
           slotDuration="00:10:00" // 슬롯 단위: 1시간
-          // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
           defaultTimedEventDuration="00:10:00" // 이벤트 기본 지속 시간 10분
+          // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
           eventDurationEditable={false} // 이벤트 길이 조정
         />
       </SchedulerWrapper>

@@ -7,6 +7,7 @@ const AdminEvents = ({
   eventId,
   eventTitle,
   eventStart,
+  eventEnd,
   eventProps,
   setEvents,
 }) => {
@@ -91,6 +92,7 @@ const AdminEvents = ({
           id={eventId}
           title={eventTitle}
           start={eventStart}
+          end={eventEnd}
           event={eventProps}
           onEdit={handleEventUpdate}
         />
