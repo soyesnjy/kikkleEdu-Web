@@ -463,7 +463,7 @@ const AdminSchedulerBody = () => {
             eventOverlap={scheduleForm === 'week'} // week Form일 경우에만 편집 가능
             slotEventOverlap={false} // 이벤트가 겹치지 않고 새로 배치
             eventDrop={handleEventDrop} // Drag&Drop Handler: start 정보 수정
-            eventOrder="start" // start 순으로 정렬
+            eventOrder={scheduleForm === 'week' ? 'title' : 'start'} // 이벤트 조건부 정렬
             eventDurationEditable={false} // 이벤트 길이 조정
             locale="ko"
             height="auto"
