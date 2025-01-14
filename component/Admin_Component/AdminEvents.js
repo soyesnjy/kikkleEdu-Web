@@ -6,61 +6,61 @@ import AdminTooltip from './AdminTooltip';
 const AdminEvents = ({
   eventId,
   eventTitle,
-  eventStart,
-  eventEnd,
-  eventProps,
-  setEvents,
   selectedEventId,
-  setSelectedEventId,
+  // eventStart,
+  // eventEnd,
+  // eventProps,
+  // setEvents,
+  // setSelectedEventId,
 }) => {
-  const [tooltipVecter, setTooltipVecter] = useState('right');
+  // const [tooltipVecter, setTooltipVecter] = useState('right');
 
-  // Tooltip 좌우 위치 확정 핸들러
-  const handleTooltipVectorConfirm = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = e.clientX; // 클릭한 화면의 X 좌표
-    const midPoint = rect.left + rect.width / 2; // 컴포넌트의 중앙 좌표
+  // // Tooltip 좌우 위치 확정 핸들러
+  // const handleTooltipVectorConfirm = (e) => {
+  //   const rect = e.currentTarget.getBoundingClientRect();
+  //   const clickX = e.clientX; // 클릭한 화면의 X 좌표
+  //   const midPoint = rect.left + rect.width / 2; // 컴포넌트의 중앙 좌표
 
-    // 클릭 위치에 따라 left/right 설정
-    const vector = clickX < midPoint ? 'left' : 'right';
-    setSelectedEventId(eventId); // 툴팁 열기
-    setTooltipVecter(vector); // 클릭 위치에 따라 방향 설정
-  };
-  // Tooltip 수정 핸들러
-  const handleEventUpdate = (event) => {
-    console.log('Tooltip Update!');
+  //   // 클릭 위치에 따라 left/right 설정
+  //   const vector = clickX < midPoint ? 'left' : 'right';
+  //   setSelectedEventId(eventId); // 툴팁 열기
+  //   setTooltipVecter(vector); // 클릭 위치에 따라 방향 설정
+  // };
+  // // Tooltip 수정 핸들러
+  // const handleEventUpdate = (event) => {
+  //   console.log('Tooltip Update!');
 
-    // 수정된 start 정보만 반영
+  //   // 수정된 start 정보만 반영
 
-    console.log('updatedEvent: ', event);
+  //   console.log('updatedEvent: ', event);
 
-    // 서버로 업데이트 요청
-    // updateStartOnServer(updatedEvent);
+  //   // 서버로 업데이트 요청
+  //   // updateStartOnServer(updatedEvent);
 
-    // 로컬 상태 업데이트 (start만 변경)
-    setEvents((prevEvents) =>
-      prevEvents.map((evt) =>
-        evt.id === Number(event.id) ? { ...evt, ...event } : evt
-      )
-    );
-  };
+  //   // 로컬 상태 업데이트 (start만 변경)
+  //   setEvents((prevEvents) =>
+  //     prevEvents.map((evt) =>
+  //       evt.id === Number(event.id) ? { ...evt, ...event } : evt
+  //     )
+  //   );
+  // };
 
   return (
     <>
       <Event
-        onClick={(e) => {
-          e.stopPropagation(); // 클릭 이벤트 전파 차단
-          if (selectedEventId === eventId) {
-            setSelectedEventId(-1);
-            return;
-          }
-          handleTooltipVectorConfirm(e);
-        }}
+        // onClick={(e) => {
+        //   e.stopPropagation(); // 클릭 이벤트 전파 차단
+        //   if (selectedEventId === eventId) {
+        //     setSelectedEventId(-1);
+        //     return;
+        //   }
+        //   // handleTooltipVectorConfirm(e);
+        // }}
         selected={selectedEventId === eventId}
       >
         <b>{eventTitle}</b>
       </Event>
-      {selectedEventId === eventId && (
+      {/* {selectedEventId === eventId && (
         <AdminTooltip
           vector={tooltipVecter}
           id={eventId}
@@ -70,7 +70,7 @@ const AdminEvents = ({
           event={eventProps}
           onEdit={handleEventUpdate}
         />
-      )}
+      )} */}
     </>
   );
 };

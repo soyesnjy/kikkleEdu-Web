@@ -9,6 +9,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 import Modal from 'react-modal';
 import AdminEvents from './AdminEvents';
+import AdminTooltip from './AdminTooltip';
 
 const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
 const today = new Date();
@@ -65,6 +66,52 @@ const AdminSchedulerBody = () => {
   const [selectedDate, setSelectedDate] = useState(today); // 선택된 날짜
   const [selectedEventId, setSelectedEventId] = useState(-1); // 선택된 eventID
   const [scheduleForm, setScheduleForm] = useState('week');
+
+  const [tooltip, setTooltip] = useState({
+    visible: false,
+    content: null,
+    position: { top: 0, left: 0 },
+  });
+
+  const handleEventClick = (info) => {
+    const { id, title, start, end, extendedProps } = info.event;
+    console.log(new Date(start).getDay());
+    if (tooltip.visible && tooltip.content.id === id) {
+      closeTooltip();
+      setSelectedEventId(-1);
+      return;
+    }
+    const rect = info.el.getBoundingClientRect(); // 이벤트 요소의 위치 계산
+    const tooltipPosition = {
+      top: rect.top + window.scrollY + rect.height / 2 - 60, // 중앙 Y
+      left: rect.left + window.scrollX + rect.width, // 오른쪽에 표시
+    };
+
+    // 마지막 주(토요일)인 경우
+    if (new Date(start).getDay() === 6) {
+      delete tooltipPosition.left; // 왼쪽 위치 제거
+      tooltipPosition.left = rect.left + window.scrollX - 250; // 툴팁을 왼쪽으로 표시
+    }
+    setSelectedEventId(id);
+    setTooltip({
+      visible: true,
+      content: {
+        id,
+        title,
+        start,
+        end,
+        eventProps: extendedProps,
+      },
+      position: tooltipPosition,
+    });
+  };
+
+  const closeTooltip = () =>
+    setTooltip({
+      visible: false,
+      content: null,
+      position: { top: 0, left: 0 },
+    });
 
   const selectedDateRef = useRef(selectedDate); // 실시간 selectedDate 참조
   const aCalendarRef = useRef(null); // A캘린더의 ref
@@ -124,6 +171,16 @@ const AdminSchedulerBody = () => {
     });
   };
 
+  // 툴팁 리셋
+  const handleResetTooptip = () => {
+    setSelectedEventId(-1);
+    setTooltip({
+      visible: false,
+      content: null,
+      position: { top: 0, left: 0 },
+    });
+  };
+
   // 이벤트 추가
   const handleAddEvent = async () => {
     const startDate = new Date(newEvent.date);
@@ -154,6 +211,7 @@ const AdminSchedulerBody = () => {
         id: prevEvents.length + 1,
       },
     ]);
+    handleResetTooptip();
 
     closeModal();
   };
@@ -188,8 +246,27 @@ const AdminSchedulerBody = () => {
           : evt
       )
     );
+    handleResetTooptip();
   };
+  // Tooltip 수정 핸들러
+  const handleEventUpdate = (event) => {
+    console.log('Tooltip Update!');
 
+    // 수정된 start 정보만 반영
+
+    console.log('updatedEvent: ', event);
+
+    // 서버로 업데이트 요청
+    // updateStartOnServer(updatedEvent);
+
+    // 로컬 상태 업데이트 (start만 변경)
+    setEvents((prevEvents) =>
+      prevEvents.map((evt) =>
+        evt.id === Number(event.id) ? { ...evt, ...event } : evt
+      )
+    );
+    handleResetTooptip();
+  };
   // 검색 필터
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
@@ -208,6 +285,25 @@ const AdminSchedulerBody = () => {
     console.log('events:', events);
   }, [events]);
 
+  // 스케줄러 스크롤 시 툴팁 제거 이벤트 추가
+  useEffect(() => {
+    const calendarElement = aCalendarRef.current?.getApi().el;
+    const scroller = calendarElement.querySelector(
+      '.fc-scroller-liquid-absolute'
+    ); // 스크롤 가능한 요소 선택
+
+    if (scroller) {
+      scroller.addEventListener('scroll', handleResetTooptip);
+    }
+
+    // 클린업
+    return () => {
+      if (scroller) {
+        scroller.removeEventListener('scroll', handleResetTooptip);
+      }
+    };
+  }, [scheduleForm]);
+
   // 이벤트 삭제
   const deleteEvent = async (eventId) => {
     console.log('Deleting event with ID:', eventId);
@@ -220,7 +316,7 @@ const AdminSchedulerBody = () => {
       prevEvents.filter((event) => event.id !== Number(eventId))
     );
 
-    setSelectedEventId(-1);
+    handleResetTooptip();
   };
 
   // Delete 삭제 기능
@@ -257,202 +353,226 @@ const AdminSchedulerBody = () => {
   };
 
   return (
-    <Container>
-      {/* 미니 달력 */}
-      <MiniCalendarWrapper>
-        <FullCalendar
-          ref={bCalendarRef} // B캘린더 ref
-          plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          selectable={true}
-          dateClick={handleDateClick} // 날짜 클릭 이벤트 핸들러
-          headerToolbar={{
-            left: 'prev',
-            center: 'title',
-            right: 'next',
-          }}
-          dayCellContent={renderDayCell} // 커스텀 dayCellContent
-          locale="ko"
-        />
-      </MiniCalendarWrapper>
-      {/* 메인 스케줄러 */}
-      <SchedulerWrapper form={scheduleForm}>
-        <SearchInput
-          type="text"
-          placeholder="Search by Teacher Name"
-          value={searchQuery}
-          onChange={handleSearch}
-        />
-        <FullCalendar
-          ref={aCalendarRef} // A캘린더 ref
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView="timeGridWeek"
-          headerToolbar={{
-            left: 'prev,next,title,customToday',
-            // center: 'title',
-            right: 'customWeek,customMonth',
-          }}
-          titleFormat={{
-            year: undefined, // 연도 표시 제거
-            month: 'long', // 월 이름 전체 (e.g., January)
-            day: 'numeric', // 날짜 (e.g., 1)
-          }}
-          customButtons={{
-            customToday: {
-              text: 'today',
-              click: () => {
-                aCalendarRef.current?.getApi().gotoDate(today); // 오늘 날짜로 이동
-                updateSelectedDate(today); // 선택된 날짜 초기화
-              },
-            },
-            customWeek: {
-              text: '주간', // "timeGridWeek" 버튼의 텍스트 변경
-              click: () => {
-                setScheduleForm('week');
-                aCalendarRef.current?.getApi().changeView('timeGridWeek');
-              },
-            },
-            customMonth: {
-              text: '월간', // "dayGridMonth" 버튼의 텍스트 변경
-              click: () => {
-                setScheduleForm('month');
-                aCalendarRef.current?.getApi().changeView('dayGridMonth');
-              },
-            },
-          }}
-          slotMinTime="10:00:00"
-          slotMaxTime="22:00:00"
-          slotDuration="00:10:00" // 슬롯 단위: 1시간
-          defaultTimedEventDuration="00:10:00" // 이벤트 기본 지속 시간 10분
-          // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
-          allDaySlot={false}
-          datesSet={handleDatesSet} // 날짜 이동 이벤트 핸들러
-          dateClick={(info) => {
-            if (scheduleForm === 'week') openModal(info.dateStr);
-          }} // 모달 열기
-          events={events}
-          eventContent={(arg) => {
-            return (
-              <AdminEvents
-                eventId={arg.event.id}
-                eventTitle={arg.event.title}
-                eventStart={arg.event.start}
-                eventEnd={arg.event.end}
-                eventProps={arg.event.extendedProps}
-                setEvents={setEvents}
-                selectedEventId={selectedEventId}
-                setSelectedEventId={setSelectedEventId}
-              />
-            );
-          }}
-          editable={scheduleForm === 'week'} // week Form일 경우에만 편집 가능
-          eventOverlap={scheduleForm === 'week'} // week Form일 경우에만 편집 가능
-          slotEventOverlap={false} // 이벤트가 겹치지 않고 새로 배치
-          eventDrop={handleEventDrop} // Drag&Drop Handler: start 정보 수정
-          eventOrder="title"
-          slotLabelFormat={{
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false, // 24시간 표기법
-          }}
-          eventDurationEditable={false} // 이벤트 길이 조정
-          locale="ko"
-        />
-      </SchedulerWrapper>
-
-      {/* 이벤트 추가 모달 */}
-      <StyledModal
-        isOpen={modalOpen}
-        onRequestClose={closeModal}
-        ariaHideApp={false}
-        contentLabel="Add Event Modal"
-      >
-        <ModalContent>
-          <label>
-            제목:
-            <input
-              type="text"
-              value={newEvent.title}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, title: e.target.value })
-              }
-            />
-          </label>
-          <label>
-            요일/시간: {dayArr[new Date(newEvent.date).getDay()]}요일/
-            {newEvent.date && newEvent.date.split('T')[1]?.slice(0, 6)} ~ ?
-          </label>
-          <label>
-            강좌명:
-            <input
-              type="text"
-              value={newEvent.courseName}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, courseName: e.target.value })
-              }
-            />
-          </label>
-          <label>
-            인원수:
-            <input
-              type="number"
-              value={newEvent.participants}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, participants: e.target.value })
-              }
-            />
-          </label>
-          <label>
-            타임수:
-            <input
-              type="number"
-              value={newEvent.times}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, times: e.target.value })
-              }
-            />
-          </label>
-          <label>Notes</label>
-          <textarea
-            value={newEvent.notes}
-            onChange={(e) =>
-              setNewEvent({ ...newEvent, notes: e.target.value })
-            }
+    <>
+      <Container>
+        {/* 미니 달력 */}
+        <MiniCalendarWrapper>
+          <FullCalendar
+            ref={bCalendarRef} // B캘린더 ref
+            plugins={[dayGridPlugin, interactionPlugin]}
+            initialView="dayGridMonth"
+            selectable={true}
+            dateClick={handleDateClick} // 날짜 클릭 이벤트 핸들러
+            headerToolbar={{
+              left: 'prev',
+              center: 'title',
+              right: 'next',
+            }}
+            dayCellContent={renderDayCell} // 커스텀 dayCellContent
+            locale="ko"
           />
-          <ColorSelectWrapper selectedColor={newEvent.backgroundColor}>
+        </MiniCalendarWrapper>
+        {/* 메인 스케줄러 */}
+        <SchedulerWrapper form={scheduleForm}>
+          <SearchInput
+            type="text"
+            placeholder="Search by Teacher Name"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+          <FullCalendar
+            ref={aCalendarRef} // A캘린더 ref
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            initialView="timeGridWeek"
+            headerToolbar={{
+              left: 'prev,next,title,customToday',
+              // center: 'title',
+              right: 'customWeek,customMonth',
+            }}
+            titleFormat={{
+              year: undefined, // 연도 표시 제거
+              month: 'long', // 월 이름 전체 (e.g., January)
+              day: 'numeric', // 날짜 (e.g., 1)
+            }}
+            customButtons={{
+              customToday: {
+                text: 'today',
+                click: () => {
+                  aCalendarRef.current?.getApi().gotoDate(today); // 오늘 날짜로 이동
+                  updateSelectedDate(today); // 선택된 날짜 초기화
+                },
+              },
+              customWeek: {
+                text: '주간', // "timeGridWeek" 버튼의 텍스트 변경
+                click: () => {
+                  setScheduleForm('week');
+                  aCalendarRef.current?.getApi().changeView('timeGridWeek');
+                },
+              },
+              customMonth: {
+                text: '월간', // "dayGridMonth" 버튼의 텍스트 변경
+                click: () => {
+                  setScheduleForm('month');
+                  aCalendarRef.current?.getApi().changeView('dayGridMonth');
+                },
+              },
+            }}
+            slotMinTime="10:00:00"
+            slotMaxTime="22:00:00"
+            slotDuration="00:10:00" // 슬롯 단위: 1시간
+            defaultTimedEventDuration="00:10:00" // 이벤트 기본 지속 시간 10분
+            // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
+            allDaySlot={false}
+            datesSet={handleDatesSet} // 날짜 이동 이벤트 핸들러
+            dateClick={(info) => {
+              if (scheduleForm === 'week') openModal(info.dateStr);
+            }} // 모달 열기
+            events={events}
+            eventClick={handleEventClick}
+            eventContent={(arg) => {
+              return (
+                <AdminEvents
+                  eventId={arg.event.id}
+                  eventTitle={arg.event.title}
+                  eventStart={arg.event.start}
+                  eventEnd={arg.event.end}
+                  eventProps={arg.event.extendedProps}
+                  setEvents={setEvents}
+                  selectedEventId={selectedEventId}
+                  setSelectedEventId={setSelectedEventId}
+                />
+              );
+            }}
+            editable={scheduleForm === 'week'} // week Form일 경우에만 편집 가능
+            eventOverlap={scheduleForm === 'week'} // week Form일 경우에만 편집 가능
+            slotEventOverlap={false} // 이벤트가 겹치지 않고 새로 배치
+            eventDrop={handleEventDrop} // Drag&Drop Handler: start 정보 수정
+            eventOrder="title"
+            slotLabelFormat={{
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false, // 24시간 표기법
+            }}
+            eventDurationEditable={false} // 이벤트 길이 조정
+            locale="ko"
+          />
+        </SchedulerWrapper>
+
+        {/* 이벤트 추가 모달 */}
+        <StyledModal
+          isOpen={modalOpen}
+          onRequestClose={closeModal}
+          ariaHideApp={false}
+          contentLabel="Add Event Modal"
+        >
+          <ModalContent>
             <label>
-              색상:
-              <select
-                value={newEvent.backgroundColor}
+              제목:
+              <input
+                type="text"
+                value={newEvent.title}
                 onChange={(e) =>
-                  setNewEvent({
-                    ...newEvent,
-                    backgroundColor: e.target.value,
-                  })
+                  setNewEvent({ ...newEvent, title: e.target.value })
                 }
-              >
-                <option value="" disabled>
-                  색상을 선택하세요
-                </option>
-                {colors.map((color) => (
-                  <option
-                    key={color.value}
-                    value={color.value}
-                    style={{ backgroundColor: color.value, color: '#000' }}
-                  >
-                    {color.label}
-                  </option>
-                ))}
-              </select>
+              />
             </label>
-          </ColorSelectWrapper>
-          <button onClick={handleAddEvent}>Add Event</button>
-          <button onClick={closeModal} style={{ marginTop: '10px' }}>
-            Cancel
-          </button>
-        </ModalContent>
-      </StyledModal>
-    </Container>
+            <label>
+              요일/시간: {dayArr[new Date(newEvent.date).getDay()]}요일/
+              {newEvent.date && newEvent.date.split('T')[1]?.slice(0, 6)} ~ ?
+            </label>
+            <label>
+              강좌명:
+              <input
+                type="text"
+                value={newEvent.courseName}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, courseName: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              인원수:
+              <input
+                type="number"
+                value={newEvent.participants}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, participants: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              타임수:
+              <input
+                type="number"
+                value={newEvent.times}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, times: e.target.value })
+                }
+              />
+            </label>
+            <label>Notes</label>
+            <textarea
+              value={newEvent.notes}
+              onChange={(e) =>
+                setNewEvent({ ...newEvent, notes: e.target.value })
+              }
+            />
+            <ColorSelectWrapper selectedColor={newEvent.backgroundColor}>
+              <label>
+                색상:
+                <select
+                  value={newEvent.backgroundColor}
+                  onChange={(e) =>
+                    setNewEvent({
+                      ...newEvent,
+                      backgroundColor: e.target.value,
+                    })
+                  }
+                >
+                  <option value="" disabled>
+                    색상을 선택하세요
+                  </option>
+                  {colors.map((color) => (
+                    <option
+                      key={color.value}
+                      value={color.value}
+                      style={{ backgroundColor: color.value, color: '#000' }}
+                    >
+                      {color.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </ColorSelectWrapper>
+            <button onClick={handleAddEvent}>Add Event</button>
+            <button onClick={closeModal} style={{ marginTop: '10px' }}>
+              Cancel
+            </button>
+          </ModalContent>
+        </StyledModal>
+        {/* New 툴팁 */}
+      </Container>
+      {tooltip.visible && tooltip.content && (
+        <div
+          style={{
+            position: 'absolute',
+            top: tooltip.position.top,
+            left: tooltip.position.left,
+            zIndex: 1000,
+          }}
+          onClick={(e) => e.stopPropagation()} // 툴팁 닫기 방지
+        >
+          <AdminTooltip
+            id={tooltip.content.id}
+            title={tooltip.content.title}
+            start={tooltip.content.start}
+            end={tooltip.content.end}
+            event={tooltip.content.eventProps}
+            onEdit={handleEventUpdate}
+          />
+        </div>
+      )}
+    </>
   );
 };
 
@@ -467,7 +587,7 @@ const Container = styled.div`
 
 const MiniCalendarWrapper = styled.div`
   .fc {
-    width: 300px;
+    width: 15vw;
     height: 400px;
 
     direction: ltr;
@@ -538,13 +658,21 @@ const SchedulerWrapper = styled.div`
     overflow-y: auto;
   }
 
-  .fc-timegrid-event-harness {
-    z-index: 1;
-  }
-
   .fc-event {
     width: 100%;
   }
+  .fc-timegrid-col-events {
+    .fc-timegrid-event-harness {
+      z-index: 1;
+    }
+  }
+  /* .fc-timegrid-event-harness {
+    a {
+      div {
+        z-index: 1;
+      }
+    }
+  } */
 
   .fc-event-main {
     width: 100%;
