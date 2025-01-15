@@ -328,7 +328,7 @@ const AdminSchedulerBody = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedEventId]);
 
-  const renderDayHeader = (arg) => {
+  const renderDayHeaderB = (arg) => {
     const dayStyle = {
       color:
         arg.date.getDay() === 0
@@ -338,15 +338,19 @@ const AdminSchedulerBody = () => {
             : 'black',
     };
 
-    return (
-      <div style={dayStyle}>
-        {`${scheduleForm === 'week' ? arg.date.getDate() : ''} ${dayArr[arg.date.getDay()]}`}
-      </div>
-    );
+    return <div style={dayStyle}>{`${dayArr[arg.date.getDay()]}`}</div>;
   };
-
   const renderDayCellB = (arg) => {
     const dateObj = new Date(arg.date);
+
+    const dayStyle = {
+      color:
+        arg.date.getDay() === 0
+          ? 'red'
+          : arg.date.getDay() === 6
+            ? 'blue'
+            : '#7e7e7e',
+    };
 
     // 오늘 날짜와 선택된 날짜를 비교
     const isHighlighted =
@@ -362,12 +366,35 @@ const AdminSchedulerBody = () => {
           isHighlighted ? 'highlighted-date-range' : ''
         }`}
         isOtherMonth={isOtherMonth}
+        color={
+          arg.date.getDay() === 0
+            ? 'red'
+            : arg.date.getDay() === 6
+              ? 'blue'
+              : '#7e7e7e'
+        }
       >
         {dateObj.getDate()}
       </GridDayMonthContainerB>
     );
   };
 
+  const renderDayHeaderA = (arg) => {
+    const dayStyle = {
+      color:
+        arg.date.getDay() === 0
+          ? 'red'
+          : arg.date.getDay() === 6
+            ? 'blue'
+            : 'black',
+    };
+
+    return (
+      <div style={dayStyle}>
+        {`${scheduleForm === 'week' ? arg.date.getDate() : ''} ${dayArr[arg.date.getDay()]}`}
+      </div>
+    );
+  };
   const renderDayCellA = (arg) => {
     const dateObj = new Date(arg.date);
 
@@ -407,6 +434,7 @@ const AdminSchedulerBody = () => {
               center: 'prev,title,next',
               right: '',
             }}
+            dayHeaderContent={renderDayHeaderB}
             dayCellContent={renderDayCellB} // 커스텀 dayCellContent
             locale="ko"
           />
@@ -433,7 +461,7 @@ const AdminSchedulerBody = () => {
               month: 'long', // 월 이름 전체 (e.g., January)
               day: 'numeric', // 날짜 (e.g., 1)
             }}
-            dayHeaderContent={renderDayHeader}
+            dayHeaderContent={renderDayHeaderA}
             customButtons={{
               customToday: {
                 text: 'today',
@@ -1008,7 +1036,9 @@ const GridDayMonthContainerB = styled.div`
   background-color: ${(props) =>
     props.isOtherMonth ? '#e0e0e0' : '#f5f5f5'}; /* 이전/다음 달 배경 */
   color: ${(props) =>
-    props.isOtherMonth ? '#e0e0e0' : '#7e7e7e'}; /* 이전/다음 달 텍스트 색상 */
+    props.isOtherMonth
+      ? '#e0e0e0'
+      : props.color}; /* 이전/다음 달 텍스트 색상 */
 
   border-radius: 10px;
   font-size: 1rem;
