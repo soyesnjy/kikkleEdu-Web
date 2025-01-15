@@ -328,21 +328,44 @@ const AdminSchedulerBody = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedEventId]);
 
-  // B캘린더 DayCell Render 메서드
+  // // B캘린더 DayCell Render 메서드
+  // const renderDayCell = (arg) => {
+  //   const dateObj = new Date(arg.date);
+  //   // Day Cell 클릭 시 isHighlighted 트리거 On
+  //   const isHighlighted =
+  //     selectedDate && dateObj.toDateString() === selectedDate.toDateString(); // 선택된 날짜와 비교
+
+  //   return (
+  //     <GridDayMonthContainer
+  //       className={`fc-daygrid-day-frame ${
+  //         isHighlighted ? 'highlighted-date-range' : ''
+  //       }`}
+  //     >
+  //       {dateObj.getDate()}
+  //     </GridDayMonthContainer>
+  //   );
+  // };
+
   const renderDayCell = (arg) => {
     const dateObj = new Date(arg.date);
-    // Day Cell 클릭 시 isHighlighted 트리거 On
+
+    // 오늘 날짜와 선택된 날짜를 비교
     const isHighlighted =
-      selectedDate && dateObj.toDateString() === selectedDate.toDateString(); // 선택된 날짜와 비교
+      selectedDate && dateObj.toDateString() === selectedDate.toDateString();
+
+    // 이전/다음 달 날짜인지 확인
+    const isOtherMonth =
+      arg.date.getMonth() !== arg.view.currentStart.getMonth();
 
     return (
-      <div
+      <GridDayMonthContainer
         className={`fc-daygrid-day-frame ${
           isHighlighted ? 'highlighted-date-range' : ''
         }`}
+        isOtherMonth={isOtherMonth}
       >
         {dateObj.getDate()}
-      </div>
+      </GridDayMonthContainer>
     );
   };
 
@@ -356,11 +379,12 @@ const AdminSchedulerBody = () => {
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
             selectable={true}
+            // showNonCurrentDates={false} // 이전/다음 달 날짜 숨김
             dateClick={handleDateClick} // 날짜 클릭 이벤트 핸들러
             headerToolbar={{
-              left: 'prev',
-              center: 'title',
-              right: 'next',
+              left: '',
+              center: 'prev,title,next',
+              right: '',
             }}
             dayCellContent={renderDayCell} // 커스텀 dayCellContent
             locale="ko"
@@ -434,7 +458,7 @@ const AdminSchedulerBody = () => {
             slotMinTime="10:00:00"
             slotMaxTime="23:00:00"
             slotDuration="00:10:00" // 슬롯 단위: 1시간
-            defaultTimedEventDuration="00:10:00" // 이벤트 기본 지속 시간 10분
+            // defaultTimedEventDuration="00:10:00" // 이벤트 기본 지속 시간 10분
             // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
             allDaySlot={false}
             datesSet={handleDatesSet} // 날짜 이동 이벤트 핸들러
@@ -466,7 +490,7 @@ const AdminSchedulerBody = () => {
             eventOrder={scheduleForm === 'week' ? 'title' : 'start'} // 이벤트 조건부 정렬
             eventDurationEditable={false} // 이벤트 길이 조정
             locale="ko"
-            height="auto"
+            // height="auto"
           />
         </SchedulerWrapper>
 
@@ -604,6 +628,17 @@ const MiniCalendarWrapper = styled.div`
     font-family: AppleSDGothicNeoB00;
   }
 
+  .fc-daygrid-day.fc-day-today {
+    background-color: white;
+  }
+
+  .fc-daygrid-day,
+  .fc-scrollgrid-liquid,
+  .fc-theme-standard td,
+  .fc-theme-standard th {
+    border: none;
+  }
+
   .fc-daygrid-day-frame {
     display: flex;
     justify-content: center;
@@ -625,15 +660,67 @@ const MiniCalendarWrapper = styled.div`
     font-size: 1.4rem; */
   }
 
-  .highlighted-date-range {
-    background: linear-gradient(90deg, #4b95a2, #50a58e);
-    border-radius: 10px;
-    color: white;
+  .fc-day-other {
   }
 
-  /* .fc-day-other {
-    visibility: hidden;
-  } */
+  .highlighted-date-range {
+    background: #eaf0ff;
+    border: 2px solid #45b26b;
+    border-radius: 10px;
+  }
+
+  // toolbar 관련
+  .fc-toolbar-chunk {
+    div {
+      display: flex; /* 버튼들을 가로 정렬 */
+      justify-content: center;
+      align-items: center;
+      gap: 0.4rem; /* 버튼 간 간격 */
+    }
+
+    // 이전, 다음 버튼
+    .fc-prev-button,
+    .fc-next-button {
+      padding: 0.4rem;
+      border: none;
+      border-radius: 4px;
+      background-color: white;
+      color: #787878;
+
+      /* box-shadow: 0px 1.94px 2.58px 0px #00000040; */
+
+      &:hover {
+        background-color: #378e56;
+        color: white;
+      }
+    }
+    // 날짜 title
+    .fc-toolbar-title {
+      width: 90px;
+      display: inline;
+
+      font-size: 1rem;
+      font-family: Pretendard;
+      font-weight: 600;
+      text-align: left;
+    }
+  }
+
+  // header 관련
+  .fc-col-header-cell {
+    padding: 0.5rem 0;
+
+    .fc-scrollgrid-sync-inner {
+      text-align: center;
+
+      a {
+        font-size: 0.7rem;
+        font-family: Pretendard;
+        font-weight: 600;
+        text-align: left;
+      }
+    }
+  }
 `;
 
 const SchedulerWrapper = styled.div`
@@ -645,7 +732,7 @@ const SchedulerWrapper = styled.div`
   .fc {
     padding: 1rem;
     width: 65vw;
-    height: 90vh;
+    height: 80vh;
 
     direction: ltr;
     text-align: left;
@@ -654,14 +741,11 @@ const SchedulerWrapper = styled.div`
   }
 
   .fc-timegrid-slot {
-    border-bottom: 1px solid #ddd; /* 슬롯 경계선 */
-  }
-  .fc-timegrid-axis-cushion {
-    font-size: 12px; /* 라벨 텍스트 크기 조정 */
+    border-bottom: 1px solid #ddd;
   }
 
   .fc-daygrid-day-events {
-    height: 100px;
+    /* height: 100px; */
     overflow-x: hidden;
     overflow-y: auto;
   }
@@ -693,6 +777,7 @@ const SchedulerWrapper = styled.div`
 
       &:hover {
         background-color: #378e56;
+        color: white;
       }
     }
     // 날짜 title
@@ -725,6 +810,7 @@ const SchedulerWrapper = styled.div`
 
       &:hover {
         background-color: #378e56;
+        color: white;
       }
     }
     // 주간 버튼
@@ -745,6 +831,7 @@ const SchedulerWrapper = styled.div`
 
       &:hover {
         background-color: #378e56;
+        color: white;
       }
     }
     // 월간 버튼
@@ -766,6 +853,7 @@ const SchedulerWrapper = styled.div`
 
       &:hover {
         background-color: #378e56;
+        color: white;
       }
     }
   }
@@ -873,6 +961,19 @@ const SlotLabelContainer = styled.div`
 `;
 
 const SlotLabelContent = styled.span`
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+  text-align: left;
+`;
+
+const GridDayMonthContainer = styled.div`
+  background-color: ${(props) =>
+    props.isOtherMonth ? '#e0e0e0' : '#f5f5f5'}; /* 이전/다음 달 배경 */
+  color: ${(props) =>
+    props.isOtherMonth ? '#e0e0e0' : '#7e7e7e'}; /* 이전/다음 달 텍스트 색상 */
+
+  border-radius: 10px;
   font-size: 1rem;
   font-family: Pretendard;
   font-weight: 400;
