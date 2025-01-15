@@ -328,24 +328,6 @@ const AdminSchedulerBody = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedEventId]);
 
-  // // B캘린더 DayCell Render 메서드
-  // const renderDayCell = (arg) => {
-  //   const dateObj = new Date(arg.date);
-  //   // Day Cell 클릭 시 isHighlighted 트리거 On
-  //   const isHighlighted =
-  //     selectedDate && dateObj.toDateString() === selectedDate.toDateString(); // 선택된 날짜와 비교
-
-  //   return (
-  //     <GridDayMonthContainer
-  //       className={`fc-daygrid-day-frame ${
-  //         isHighlighted ? 'highlighted-date-range' : ''
-  //       }`}
-  //     >
-  //       {dateObj.getDate()}
-  //     </GridDayMonthContainer>
-  //   );
-  // };
-
   const renderDayCell = (arg) => {
     const dateObj = new Date(arg.date);
 
@@ -374,6 +356,7 @@ const AdminSchedulerBody = () => {
       <Container>
         {/* 미니 달력 */}
         <MiniCalendarWrapper>
+          <MiniCalendarTitle>{`강사 스케줄 관리`}</MiniCalendarTitle>
           <FullCalendar
             ref={bCalendarRef} // B캘린더 ref
             plugins={[dayGridPlugin, interactionPlugin]}
@@ -618,21 +601,22 @@ const Container = styled.div`
 `;
 
 const MiniCalendarWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   .fc {
-    width: 15vw;
+    width: 17vw;
     height: 400px;
+    padding: 1rem;
 
-    direction: ltr;
-    text-align: left;
-    margin: auto;
-    font-family: AppleSDGothicNeoB00;
+    border: 2px solid #efefef;
+    border-radius: 10px;
   }
 
   .fc-daygrid-day.fc-day-today {
     background-color: white;
   }
 
-  .fc-daygrid-day,
   .fc-scrollgrid-liquid,
   .fc-theme-standard td,
   .fc-theme-standard th {
@@ -658,9 +642,6 @@ const MiniCalendarWrapper = styled.div`
     font-family: Pretendard;
     font-weight: 700;
     font-size: 1.4rem; */
-  }
-
-  .fc-day-other {
   }
 
   .highlighted-date-range {
@@ -708,8 +689,6 @@ const MiniCalendarWrapper = styled.div`
 
   // header 관련
   .fc-col-header-cell {
-    padding: 0.5rem 0;
-
     .fc-scrollgrid-sync-inner {
       text-align: center;
 
@@ -721,6 +700,24 @@ const MiniCalendarWrapper = styled.div`
       }
     }
   }
+`;
+
+const MiniCalendarTitle = styled.div`
+  width: 100%;
+
+  background-color: #45b26b;
+  color: white;
+
+  border: none;
+  border-radius: 10px;
+
+  padding: 0.7rem 1.2rem;
+  margin-right: 0.5rem;
+
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+  text-align: center;
 `;
 
 const SchedulerWrapper = styled.div`
