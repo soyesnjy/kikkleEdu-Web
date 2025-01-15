@@ -328,7 +328,24 @@ const AdminSchedulerBody = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedEventId]);
 
-  const renderDayCell = (arg) => {
+  const renderDayHeader = (arg) => {
+    const dayStyle = {
+      color:
+        arg.date.getDay() === 0
+          ? 'red'
+          : arg.date.getDay() === 6
+            ? 'blue'
+            : 'black',
+    };
+
+    return (
+      <div style={dayStyle}>
+        {`${scheduleForm === 'week' ? arg.date.getDate() : ''} ${dayArr[arg.date.getDay()]}`}
+      </div>
+    );
+  };
+
+  const renderDayCellB = (arg) => {
     const dateObj = new Date(arg.date);
 
     // 오늘 날짜와 선택된 날짜를 비교
@@ -340,14 +357,36 @@ const AdminSchedulerBody = () => {
       arg.date.getMonth() !== arg.view.currentStart.getMonth();
 
     return (
-      <GridDayMonthContainer
+      <GridDayMonthContainerB
         className={`fc-daygrid-day-frame ${
           isHighlighted ? 'highlighted-date-range' : ''
         }`}
         isOtherMonth={isOtherMonth}
       >
         {dateObj.getDate()}
-      </GridDayMonthContainer>
+      </GridDayMonthContainerB>
+    );
+  };
+
+  const renderDayCellA = (arg) => {
+    const dateObj = new Date(arg.date);
+
+    const dayStyle = {
+      color:
+        arg.date.getDay() === 0
+          ? 'red'
+          : arg.date.getDay() === 6
+            ? 'blue'
+            : 'black',
+    };
+
+    return (
+      <GridDayMonthContainerA
+        className={`fc-daygrid-day-frame`}
+        style={dayStyle}
+      >
+        {dateObj.getDate()}
+      </GridDayMonthContainerA>
     );
   };
 
@@ -362,14 +401,13 @@ const AdminSchedulerBody = () => {
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
             selectable={true}
-            // showNonCurrentDates={false} // 이전/다음 달 날짜 숨김
             dateClick={handleDateClick} // 날짜 클릭 이벤트 핸들러
             headerToolbar={{
               left: '',
               center: 'prev,title,next',
               right: '',
             }}
-            dayCellContent={renderDayCell} // 커스텀 dayCellContent
+            dayCellContent={renderDayCellB} // 커스텀 dayCellContent
             locale="ko"
           />
         </MiniCalendarWrapper>
@@ -395,13 +433,7 @@ const AdminSchedulerBody = () => {
               month: 'long', // 월 이름 전체 (e.g., January)
               day: 'numeric', // 날짜 (e.g., 1)
             }}
-            // dayHeaderFormat={{
-            //   weekday: 'short', // 요일: "화", "수" 등
-            //   day: '2-digit', // 날짜: 14, 15 등
-            // }}
-            dayHeaderContent={(arg) =>
-              `${scheduleForm === 'week' ? arg.date.getDate() : ''} ${dayArr[arg.date.getDay()]}`
-            }
+            dayHeaderContent={renderDayHeader}
             customButtons={{
               customToday: {
                 text: 'today',
@@ -472,8 +504,9 @@ const AdminSchedulerBody = () => {
             eventDrop={handleEventDrop} // Drag&Drop Handler: start 정보 수정
             eventOrder={scheduleForm === 'week' ? 'title' : 'start'} // 이벤트 조건부 정렬
             eventDurationEditable={false} // 이벤트 길이 조정
+            dayCellContent={scheduleForm === 'month' ? renderDayCellA : null} // 커스텀 dayCellContent
             locale="ko"
-            // height="auto"
+            height="auto"
           />
         </SchedulerWrapper>
 
@@ -729,7 +762,7 @@ const SchedulerWrapper = styled.div`
   .fc {
     padding: 1rem;
     width: 65vw;
-    height: 80vh;
+    height: auto;
 
     direction: ltr;
     text-align: left;
@@ -741,14 +774,21 @@ const SchedulerWrapper = styled.div`
     border-bottom: 1px solid #ddd;
   }
 
+  // Month Header
+  .fc-daygrid-day-top {
+    justify-content: left;
+    padding-left: 0.4rem;
+  }
+
   .fc-daygrid-day-events {
-    /* height: 100px; */
+    height: 80px;
     overflow-x: hidden;
     overflow-y: auto;
   }
 
-  // timegrid today 관련
-  .fc-timegrid-col.fc-day-today {
+  // today 관련 (주간 + 월간)
+  .fc-timegrid-col.fc-day-today,
+  .fc-daygrid-day.fc-day-today {
     background-color: #eaf0ff;
     border: 2px solid #45b26b;
   }
@@ -865,7 +905,7 @@ const SchedulerWrapper = styled.div`
       text-align: left;
 
       a {
-        font-size: 1rem;
+        font-size: 1.2rem;
         font-family: Pretendard;
         font-weight: 600;
         text-align: left;
@@ -964,7 +1004,7 @@ const SlotLabelContent = styled.span`
   text-align: left;
 `;
 
-const GridDayMonthContainer = styled.div`
+const GridDayMonthContainerB = styled.div`
   background-color: ${(props) =>
     props.isOtherMonth ? '#e0e0e0' : '#f5f5f5'}; /* 이전/다음 달 배경 */
   color: ${(props) =>
@@ -974,6 +1014,17 @@ const GridDayMonthContainer = styled.div`
   font-size: 1rem;
   font-family: Pretendard;
   font-weight: 400;
+  text-align: left;
+`;
+
+const GridDayMonthContainerA = styled.div`
+  background-color: white;
+  color: #494949;
+  border-radius: 10px;
+
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 600;
   text-align: left;
 `;
 
