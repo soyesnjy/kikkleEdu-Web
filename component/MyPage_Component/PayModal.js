@@ -25,8 +25,28 @@ const PayModal = ({ isOpen, setIsOpen }) => {
           </CloseButton>
         </PayModalContentHeaderContainer>
         <PayModalContentMiddleContainer>
-          <PayModalMiddleTitle>담당자</PayModalMiddleTitle>
-          <PayModalMiddleSubtitle>02-303-4420</PayModalMiddleSubtitle>
+          <PayModalMiddleTitle backColor="#63636366">
+            사업자 번호
+          </PayModalMiddleTitle>
+          <PayModalMiddleSubtitle color="#636363">
+            02-303-4420
+          </PayModalMiddleSubtitle>
+        </PayModalContentMiddleContainer>
+        <PayModalContentMiddleContainer>
+          <PayModalMiddleTitle backColor="#3870FF66">
+            이메일 주소
+          </PayModalMiddleTitle>
+          <PayModalMiddleSubtitle color="#3870FF">
+            soyes2021@gmail.com
+          </PayModalMiddleSubtitle>
+        </PayModalContentMiddleContainer>
+        <PayModalContentMiddleContainer>
+          <PayModalMiddleTitle backColor="#378E5666">
+            담당자 번호
+          </PayModalMiddleTitle>
+          <PayModalMiddleSubtitle color="#378E56">
+            02-303-4420
+          </PayModalMiddleSubtitle>
         </PayModalContentMiddleContainer>
 
         <PayModalButton>
@@ -56,13 +76,13 @@ const PayModalContainer = styled.div`
 
 const PayModalContentContainer = styled.div`
   width: 602px;
-  height: 268px;
+  height: fit-content;
   background-color: white;
   border-radius: 16px;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 
   padding: 2rem;
@@ -100,9 +120,9 @@ const PayModalContentMiddleContainer = styled.div`
 `;
 
 const PayModalMiddleTitle = styled.span`
-  background-color: #afc6ff;
-  padding: 0.5rem 2rem;
-  border-radius: 8px;
+  background-color: ${(props) => props.backColor || '#afc6ff'};
+  padding: 0.7rem 1.5rem;
+  border-radius: 12px;
 
   font-family: Pretendard;
   font-weight: 400;
@@ -114,7 +134,7 @@ const PayModalMiddleSubtitle = styled.span`
   font-family: Pretendard;
   font-weight: 700;
   font-size: 1rem;
-  color: #3870ff;
+  color: ${(props) => (props.color ? props.color : '#3870ff')};
 `;
 
 const PayModalButton = styled.button`

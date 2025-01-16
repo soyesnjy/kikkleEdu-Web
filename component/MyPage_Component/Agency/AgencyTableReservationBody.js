@@ -28,7 +28,7 @@ const AgencyTableReservationBody = ({ data, setIsOpen }) => {
       </TableCell>
       <TableCell>
         {data.kk_reservation_approve_status ? (
-          <button onClick={() => setIsOpen(true)}>세금 계산서</button>
+          <PayButton onClick={() => setIsOpen(true)}>세금 계산서</PayButton>
         ) : (
           <Status status={data.kk_reservation_approve_status}>대기중...</Status>
         )}
@@ -71,6 +71,19 @@ const Status = styled.span`
   font-family: Pretendard;
   font-weight: 700;
   text-align: left;
+`;
+
+const PayButton = styled.button`
+  background-color: #378e56;
+  padding: 0.7rem;
+  border-radius: 12px;
+
+  border: none;
+
+  font-family: Pretendard;
+  font-weight: 400;
+  font-size: 1rem;
+  color: white;
 `;
 
 export default AgencyTableReservationBody;
