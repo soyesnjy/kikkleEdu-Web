@@ -109,227 +109,6 @@ const AdminSchedulerBody = () => {
       bCalendarRef.current.getApi().gotoDate(newData); // B캘린더 날짜 이동
     }
   };
-
-  // 모달 열기
-  const openModal = (date) => {
-    setNewEvent((prev) => ({ ...prev, date }));
-    setModalOpen(true);
-  };
-  // 모달 닫기
-  const closeModal = () => {
-    setModalOpen(false);
-    setNewEvent({
-      title: '',
-      dayAndTime: '',
-      courseName: '',
-      participants: '',
-      times: '',
-      notes: '',
-      backgroundColor: '',
-      date: '',
-    });
-  };
-
-  // 툴팁 리셋 핸들러
-  const handleResetTooptip = () => {
-    setSelectedEventId(-1);
-    setTooltip({
-      visible: false,
-      content: null,
-      position: { top: 0, left: 0 },
-    });
-  };
-  // 이벤트 클릭 핸들러 (툴팁 관련 위치 계산)
-  const handleEventClick = (info) => {
-    const { id, title, start, end, extendedProps } = info.event;
-
-    // 툴팁이 켜진 경우 끄기 (토글)
-    if (tooltip.visible && tooltip.content.id === id) {
-      handleResetTooptip();
-      return;
-    }
-    // 이벤트 요소의 위치 계산
-    const rect = info.el.getBoundingClientRect();
-    const tooltipPosition = {
-      top: rect.top + window.scrollY + rect.height / 2 - 60, // 중앙 Y
-      left: rect.left + window.scrollX + rect.width, // 오른쪽에 표시
-    };
-
-    // 이벤트가 마지막 주(토요일)인 경우
-    if (new Date(start).getDay() === 6) {
-      delete tooltipPosition.left; // 왼쪽 위치 제거
-      tooltipPosition.left = rect.left + window.scrollX - 250; // 툴팁을 왼쪽으로 표시
-    }
-    setSelectedEventId(id);
-    setTooltip({
-      visible: true,
-      content: {
-        id,
-        title,
-        start,
-        end,
-        eventProps: extendedProps,
-      },
-      position: tooltipPosition,
-    });
-  };
-
-  // 이벤트 추가
-  const handleAddEvent = async () => {
-    const startDate = new Date(newEvent.date);
-    const endDate = new Date(startDate.getTime() + 50 * 60 * 1000); // start + 50분
-
-    const newEventData = {
-      id: events.length + 1, // 임시 ID (서버에서 제공 시 업데이트 가능)
-      title: newEvent.title,
-      start: newEvent.date,
-      end: endDate.toISOString(),
-      extendedProps: {
-        dayAndTime: `${dayArr[new Date(newEvent.date).getDay()]}요일/ ${newEvent.date.split('T')[1]} ~ ${newEvent.dayAndTime}`,
-        courseName: newEvent.courseName,
-        participants: newEvent.participants,
-        times: newEvent.times,
-        notes: newEvent.notes,
-      },
-      backgroundColor: newEvent.backgroundColor,
-    };
-
-    // 서버로 이벤트 추가가 요청
-    // await createStartOnServer(newEventData);
-
-    setEvents((prevEvents) => [
-      ...prevEvents,
-      {
-        ...newEventData,
-        id: prevEvents.length + 1,
-      },
-    ]);
-    handleResetTooptip();
-
-    closeModal();
-  };
-
-  // 이벤트 Drop 핸들러 start 정보만 수정
-  const handleEventDrop = (info) => {
-    const { event } = info;
-    const startDate = new Date(event.start);
-    const endDate = new Date(startDate.getTime() + 50 * 60 * 1000); // 50분 후 계산
-
-    // 수정된 start 정보만 반영
-    const updatedEvent = {
-      id: Number(event.id),
-      start: startDate.toISOString(),
-      end: endDate.toISOString(),
-    };
-
-    console.log('updatedEvent: ', updatedEvent);
-
-    // 서버로 업데이트 요청
-    // updateStartOnServer(updatedEvent);
-
-    // 로컬 상태 업데이트 (start만 변경)
-    setEvents((prevEvents) =>
-      prevEvents.map((evt) =>
-        evt.id === Number(updatedEvent.id)
-          ? {
-              ...evt,
-              start: updatedEvent.start,
-              end: updatedEvent.end,
-            }
-          : evt
-      )
-    );
-    handleResetTooptip();
-  };
-  // 이벤트 수정 핸들러
-  const handleEventUpdate = (event) => {
-    console.log('Tooltip Update!');
-
-    // 수정된 start 정보만 반영
-
-    console.log('updatedEvent: ', event);
-
-    // 서버로 업데이트 요청
-    // updateStartOnServer(updatedEvent);
-
-    // 로컬 상태 업데이트 (start만 변경)
-    setEvents((prevEvents) =>
-      prevEvents.map((evt) =>
-        evt.id === Number(event.id) ? { ...evt, ...event } : evt
-      )
-    );
-    handleResetTooptip();
-  };
-  // 이벤트 삭제
-  const deleteEvent = async (eventId) => {
-    console.log('Deleting event with ID:', eventId);
-
-    // 서버 삭제 요청
-    // await deleteEventFromServer(eventId);
-
-    // 로컬 상태 업데이트
-    setEvents((prevEvents) =>
-      prevEvents.filter((event) => event.id !== Number(eventId))
-    );
-
-    handleResetTooptip();
-  };
-  // 검색 필터
-  const handleSearch = (e) => {
-    const query = e.target.value.toLowerCase();
-    setSearchQuery(query);
-    setEvents((prevEvents) =>
-      query
-        ? prevEvents.filter((event) =>
-            event.extendedProps.courseName?.toLowerCase().includes(query)
-          )
-        : [...prevEvents]
-    );
-  };
-
-  // events 로그 출력
-  useEffect(() => {
-    console.log('events:', events);
-  }, [events]);
-
-  // scheduleForm 상태 변경 시 발동
-  useEffect(() => {
-    // 툴팁 리셋
-    handleResetTooptip();
-
-    // 스케줄러 스크롤 시 툴팁 제거 이벤트 추가
-    // const calendarElement = aCalendarRef.current?.getApi().el;
-    // const scroller = calendarElement.querySelector(
-    //   '.fc-scroller-liquid-absolute'
-    // ); // 스크롤 가능한 요소 선택
-
-    // if (scroller) {
-    //   scroller.addEventListener('scroll', handleResetTooptip);
-    // }
-
-    // // 클린업
-    // return () => {
-    //   if (scroller) {
-    //     scroller.removeEventListener('scroll', handleResetTooptip);
-    //   }
-    // };
-  }, [scheduleForm]);
-
-  // Delete 삭제 기능
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (selectedEventId && e.key === 'Delete') {
-        e.stopPropagation(); // 이벤트 전파 차단
-        if (confirm('삭제 하시겠습니까?') === true) {
-          deleteEvent(selectedEventId);
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedEventId]);
-
   // 미니 달력(B) 렌더 메서드
   const renderDayHeaderB = (arg) => {
     const dayStyle = {
@@ -372,7 +151,6 @@ const AdminSchedulerBody = () => {
       </GridDayMonthContainerB>
     );
   };
-
   // 메인 스케줄러(A) 렌더 메서드
   const renderDayHeaderA = (arg) => {
     const dayStyle = {
@@ -413,6 +191,225 @@ const AdminSchedulerBody = () => {
       </GridDayMonthContainerA>
     );
   };
+
+  // 모달 열기
+  const openModal = (date) => {
+    setNewEvent((prev) => ({ ...prev, date }));
+    setModalOpen(true);
+  };
+  // 모달 닫기
+  const closeModal = () => {
+    setModalOpen(false);
+    setNewEvent({
+      title: '',
+      dayAndTime: '',
+      courseName: '',
+      participants: '',
+      times: '',
+      notes: '',
+      backgroundColor: '',
+      date: '',
+    });
+  };
+
+  // 툴팁 리셋 핸들러
+  const handleResetTooptip = () => {
+    setSelectedEventId(-1);
+    setTooltip({
+      visible: false,
+      content: null,
+      position: { top: 0, left: 0 },
+    });
+  };
+  // 이벤트 클릭 핸들러 (툴팁 관련 위치 계산)
+  const handleEventClick = (info) => {
+    const { id, title, start, end, extendedProps } = info.event;
+
+    // 툴팁이 켜진 경우 끄기 (토글)
+    if (tooltip.visible && tooltip.content.id === id) {
+      handleResetTooptip();
+      return;
+    }
+    // 이벤트 요소의 위치 계산
+    const rect = info.el.getBoundingClientRect();
+    const tooltipPosition = {
+      top: rect.top + window.scrollY + rect.height / 2 - 65, // 중앙 Y
+      left: rect.left + window.scrollX + rect.width, // 오른쪽에 표시
+    };
+
+    // 이벤트가 마지막 주(토요일)인 경우
+    if (new Date(start).getDay() === 6) {
+      delete tooltipPosition.left; // 왼쪽 위치 제거
+      tooltipPosition.left = rect.left + window.scrollX - 250; // 툴팁을 왼쪽으로 표시
+    }
+    setSelectedEventId(id);
+    setTooltip({
+      visible: true,
+      content: {
+        id,
+        title,
+        start,
+        end,
+        eventProps: extendedProps,
+      },
+      position: tooltipPosition,
+    });
+  };
+
+  // 이벤트 Insert 핸들러
+  const handleAddEvent = async () => {
+    const startDate = new Date(newEvent.date);
+    const endDate = new Date(startDate.getTime() + 50 * 60 * 1000); // start + 50분
+
+    const newEventData = {
+      id: events.length + 1, // 임시 ID (서버에서 제공 시 업데이트 가능)
+      title: newEvent.title,
+      start: newEvent.date,
+      end: endDate.toISOString(),
+      extendedProps: {
+        dayAndTime: `${dayArr[new Date(newEvent.date).getDay()]}요일/ ${newEvent.date.split('T')[1]} ~ ${newEvent.dayAndTime}`,
+        courseName: newEvent.courseName,
+        participants: newEvent.participants,
+        times: newEvent.times,
+        notes: newEvent.notes,
+      },
+      backgroundColor: newEvent.backgroundColor,
+    };
+
+    // 서버로 이벤트 추가가 요청
+    // await createStartOnServer(newEventData);
+
+    setEvents((prevEvents) => [
+      ...prevEvents,
+      {
+        ...newEventData,
+        id: prevEvents.length + 1,
+      },
+    ]);
+    handleResetTooptip();
+
+    closeModal();
+  };
+  // 이벤트 Drop 핸들러 start 정보만 수정
+  const handleEventDrop = (info) => {
+    const { event } = info;
+    const startDate = new Date(event.start);
+    const endDate = new Date(startDate.getTime() + 50 * 60 * 1000); // 50분 후 계산
+
+    // 수정된 start 정보만 반영
+    const updatedEvent = {
+      id: Number(event.id),
+      start: startDate.toISOString(),
+      end: endDate.toISOString(),
+    };
+
+    console.log('updatedEvent: ', updatedEvent);
+
+    // 서버로 업데이트 요청
+    // updateStartOnServer(updatedEvent);
+
+    // 로컬 상태 업데이트 (start만 변경)
+    setEvents((prevEvents) =>
+      prevEvents.map((evt) =>
+        evt.id === Number(updatedEvent.id)
+          ? {
+              ...evt,
+              start: updatedEvent.start,
+              end: updatedEvent.end,
+            }
+          : evt
+      )
+    );
+    handleResetTooptip();
+  };
+  // 이벤트 Update 핸들러
+  const handleEventUpdate = (event) => {
+    console.log('Tooltip Update!');
+
+    // 수정된 start 정보만 반영
+
+    console.log('updatedEvent: ', event);
+
+    // 서버로 업데이트 요청
+    // updateStartOnServer(updatedEvent);
+
+    // 로컬 상태 업데이트 (start만 변경)
+    setEvents((prevEvents) =>
+      prevEvents.map((evt) =>
+        evt.id === Number(event.id) ? { ...evt, ...event } : evt
+      )
+    );
+    handleResetTooptip();
+  };
+  // 이벤트 Delete 핸들러
+  const deleteEvent = async (eventId) => {
+    console.log('Deleting event with ID:', eventId);
+
+    // 서버 삭제 요청
+    // await deleteEventFromServer(eventId);
+
+    // 로컬 상태 업데이트
+    setEvents((prevEvents) =>
+      prevEvents.filter((event) => event.id !== Number(eventId))
+    );
+
+    handleResetTooptip();
+  };
+  // 검색 필터
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    setEvents((prevEvents) =>
+      query
+        ? prevEvents.filter((event) =>
+            event.extendedProps.courseName?.toLowerCase().includes(query)
+          )
+        : [...prevEvents]
+    );
+  };
+
+  // events 로그 출력
+  // useEffect(() => {
+  //   console.log('events:', events);
+  // }, [events]);
+
+  // scheduleForm 상태 변경 시 발동
+  useEffect(() => {
+    // 툴팁 리셋
+    handleResetTooptip();
+
+    // 스케줄러 스크롤 시 툴팁 제거 이벤트 추가
+    // const calendarElement = aCalendarRef.current?.getApi().el;
+    // const scroller = calendarElement.querySelector(
+    //   '.fc-scroller-liquid-absolute'
+    // ); // 스크롤 가능한 요소 선택
+
+    // if (scroller) {
+    //   scroller.addEventListener('scroll', handleResetTooptip);
+    // }
+
+    // // 클린업
+    // return () => {
+    //   if (scroller) {
+    //     scroller.removeEventListener('scroll', handleResetTooptip);
+    //   }
+    // };
+  }, [scheduleForm]);
+
+  // Delete 삭제 기능
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (selectedEventId && e.key === 'Delete') {
+        e.stopPropagation(); // 이벤트 전파 차단
+        if (confirm('삭제 하시겠습니까?') === true) {
+          deleteEvent(selectedEventId);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedEventId]);
 
   return (
     <>
@@ -516,15 +513,11 @@ const AdminSchedulerBody = () => {
                   eventBackColor={arg.event.backgroundColor}
                   scheduleForm={scheduleForm}
                   selectedEventId={selectedEventId}
-                  // eventEnd={arg.event.end}
-                  // eventProps={arg.event.extendedProps}
-                  // setEvents={setEvents}
-                  // setSelectedEventId={setSelectedEventId}
                 />
               );
             }}
-            editable={scheduleForm === 'week'} // week Form일 경우에만 편집 가능
-            eventOverlap={scheduleForm === 'week'} // week Form일 경우에만 편집 가능
+            editable={true} // week Form일 경우에만 편집 가능
+            eventOverlap={true} // week Form일 경우에만 편집 가능
             slotEventOverlap={false} // 이벤트가 겹치지 않고 새로 배치
             eventDrop={handleEventDrop} // Drag&Drop Handler: start 정보 수정
             eventOrder={scheduleForm === 'week' ? 'title' : 'start'} // 이벤트 조건부 정렬
@@ -1048,8 +1041,8 @@ const GridDayMonthContainerB = styled.div`
 
 const GridDayMonthContainerA = styled.div`
   background-color: white;
-  color: ${(props) =>
-    props.isOtherMonth ? 'white' : props.color}; /* 이전/다음 달 텍스트 색상 */
+  color: ${(props) => (props.isOtherMonth ? '' : props.color)};
+
   border-radius: 10px;
 
   font-size: 1rem;
