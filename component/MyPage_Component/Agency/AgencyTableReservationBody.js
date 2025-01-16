@@ -84,6 +84,8 @@ const PayButton = styled.button`
   font-weight: 400;
   font-size: 1rem;
   color: white;
+
+  cursor: pointer;
 `;
 
 export default AgencyTableReservationBody;
