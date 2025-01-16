@@ -29,26 +29,26 @@ const AdminSchedulerBody = () => {
       title: 'Math Class',
       start: '2025-01-15T11:00:00',
       end: '2025-01-15T11:50:00',
+      backgroundColor: '#FFA3F6',
       extendedProps: {
         courseName: 'Mathematics',
         participants: 20,
         times: 2,
-        notes: '직접 메모가 가능한 메모장으로 기타메모부분',
+        notes: '직접 메모가 가능한 메모장으로 기타메모 부분',
       },
-      backgroundColor: '#FFA3F6',
     },
     {
       id: 2,
       title: 'English Class',
       start: '2025-01-15T11:10:00',
       end: '2025-01-15T12:00:00',
+      backgroundColor: '#FF7A00',
       extendedProps: {
         courseName: 'English Literature',
         participants: 15,
         times: 3,
         notes: 'Room 202',
       },
-      backgroundColor: '#FF7A00',
     },
   ]);
   const [newEvent, setNewEvent] = useState({
@@ -292,25 +292,27 @@ const AdminSchedulerBody = () => {
     console.log('events:', events);
   }, [events]);
 
-  // scheduleForm 변경: 툴팁 리셋 + 스케줄러 스크롤 시 툴팁 제거 이벤트 추가
+  // scheduleForm 상태 변경 시 발동
   useEffect(() => {
+    // 툴팁 리셋
     handleResetTooptip();
 
-    const calendarElement = aCalendarRef.current?.getApi().el;
-    const scroller = calendarElement.querySelector(
-      '.fc-scroller-liquid-absolute'
-    ); // 스크롤 가능한 요소 선택
+    // 스케줄러 스크롤 시 툴팁 제거 이벤트 추가
+    // const calendarElement = aCalendarRef.current?.getApi().el;
+    // const scroller = calendarElement.querySelector(
+    //   '.fc-scroller-liquid-absolute'
+    // ); // 스크롤 가능한 요소 선택
 
-    if (scroller) {
-      scroller.addEventListener('scroll', handleResetTooptip);
-    }
+    // if (scroller) {
+    //   scroller.addEventListener('scroll', handleResetTooptip);
+    // }
 
-    // 클린업
-    return () => {
-      if (scroller) {
-        scroller.removeEventListener('scroll', handleResetTooptip);
-      }
-    };
+    // // 클린업
+    // return () => {
+    //   if (scroller) {
+    //     scroller.removeEventListener('scroll', handleResetTooptip);
+    //   }
+    // };
   }, [scheduleForm]);
 
   // Delete 삭제 기능
@@ -328,6 +330,7 @@ const AdminSchedulerBody = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [selectedEventId]);
 
+  // 미니 달력(B) 렌더 메서드
   const renderDayHeaderB = (arg) => {
     const dayStyle = {
       color:
@@ -342,15 +345,6 @@ const AdminSchedulerBody = () => {
   };
   const renderDayCellB = (arg) => {
     const dateObj = new Date(arg.date);
-
-    const dayStyle = {
-      color:
-        arg.date.getDay() === 0
-          ? 'red'
-          : arg.date.getDay() === 6
-            ? 'blue'
-            : '#7e7e7e',
-    };
 
     // 오늘 날짜와 선택된 날짜를 비교
     const isHighlighted =
@@ -379,6 +373,7 @@ const AdminSchedulerBody = () => {
     );
   };
 
+  // 메인 스케줄러(A) 렌더 메서드
   const renderDayHeaderA = (arg) => {
     const dayStyle = {
       color:
@@ -398,19 +393,21 @@ const AdminSchedulerBody = () => {
   const renderDayCellA = (arg) => {
     const dateObj = new Date(arg.date);
 
-    const dayStyle = {
-      color:
-        arg.date.getDay() === 0
-          ? 'red'
-          : arg.date.getDay() === 6
-            ? 'blue'
-            : 'black',
-    };
+    // 이전/다음 달 날짜인지 확인
+    const isOtherMonth =
+      arg.date.getMonth() !== arg.view.currentStart.getMonth();
 
     return (
       <GridDayMonthContainerA
         className={`fc-daygrid-day-frame`}
-        style={dayStyle}
+        isOtherMonth={isOtherMonth}
+        color={
+          arg.date.getDay() === 0
+            ? 'red'
+            : arg.date.getDay() === 6
+              ? 'blue'
+              : '#7e7e7e'
+        }
       >
         {dateObj.getDate()}
       </GridDayMonthContainerA>
@@ -509,7 +506,7 @@ const AdminSchedulerBody = () => {
               if (scheduleForm === 'week') openModal(info.dateStr);
             }} // 모달 열기
             events={events}
-            eventClick={handleEventClick}
+            eventClick={handleEventClick} // 이벤트 클릭
             eventContent={(arg) => {
               return (
                 <AdminEvents
@@ -537,9 +534,8 @@ const AdminSchedulerBody = () => {
             height="auto"
           />
         </SchedulerWrapper>
-
         {/* 이벤트 추가 모달 */}
-        <StyledModal
+        <EventAddModal
           isOpen={modalOpen}
           onRequestClose={closeModal}
           ariaHideApp={false}
@@ -629,7 +625,7 @@ const AdminSchedulerBody = () => {
               Cancel
             </button>
           </ModalContent>
-        </StyledModal>
+        </EventAddModal>
       </Container>
       {/* New 툴팁 */}
       {tooltip.visible && tooltip.content && (
@@ -949,17 +945,20 @@ const SearchInput = styled.input`
   font-size: 16px;
 `;
 
-const StyledModal = styled(Modal)`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+const EventAddModal = styled(Modal)`
+  width: 400px;
   background-color: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   z-index: 1000;
-  width: 400px;
+
   outline: none;
 `;
 
@@ -1049,7 +1048,8 @@ const GridDayMonthContainerB = styled.div`
 
 const GridDayMonthContainerA = styled.div`
   background-color: white;
-  color: #494949;
+  color: ${(props) =>
+    props.isOtherMonth ? 'white' : props.color}; /* 이전/다음 달 텍스트 색상 */
   border-radius: 10px;
 
   font-size: 1rem;

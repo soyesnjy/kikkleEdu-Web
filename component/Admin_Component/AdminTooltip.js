@@ -221,12 +221,6 @@ const EditButton = styled.button`
   }
 `;
 
-const DateInfo = styled.div`
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 10px;
-`;
-
 const DetailRow = styled.div`
   margin-bottom: 5px;
 
