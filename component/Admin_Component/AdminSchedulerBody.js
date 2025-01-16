@@ -22,8 +22,6 @@ const colors = [
   { label: '하늘색', value: '#55D0F6' },
   { label: '살구색', value: '#FFC9A3' },
 ];
-const serviceKey =
-  'XR5gU3bDomfE9Qhy8uj2%2FFxZ%2BxkxqH7MhURwFSNQjkPU7ARA7M7wZZDRoCIDJfMTjivDE4Fsk8AbYP8lLq4Viw%3D%3D';
 
 const AdminSchedulerBody = () => {
   const [events, setEvents] = useState([
