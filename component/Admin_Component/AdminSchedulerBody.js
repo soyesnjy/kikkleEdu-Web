@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -21,6 +22,8 @@ const colors = [
   { label: '하늘색', value: '#55D0F6' },
   { label: '살구색', value: '#FFC9A3' },
 ];
+const serviceKey =
+  'XR5gU3bDomfE9Qhy8uj2%2FFxZ%2BxkxqH7MhURwFSNQjkPU7ARA7M7wZZDRoCIDJfMTjivDE4Fsk8AbYP8lLq4Viw%3D%3D';
 
 const AdminSchedulerBody = () => {
   const [events, setEvents] = useState([
@@ -71,11 +74,19 @@ const AdminSchedulerBody = () => {
     content: null,
     position: { top: 0, left: 0 },
   });
+  const [holidays, setHolidays] = useState([]);
 
   const selectedDateRef = useRef(selectedDate); // 실시간 selectedDate 참조
   const aCalendarRef = useRef(null); // A캘린더의 ref
   const bCalendarRef = useRef(null); // B캘린더의 ref
 
+  // 공휴일 확인 함수
+  const isHoliday = (date) => {
+    if (!holidays.length) return false;
+    return holidays.some(
+      (holiday) => new Date(holiday.date).toDateString() === date.toDateString()
+    );
+  };
   // selectedDate 상태 업데이트와 동시에 참조 업데이트
   const updateSelectedDate = (date) => {
     setSelectedDate(date);
@@ -140,7 +151,7 @@ const AdminSchedulerBody = () => {
         }`}
         isOtherMonth={isOtherMonth}
         color={
-          arg.date.getDay() === 0
+          arg.date.getDay() === 0 || isHoliday(arg.date)
             ? 'red'
             : arg.date.getDay() === 6
               ? 'blue'
@@ -155,7 +166,7 @@ const AdminSchedulerBody = () => {
   const renderDayHeaderA = (arg) => {
     const dayStyle = {
       color:
-        arg.date.getDay() === 0
+        arg.date.getDay() === 0 || isHoliday(arg.date)
           ? 'red'
           : arg.date.getDay() === 6
             ? 'blue'
@@ -180,7 +191,7 @@ const AdminSchedulerBody = () => {
         className={`fc-daygrid-day-frame`}
         isOtherMonth={isOtherMonth}
         color={
-          arg.date.getDay() === 0
+          arg.date.getDay() === 0 || isHoliday(arg.date)
             ? 'red'
             : arg.date.getDay() === 6
               ? 'blue'
@@ -308,6 +319,7 @@ const AdminSchedulerBody = () => {
     // 서버로 업데이트 요청
     // updateStartOnServer(updatedEvent);
 
+    // A 캘린더를 드롭한 Month로 이동
     if (aCalendarRef.current) {
       aCalendarRef.current.getApi().gotoDate(startDate); // A캘린더 날짜 이동
     }
@@ -376,6 +388,27 @@ const AdminSchedulerBody = () => {
   // useEffect(() => {
   //   console.log('events:', events);
   // }, [events]);
+
+  useEffect(() => {
+    // 공휴일 공공데이터 Get
+    if (!holidays.length) {
+      axios
+        .get(
+          `http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?serviceKey=${serviceKey}&solYear=${today.getFullYear()}&numOfRows=30`
+        )
+        .then((response) => {
+          const data = response.data.response.body.items.item || [];
+          const holidayList = Array.isArray(data) ? data : [data]; // 데이터가 배열인지 확인
+          const formattedHolidays = holidayList.map((holiday) => ({
+            date: holiday.locdate
+              .toString()
+              .replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), // YYYYMMDD → YYYY-MM-DD
+            name: holiday.dateName,
+          }));
+          setHolidays(formattedHolidays);
+        });
+    }
+  }, []);
 
   // scheduleForm 상태 변경 시 발동
   useEffect(() => {
