@@ -410,29 +410,6 @@ const AdminSchedulerBody = () => {
     }
   }, []);
 
-  // scheduleForm 상태 변경 시 발동
-  useEffect(() => {
-    // 툴팁 리셋
-    handleResetTooptip();
-
-    // 스케줄러 스크롤 시 툴팁 제거 이벤트 추가
-    // const calendarElement = aCalendarRef.current?.getApi().el;
-    // const scroller = calendarElement.querySelector(
-    //   '.fc-scroller-liquid-absolute'
-    // ); // 스크롤 가능한 요소 선택
-
-    // if (scroller) {
-    //   scroller.addEventListener('scroll', handleResetTooptip);
-    // }
-
-    // // 클린업
-    // return () => {
-    //   if (scroller) {
-    //     scroller.removeEventListener('scroll', handleResetTooptip);
-    //   }
-    // };
-  }, [scheduleForm]);
-
   // Delete 삭제 기능
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -497,13 +474,15 @@ const AdminSchedulerBody = () => {
               customToday: {
                 text: 'today',
                 click: () => {
-                  aCalendarRef.current?.getApi().gotoDate(today); // 오늘 날짜로 이동
+                  handleResetTooptip();
                   updateSelectedDate(today); // 선택된 날짜 초기화
+                  aCalendarRef.current?.getApi().gotoDate(today); // 오늘 날짜로 이동
                 },
               },
               customWeek: {
                 text: '주간', // "timeGridWeek" 버튼의 텍스트 변경
                 click: () => {
+                  handleResetTooptip();
                   setScheduleForm('week');
                   aCalendarRef.current?.getApi().changeView('timeGridWeek');
                 },
@@ -511,6 +490,7 @@ const AdminSchedulerBody = () => {
               customMonth: {
                 text: '월간', // "dayGridMonth" 버튼의 텍스트 변경
                 click: () => {
+                  handleResetTooptip();
                   setScheduleForm('month');
                   aCalendarRef.current?.getApi().changeView('dayGridMonth');
                 },
