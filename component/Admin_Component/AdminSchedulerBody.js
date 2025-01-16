@@ -308,6 +308,10 @@ const AdminSchedulerBody = () => {
     // 서버로 업데이트 요청
     // updateStartOnServer(updatedEvent);
 
+    if (aCalendarRef.current) {
+      aCalendarRef.current.getApi().gotoDate(startDate); // A캘린더 날짜 이동
+    }
+
     // 로컬 상태 업데이트 (start만 변경)
     setEvents((prevEvents) =>
       prevEvents.map((evt) =>
