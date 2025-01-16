@@ -394,7 +394,7 @@ const AdminSchedulerBody = () => {
     if (!holidays.length) {
       axios
         .get(
-          `http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?serviceKey=${serviceKey}&solYear=${today.getFullYear()}&numOfRows=30`
+          `https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?serviceKey=${process.env.NEXT_PUBLIC_SERVICE_KEY}&solYear=${today.getFullYear()}&numOfRows=30`
         )
         .then((response) => {
           const data = response.data.response.body.items.item || [];
