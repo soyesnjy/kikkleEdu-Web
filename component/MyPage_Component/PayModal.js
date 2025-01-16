@@ -29,7 +29,7 @@ const PayModal = ({ isOpen, setIsOpen }) => {
             사업자 번호
           </PayModalMiddleTitle>
           <PayModalMiddleSubtitle color="#636363">
-            02-303-4420
+            371-86-01244
           </PayModalMiddleSubtitle>
         </PayModalContentMiddleContainer>
         <PayModalContentMiddleContainer>
@@ -116,7 +116,7 @@ const PayModalContentMiddleContainer = styled.div`
   justify-content: flex-start;
   align-items: center;
 
-  gap: 1rem;
+  gap: 1.3rem;
 `;
 
 const PayModalMiddleTitle = styled.span`
@@ -133,7 +133,7 @@ const PayModalMiddleTitle = styled.span`
 const PayModalMiddleSubtitle = styled.span`
   font-family: Pretendard;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: ${(props) => (props.color ? props.color : '#3870ff')};
 `;
 
