@@ -13,7 +13,7 @@ const PayModal = ({ isOpen, setIsOpen }) => {
     >
       <PayModalContentContainer>
         <PayModalContentHeaderContainer>
-          <PayModalHeaderTitle>세금계산서 발금 - 담당자</PayModalHeaderTitle>
+          <PayModalHeaderTitle>세금계산서 발급 - 담당자</PayModalHeaderTitle>
           <CloseButton
             onClick={(e) => {
               e.preventDefault();
