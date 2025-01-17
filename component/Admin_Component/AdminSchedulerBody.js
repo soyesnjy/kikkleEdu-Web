@@ -44,7 +44,7 @@ const AdminSchedulerBody = () => {
       title: 'Math Class',
       start: '2025-01-15T11:00:00',
       end: '2025-01-15T11:50:00',
-      backgroundColor: '#A3BCFF',
+      backgroundColor: '#BAE0FF',
       extendedProps: {
         teacherName: '김철수', // 신규
         courseName: 'Mathematics',
@@ -59,7 +59,7 @@ const AdminSchedulerBody = () => {
       title: 'English Class',
       start: '2025-01-15T11:10:00',
       end: '2025-01-15T12:00:00',
-      backgroundColor: '#FFA3F6',
+      backgroundColor: '#F0C9FB',
       extendedProps: {
         teacherName: '고영희', // 신규
         courseName: 'English Literature',
