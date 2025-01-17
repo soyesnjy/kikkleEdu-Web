@@ -15,13 +15,26 @@ import AdminTooltip from './AdminTooltip';
 const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
 const today = new Date();
 const colors = [
-  { label: '파란색', value: '#A3BCFF' },
-  { label: '핑크색', value: '#FFA3F6' },
-  { label: '주황색', value: '#FF7A00' },
-  { label: '초록색', value: '#2BB215' },
-  { label: '하늘색', value: '#55D0F6' },
-  { label: '살구색', value: '#FFC9A3' },
+  { label: '확정', value: '#A3BCFF' },
+  { label: '신규', value: '#FFA3F6' },
+  { label: '폐강', value: '#EAEAEA' },
+  { label: '교체예정', value: '#FE4A4A' },
+  { label: '유치원/초등', value: '#D2FFB4' },
+  { label: '타지역', value: '#FFEBBF' },
 ];
+
+// Date Format String 변환 메서드 (HH:MM)
+const timeCalulate = (date) => {
+  const dateObj = new Date(date);
+
+  // const year = dateObj.getFullYear();
+  // const month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
+  // const day = ('0' + dateObj.getDate()).slice(-2);
+  const hour = ('0' + dateObj.getHours()).slice(-2);
+  const min = ('0' + dateObj.getMinutes()).slice(-2);
+
+  return `${hour}:${min}`;
+};
 
 const AdminSchedulerBody = () => {
   const [events, setEvents] = useState([
@@ -30,11 +43,13 @@ const AdminSchedulerBody = () => {
       title: 'Math Class',
       start: '2025-01-15T11:00:00',
       end: '2025-01-15T11:50:00',
-      backgroundColor: '#FFA3F6',
+      backgroundColor: '#A3BCFF',
       extendedProps: {
+        teacherName: '김철수', // 신규
         courseName: 'Mathematics',
         participants: 20,
         times: 2,
+        courseTimes: 40, // 신규
         notes: '직접 메모가 가능한 메모장으로 기타메모 부분',
       },
     },
@@ -43,11 +58,13 @@ const AdminSchedulerBody = () => {
       title: 'English Class',
       start: '2025-01-15T11:10:00',
       end: '2025-01-15T12:00:00',
-      backgroundColor: '#FF7A00',
+      backgroundColor: '#FFA3F6',
       extendedProps: {
+        teacherName: '고영희', // 신규
         courseName: 'English Literature',
         participants: 15,
         times: 3,
+        courseTimes: 40, // 신규
         notes: 'Room 202',
       },
     },
@@ -200,6 +217,20 @@ const AdminSchedulerBody = () => {
       </GridDayMonthContainerA>
     );
   };
+  const renderEventCellA = (arg) => {
+    return (
+      <AdminEvents
+        eventId={arg.event.id}
+        eventTitle={arg.event.title}
+        eventTeacher={arg.event.extendedProps.teacherName}
+        eventStart={arg.event.start}
+        eventBackColor={arg.event.backgroundColor}
+        scheduleForm={scheduleForm}
+        selectedEventId={selectedEventId}
+        timeCalulate={timeCalulate}
+      />
+    );
+  };
 
   // 모달 열기 - newEvent date 속성 갱신
   const openModal = (info) => {
@@ -233,7 +264,8 @@ const AdminSchedulerBody = () => {
   };
   // 이벤트 클릭 핸들러 (툴팁 관련 위치 계산)
   const handleEventClick = (info) => {
-    const { id, title, start, end, extendedProps } = info.event;
+    const { id, title, start, end, extendedProps, backgroundColor } =
+      info.event;
 
     // 툴팁이 켜진 경우 끄기 (토글)
     if (tooltip.visible && tooltip.content.id === id) {
@@ -248,9 +280,9 @@ const AdminSchedulerBody = () => {
     };
 
     // 이벤트가 마지막 주(토요일)인 경우
-    if (new Date(start).getDay() === 6) {
+    if (new Date(start).getDay() === 6 || new Date(start).getDay() === 5) {
       delete tooltipPosition.left; // 왼쪽 위치 제거
-      tooltipPosition.left = rect.left + window.scrollX - 250; // 툴팁을 왼쪽으로 표시
+      tooltipPosition.left = rect.left + window.scrollX - 300; // 툴팁을 왼쪽으로 표시 (Tooltip Width === 300)
     }
     setSelectedEventId(id);
     setTooltip({
@@ -261,6 +293,7 @@ const AdminSchedulerBody = () => {
         start,
         end,
         eventProps: extendedProps,
+        backgroundColor,
       },
       position: tooltipPosition,
     });
@@ -283,7 +316,7 @@ const AdminSchedulerBody = () => {
         times: newEvent.times,
         notes: newEvent.notes,
       },
-      backgroundColor: newEvent.backgroundColor,
+      backgroundColor: newEvent.backgroundColor || '#A3BCFF',
     };
 
     // 서버로 이벤트 추가가 요청
@@ -297,14 +330,15 @@ const AdminSchedulerBody = () => {
       },
     ]);
     handleResetTooptip();
-
     closeModal();
   };
   // 이벤트 Drop 핸들러 start 정보만 수정
   const handleEventDrop = (info) => {
     const { event } = info;
     const startDate = new Date(event.start);
-    const endDate = new Date(startDate.getTime() + 50 * 60 * 1000); // 50분 후 계산
+    const endDate = new Date(
+      startDate.getTime() + event.extendedProps.courseTimes * 60 * 1000
+    ); // 50분 후 계산
 
     // 수정된 start 정보만 반영
     const updatedEvent = {
@@ -519,19 +553,8 @@ const AdminSchedulerBody = () => {
             datesSet={handleDatesSetA} // 날짜 이동 이벤트 핸들러
             dateClick={openModal} // 날짜 클릭 시 이벤트 추가 모달 오픈
             events={events}
-            eventClick={handleEventClick} // 이벤트 클릭
-            eventContent={(arg) => {
-              return (
-                <AdminEvents
-                  eventId={arg.event.id}
-                  eventTitle={arg.event.title}
-                  eventStart={arg.event.start}
-                  eventBackColor={arg.event.backgroundColor}
-                  scheduleForm={scheduleForm}
-                  selectedEventId={selectedEventId}
-                />
-              );
-            }}
+            eventClick={handleEventClick} // 이벤트 Click
+            eventContent={renderEventCellA} // 이벤트 Cell
             editable={true} // week Form일 경우에만 편집 가능
             eventOverlap={true} // week Form일 경우에만 편집 가능
             slotEventOverlap={false} // 이벤트가 겹치지 않고 새로 배치
@@ -543,7 +566,7 @@ const AdminSchedulerBody = () => {
             height="auto"
           />
         </SchedulerWrapper>
-        {/* 이벤트 추가 모달 */}
+        {/* 이벤트 Insert Modal */}
         <EventAddModal
           isOpen={modalOpen}
           onRequestClose={closeModal}
@@ -649,7 +672,12 @@ const AdminSchedulerBody = () => {
             start={tooltip.content.start}
             end={tooltip.content.end}
             event={tooltip.content.eventProps}
+            backgroundColor={tooltip.content.backgroundColor}
             onEdit={handleEventUpdate} // 툴팁에서 이벤트 내용 수정
+            timeCalulate={timeCalulate}
+            handleResetTooptip={handleResetTooptip}
+            dayArr={dayArr}
+            colors={colors}
           />
         </AdminTooltipContainer>
       )}
@@ -801,16 +829,16 @@ const SchedulerWrapper = styled.div`
     text-align: left;
     margin: auto;
     font-family: AppleSDGothicNeoB00;
+
+    --fc-event-border-color: 'none'; // Default Border color 제거
   }
 
   .fc-timegrid-slot {
     border-bottom: 1px solid #ddd;
   }
 
-  // Month Header
-  .fc-daygrid-day-top {
-    justify-content: left;
-    padding-left: 0.4rem;
+  .fc-timegrid-event-harness {
+    border: none;
   }
 
   // Month dayCell 관련
@@ -820,7 +848,7 @@ const SchedulerWrapper = styled.div`
     overflow-y: auto;
   }
 
-  // today 관련 (주간 + 월간)
+  // todayCell 관련 (주간 + 월간)
   .fc-timegrid-col.fc-day-today,
   .fc-daygrid-day.fc-day-today {
     background-color: #eaf0ff;
