@@ -49,7 +49,7 @@ const AdminSchedulerBody = () => {
         courseName: 'Mathematics',
         participants: 20,
         times: 2,
-        courseTimes: 40, // 신규
+        courseTimes: 50, // 신규
         notes: '직접 메모가 가능한 메모장으로 기타메모 부분',
       },
     },
@@ -64,7 +64,7 @@ const AdminSchedulerBody = () => {
         courseName: 'English Literature',
         participants: 15,
         times: 3,
-        courseTimes: 40, // 신규
+        courseTimes: 50, // 신규
         notes: 'Room 202',
       },
     },
