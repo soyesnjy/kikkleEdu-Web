@@ -11,7 +11,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import Modal from 'react-modal';
 import AdminEvents from './AdminEvents';
 import AdminTooltip from './AdminTooltip';
-import AdminCustomColorSelect from './AdminCustomColorSelect';
+import AdminEventAddModal from './AdminEventAddModal';
 
 const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
 const today = new Date();
@@ -25,12 +25,16 @@ const colors = [
 ];
 
 // Date Format String 변환 메서드 (HH:MM)
-const timeCalulate = (date) => {
+const timeCalulate = (date, all) => {
   const dateObj = new Date(date);
 
-  // const year = dateObj.getFullYear();
-  // const month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
-  // const day = ('0' + dateObj.getDate()).slice(-2);
+  if (all) {
+    const year = dateObj.getFullYear();
+    const month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
+    const day = ('0' + dateObj.getDate()).slice(-2);
+    return `${year}.${month}.${day}`;
+  }
+
   const hour = ('0' + dateObj.getHours()).slice(-2);
   const min = ('0' + dateObj.getMinutes()).slice(-2);
 
@@ -80,6 +84,7 @@ const AdminSchedulerBody = () => {
     notes: '',
     backgroundColor: '',
     date: '',
+    recursiveEndDate: '', // 신규
   });
   const [holidays, setHolidays] = useState([]); // 공휴일 데이터 배열 (공공데이터)
   const [modalOpen, setModalOpen] = useState(false);
@@ -254,6 +259,7 @@ const AdminSchedulerBody = () => {
       notes: '',
       backgroundColor: '',
       date: '',
+      recursiveEndDate: '', // 신규
     });
   };
 
@@ -308,7 +314,7 @@ const AdminSchedulerBody = () => {
     const startDate = new Date(newEvent.date);
     const endDate = new Date(
       startDate.getTime() + newEvent.courseTimes * 60 * 1000
-    ); // start + 50분
+    );
 
     const newEventData = {
       id: events.length + 1, // 임시 ID (서버에서 제공 시 업데이트 가능)
@@ -329,13 +335,43 @@ const AdminSchedulerBody = () => {
     // 서버로 이벤트 추가가 요청
     // await createStartOnServer(newEventData);
 
-    setEvents((prevEvents) => [
-      ...prevEvents,
-      {
-        ...newEventData,
-        id: prevEvents.length + 1,
-      },
-    ]);
+    if (newEvent.recursiveEndDate) {
+      const recursiveEndDate = new Date(newEvent.recursiveEndDate);
+      const dayOfWeek = startDate.getDay(); // 시작 날짜의 요일
+      const recursiveEvents = [];
+
+      // 반복 이벤트 생성 (recursiveEndDate 포함)
+      for (
+        let date = new Date(startDate);
+        date <= recursiveEndDate; // 종료 날짜 포함
+        date.setDate(date.getDate() + 1)
+      ) {
+        if (date.getDay() === dayOfWeek) {
+          const eventEndDate = new Date(
+            date.getTime() + newEvent.courseTimes * 60 * 1000
+          );
+
+          recursiveEvents.push({
+            ...newEventData,
+            id: events.length + recursiveEvents.length + 1,
+            start: date.toISOString(),
+            end: eventEndDate.toISOString(),
+          });
+        }
+      }
+
+      // 이벤트 상태 업데이트
+      setEvents((prevEvents) => [...prevEvents, ...recursiveEvents]);
+    } else {
+      setEvents((prevEvents) => [
+        ...prevEvents,
+        {
+          ...newEventData,
+          id: prevEvents.length + 1,
+        },
+      ]);
+    }
+
     handleResetTooptip();
     closeModal();
   };
@@ -425,9 +461,9 @@ const AdminSchedulerBody = () => {
   };
 
   // events 로그 출력
-  // useEffect(() => {
-  //   console.log('events:', events);
-  // }, [events]);
+  useEffect(() => {
+    console.log('newEvent:', newEvent);
+  }, [newEvent]);
 
   useEffect(() => {
     // 공휴일 공공데이터 Get
@@ -573,130 +609,17 @@ const AdminSchedulerBody = () => {
             height="auto"
           />
         </SchedulerWrapper>
-        {/* 이벤트 Insert Modal */}
-        <EventAddModal
-          isOpen={modalOpen}
-          onRequestClose={closeModal}
-          ariaHideApp={false}
-          contentLabel="Add Event Modal"
-        >
-          <ModalContent>
-            <label>
-              제목:
-              <input
-                type="text"
-                value={newEvent.title}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, title: e.target.value })
-                }
-              />
-            </label>
-            <label>
-              요일/시간: {dayArr[new Date(newEvent.date).getDay()]}요일/
-              {newEvent.date && newEvent.date.split('T')[1]?.slice(0, 6)} ~ ?
-            </label>
-            <label>
-              강사명:
-              <input
-                type="text"
-                value={newEvent.teacherName}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, teacherName: e.target.value })
-                }
-              />
-            </label>
-            <label>
-              강좌명:
-              <input
-                type="text"
-                value={newEvent.courseName}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, courseName: e.target.value })
-                }
-              />
-            </label>
-            <label>
-              인원수:
-              <input
-                type="number"
-                value={newEvent.participants}
-                onChange={(e) =>
-                  setNewEvent({
-                    ...newEvent,
-                    participants: Number(e.target.value),
-                  })
-                }
-              />
-            </label>
-            <label>
-              타임수:
-              <input
-                type="number"
-                value={newEvent.times}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, times: Number(e.target.value) })
-                }
-              />
-            </label>
-            <label>
-              Time:
-              <input
-                type="number"
-                value={newEvent.courseTimes}
-                onChange={(e) =>
-                  setNewEvent({
-                    ...newEvent,
-                    courseTimes: Number(e.target.value),
-                  })
-                }
-              />
-            </label>
-            <label>Notes</label>
-            <textarea
-              value={newEvent.notes}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, notes: e.target.value })
-              }
-            />
-            <ColorSelectWrapper selectedColor={newEvent.backgroundColor}>
-              <label>
-                색상:
-                <select
-                  value={newEvent.backgroundColor}
-                  onChange={(e) =>
-                    setNewEvent({
-                      ...newEvent,
-                      backgroundColor: e.target.value,
-                    })
-                  }
-                >
-                  <option value="" disabled>
-                    색상을 선택하세요
-                  </option>
-                  {colors.map((color) => (
-                    <option
-                      key={color.value}
-                      value={color.value}
-                      style={{ backgroundColor: color.value, color: '#000' }}
-                    >
-                      {color.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </ColorSelectWrapper>
-            <button
-              onClick={() => {
-                handleAddEvent(newEvent);
-              }}
-            >
-              Add Event
-            </button>
-            <button onClick={closeModal} style={{ marginTop: '10px' }}>
-              Cancel
-            </button>
-          </ModalContent>
-        </EventAddModal>
+        {/* 이벤트 Add Modal */}
+        <AdminEventAddModal
+          modalOpen={modalOpen}
+          closeModal={closeModal}
+          newEvent={newEvent}
+          setNewEvent={setNewEvent}
+          dayArr={dayArr}
+          colors={colors}
+          handleAddEvent={handleAddEvent}
+          timeCalulate={timeCalulate}
+        />
       </Container>
       {/* New 툴팁 */}
       {tooltip.visible && tooltip.content && (

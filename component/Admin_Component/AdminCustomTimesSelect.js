@@ -46,12 +46,11 @@ const SelectedTimes = styled.div`
 
   label {
     width: 100%;
-    text-align: center;
 
     font-size: 0.9rem;
     font-family: Pretendard;
     font-weight: 400;
-    text-align: center;
+    text-align: left;
   }
 `;
 
@@ -70,6 +69,7 @@ const Dropdown = styled.ul`
 `;
 
 const DropdownItem = styled.li`
+  width: 100%;
   padding: 0.5rem;
   display: flex;
   align-items: center;

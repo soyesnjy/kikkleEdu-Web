@@ -50,33 +50,40 @@ const SelectedColor = styled.div`
   padding: 0.3rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
+  cursor: pointer;
+
   label {
     width: 100%;
-    text-align: center;
+    text-align: left;
   }
 `;
 
 const Dropdown = styled.ul`
+  width: 100%;
+
   position: absolute;
   top: 100%;
   left: 0;
-  width: 100%;
+
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #fff;
+
   list-style: none;
+
   margin: 0;
-  padding: 0;
+  padding: 0.5rem;
   z-index: 10;
 `;
 
 const DropdownItem = styled.li`
+  width: 100%;
   padding: 0.5rem;
+
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -92,7 +99,7 @@ const DropdownItem = styled.li`
 `;
 
 const ColorSmallBox = styled.div`
-  width: 25px;
+  width: 30%;
   height: 20px;
   background-color: ${(props) => props.backColor || 'none'};
   border-radius: 4px;
