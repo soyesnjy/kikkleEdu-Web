@@ -11,13 +11,14 @@ import interactionPlugin from '@fullcalendar/interaction';
 import Modal from 'react-modal';
 import AdminEvents from './AdminEvents';
 import AdminTooltip from './AdminTooltip';
+import AdminCustomColorSelect from './AdminCustomColorSelect';
 
 const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
 const today = new Date();
 const colors = [
-  { label: '확정', value: '#A3BCFF' },
-  { label: '신규', value: '#FFA3F6' },
-  { label: '폐강', value: '#EAEAEA' },
+  { label: '확정', value: '#BAE0FF' },
+  { label: '신규', value: '#F0C9FB' },
+  { label: '폐강', value: '#F3F3F3' },
   { label: '교체예정', value: '#FE4A4A' },
   { label: '유치원/초등', value: '#D2FFB4' },
   { label: '타지역', value: '#FFEBBF' },
@@ -71,10 +72,12 @@ const AdminSchedulerBody = () => {
   ]);
   const [newEvent, setNewEvent] = useState({
     title: '',
+    teacherName: '', // 신규
     dayAndTime: '',
     courseName: '',
-    participants: '',
-    times: '',
+    participants: 0,
+    times: 0,
+    courseTimes: 0,
     notes: '',
     backgroundColor: '',
     date: '',
@@ -243,10 +246,12 @@ const AdminSchedulerBody = () => {
     setModalOpen(false);
     setNewEvent({
       title: '',
+      teacherName: '', // 신규
       dayAndTime: '',
       courseName: '',
-      participants: '',
-      times: '',
+      participants: 0,
+      times: 0,
+      courseTimes: 0, // 신규
       notes: '',
       backgroundColor: '',
       date: '',
@@ -302,7 +307,9 @@ const AdminSchedulerBody = () => {
   // 이벤트 Insert 핸들러
   const handleAddEvent = async () => {
     const startDate = new Date(newEvent.date);
-    const endDate = new Date(startDate.getTime() + 50 * 60 * 1000); // start + 50분
+    const endDate = new Date(
+      startDate.getTime() + newEvent.courseTimes * 60 * 1000
+    ); // start + 50분
 
     const newEventData = {
       id: events.length + 1, // 임시 ID (서버에서 제공 시 업데이트 가능)
@@ -310,10 +317,12 @@ const AdminSchedulerBody = () => {
       start: newEvent.date,
       end: endDate.toISOString(),
       extendedProps: {
-        dayAndTime: `${dayArr[new Date(newEvent.date).getDay()]}요일/ ${newEvent.date.split('T')[1]} ~ ${newEvent.dayAndTime}`,
+        teacherName: newEvent.teacherName,
+        // dayAndTime: `${dayArr[new Date(newEvent.date).getDay()]}요일/ ${newEvent.date.split('T')[1]} ~ ${newEvent.dayAndTime}`,
         courseName: newEvent.courseName,
         participants: newEvent.participants,
         times: newEvent.times,
+        courseTimes: newEvent.courseTimes,
         notes: newEvent.notes,
       },
       backgroundColor: newEvent.backgroundColor || '#A3BCFF',
@@ -589,6 +598,16 @@ const AdminSchedulerBody = () => {
               {newEvent.date && newEvent.date.split('T')[1]?.slice(0, 6)} ~ ?
             </label>
             <label>
+              강사명:
+              <input
+                type="text"
+                value={newEvent.teacherName}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, teacherName: e.target.value })
+                }
+              />
+            </label>
+            <label>
               강좌명:
               <input
                 type="text"
@@ -604,7 +623,10 @@ const AdminSchedulerBody = () => {
                 type="number"
                 value={newEvent.participants}
                 onChange={(e) =>
-                  setNewEvent({ ...newEvent, participants: e.target.value })
+                  setNewEvent({
+                    ...newEvent,
+                    participants: Number(e.target.value),
+                  })
                 }
               />
             </label>
@@ -614,7 +636,20 @@ const AdminSchedulerBody = () => {
                 type="number"
                 value={newEvent.times}
                 onChange={(e) =>
-                  setNewEvent({ ...newEvent, times: e.target.value })
+                  setNewEvent({ ...newEvent, times: Number(e.target.value) })
+                }
+              />
+            </label>
+            <label>
+              Time:
+              <input
+                type="number"
+                value={newEvent.courseTimes}
+                onChange={(e) =>
+                  setNewEvent({
+                    ...newEvent,
+                    courseTimes: Number(e.target.value),
+                  })
                 }
               />
             </label>
