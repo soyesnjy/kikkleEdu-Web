@@ -62,36 +62,36 @@ const AdminSchedulerBody = () => {
     backgroundColor: '',
     date: '',
   });
+  const [holidays, setHolidays] = useState([]); // 공휴일 데이터 배열 (공공데이터)
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedDate, setSelectedDate] = useState(today); // 선택된 날짜
+  const [selectedDate, setSelectedDate] = useState(today); // 미니 달력(B)에서 선택된 날짜
   const [selectedEventId, setSelectedEventId] = useState(-1); // 선택된 eventID
   const [scheduleForm, setScheduleForm] = useState('week'); // 스케줄폼 (week || month)
   const [tooltip, setTooltip] = useState({
     visible: false,
     content: null,
     position: { top: 0, left: 0 },
-  });
-  const [holidays, setHolidays] = useState([]);
+  }); // 툴팁 상태
 
   const selectedDateRef = useRef(selectedDate); // 실시간 selectedDate 참조
   const aCalendarRef = useRef(null); // A캘린더의 ref
   const bCalendarRef = useRef(null); // B캘린더의 ref
 
-  // 공휴일 확인 함수
+  // 공휴일 Check 메서드
   const isHoliday = (date) => {
     if (!holidays.length) return false;
     return holidays.some(
       (holiday) => new Date(holiday.date).toDateString() === date.toDateString()
     );
   };
-  // selectedDate 상태 업데이트와 동시에 참조 업데이트
+  // selectedDate 업데이트 핸들러 - 미니 달력(B)에서 선택된 날짜 업데이트와 동시에 참조(selectedDateRef) 업데이트
   const updateSelectedDate = (date) => {
     setSelectedDate(date);
     selectedDateRef.current = date; // 상태와 참조 동기화
   };
-  // B캘린더 날짜 클릭 시 A캘린더와 동기화
-  const handleDateClick = (info) => {
+  // 미니 달력(B) 날짜 클릭 핸들러 - A캘린더와 동기화
+  const handleDateClickB = (info) => {
     const newDate = new Date(info.date);
     updateSelectedDate(newDate); // 선택된 날짜 업데이트
 
@@ -99,8 +99,8 @@ const AdminSchedulerBody = () => {
       aCalendarRef.current.getApi().gotoDate(newDate); // A캘린더 날짜 이동
     }
   };
-  // A캘린더 날짜 변경 시 B캘린더와 동기화
-  const handleDatesSet = (info) => {
+  // 메인 스케줄러(A) 날짜 변경 핸들러 - B캘린더와 동기화
+  const handleDatesSetA = (info) => {
     const startDate = new Date(info.start);
     const endDate = new Date(info.end);
     const selectedMonth = selectedDateRef?.current?.getMonth();
@@ -201,12 +201,13 @@ const AdminSchedulerBody = () => {
     );
   };
 
-  // 모달 열기
-  const openModal = (date) => {
-    setNewEvent((prev) => ({ ...prev, date }));
+  // 모달 열기 - newEvent date 속성 갱신
+  const openModal = (info) => {
+    if (scheduleForm === 'month') return;
+    setNewEvent((prev) => ({ ...prev, date: info.dateStr }));
     setModalOpen(true);
   };
-  // 모달 닫기
+  // 모달 닫기 - newEvent 초기화
   const closeModal = () => {
     setModalOpen(false);
     setNewEvent({
@@ -429,12 +430,13 @@ const AdminSchedulerBody = () => {
         {/* 미니 달력 */}
         <MiniCalendarWrapper>
           <MiniCalendarTitle>{`강사 스케줄 관리`}</MiniCalendarTitle>
+          {/* B 캘린더 */}
           <FullCalendar
-            ref={bCalendarRef} // B캘린더 ref
+            ref={bCalendarRef}
             plugins={[dayGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
             selectable={true}
-            dateClick={handleDateClick} // 날짜 클릭 이벤트 핸들러
+            dateClick={handleDateClickB} // 날짜 클릭 이벤트 핸들러
             headerToolbar={{
               left: '',
               center: 'prev,title,next',
@@ -449,10 +451,11 @@ const AdminSchedulerBody = () => {
         <SchedulerWrapper form={scheduleForm}>
           <SearchInput
             type="text"
-            placeholder="Search by Teacher Name"
+            placeholder="강사 검색"
             value={searchQuery}
             onChange={handleSearch}
           />
+          {/* A 캘린더 */}
           <FullCalendar
             ref={aCalendarRef} // A캘린더 ref
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -513,10 +516,8 @@ const AdminSchedulerBody = () => {
             // defaultTimedEventDuration="00:10:00" // 이벤트 기본 지속 시간 10분
             // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
             allDaySlot={false}
-            datesSet={handleDatesSet} // 날짜 이동 이벤트 핸들러
-            dateClick={(info) => {
-              if (scheduleForm === 'week') openModal(info.dateStr);
-            }} // 모달 열기
+            datesSet={handleDatesSetA} // 날짜 이동 이벤트 핸들러
+            dateClick={openModal} // 날짜 클릭 시 이벤트 추가 모달 오픈
             events={events}
             eventClick={handleEventClick} // 이벤트 클릭
             eventContent={(arg) => {
@@ -792,7 +793,7 @@ const SchedulerWrapper = styled.div`
   z-index: 0;
 
   .fc {
-    padding: 1rem;
+    padding: 1rem 0;
     width: 65vw;
     height: auto;
 
@@ -812,6 +813,7 @@ const SchedulerWrapper = styled.div`
     padding-left: 0.4rem;
   }
 
+  // Month dayCell 관련
   .fc-daygrid-day-events {
     height: 80px;
     overflow-x: hidden;
@@ -947,10 +949,17 @@ const SchedulerWrapper = styled.div`
 `;
 
 const SearchInput = styled.input`
-  margin-bottom: 10px;
-  padding: 5px;
   width: 300px;
-  font-size: 16px;
+  padding: 0.5rem;
+  padding-left: 1.2rem;
+
+  border: 2px solid #dfdfdf;
+  border-radius: 10px;
+
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+  text-align: left;
 `;
 
 const EventAddModal = styled(Modal)`
