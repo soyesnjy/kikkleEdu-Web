@@ -73,11 +73,10 @@ const AdminSchedulerBody = () => {
   const [newEvent, setNewEvent] = useState({
     title: '',
     teacherName: '', // 신규
-    dayAndTime: '',
     courseName: '',
     participants: 0,
     times: 0,
-    courseTimes: 0,
+    courseTimes: 0, // 신규
     notes: '',
     backgroundColor: '',
     date: '',
@@ -238,6 +237,7 @@ const AdminSchedulerBody = () => {
   // 모달 열기 - newEvent date 속성 갱신
   const openModal = (info) => {
     if (scheduleForm === 'month') return;
+    handleResetTooptip();
     setNewEvent((prev) => ({ ...prev, date: info.dateStr }));
     setModalOpen(true);
   };
@@ -247,7 +247,6 @@ const AdminSchedulerBody = () => {
     setNewEvent({
       title: '',
       teacherName: '', // 신규
-      dayAndTime: '',
       courseName: '',
       participants: 0,
       times: 0,
@@ -305,7 +304,7 @@ const AdminSchedulerBody = () => {
   };
 
   // 이벤트 Insert 핸들러
-  const handleAddEvent = async () => {
+  const handleAddEvent = async (newEvent) => {
     const startDate = new Date(newEvent.date);
     const endDate = new Date(
       startDate.getTime() + newEvent.courseTimes * 60 * 1000
@@ -318,14 +317,13 @@ const AdminSchedulerBody = () => {
       end: endDate.toISOString(),
       extendedProps: {
         teacherName: newEvent.teacherName,
-        // dayAndTime: `${dayArr[new Date(newEvent.date).getDay()]}요일/ ${newEvent.date.split('T')[1]} ~ ${newEvent.dayAndTime}`,
         courseName: newEvent.courseName,
         participants: newEvent.participants,
         times: newEvent.times,
         courseTimes: newEvent.courseTimes,
         notes: newEvent.notes,
       },
-      backgroundColor: newEvent.backgroundColor || '#A3BCFF',
+      backgroundColor: newEvent.backgroundColor || '#BAE0FF',
     };
 
     // 서버로 이벤트 추가가 요청
@@ -455,7 +453,7 @@ const AdminSchedulerBody = () => {
   // Delete 삭제 기능
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (selectedEventId && e.key === 'Delete') {
+      if (selectedEventId !== -1 && e.key === 'Delete') {
         e.stopPropagation(); // 이벤트 전파 차단
         if (confirm('삭제 하시겠습니까?') === true) {
           deleteEvent(selectedEventId);
@@ -687,7 +685,13 @@ const AdminSchedulerBody = () => {
                 </select>
               </label>
             </ColorSelectWrapper>
-            <button onClick={handleAddEvent}>Add Event</button>
+            <button
+              onClick={() => {
+                handleAddEvent(newEvent);
+              }}
+            >
+              Add Event
+            </button>
             <button onClick={closeModal} style={{ marginTop: '10px' }}>
               Cancel
             </button>

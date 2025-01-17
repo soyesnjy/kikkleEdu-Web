@@ -15,7 +15,7 @@ export default function AdminCustomTimesSelect({
   return (
     <TimesSelectWrapper>
       <SelectedTimes onClick={() => setIsOpen(!isOpen)}>
-        <label>{`${updatedCourseTimes ? updatedCourseTimes + '분' : '색상을 선택하세요'}`}</label>
+        <label>{`${updatedCourseTimes ? updatedCourseTimes + '분' : '수업시간을 선택하세요'}`}</label>
       </SelectedTimes>
       {isOpen && (
         <Dropdown>
