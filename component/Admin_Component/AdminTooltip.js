@@ -103,12 +103,7 @@ const AdminTooltip = ({
                   style={{ maxWidth: '100%', height: 'auto' }}
                 />
               </EditButton>
-              <EditButton
-                onClick={() => {
-                  updateResetHandler();
-                  updateIsOpenToggleHandler();
-                }}
-              >
+              <EditButton onClick={handleResetTooptip}>
                 <Image
                   alt={'Cancle'}
                   src={'/src/Admin_IMG/Admin_Cancle_IMG.png'}
