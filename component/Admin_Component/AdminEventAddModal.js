@@ -147,7 +147,6 @@ export default function AdminEventAddModal({
             <StyledInput
               disabled={!checkTerms}
               type="date"
-              // value={newEvent.recursiveEndDate}
               onChange={(e) =>
                 setNewEvent({
                   ...newEvent,

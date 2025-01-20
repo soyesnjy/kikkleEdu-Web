@@ -13,6 +13,11 @@ import AdminEvents from './AdminEvents';
 import AdminTooltip from './AdminTooltip';
 import AdminEventAddModal from './AdminEventAddModal';
 
+import {
+  handleScheduleGet,
+  handleScheduleHolidayGet,
+} from '@/fetchAPI/schedulerAPI';
+
 const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
 const today = new Date();
 const colors = [
@@ -468,23 +473,19 @@ const AdminSchedulerBody = () => {
   // }, [newEvent]);
 
   useEffect(() => {
-    // 공휴일 공공데이터 Get
-    if (!holidays.length) {
-      axios
-        .get(
-          `https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?serviceKey=${process.env.NEXT_PUBLIC_SERVICE_KEY}&solYear=${today.getFullYear()}&numOfRows=30`
-        )
-        .then((response) => {
-          const data = response.data.response.body.items.item || [];
-          const holidayList = Array.isArray(data) ? data : [data]; // 데이터가 배열인지 확인
-          const formattedHolidays = holidayList.map((holiday) => ({
-            date: holiday.locdate
-              .toString()
-              .replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), // YYYYMMDD → YYYY-MM-DD
-            name: holiday.dateName,
-          }));
+    try {
+      // 스케줄 Get Handler 호출
+      handleScheduleGet({}).then((data) => {
+        console.log(data);
+      });
+      // 공휴일 Get (공공 데이터)
+      if (!holidays.length) {
+        handleScheduleHolidayGet(today).then((formattedHolidays) => {
           setHolidays(formattedHolidays);
         });
+      }
+    } catch (err) {
+      console.log(err);
     }
   }, []);
 

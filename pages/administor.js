@@ -150,6 +150,10 @@ const Administor = () => {
             setLastPageNum(data.lastPageNum);
           });
       }
+      // 스케줄러 예외처리
+      else if (activeTab === 'schedule') {
+        console.log(`activeTab === 'schedule'`);
+      }
       // 미디어 서비스 관리 (음원, 영상, 강의계획서)
       else initMusicDirectory(activeTab);
       // 탭 변경 시 페이지 초기화
