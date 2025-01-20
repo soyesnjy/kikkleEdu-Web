@@ -153,13 +153,16 @@ const AdminSchedulerBody = () => {
       bCalendarRef.current.getApi().gotoDate(newData); // B캘린더 날짜 이동
     }
     // A 캘린더 Month 갱신
-    setCurrentDateMonth(
-      aCalendarRef?.current?.getApi()?.currentData.currentDate.getMonth() + 1
-    );
+    if (aCalendarRef?.current?.getApi()?.currentData.currentDate) {
+      setCurrentDateMonth(
+        aCalendarRef?.current?.getApi()?.currentData.currentDate.getMonth() + 1
+      );
+    }
 
     // 툴팁 닫기
     handleResetTooptip();
   };
+
   // 미니 달력(B) 렌더 메서드
   const renderDayHeaderB = (arg) => {
     const dayStyle = {
@@ -498,15 +501,15 @@ const AdminSchedulerBody = () => {
     }
   }, []);
 
+  // Event GET
   useEffect(() => {
     try {
-      if (currentDateMonth) {
+      if (currentDateMonth > 0) {
         // 스케줄 Get Handler 호출
         handleScheduleGet({
           monthQuery: currentDateMonth, // 선택 날짜
           searchQuery,
         }).then((res) => {
-          console.log(res);
           setEvents(res.data);
         });
       }
