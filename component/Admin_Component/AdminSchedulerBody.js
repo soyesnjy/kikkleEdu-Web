@@ -14,6 +14,7 @@ import AdminEventAddModal from './AdminEventAddModal';
 import {
   handleScheduleGet,
   handleScheduleDragUpdate,
+  handleScheduleClickUpdate,
   handleScheduleHolidayGet,
 } from '@/fetchAPI/schedulerAPI';
 
@@ -430,23 +431,19 @@ const AdminSchedulerBody = () => {
     // Update 실패
     else info.revert();
   };
-  // 이벤트 Update 핸들러
-  const handleEventUpdate = (event) => {
-    console.log('Tooltip Update!');
-
-    // 수정된 start 정보만 반영
-
-    console.log('updatedEvent: ', event);
-
+  // 이벤트 Click Update 핸들러
+  const handleEventClickUpdate = async (event) => {
     // 서버로 업데이트 요청
-    // updateStartOnServer(updatedEvent);
+    const res = await handleScheduleClickUpdate(event);
 
-    // 로컬 상태 업데이트 (start만 변경)
-    setEvents((prevEvents) =>
-      prevEvents.map((evt) =>
-        evt.id === Number(event.id) ? { ...evt, ...event } : evt
-      )
-    );
+    // 업데이트 성공 - 로컬 상태 업데이트
+    if (res.status === 200) {
+      setEvents((prevEvents) =>
+        prevEvents.map((evt) =>
+          evt.id === Number(event.id) ? { ...evt, ...event } : evt
+        )
+      );
+    }
     handleResetTooptip();
   };
 
@@ -606,7 +603,7 @@ const AdminSchedulerBody = () => {
             // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
             allDaySlot={false}
             datesSet={handleDatesSetA} // 날짜 이동 이벤트 핸들러
-            // dateClick={openModal} // 날짜 클릭 시 이벤트 추가 모달 오픈
+            // dateClick={openModal} // #TODO: 임시 잠금. 날짜 클릭 시 이벤트 추가 모달 오픈
             events={events}
             eventClick={handleEventClick} // 이벤트 Click
             eventContent={renderEventCellA} // 이벤트 Cell
@@ -647,7 +644,7 @@ const AdminSchedulerBody = () => {
             end={tooltip.content.end}
             event={tooltip.content.eventProps}
             backgroundColor={tooltip.content.backgroundColor}
-            onEdit={handleEventUpdate} // 툴팁에서 이벤트 내용 수정
+            onEdit={handleEventClickUpdate} // 툴팁에서 이벤트 내용 수정
             timeCalulate={timeCalulate}
             handleResetTooptip={handleResetTooptip}
             dayArr={dayArr}

@@ -74,11 +74,34 @@ export const handleScheduleDelete = async (query) => {
     };
   }
 };
-// #TODO: UPDATE
+// Drag UPDATE
 export const handleScheduleDragUpdate = async (input) => {
   try {
     const response = await axios.patch(
       `${process.env.NEXT_PUBLIC_URL}/scheduler/update/drag`,
+      { data: input },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
+        },
+        withCredentials: true,
+      }
+    );
+    // console.log(response);
+    return response;
+  } catch (err) {
+    console.error(err);
+    return {
+      status: err.response.status,
+    };
+  }
+};
+// Click UPDATE
+export const handleScheduleClickUpdate = async (input) => {
+  try {
+    const response = await axios.patch(
+      `${process.env.NEXT_PUBLIC_URL}/scheduler/update/click`,
       { data: input },
       {
         headers: {
