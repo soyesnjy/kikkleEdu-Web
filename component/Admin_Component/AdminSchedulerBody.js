@@ -433,10 +433,14 @@ const AdminSchedulerBody = () => {
   };
   // 이벤트 Click Update 핸들러
   const handleEventClickUpdate = async (event) => {
+    // 서버 전용 Update Input
+    const updateInput = {
+      ...event,
+      end: convertToKST(new Date(event.end)), // 한국 시간 적용
+    };
     // 서버로 업데이트 요청
-    const res = await handleScheduleClickUpdate(event);
-
-    // 업데이트 성공 - 로컬 상태 업데이트
+    const res = await handleScheduleClickUpdate(updateInput);
+    // 업데이트 성공 - 로컬 상태 업데이트. UTC 시간 적용
     if (res.status === 200) {
       setEvents((prevEvents) =>
         prevEvents.map((evt) =>
