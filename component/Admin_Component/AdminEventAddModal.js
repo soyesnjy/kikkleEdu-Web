@@ -14,7 +14,7 @@ export default function AdminEventAddModal({
   handleAddEvent,
   timeCalulate,
 }) {
-  const [checkTerms, setCheckTerms] = useState(false);
+  const [checkTerms, setCheckTerms] = useState(false); // 일정 반복 체크 여부
   return (
     <EventAddModal
       isOpen={modalOpen}
@@ -147,11 +147,11 @@ export default function AdminEventAddModal({
             <StyledInput
               disabled={!checkTerms}
               type="date"
-              value={newEvent.recursiveEndDate}
+              // value={newEvent.recursiveEndDate}
               onChange={(e) =>
                 setNewEvent({
                   ...newEvent,
-                  recursiveEndDate: e.target.value,
+                  recursiveEndDate: e.target.value + 'T23:59:59', // 시간 설정
                 })
               }
             />

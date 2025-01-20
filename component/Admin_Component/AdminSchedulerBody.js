@@ -46,8 +46,8 @@ const AdminSchedulerBody = () => {
     {
       id: 1,
       title: 'Math Class',
-      start: '2025-01-15T11:00:00',
-      end: '2025-01-15T11:50:00',
+      start: '2025-01-22T11:00:00',
+      end: '2025-01-22T11:50:00',
       backgroundColor: '#BAE0FF',
       extendedProps: {
         teacherName: '김철수', // 신규
@@ -61,8 +61,8 @@ const AdminSchedulerBody = () => {
     {
       id: 2,
       title: 'English Class',
-      start: '2025-01-15T11:10:00',
-      end: '2025-01-15T12:00:00',
+      start: '2025-01-22T11:10:00',
+      end: '2025-01-22T12:00:00',
       backgroundColor: '#F0C9FB',
       extendedProps: {
         teacherName: '고영희', // 신규
@@ -338,12 +338,12 @@ const AdminSchedulerBody = () => {
     if (newEvent.recursiveEndDate) {
       const recursiveEndDate = new Date(newEvent.recursiveEndDate);
       const dayOfWeek = startDate.getDay(); // 시작 날짜의 요일
-      const recursiveEvents = [];
 
-      // 반복 이벤트 생성 (recursiveEndDate 포함)
+      const recursiveEvents = [];
+      // [startDate ~ recursiveEndDate] date === dayOfWeek 비교
       for (
         let date = new Date(startDate);
-        date <= recursiveEndDate; // 종료 날짜 포함
+        date <= recursiveEndDate;
         date.setDate(date.getDate() + 1)
       ) {
         if (date.getDay() === dayOfWeek) {
@@ -351,6 +351,7 @@ const AdminSchedulerBody = () => {
             date.getTime() + newEvent.courseTimes * 60 * 1000
           );
 
+          // #TODO: 서버에서 id 반환받은 뒤 적용하기
           recursiveEvents.push({
             ...newEventData,
             id: events.length + recursiveEvents.length + 1,
@@ -360,7 +361,7 @@ const AdminSchedulerBody = () => {
         }
       }
 
-      // 이벤트 상태 업데이트
+      // 3) 기존 이벤트 상태에 새로운 반복 이벤트 목록 추가
       setEvents((prevEvents) => [...prevEvents, ...recursiveEvents]);
     } else {
       setEvents((prevEvents) => [
@@ -375,6 +376,7 @@ const AdminSchedulerBody = () => {
     handleResetTooptip();
     closeModal();
   };
+
   // 이벤트 Drop 핸들러 start 정보만 수정
   const handleEventDrop = (info) => {
     const { event } = info;
@@ -461,9 +463,9 @@ const AdminSchedulerBody = () => {
   };
 
   // events 로그 출력
-  useEffect(() => {
-    console.log('newEvent:', newEvent);
-  }, [newEvent]);
+  // useEffect(() => {
+  //   console.log('newEvent:', newEvent);
+  // }, [newEvent]);
 
   useEffect(() => {
     // 공휴일 공공데이터 Get
