@@ -500,19 +500,19 @@ const AdminSchedulerBody = () => {
   }, [searchQuery, currentDateMonth]);
 
   // Delete 삭제 기능
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (selectedEventId !== -1 && e.key === 'Delete') {
-        e.stopPropagation(); // 이벤트 전파 차단
-        if (confirm('삭제 하시겠습니까?') === true) {
-          deleteEvent(selectedEventId);
-        }
-      }
-    };
+  // useEffect(() => {
+  //   const handleKeyDown = (e) => {
+  //     if (selectedEventId !== -1 && e.key === 'Delete') {
+  //       e.stopPropagation(); // 이벤트 전파 차단
+  //       if (confirm('삭제 하시겠습니까?') === true) {
+  //         deleteEvent(selectedEventId);
+  //       }
+  //     }
+  //   };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [selectedEventId]);
+  //   window.addEventListener('keydown', handleKeyDown);
+  //   return () => window.removeEventListener('keydown', handleKeyDown);
+  // }, [selectedEventId]);
 
   return (
     <>
