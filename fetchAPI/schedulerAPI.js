@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// #TODO: READ
+// READ
 export const handleScheduleGet = async (query) => {
   const { monthQuery, searchQuery } = query;
   try {
@@ -32,7 +32,7 @@ export const handleScheduleCreate = async (input) => {
   // console.log(input);
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_URL}/board/create`,
+      `${process.env.NEXT_PUBLIC_URL}/scheduler/create`,
       { data: input },
       {
         headers: {
@@ -45,7 +45,6 @@ export const handleScheduleCreate = async (input) => {
     // console.log(response);
     return response;
   } catch (err) {
-    console.log('ReservationCreate API 호출 실패');
     console.error(err);
     return {
       status: err.response.status,
@@ -57,7 +56,7 @@ export const handleScheduleCreate = async (input) => {
 export const handleScheduleDelete = async (query) => {
   try {
     const response = await axios.delete(
-      `${process.env.NEXT_PUBLIC_URL}/board/delete?${query?.boardIdx ? `boardIdx=${query?.boardIdx}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/scheduler/delete?${query?.boardIdx ? `boardIdx=${query?.boardIdx}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -76,10 +75,10 @@ export const handleScheduleDelete = async (query) => {
   }
 };
 // #TODO: UPDATE
-export const handleScheduleUpdate = async (input) => {
+export const handleScheduleDragUpdate = async (input) => {
   try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_URL}/board/update`,
+    const response = await axios.patch(
+      `${process.env.NEXT_PUBLIC_URL}/scheduler/update/drag`,
       { data: input },
       {
         headers: {
@@ -92,7 +91,6 @@ export const handleScheduleUpdate = async (input) => {
     // console.log(response);
     return response;
   } catch (err) {
-    console.log('Gpt API 호출 실패');
     console.error(err);
     return {
       status: err.response.status,

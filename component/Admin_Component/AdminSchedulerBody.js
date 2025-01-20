@@ -7,13 +7,13 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
-import Modal from 'react-modal';
 import AdminEvents from './AdminEvents';
 import AdminTooltip from './AdminTooltip';
 import AdminEventAddModal from './AdminEventAddModal';
 
 import {
   handleScheduleGet,
+  handleScheduleDragUpdate,
   handleScheduleHolidayGet,
 } from '@/fetchAPI/schedulerAPI';
 
@@ -26,38 +26,6 @@ const colors = [
   { label: '교체예정', value: '#FE4A4A' },
   { label: '유치원/초등', value: '#D2FFB4' },
   { label: '타지역', value: '#FFEBBF' },
-];
-const defaultEvents = [
-  {
-    id: 1,
-    title: 'Math Class',
-    start: '2025-01-22T11:00:00',
-    end: '2025-01-22T11:50:00',
-    backgroundColor: '#BAE0FF',
-    extendedProps: {
-      teacherName: '김철수', // 신규
-      courseName: 'Mathematics',
-      participants: 20,
-      times: 2,
-      courseTimes: 50, // 신규
-      notes: '직접 메모가 가능한 메모장으로 기타메모 부분',
-    },
-  },
-  {
-    id: 2,
-    title: 'English Class',
-    start: '2025-01-22T11:10:00',
-    end: '2025-01-22T12:00:00',
-    backgroundColor: '#F0C9FB',
-    extendedProps: {
-      teacherName: '고영희', // 신규
-      courseName: 'English Literature',
-      participants: 15,
-      times: 3,
-      courseTimes: 50, // 신규
-      notes: 'Room 202',
-    },
-  },
 ];
 
 // Date Format String 변환 메서드 (HH:MM)
@@ -75,6 +43,11 @@ const timeCalulate = (date, all) => {
   const min = ('0' + dateObj.getMinutes()).slice(-2);
 
   return `${hour}:${min}`;
+};
+// KST 변환 메서드
+const convertToKST = (utcDate) => {
+  const kstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000); // UTC+9
+  return kstDate;
 };
 
 const AdminSchedulerBody = () => {
@@ -397,45 +370,65 @@ const AdminSchedulerBody = () => {
     handleResetTooptip();
     closeModal();
   };
+  // 이벤트 Delete 핸들러
+  const deleteEvent = async (eventId) => {
+    console.log('Deleting event with ID:', eventId);
 
+    // 서버 삭제 요청
+    // await deleteEventFromServer(eventId);
+
+    // 로컬 상태 업데이트
+    setEvents((prevEvents) =>
+      prevEvents.filter((event) => event.id !== Number(eventId))
+    );
+
+    handleResetTooptip();
+  };
   // 이벤트 Drop 핸들러 start 정보만 수정
-  const handleEventDrop = (info) => {
+  const handleEventDrop = async (info) => {
     const { event } = info;
     const startDate = new Date(event.start);
     const endDate = new Date(
       startDate.getTime() + event.extendedProps.courseTimes * 60 * 1000
-    ); // 50분 후 계산
+    );
 
-    // 수정된 start 정보만 반영
+    // 한국 시간 변환
+    const startDateKST = convertToKST(startDate);
+    const endDateKST = convertToKST(endDate);
+
+    // 서버 상태 업데이트 - KST 적용
     const updatedEvent = {
       id: Number(event.id),
-      start: startDate.toISOString(),
-      end: endDate.toISOString(),
+      start: startDateKST.toISOString(),
+      end: endDateKST.toISOString(),
     };
 
     console.log('updatedEvent: ', updatedEvent);
 
     // 서버로 업데이트 요청
-    // updateStartOnServer(updatedEvent);
+    const res = await handleScheduleDragUpdate(updatedEvent);
 
-    // A 캘린더를 드롭한 Month로 이동
-    if (aCalendarRef.current) {
-      aCalendarRef.current.getApi().gotoDate(startDate); // A캘린더 날짜 이동
+    if (res.status === 200) {
+      // A 캘린더를 드롭한 Month로 이동
+      if (aCalendarRef.current) {
+        aCalendarRef.current.getApi().gotoDate(startDate); // A 캘린더 날짜 이동
+      }
+      handleResetTooptip();
+      // 로컬 상태 업데이트 - UTC 적용
+      setEvents((prevEvents) =>
+        prevEvents.map((evt) =>
+          evt.id === Number(event.id)
+            ? {
+                ...evt,
+                start: startDate.toISOString(),
+                end: endDate.toISOString(),
+              }
+            : evt
+        )
+      );
     }
-
-    // 로컬 상태 업데이트 (start만 변경)
-    setEvents((prevEvents) =>
-      prevEvents.map((evt) =>
-        evt.id === Number(updatedEvent.id)
-          ? {
-              ...evt,
-              start: updatedEvent.start,
-              end: updatedEvent.end,
-            }
-          : evt
-      )
-    );
-    handleResetTooptip();
+    // Update 실패
+    else info.revert();
   };
   // 이벤트 Update 핸들러
   const handleEventUpdate = (event) => {
@@ -456,20 +449,7 @@ const AdminSchedulerBody = () => {
     );
     handleResetTooptip();
   };
-  // 이벤트 Delete 핸들러
-  const deleteEvent = async (eventId) => {
-    console.log('Deleting event with ID:', eventId);
 
-    // 서버 삭제 요청
-    // await deleteEventFromServer(eventId);
-
-    // 로컬 상태 업데이트
-    setEvents((prevEvents) =>
-      prevEvents.filter((event) => event.id !== Number(eventId))
-    );
-
-    handleResetTooptip();
-  };
   // 검색 필터
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
@@ -484,13 +464,13 @@ const AdminSchedulerBody = () => {
   };
 
   // events 로그 출력
-  // useEffect(() => {
-  //   console.log('currentDateMonth:', currentDateMonth);
-  // }, [currentDateMonth]);
+  useEffect(() => {
+    console.log('events:', events);
+  }, [events]);
 
+  // 공휴일 Data Get
   useEffect(() => {
     try {
-      // 공휴일 Get (공공 데이터)
       if (!holidays.length) {
         handleScheduleHolidayGet(today).then((formattedHolidays) => {
           setHolidays(formattedHolidays);
@@ -626,7 +606,7 @@ const AdminSchedulerBody = () => {
             // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
             allDaySlot={false}
             datesSet={handleDatesSetA} // 날짜 이동 이벤트 핸들러
-            dateClick={openModal} // 날짜 클릭 시 이벤트 추가 모달 오픈
+            // dateClick={openModal} // 날짜 클릭 시 이벤트 추가 모달 오픈
             events={events}
             eventClick={handleEventClick} // 이벤트 Click
             eventContent={renderEventCellA} // 이벤트 Cell
@@ -982,74 +962,6 @@ const SearchInput = styled.input`
   font-family: Pretendard;
   font-weight: 400;
   text-align: left;
-`;
-
-const EventAddModal = styled(Modal)`
-  width: 400px;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  z-index: 1000;
-
-  outline: none;
-`;
-
-const ModalContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  label {
-    font-size: 14px;
-    font-weight: bold;
-  }
-
-  input {
-    padding: 8px;
-    font-size: 14px;
-  }
-
-  button {
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #0056b3;
-    }
-  }
-`;
-
-const ColorSelectWrapper = styled.div`
-  position: relative;
-  width: 200px;
-
-  select {
-    width: 100%;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    background-color: ${(props) => props.selectedColor || '#fff'};
-    color: ${(props) => (props.selectedColor ? '#fff' : '#000')};
-    cursor: pointer;
-    appearance: none; /* 기본 드롭다운 화살표 제거 */
-  }
-
-  option {
-    background-color: ${(props) => props.color || '#fff'} !important;
-    color: #000;
-  }
 `;
 
 const AdminTooltipContainer = styled.div`
