@@ -2,12 +2,10 @@ import axios from 'axios';
 
 // #TODO: READ
 export const handleScheduleGet = async (query) => {
-  const { boardIdx, pageNum } = query;
+  const { monthQuery, searchQuery } = query;
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/board/read?
-${boardIdx ? `boardIdx=${boardIdx}&` : ''}
-${pageNum ? `pageNum=${pageNum}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/scheduler/read?${monthQuery ? `monthQuery=${monthQuery}&` : ''}${searchQuery ? `searchQuery=${searchQuery}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -17,11 +15,15 @@ ${pageNum ? `pageNum=${pageNum}&` : ''}`,
       }
     );
     // console.log(response);
-    return response.data.data;
+    return {
+      status: response.status,
+      data: response.data.data,
+    };
   } catch (err) {
     console.error(err);
     return {
       status: err.response.status,
+      data: [],
     };
   }
 };

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -28,6 +27,38 @@ const colors = [
   { label: '유치원/초등', value: '#D2FFB4' },
   { label: '타지역', value: '#FFEBBF' },
 ];
+const defaultEvents = [
+  {
+    id: 1,
+    title: 'Math Class',
+    start: '2025-01-22T11:00:00',
+    end: '2025-01-22T11:50:00',
+    backgroundColor: '#BAE0FF',
+    extendedProps: {
+      teacherName: '김철수', // 신규
+      courseName: 'Mathematics',
+      participants: 20,
+      times: 2,
+      courseTimes: 50, // 신규
+      notes: '직접 메모가 가능한 메모장으로 기타메모 부분',
+    },
+  },
+  {
+    id: 2,
+    title: 'English Class',
+    start: '2025-01-22T11:10:00',
+    end: '2025-01-22T12:00:00',
+    backgroundColor: '#F0C9FB',
+    extendedProps: {
+      teacherName: '고영희', // 신규
+      courseName: 'English Literature',
+      participants: 15,
+      times: 3,
+      courseTimes: 50, // 신규
+      notes: 'Room 202',
+    },
+  },
+];
 
 // Date Format String 변환 메서드 (HH:MM)
 const timeCalulate = (date, all) => {
@@ -47,38 +78,7 @@ const timeCalulate = (date, all) => {
 };
 
 const AdminSchedulerBody = () => {
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      title: 'Math Class',
-      start: '2025-01-22T11:00:00',
-      end: '2025-01-22T11:50:00',
-      backgroundColor: '#BAE0FF',
-      extendedProps: {
-        teacherName: '김철수', // 신규
-        courseName: 'Mathematics',
-        participants: 20,
-        times: 2,
-        courseTimes: 50, // 신규
-        notes: '직접 메모가 가능한 메모장으로 기타메모 부분',
-      },
-    },
-    {
-      id: 2,
-      title: 'English Class',
-      start: '2025-01-22T11:10:00',
-      end: '2025-01-22T12:00:00',
-      backgroundColor: '#F0C9FB',
-      extendedProps: {
-        teacherName: '고영희', // 신규
-        courseName: 'English Literature',
-        participants: 15,
-        times: 3,
-        courseTimes: 50, // 신규
-        notes: 'Room 202',
-      },
-    },
-  ]);
+  const [events, setEvents] = useState([]);
   const [newEvent, setNewEvent] = useState({
     title: '',
     teacherName: '', // 신규
@@ -91,6 +91,9 @@ const AdminSchedulerBody = () => {
     date: '',
     recursiveEndDate: '', // 신규
   });
+  const [currentDateMonth, setCurrentDateMonth] = useState(
+    today.getMonth() + 1
+  ); // A 캘린더 currentDate Month
   const [holidays, setHolidays] = useState([]); // 공휴일 데이터 배열 (공공데이터)
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -146,6 +149,10 @@ const AdminSchedulerBody = () => {
     if (bCalendarRef.current) {
       bCalendarRef.current.getApi().gotoDate(newData); // B캘린더 날짜 이동
     }
+    // A 캘린더 Month 갱신
+    setCurrentDateMonth(
+      aCalendarRef?.current?.getApi()?.currentData.currentDate.getMonth() + 1
+    );
   };
   // 미니 달력(B) 렌더 메서드
   const renderDayHeaderB = (arg) => {
@@ -469,15 +476,11 @@ const AdminSchedulerBody = () => {
 
   // events 로그 출력
   // useEffect(() => {
-  //   console.log('newEvent:', newEvent);
-  // }, [newEvent]);
+  //   console.log('currentDateMonth:', currentDateMonth);
+  // }, [currentDateMonth]);
 
   useEffect(() => {
     try {
-      // 스케줄 Get Handler 호출
-      handleScheduleGet({}).then((data) => {
-        console.log(data);
-      });
       // 공휴일 Get (공공 데이터)
       if (!holidays.length) {
         handleScheduleHolidayGet(today).then((formattedHolidays) => {
@@ -488,6 +491,23 @@ const AdminSchedulerBody = () => {
       console.log(err);
     }
   }, []);
+
+  useEffect(() => {
+    try {
+      if (currentDateMonth) {
+        // 스케줄 Get Handler 호출
+        handleScheduleGet({
+          monthQuery: currentDateMonth, // 선택 날짜
+          searchQuery,
+        }).then((res) => {
+          console.log(res);
+          setEvents(res.data);
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [searchQuery, currentDateMonth]);
 
   // Delete 삭제 기능
   useEffect(() => {
