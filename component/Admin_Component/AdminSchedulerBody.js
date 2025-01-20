@@ -130,6 +130,9 @@ const AdminSchedulerBody = () => {
     if (aCalendarRef.current) {
       aCalendarRef.current.getApi().gotoDate(newDate); // A캘린더 날짜 이동
     }
+
+    // 툴팁 닫기
+    handleResetTooptip();
   };
   // 메인 스케줄러(A) 날짜 변경 핸들러 - B캘린더와 동기화
   const handleDatesSetA = (info) => {
@@ -153,6 +156,9 @@ const AdminSchedulerBody = () => {
     setCurrentDateMonth(
       aCalendarRef?.current?.getApi()?.currentData.currentDate.getMonth() + 1
     );
+
+    // 툴팁 닫기
+    handleResetTooptip();
   };
   // 미니 달력(B) 렌더 메서드
   const renderDayHeaderB = (arg) => {
