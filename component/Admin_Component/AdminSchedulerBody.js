@@ -15,6 +15,8 @@ import {
   handleScheduleGet,
   handleScheduleDragUpdate,
   handleScheduleClickUpdate,
+  handleScheduleCreate,
+  handleScheduleDelete,
   handleScheduleHolidayGet,
 } from '@/fetchAPI/schedulerAPI';
 
@@ -304,12 +306,52 @@ const AdminSchedulerBody = () => {
     });
   };
 
+  // newEvent Check 핸들러
+  const handleNewEventCheck = (event) => {
+    if (!event.title) {
+      alert('제목을 입력하세요');
+      return false;
+    }
+    if (!event.teacherName) {
+      alert('강사를 입력하세요');
+      return false;
+    }
+    if (!event.courseName) {
+      alert('강좌명을 입력하세요');
+      return false;
+    }
+    if (!event.times) {
+      alert('타임수를 입력하세요');
+      return false;
+    }
+    if (!event.participants) {
+      alert('인원수를 입력하세요');
+      return false;
+    }
+    if (!event.courseTimes) {
+      alert('수업시간을 선택하세요');
+      return false;
+    }
+    if (!event.backgroundColor) {
+      alert('색상을 선택하세요');
+      return false;
+    }
+
+    return true;
+  };
   // 이벤트 Insert 핸들러
   const handleAddEvent = async (newEvent) => {
+    // newEvent Check
+    if (!handleNewEventCheck(newEvent)) return;
+
     const startDate = new Date(newEvent.date);
     const endDate = new Date(
       startDate.getTime() + newEvent.courseTimes * 60 * 1000
     );
+
+    // 한국 시간 변환
+    const startDateKST = convertToKST(startDate);
+    const endDateKST = convertToKST(endDate);
 
     const newEventData = {
       id: events.length + 1, // 임시 ID (서버에서 제공 시 업데이트 가능)
@@ -327,14 +369,12 @@ const AdminSchedulerBody = () => {
       backgroundColor: newEvent.backgroundColor || '#BAE0FF',
     };
 
-    // 서버로 이벤트 추가가 요청
-    // await createStartOnServer(newEventData);
-
+    // 이벤트 반복 추가
     if (newEvent.recursiveEndDate) {
-      const recursiveEndDate = new Date(newEvent.recursiveEndDate);
+      const recursiveEndDate = new Date(newEvent.recursiveEndDate); // 종료일
       const dayOfWeek = startDate.getDay(); // 시작 날짜의 요일
 
-      const recursiveEvents = [];
+      const recursiveEvents = []; // 반복 이벤트 목록
       // [startDate ~ recursiveEndDate] date === dayOfWeek 비교
       for (
         let date = new Date(startDate);
@@ -342,30 +382,46 @@ const AdminSchedulerBody = () => {
         date.setDate(date.getDate() + 1)
       ) {
         if (date.getDay() === dayOfWeek) {
+          const eventStartDate = date;
           const eventEndDate = new Date(
             date.getTime() + newEvent.courseTimes * 60 * 1000
           );
 
-          // #TODO: 서버에서 id 반환받은 뒤 적용하기
+          const res = await handleScheduleCreate({
+            ...newEventData,
+            start: convertToKST(eventStartDate).toISOString(), // 한국 시간
+            end: convertToKST(eventEndDate).toISOString(), // 한국 시간
+          });
+
+          // 서버에서 반환받은 event ID 적용하기
           recursiveEvents.push({
             ...newEventData,
-            id: events.length + recursiveEvents.length + 1,
-            start: date.toISOString(),
+            id: res.data.data.id,
+            start: eventStartDate.toISOString(),
             end: eventEndDate.toISOString(),
           });
         }
       }
-
-      // 3) 기존 이벤트 상태에 새로운 반복 이벤트 목록 추가
+      // 반복 이벤트 목록 추가
       setEvents((prevEvents) => [...prevEvents, ...recursiveEvents]);
-    } else {
-      setEvents((prevEvents) => [
-        ...prevEvents,
-        {
-          ...newEventData,
-          id: prevEvents.length + 1,
-        },
-      ]);
+    }
+    // 이벤트 단일 추가
+    else {
+      // 서버 이벤트 추가 요청
+      const res = await handleScheduleCreate({
+        ...newEventData,
+        start: startDateKST.toISOString(), // 한국 시간
+        end: endDateKST.toISOString(), // 한국 시간
+      });
+      if (res.status === 200) {
+        setEvents((prevEvents) => [
+          ...prevEvents,
+          {
+            ...newEventData,
+            id: res.data.data.id, // 추가된 이벤트의 DB Table PK
+          },
+        ]);
+      } else alert('Insert Fail');
     }
 
     handleResetTooptip();
@@ -373,17 +429,16 @@ const AdminSchedulerBody = () => {
   };
   // 이벤트 Delete 핸들러
   const handleDeleteEvent = async (eventId) => {
-    console.log('Deleting event with ID:', eventId);
-
     // 서버 삭제 요청
-    // await deleteEventFromServer(eventId);
+    const res = await handleScheduleDelete({ eventId });
 
-    // 로컬 상태 업데이트
-    setEvents((prevEvents) =>
-      prevEvents.filter((event) => event.id !== Number(eventId))
-    );
-
-    handleResetTooptip();
+    if (res.status === 200) {
+      // 로컬 상태 업데이트
+      setEvents((prevEvents) =>
+        prevEvents.filter((event) => event.id !== Number(eventId))
+      );
+      handleResetTooptip();
+    } else alert('Delete Fail');
   };
   // 이벤트 Drop 핸들러 start 정보만 수정
   const handleEventDrop = async (info) => {
@@ -403,8 +458,6 @@ const AdminSchedulerBody = () => {
       start: startDateKST.toISOString(),
       end: endDateKST.toISOString(),
     };
-
-    console.log('updatedEvent: ', updatedEvent);
 
     // 서버로 업데이트 요청
     const res = await handleScheduleDragUpdate(updatedEvent);
@@ -500,19 +553,19 @@ const AdminSchedulerBody = () => {
   }, [searchQuery, currentDateMonth]);
 
   // Delete 삭제 기능
-  // useEffect(() => {
-  //   const handleKeyDown = (e) => {
-  //     if (selectedEventId !== -1 && e.key === 'Delete') {
-  //       e.stopPropagation(); // 이벤트 전파 차단
-  //       if (confirm('삭제 하시겠습니까?') === true) {
-  //         handleDeleteEvent(selectedEventId);
-  //       }
-  //     }
-  //   };
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (selectedEventId !== -1 && e.key === 'Delete') {
+        e.stopPropagation(); // 이벤트 전파 차단
+        if (confirm('삭제 하시겠습니까?') === true) {
+          handleDeleteEvent(selectedEventId);
+        }
+      }
+    };
 
-  //   window.addEventListener('keydown', handleKeyDown);
-  //   return () => window.removeEventListener('keydown', handleKeyDown);
-  // }, [selectedEventId]);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedEventId]);
 
   return (
     <>
@@ -607,7 +660,7 @@ const AdminSchedulerBody = () => {
             // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
             allDaySlot={false}
             datesSet={handleDatesSetA} // 날짜 이동 이벤트 핸들러
-            // dateClick={openModal} // #TODO: 임시 잠금. 날짜 클릭 시 이벤트 추가 모달 오픈
+            dateClick={openModal} // #TODO: 임시 잠금. 날짜 클릭 시 이벤트 추가 모달 오픈
             events={events}
             eventClick={handleOpenTooltip} // 이벤트 Click
             eventContent={renderEventCellA} // 이벤트 Cell

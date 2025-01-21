@@ -27,7 +27,7 @@ export const handleScheduleGet = async (query) => {
     };
   }
 };
-// #TODO: CREATE
+// CREATE
 export const handleScheduleCreate = async (input) => {
   // console.log(input);
   try {
@@ -56,7 +56,7 @@ export const handleScheduleCreate = async (input) => {
 export const handleScheduleDelete = async (query) => {
   try {
     const response = await axios.delete(
-      `${process.env.NEXT_PUBLIC_URL}/scheduler/delete?${query?.boardIdx ? `boardIdx=${query?.boardIdx}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/scheduler/delete?${query?.eventId ? `eventId=${query?.eventId}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',
