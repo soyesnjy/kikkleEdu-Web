@@ -19,7 +19,7 @@ export default function AdminCustomTimesSelect({
       </SelectedTimes>
       {isOpen && (
         <Dropdown>
-          {[30, 40, 50, 60].map((time) => (
+          {[10, 30, 40, 50, 60].map((time) => (
             <DropdownItem key={time} onClick={() => handleSelect(time)}>
               <span>{`${time}분`}</span>
             </DropdownItem>

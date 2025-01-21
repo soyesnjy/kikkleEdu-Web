@@ -521,20 +521,6 @@ const AdminSchedulerBody = () => {
     // );
   };
 
-  // const handleEventDidMount = (info) => {
-  //   // info.el: 해당 이벤트의 최상위 <a> 요소
-  //   // harness(부모 .fc-timegrid-event-harness)를 찾는다
-  //   const harness = info.el.closest('.fc-timegrid-event-harness');
-  //   if (harness) {
-  //     harness.style.zIndex = '1';
-  //   }
-  // };
-
-  // events 로그 출력
-  // useEffect(() => {
-  //   console.log('events:', events);
-  // }, [events]);
-
   // 공휴일 Data Get
   useEffect(() => {
     try {
@@ -707,7 +693,6 @@ const AdminSchedulerBody = () => {
               scheduleForm === 'week' ? 'extendedProps.teacherName' : 'start'
             } // 이벤트 조건부 정렬
             eventDurationEditable={false} // 이벤트 길이 조정
-            // eventDidMount={handleEventDidMount}
             dayCellContent={scheduleForm === 'month' ? renderDayCellA : null} // 커스텀 dayCellContent
             locale="ko"
             height="auto"
