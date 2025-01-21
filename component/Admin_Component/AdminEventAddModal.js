@@ -142,7 +142,9 @@ export default function AdminEventAddModal({
                 <polyline points="20 6 9 17 4 12" />
               </Icon>
             </StyledCheckbox>
-            <span>{timeCalulate(newEvent.date, true)}</span>
+            <RecursiveSpan checkTerms={checkTerms}>
+              {timeCalulate(newEvent.date, true)}
+            </RecursiveSpan>
             ~
             <StyledInput
               disabled={!checkTerms}
@@ -361,4 +363,11 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   position: absolute;
   white-space: nowrap;
   width: 1px;
+`;
+
+const RecursiveSpan = styled.span`
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: Pretendard;
+  color: ${(props) => (props.checkTerms ? 'black' : '#D9D9D9')};
 `;

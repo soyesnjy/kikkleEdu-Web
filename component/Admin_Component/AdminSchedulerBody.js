@@ -336,6 +336,10 @@ const AdminSchedulerBody = () => {
       alert('색상을 선택하세요');
       return false;
     }
+    if (new Date(event.recursiveEndDate) < today) {
+      alert('날짜를 재설정 해주세요');
+      return false;
+    }
 
     return true;
   };
