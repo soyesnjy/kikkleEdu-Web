@@ -25,7 +25,7 @@ const today = new Date();
 const colors = [
   { label: '확정', value: '#BAE0FF' },
   { label: '신규', value: '#F0C9FB' },
-  { label: '폐강', value: '#F3F3F3' },
+  { label: '폐강', value: '#F6F6F6' },
   { label: '교체예정', value: '#FE4A4A' },
   { label: '유치원/초등', value: '#D2FFB4' },
   { label: '타지역', value: '#FFEBBF' },
@@ -336,7 +336,7 @@ const AdminSchedulerBody = () => {
       alert('색상을 선택하세요');
       return false;
     }
-    if (new Date(event.recursiveEndDate) < today) {
+    if (event.recursiveEndDate && new Date(event.recursiveEndDate) < today) {
       alert('날짜를 재설정 해주세요');
       return false;
     }
