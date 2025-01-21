@@ -324,8 +324,8 @@ const AdminSchedulerBody = () => {
       alert('타임수를 입력하세요');
       return false;
     }
-    if (!event.participants) {
-      alert('인원수를 입력하세요');
+    if (event.participants < 0) {
+      alert('인원수를 똑바로 입력하세요 (음수 불가능)');
       return false;
     }
     if (!event.courseTimes) {
@@ -337,7 +337,7 @@ const AdminSchedulerBody = () => {
       return false;
     }
     if (event.recursiveEndDate && new Date(event.recursiveEndDate) < today) {
-      alert('날짜를 재설정 해주세요');
+      alert('날짜를 똑바로 입력하세요 (오늘 이전 날짜 불가능)');
       return false;
     }
 
