@@ -72,7 +72,7 @@ const AdminSchedulerBody = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDate, setSelectedDate] = useState(today); // 미니 달력(B)에서 선택된 날짜
-  const [selectedEventId, setSelectedEventId] = useState(-1); // 선택된 eventID
+  const [selectedEventId, setSelectedEventId] = useState(-1); // 선택된 eventID (이벤트 Delete 용도)
   const [scheduleForm, setScheduleForm] = useState('week'); // 스케줄폼 (week || month)
   const [tooltip, setTooltip] = useState({
     visible: false,
@@ -267,8 +267,8 @@ const AdminSchedulerBody = () => {
       position: { top: 0, left: 0 },
     });
   };
-  // 이벤트 클릭 핸들러 (툴팁 관련 위치 계산)
-  const handleEventClick = (info) => {
+  // 툴팁 오픈 핸들러 (툴팁 관련 위치 계산)
+  const handleOpenTooltip = (info) => {
     const { id, title, start, end, extendedProps, backgroundColor } =
       info.event;
 
@@ -372,7 +372,7 @@ const AdminSchedulerBody = () => {
     closeModal();
   };
   // 이벤트 Delete 핸들러
-  const deleteEvent = async (eventId) => {
+  const handleDeleteEvent = async (eventId) => {
     console.log('Deleting event with ID:', eventId);
 
     // 서버 삭제 요청
@@ -447,7 +447,7 @@ const AdminSchedulerBody = () => {
           evt.id === Number(event.id) ? { ...evt, ...event } : evt
         )
       );
-    }
+    } else alert('Update Fail');
     handleResetTooptip();
   };
 
@@ -505,7 +505,7 @@ const AdminSchedulerBody = () => {
   //     if (selectedEventId !== -1 && e.key === 'Delete') {
   //       e.stopPropagation(); // 이벤트 전파 차단
   //       if (confirm('삭제 하시겠습니까?') === true) {
-  //         deleteEvent(selectedEventId);
+  //         handleDeleteEvent(selectedEventId);
   //       }
   //     }
   //   };
@@ -609,7 +609,7 @@ const AdminSchedulerBody = () => {
             datesSet={handleDatesSetA} // 날짜 이동 이벤트 핸들러
             // dateClick={openModal} // #TODO: 임시 잠금. 날짜 클릭 시 이벤트 추가 모달 오픈
             events={events}
-            eventClick={handleEventClick} // 이벤트 Click
+            eventClick={handleOpenTooltip} // 이벤트 Click
             eventContent={renderEventCellA} // 이벤트 Cell
             editable={true} // week Form일 경우에만 편집 가능
             eventOverlap={true} // week Form일 경우에만 편집 가능
