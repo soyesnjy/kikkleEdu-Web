@@ -25,7 +25,7 @@ const today = new Date();
 const colors = [
   { label: '확정', value: '#BAE0FF' },
   { label: '신규', value: '#F0C9FB' },
-  { label: '폐강', value: '#F6F6F6' },
+  { label: '폐강', value: '#FFF' },
   { label: '교체예정', value: '#FE4A4A' },
   { label: '유치원/초등', value: '#D2FFB4' },
   { label: '타지역', value: '#FFEBBF' },
@@ -260,7 +260,7 @@ const AdminSchedulerBody = () => {
     });
   };
 
-  // 툴팁 리셋 핸들러
+  // Tooltip Reset 핸들러
   const handleResetTooptip = () => {
     setSelectedEventId(-1);
     setTooltip({
@@ -269,7 +269,7 @@ const AdminSchedulerBody = () => {
       position: { top: 0, left: 0 },
     });
   };
-  // 툴팁 오픈 핸들러 (툴팁 관련 위치 계산)
+  // Tooltip Open 핸들러 - Tooltip 위치 계산
   const handleOpenTooltip = (info) => {
     const { id, title, start, end, extendedProps, backgroundColor } =
       info.event;
@@ -344,7 +344,7 @@ const AdminSchedulerBody = () => {
     return true;
   };
   // 이벤트 Insert 핸들러
-  const handleAddEvent = async (newEvent) => {
+  const handleInsertEvent = async (newEvent) => {
     // newEvent Check
     if (!handleNewEventCheck(newEvent)) return;
 
@@ -672,7 +672,9 @@ const AdminSchedulerBody = () => {
             eventOverlap={true} // week Form일 경우에만 편집 가능
             slotEventOverlap={false} // 이벤트가 겹치지 않고 새로 배치
             eventDrop={handleEventDrop} // Drag&Drop Handler: start 정보 수정
-            eventOrder={scheduleForm === 'week' ? 'title' : 'start'} // 이벤트 조건부 정렬
+            eventOrder={
+              scheduleForm === 'week' ? 'extendedProps.teacherName' : 'start'
+            } // 이벤트 조건부 정렬
             eventDurationEditable={false} // 이벤트 길이 조정
             dayCellContent={scheduleForm === 'month' ? renderDayCellA : null} // 커스텀 dayCellContent
             locale="ko"
@@ -687,7 +689,7 @@ const AdminSchedulerBody = () => {
           setNewEvent={setNewEvent}
           dayArr={dayArr}
           colors={colors}
-          handleAddEvent={handleAddEvent}
+          handleAddEvent={handleInsertEvent}
           timeCalulate={timeCalulate}
         />
       </Container>
