@@ -512,19 +512,28 @@ const AdminSchedulerBody = () => {
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
-    setEvents((prevEvents) =>
-      query
-        ? prevEvents.filter((event) =>
-            event.extendedProps.courseName?.toLowerCase().includes(query)
-          )
-        : [...prevEvents]
-    );
+    // setEvents((prevEvents) =>
+    //   query
+    //     ? prevEvents.filter((event) =>
+    //         event.extendedProps.courseName?.toLowerCase().includes(query)
+    //       )
+    //     : [...prevEvents]
+    // );
   };
 
+  // const handleEventDidMount = (info) => {
+  //   // info.el: 해당 이벤트의 최상위 <a> 요소
+  //   // harness(부모 .fc-timegrid-event-harness)를 찾는다
+  //   const harness = info.el.closest('.fc-timegrid-event-harness');
+  //   if (harness) {
+  //     harness.style.zIndex = '1';
+  //   }
+  // };
+
   // events 로그 출력
-  useEffect(() => {
-    console.log('events:', events);
-  }, [events]);
+  // useEffect(() => {
+  //   console.log('events:', events);
+  // }, [events]);
 
   // 공휴일 Data Get
   useEffect(() => {
@@ -539,7 +548,7 @@ const AdminSchedulerBody = () => {
     }
   }, []);
 
-  // Event GET
+  // Event GET (currentDateMonth)
   useEffect(() => {
     try {
       if (currentDateMonth > 0) {
@@ -554,7 +563,29 @@ const AdminSchedulerBody = () => {
     } catch (err) {
       console.log(err);
     }
-  }, [searchQuery, currentDateMonth]);
+  }, [currentDateMonth]);
+
+  // Event GET (searchQuery)
+  useEffect(() => {
+    try {
+      const debounce = setTimeout(() => {
+        if (currentDateMonth > 0) {
+          // 스케줄 Get Handler 호출
+          handleScheduleGet({
+            monthQuery: currentDateMonth, // 선택 날짜
+            searchQuery,
+          }).then((res) => {
+            setEvents(res.data);
+          });
+        }
+      }, 500);
+      return () => {
+        clearTimeout(debounce);
+      };
+    } catch (err) {
+      console.log(err);
+    }
+  }, [searchQuery]);
 
   // Delete 삭제 기능
   useEffect(() => {
@@ -661,7 +692,7 @@ const AdminSchedulerBody = () => {
             slotMaxTime="23:00:00"
             slotDuration="00:10:00" // 슬롯 단위: 1시간
             // defaultTimedEventDuration="00:10:00" // 이벤트 기본 지속 시간 10분
-            // slotLabelInterval="01:00:00" // 1시간마다 라벨 표시
+            // slotLabelInterval="00:10:00" // 1시간마다 라벨 표시
             allDaySlot={false}
             datesSet={handleDatesSetA} // 날짜 이동 이벤트 핸들러
             dateClick={openModal} // #TODO: 임시 잠금. 날짜 클릭 시 이벤트 추가 모달 오픈
@@ -676,6 +707,7 @@ const AdminSchedulerBody = () => {
               scheduleForm === 'week' ? 'extendedProps.teacherName' : 'start'
             } // 이벤트 조건부 정렬
             eventDurationEditable={false} // 이벤트 길이 조정
+            // eventDidMount={handleEventDidMount}
             dayCellContent={scheduleForm === 'month' ? renderDayCellA : null} // 커스텀 dayCellContent
             locale="ko"
             height="auto"
@@ -856,13 +888,8 @@ const SchedulerWrapper = styled.div`
 
   .fc {
     padding: 1rem 0;
-    width: 65vw;
+    width: 100%;
     height: auto;
-
-    direction: ltr;
-    text-align: left;
-    margin: auto;
-    font-family: AppleSDGothicNeoB00;
 
     --fc-event-border-color: 'none'; // Default Border color 제거
   }
@@ -871,8 +898,12 @@ const SchedulerWrapper = styled.div`
     border-bottom: 1px solid #ddd;
   }
 
+  .fc-timegrid-col,
+  .fc-col-header-cell {
+  }
+
   .fc-timegrid-event-harness {
-    border: none;
+    /* width: 100%; */
   }
 
   // Month dayCell 관련
