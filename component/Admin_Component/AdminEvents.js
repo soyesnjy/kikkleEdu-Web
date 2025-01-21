@@ -44,6 +44,11 @@ const Event = styled.div`
     font-family: Pretendard;
     font-weight: 600;
     text-align: left;
+
+    text-decoration: ${(props) =>
+      props.backColor === '#FFF' ? 'line-through' : 'none'};
+
+    color: ${(props) => (props.backColor === '#FFF' ? 'gray' : 'black')};
   }
 `;
 
