@@ -274,6 +274,8 @@ const AdminSchedulerBody = () => {
     const { id, title, start, end, extendedProps, backgroundColor } =
       info.event;
 
+    console.log({ id, title, start, end, extendedProps, backgroundColor });
+
     // 툴팁이 켜진 경우 끄기 (토글)
     if (tooltip.visible && tooltip.content.id === id) {
       handleResetTooptip();
@@ -354,7 +356,7 @@ const AdminSchedulerBody = () => {
     const endDateKST = convertToKST(endDate);
 
     const newEventData = {
-      id: events.length + 1, // 임시 ID (서버에서 제공 시 업데이트 가능)
+      // id: events.length + 1, // 임시 ID (서버에서 제공 시 업데이트 가능)
       title: newEvent.title,
       start: newEvent.date,
       end: endDate.toISOString(),
@@ -375,6 +377,7 @@ const AdminSchedulerBody = () => {
       const dayOfWeek = startDate.getDay(); // 시작 날짜의 요일
 
       const recursiveEvents = []; // 반복 이벤트 목록
+      let groupIdx = -1;
       // [startDate ~ recursiveEndDate] date === dayOfWeek 비교
       for (
         let date = new Date(startDate);
@@ -391,7 +394,11 @@ const AdminSchedulerBody = () => {
             ...newEventData,
             start: convertToKST(eventStartDate).toISOString(), // 한국 시간
             end: convertToKST(eventEndDate).toISOString(), // 한국 시간
+            groupIdx,
           });
+
+          // groupIdx 스케줄 PK로 갱신 - 최초 1회
+          if (groupIdx === -1) groupIdx = res.data.data.id;
 
           // 서버에서 반환받은 event ID 적용하기
           recursiveEvents.push({
@@ -399,6 +406,7 @@ const AdminSchedulerBody = () => {
             id: res.data.data.id,
             start: eventStartDate.toISOString(),
             end: eventEndDate.toISOString(),
+            groupIdx,
           });
         }
       }
@@ -426,19 +434,6 @@ const AdminSchedulerBody = () => {
 
     handleResetTooptip();
     closeModal();
-  };
-  // 이벤트 Delete 핸들러
-  const handleDeleteEvent = async (eventId) => {
-    // 서버 삭제 요청
-    const res = await handleScheduleDelete({ eventId });
-
-    if (res.status === 200) {
-      // 로컬 상태 업데이트
-      setEvents((prevEvents) =>
-        prevEvents.filter((event) => event.id !== Number(eventId))
-      );
-      handleResetTooptip();
-    } else alert('Delete Fail');
   };
   // 이벤트 Drop 핸들러 start 정보만 수정
   const handleEventDrop = async (info) => {
@@ -476,6 +471,7 @@ const AdminSchedulerBody = () => {
                 ...evt,
                 start: startDate.toISOString(),
                 end: endDate.toISOString(),
+                groupIdx: 0,
               }
             : evt
         )
@@ -495,13 +491,46 @@ const AdminSchedulerBody = () => {
     const res = await handleScheduleClickUpdate(updateInput);
     // 업데이트 성공 - 로컬 상태 업데이트. UTC 시간 적용
     if (res.status === 200) {
-      setEvents((prevEvents) =>
-        prevEvents.map((evt) =>
-          evt.id === Number(event.id) ? { ...evt, ...event } : evt
-        )
-      );
+      if (event.groupIdx) {
+        // 화면 새로고침
+        // window.location.reload();
+
+        setEvents((prevEvents) =>
+          prevEvents.map((evt) => {
+            delete event.id; // group 조건. evt에 id 덮어쓰기 방지
+            return evt.groupIdx === event.groupIdx
+              ? {
+                  ...evt,
+                  ...event,
+                  end: new Date(
+                    new Date(evt.start).getTime() +
+                      event.extendedProps.courseTimes * 60 * 1000
+                  ).toISOString(),
+                }
+              : evt;
+          })
+        );
+      } else
+        setEvents((prevEvents) =>
+          prevEvents.map((evt) =>
+            evt.id === event.id ? { ...evt, ...event } : evt
+          )
+        );
     } else alert('Update Fail');
     handleResetTooptip();
+  };
+  // 이벤트 Delete 핸들러
+  const handleDeleteEvent = async (eventId) => {
+    // 서버 삭제 요청
+    const res = await handleScheduleDelete({ eventId });
+
+    if (res.status === 200) {
+      // 로컬 상태 업데이트
+      setEvents((prevEvents) =>
+        prevEvents.filter((event) => event.id !== Number(eventId))
+      );
+      handleResetTooptip();
+    } else alert('Delete Fail');
   };
 
   // 검색 핸들러
@@ -523,7 +552,7 @@ const AdminSchedulerBody = () => {
     }
   }, []);
 
-  // Event GET (currentDateMonth)
+  // Event GET (Month 변경)
   useEffect(() => {
     try {
       if (currentDateMonth > 0) {
@@ -532,6 +561,7 @@ const AdminSchedulerBody = () => {
           monthQuery: currentDateMonth, // 선택 날짜
           searchQuery,
         }).then((res) => {
+          console.log(res.data);
           setEvents(res.data);
         });
       }
@@ -540,7 +570,7 @@ const AdminSchedulerBody = () => {
     }
   }, [currentDateMonth]);
 
-  // Event GET (searchQuery)
+  // Event GET (강사 검색)
   useEffect(() => {
     try {
       const debounce = setTimeout(() => {

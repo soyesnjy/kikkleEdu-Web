@@ -7,7 +7,6 @@ import AdminCustomColorSelect from './AdminCustomColorSelect';
 import AdminCustomTimesSelect from './AdminCustomTimesSelect';
 
 const AdminTooltip = ({
-  vector,
   id,
   title,
   start,
@@ -29,14 +28,15 @@ const AdminTooltip = ({
   const [updatedCourseTimes, setUpdatedCourseTimes] = useState(0);
   const [updatedBackColor, setUpdatedBackColor] = useState('');
   const [updatedNotes, setUpdatedNotes] = useState('');
+  const [isAllEdit, setIsAllEdit] = useState(false);
 
-  // 수정 토글 핸들러
-  const updateIsOpenToggleHandler = () => {
+  // console.log(end);
+  // Update Toggle 핸들러
+  const handleupdateIsOpenToggle = () => {
     setUpdateIsOpen(!updateIsOpen);
   };
-
   // Update State Reset 핸들러
-  const updateResetHandler = () => {
+  const handleupdateReset = () => {
     setUpdatedTitle(title);
     setUpdatedTeacherName(event.teacherName);
     setUpdatedCourseName(event.courseName);
@@ -46,11 +46,12 @@ const AdminTooltip = ({
     setUpdatedNotes(event.notes);
     setUpdatedBackColor(backgroundColor);
   };
-
-  const updateHandler = () => {
+  // Update Click 핸들러
+  const handleUpdateClick = () => {
     if (confirm('수정 하시겠습니까?') === true) {
       onEdit({
         id: Number(id),
+        groupIdx: isAllEdit ? event.groupIdx : 0,
         title: updatedTitle,
         end: new Date(
           new Date(start).getTime() + updatedCourseTimes * 60 * 1000
@@ -65,18 +66,17 @@ const AdminTooltip = ({
         },
         backgroundColor: updatedBackColor,
       });
-      updateIsOpenToggleHandler();
+      handleupdateIsOpenToggle();
     }
   };
 
   useEffect(() => {
-    updateResetHandler();
+    handleupdateReset();
     setUpdateIsOpen(false);
   }, [id]);
 
   return (
     <TooltipContainer
-      vector={vector}
       onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
     >
@@ -92,9 +92,8 @@ const AdminTooltip = ({
                 }}
               />
             </Value>
-
             <EditButtonContainer>
-              <EditButton onClick={updateHandler}>
+              <EditButton onClick={handleUpdateClick}>
                 <Image
                   alt={'Check'}
                   src={'/src/Admin_IMG/Admin_Check_IMG.png'}
@@ -172,7 +171,6 @@ const AdminTooltip = ({
                 />
               </Value>
             </DetailRow>
-            {/* #TODO */}
             <DetailRow>
               <Label>Time</Label>
               <Value>
@@ -203,6 +201,32 @@ const AdminTooltip = ({
                 />
               </Value>
             </DetailRow>
+            {event.groupIdx ? (
+              <DetailRow>
+                <RowContainer>
+                  <HiddenCheckbox
+                    id="checkTerms"
+                    checked={isAllEdit}
+                    onChange={(e) => {
+                      setIsAllEdit(e.currentTarget.checked);
+                    }}
+                  />
+                  <StyledCheckbox
+                    check={isAllEdit}
+                    onClick={() => {
+                      setIsAllEdit(!isAllEdit);
+                    }}
+                  >
+                    <Icon viewBox="0 0 24 24">
+                      <polyline points="20 6 9 17 4 12" />
+                    </Icon>
+                  </StyledCheckbox>
+                  <RecursiveLabel for="checkTerms" checkTerms={isAllEdit}>
+                    {`전체수정`}
+                  </RecursiveLabel>
+                </RowContainer>
+              </DetailRow>
+            ) : null}
           </DetailContainer>
         </>
       ) : (
@@ -210,7 +234,7 @@ const AdminTooltip = ({
           <Header>
             <Title>{`[ ${title} ]`}</Title>
             <EditButtonContainer>
-              <EditButton onClick={updateIsOpenToggleHandler}>
+              <EditButton onClick={handleupdateIsOpenToggle}>
                 <Image
                   alt={'check'}
                   src={'/src/Admin_IMG/Admin_Update_IMG.png'}
@@ -409,6 +433,59 @@ const StyledTextarea = styled.textarea`
   font-family: Pretendard;
   font-weight: 400;
   text-align: left;
+`;
+
+const RowContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const Icon = styled.svg`
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: white;
+  stroke-width: 3px;
+`;
+
+const StyledCheckbox = styled.div`
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  background: ${(props) => (props.check ? '#45B26B' : '#D9D9D9')};
+  border-radius: 5px;
+  transition: all 150ms;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+`;
+
+const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+  border: 0;
+  clip: rect(0 0 0 0);
+  /* clippath: inset(50%); */
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+`;
+
+const RecursiveLabel = styled.label`
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: Pretendard;
+  color: ${(props) => (props.checkTerms ? 'black' : '#D9D9D9')};
+
+  user-select: none;
 `;
 
 export default AdminTooltip;
