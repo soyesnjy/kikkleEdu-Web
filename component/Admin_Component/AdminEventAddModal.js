@@ -133,7 +133,7 @@ export default function AdminEventAddModal({
             }
           />
         </SubContainer>
-        {/* 이벤트 다중 추가 */}
+        {/* 반복 이벤트 추가 */}
         <SubContainer>
           <StyledSpan>반복</StyledSpan>
           <RowContainer>
@@ -176,7 +176,7 @@ export default function AdminEventAddModal({
             onClick={() => {
               handleAddEvent({
                 ...newEvent,
-                recursiveEndDate: checkTerms ? newEvent.recursiveEndDate : '',
+                isAllAdd: checkTerms, // 반복 추가 트리거
               });
             }}
             style={{

@@ -372,7 +372,7 @@ const AdminSchedulerBody = () => {
     };
 
     // 이벤트 반복 추가
-    if (newEvent.recursiveEndDate) {
+    if (newEvent.isAllAdd && newEvent.recursiveEndDate) {
       const recursiveEndDate = new Date(newEvent.recursiveEndDate); // 종료일
       const dayOfWeek = startDate.getDay(); // 시작 날짜의 요일
 
