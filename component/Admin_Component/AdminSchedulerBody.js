@@ -324,10 +324,6 @@ const AdminSchedulerBody = () => {
       alert('타임수를 입력하세요');
       return false;
     }
-    if (event.participants < 0) {
-      alert('인원수를 똑바로 입력하세요 (음수 불가능)');
-      return false;
-    }
     if (!event.courseTimes) {
       alert('수업시간을 선택하세요');
       return false;
@@ -508,17 +504,10 @@ const AdminSchedulerBody = () => {
     handleResetTooptip();
   };
 
-  // 검색 필터
+  // 검색 핸들러
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
-    // setEvents((prevEvents) =>
-    //   query
-    //     ? prevEvents.filter((event) =>
-    //         event.extendedProps.courseName?.toLowerCase().includes(query)
-    //       )
-    //     : [...prevEvents]
-    // );
   };
 
   // 공휴일 Data Get

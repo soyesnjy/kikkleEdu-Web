@@ -15,6 +15,7 @@ const AdminEvents = ({
   const [fontSize, setFontSize] = useState('');
   const ref = useRef(null);
 
+  // 겹치는 스케줄 폰트 조정
   useEffect(() => {
     const observer = new ResizeObserver((entries) => {
       for (let entry of entries) {

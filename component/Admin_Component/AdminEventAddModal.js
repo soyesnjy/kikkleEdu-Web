@@ -66,6 +66,7 @@ export default function AdminEventAddModal({
             <StyledSpan>타임수</StyledSpan>
             <StyledInput
               type="number"
+              min="0"
               value={newEvent.times}
               onChange={(e) =>
                 setNewEvent({ ...newEvent, times: Number(e.target.value) })
@@ -77,6 +78,7 @@ export default function AdminEventAddModal({
             <StyledSpan>인원수</StyledSpan>
             <StyledInput
               type="number"
+              min="0"
               value={newEvent.participants}
               onChange={(e) =>
                 setNewEvent({

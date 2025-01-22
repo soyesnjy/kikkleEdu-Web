@@ -151,6 +151,7 @@ const AdminTooltip = ({
               <Value>
                 <StyledInput
                   type="number"
+                  min="0"
                   value={updatedTimes}
                   onChange={(e) => {
                     setUpdatedTimes(e.target.value);
@@ -163,6 +164,7 @@ const AdminTooltip = ({
               <Value>
                 <StyledInput
                   type="number"
+                  min="0"
                   value={updatedParticipants}
                   onChange={(e) => {
                     setUpdatedParticipants(e.target.value);
