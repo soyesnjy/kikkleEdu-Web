@@ -24,10 +24,11 @@ export default function AdminEventAddModal({
     });
     closeModal();
   };
+
   return (
     <EventAddModal
       isOpen={modalOpen}
-      onRequestClose={handleCloseModal}
+      onRequestClose={handleCloseModal} // ModalContent 외부 클릭 이벤트
       ariaHideApp={false}
       contentLabel="Add Event Modal"
     >
@@ -160,12 +161,12 @@ export default function AdminEventAddModal({
             <StyledInput
               disabled={!checkTerms}
               type="date"
-              onChange={(e) =>
+              onChange={(e) => {
                 setNewEvent({
                   ...newEvent,
                   recursiveEndDate: e.target.value + 'T23:59:59', // 시간 설정
-                })
-              }
+                });
+              }}
             />
           </RowContainer>
         </SubContainer>
@@ -173,7 +174,10 @@ export default function AdminEventAddModal({
           <EventButton
             isPending={true}
             onClick={() => {
-              handleAddEvent(newEvent);
+              handleAddEvent({
+                ...newEvent,
+                recursiveEndDate: checkTerms ? newEvent.recursiveEndDate : '',
+              });
             }}
             style={{
               backgroundColor: '#378e56',
@@ -381,4 +385,6 @@ const RecursiveSpan = styled.span`
   font-weight: 600;
   font-family: Pretendard;
   color: ${(props) => (props.checkTerms ? 'black' : '#D9D9D9')};
+
+  user-select: none;
 `;
