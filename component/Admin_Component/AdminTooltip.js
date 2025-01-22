@@ -50,8 +50,9 @@ const AdminTooltip = ({
   const handleUpdateClick = () => {
     if (confirm('수정 하시겠습니까?') === true) {
       onEdit({
+        isAllEdit,
         id: Number(id),
-        groupIdx: isAllEdit ? event.groupIdx : 0,
+        groupIdx: event.groupIdx,
         title: updatedTitle,
         end: new Date(
           new Date(start).getTime() + updatedCourseTimes * 60 * 1000

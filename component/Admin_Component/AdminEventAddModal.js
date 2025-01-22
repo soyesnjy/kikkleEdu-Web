@@ -15,10 +15,19 @@ export default function AdminEventAddModal({
   timeCalulate,
 }) {
   const [checkTerms, setCheckTerms] = useState(false); // 일정 반복 체크 여부
+
+  const handleCloseModal = () => {
+    setCheckTerms(false);
+    setNewEvent({
+      ...newEvent,
+      recursiveEndDate: '', // 시간 초기화
+    });
+    closeModal();
+  };
   return (
     <EventAddModal
       isOpen={modalOpen}
-      onRequestClose={closeModal}
+      onRequestClose={handleCloseModal}
       ariaHideApp={false}
       contentLabel="Add Event Modal"
     >
@@ -173,7 +182,7 @@ export default function AdminEventAddModal({
             저장하기
           </EventButton>
           <EventButton
-            onClick={closeModal}
+            onClick={handleCloseModal}
             style={{
               backgroundColor: '#606c76',
             }}

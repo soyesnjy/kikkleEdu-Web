@@ -491,10 +491,8 @@ const AdminSchedulerBody = () => {
     const res = await handleScheduleClickUpdate(updateInput);
     // 업데이트 성공 - 로컬 상태 업데이트. UTC 시간 적용
     if (res.status === 200) {
-      if (event.groupIdx) {
-        // 화면 새로고침
-        // window.location.reload();
-
+      // 전체 수정일 경우
+      if (event.isAllEdit) {
         setEvents((prevEvents) =>
           prevEvents.map((evt) => {
             delete event.id; // group 조건. evt에 id 덮어쓰기 방지
