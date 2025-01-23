@@ -246,7 +246,7 @@ const AdminSchedulerBody = () => {
     setModalOpen(true);
   };
   // 모달 Close 핸들러 - newEvent 초기화
-  const closeModal = () => {
+  const handleCloseModal = () => {
     setModalOpen(false);
     setNewEvent({
       title: '',
@@ -308,7 +308,7 @@ const AdminSchedulerBody = () => {
     });
   };
 
-  // newEvent Check 핸들러
+  // (new)이벤트 Check 핸들러
   const handleNewEventCheck = (event) => {
     if (!event.title) {
       alert('제목을 입력하세요');
@@ -334,8 +334,11 @@ const AdminSchedulerBody = () => {
       alert('색상을 선택하세요');
       return false;
     }
-    if (event.recursiveEndDate && new Date(event.recursiveEndDate) < today) {
-      alert('날짜를 똑바로 입력하세요 (오늘 포함 이전 날짜 불가능)');
+    if (
+      event.recursiveEndDate &&
+      new Date(event.recursiveEndDate) < new Date(newEvent.date)
+    ) {
+      alert('날짜를 똑바로 입력하세요 (이전 날짜 불가능)');
       return false;
     }
 
@@ -389,7 +392,7 @@ const AdminSchedulerBody = () => {
     } else alert('Insert Fail');
 
     handleResetTooltip();
-    closeModal();
+    handleCloseModal();
   };
   // 이벤트 Group Insert 핸들러
   const handleGroupInsertEvent = async (newEvent) => {
@@ -443,7 +446,7 @@ const AdminSchedulerBody = () => {
     }
 
     handleResetTooltip();
-    closeModal();
+    handleCloseModal();
   };
   // 이벤트 Drop 핸들러 start 정보만 수정
   const handleEventDrop = async (info) => {
@@ -596,6 +599,7 @@ const AdminSchedulerBody = () => {
   // Event GET (강사 검색)
   useEffect(() => {
     try {
+      // 디바운싱 0.5초 적용
       const debounce = setTimeout(() => {
         if (currentDateMonth > 0) {
           // 스케줄 Get Handler 호출
@@ -743,7 +747,7 @@ const AdminSchedulerBody = () => {
         {/* 이벤트 Add Modal */}
         <AdminEventAddModal
           modalOpen={modalOpen}
-          closeModal={closeModal}
+          closeModal={handleCloseModal}
           newEvent={newEvent}
           setNewEvent={setNewEvent}
           dayArr={dayArr}
@@ -753,7 +757,7 @@ const AdminSchedulerBody = () => {
           timeCalulate={timeCalulate}
         />
       </Container>
-      {/* New 툴팁 */}
+      {/* Tooltip */}
       {tooltip.visible && tooltip.content && (
         <AdminTooltipContainer
           onClick={(e) => e.stopPropagation()} // 툴팁 닫기 방지
