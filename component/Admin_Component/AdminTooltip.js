@@ -522,7 +522,7 @@ const GroupDeleteButton = styled.button`
     color: white;
   }
 
-  transition: 0.5s;
+  transition: 0.2s;
 `;
 
 export default AdminTooltip;

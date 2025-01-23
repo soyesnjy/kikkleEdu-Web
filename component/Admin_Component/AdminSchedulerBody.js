@@ -237,14 +237,14 @@ const AdminSchedulerBody = () => {
     );
   };
 
-  // 모달 열기 - newEvent date 속성 갱신
+  // 모달 Open 핸들러 - newEvent date 속성 갱신
   const openModal = (info) => {
     if (scheduleForm === 'month') return;
     handleResetTooptip();
     setNewEvent((prev) => ({ ...prev, date: info.dateStr }));
     setModalOpen(true);
   };
-  // 모달 닫기 - newEvent 초기화
+  // 모달 Close 핸들러 - newEvent 초기화
   const closeModal = () => {
     setModalOpen(false);
     setNewEvent({
@@ -534,7 +534,6 @@ const AdminSchedulerBody = () => {
       handleResetTooptip();
     } else alert('Delete Fail');
   };
-
   // 이벤트 Group Delete 핸들러
   const handleGroupDelete = async (groupIdx) => {
     const res = await handleScheduleGroupDelete({ groupIdx });
@@ -548,10 +547,9 @@ const AdminSchedulerBody = () => {
     } else alert('Delete Fail');
   };
 
-  // 검색 핸들러
+  // Search 핸들러
   const handleSearch = (e) => {
-    const query = e.target.value.toLowerCase();
-    setSearchQuery(query);
+    setSearchQuery(e.target.value.toLowerCase());
   };
 
   // 공휴일 Data Get

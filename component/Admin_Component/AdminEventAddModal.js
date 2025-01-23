@@ -16,6 +16,7 @@ export default function AdminEventAddModal({
 }) {
   const [checkTerms, setCheckTerms] = useState(false); // 일정 반복 체크 여부
 
+  // Modal Close 핸들러
   const handleCloseModal = () => {
     setCheckTerms(false);
     setNewEvent({
@@ -23,6 +24,13 @@ export default function AdminEventAddModal({
       recursiveEndDate: '', // 시간 초기화
     });
     closeModal();
+  };
+  // Event Add Click 핸들러
+  const handleAddEventClick = () => {
+    handleAddEvent({
+      ...newEvent,
+      isAllAdd: checkTerms, // 반복 추가 트리거
+    });
   };
 
   return (
@@ -173,15 +181,10 @@ export default function AdminEventAddModal({
         <RowContainer>
           <EventButton
             isPending={true}
-            onClick={() => {
-              handleAddEvent({
-                ...newEvent,
-                isAllAdd: checkTerms, // 반복 추가 트리거
-              });
-            }}
+            onClick={handleAddEventClick}
             style={{
               backgroundColor: '#378e56',
-            }}
+            }} // Modal Default 배경색 강제 변경
           >
             저장하기
           </EventButton>
@@ -189,7 +192,7 @@ export default function AdminEventAddModal({
             onClick={handleCloseModal}
             style={{
               backgroundColor: '#606c76',
-            }}
+            }} // Modal Default 배경색 강제 변경
           >
             취소하기
           </EventButton>
