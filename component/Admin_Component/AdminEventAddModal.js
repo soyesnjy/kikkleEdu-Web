@@ -227,6 +227,10 @@ const EventAddModal = styled(Modal)`
   outline: none;
 
   --fc-event-bg-color: none;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const ModalContent = styled.div`

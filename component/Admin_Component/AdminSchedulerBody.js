@@ -587,7 +587,6 @@ const AdminSchedulerBody = () => {
           monthQuery: currentDateMonth, // 선택 날짜
           searchQuery,
         }).then((res) => {
-          console.log(res.data);
           setEvents(res.data);
         });
       }
@@ -791,6 +790,11 @@ const Container = styled.div`
   z-index: 0;
 
   gap: 2rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-direction: column;
+  }
 `;
 
 const MiniCalendarWrapper = styled.div`
@@ -893,6 +897,13 @@ const MiniCalendarWrapper = styled.div`
       }
     }
   }
+
+  @media (max-width: 768px) {
+    .fc {
+      width: 100%;
+      height: 400px;
+    }
+  }
 `;
 
 const MiniCalendarTitle = styled.div`
@@ -920,8 +931,8 @@ const SchedulerWrapper = styled.div`
   z-index: 0;
 
   .fc {
-    padding: 1rem 0;
     width: 100%;
+    padding: 1rem 0;
     height: auto;
 
     --fc-event-border-color: 'none'; // Default Border color 제거
@@ -936,14 +947,18 @@ const SchedulerWrapper = styled.div`
   }
 
   .fc-timegrid-event-harness {
-    /* width: 100%; */
   }
 
   // Month dayCell 관련
   .fc-daygrid-day-events {
-    height: 80px;
+    height: 130px;
     overflow-x: hidden;
     overflow-y: auto;
+  }
+
+  .fc-timegrid-col,
+  .fc-col-header-cell {
+    width: 150%;
   }
 
   // todayCell 관련 (주간 + 월간)
