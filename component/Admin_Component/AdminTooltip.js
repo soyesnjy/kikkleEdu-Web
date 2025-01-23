@@ -73,7 +73,7 @@ const AdminTooltip = ({
   };
   // Group Delete Click 핸들러
   const handleGroupDeleteClick = () => {
-    if (confirm('전체삭제 하시겠습니까?') === true) {
+    if (confirm('전체 삭제 하시겠습니까?') === true) {
       handleGroupDelete(event.groupIdx);
       handleResetTooptip();
     }
@@ -233,7 +233,9 @@ const AdminTooltip = ({
                   <RecursiveLabel for="checkTerms" checkTerms={isAllEdit}>
                     {`전체수정`}
                   </RecursiveLabel>
-                  <button onClick={handleGroupDeleteClick}>전체 삭제</button>
+                  <GroupDeleteButton
+                    onClick={handleGroupDeleteClick}
+                  >{`전체 삭제`}</GroupDeleteButton>
                 </RowContainer>
               </DetailRow>
             ) : null}
@@ -496,6 +498,31 @@ const RecursiveLabel = styled.label`
   color: ${(props) => (props.checkTerms ? 'black' : '#D9D9D9')};
 
   user-select: none;
+`;
+
+const GroupDeleteButton = styled.button`
+  border: none;
+  border-radius: 8px;
+
+  padding: 5px 8px;
+
+  background-color: #d9d9d9;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: Pretendard;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: #45b26b;
+    color: white;
+  }
+
+  transition: 0.5s;
 `;
 
 export default AdminTooltip;
