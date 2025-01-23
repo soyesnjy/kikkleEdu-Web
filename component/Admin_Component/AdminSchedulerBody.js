@@ -723,7 +723,7 @@ const AdminSchedulerBody = () => {
             // slotLabelInterval="00:10:00" // 1시간마다 라벨 표시
             allDaySlot={false}
             datesSet={handleDatesSetA} // 날짜 이동 이벤트 핸들러
-            dateClick={openModal} // #TODO: 임시 잠금. 날짜 클릭 시 이벤트 추가 모달 오픈
+            dateClick={openModal} // 날짜 클릭 시 이벤트 추가 모달 오픈
             events={events}
             eventClick={handleOpenTooltip} // 이벤트 Click
             eventContent={renderEventCellA} // 이벤트 Cell
@@ -733,7 +733,7 @@ const AdminSchedulerBody = () => {
             eventDrop={handleEventDrop} // Drag&Drop Handler: start 정보 수정
             eventOrder={
               scheduleForm === 'week' ? 'extendedProps.teacherName' : 'start'
-            } // 이벤트 조건부 정렬
+            } // 이벤트 정렬 (주간: 강사명순 / 월간: 시작시간순)
             eventDurationEditable={false} // 이벤트 길이 조정
             dayCellContent={scheduleForm === 'month' ? renderDayCellA : null} // 커스텀 dayCellContent
             locale="ko"
