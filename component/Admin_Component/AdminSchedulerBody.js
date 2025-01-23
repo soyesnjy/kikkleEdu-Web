@@ -16,6 +16,7 @@ import {
   handleScheduleDragUpdate,
   handleScheduleClickUpdate,
   handleScheduleCreate,
+  handleScheduleGroupCreate,
   handleScheduleDelete,
   handleScheduleGroupDelete,
   handleScheduleHolidayGet,
@@ -109,7 +110,7 @@ const AdminSchedulerBody = () => {
     }
 
     // 툴팁 닫기
-    handleResetTooptip();
+    handleResetTooltip();
   };
   // 메인 스케줄러(A) 날짜 변경 핸들러 - B캘린더와 동기화
   const handleDatesSetA = (info) => {
@@ -137,7 +138,7 @@ const AdminSchedulerBody = () => {
     }
 
     // 툴팁 닫기
-    handleResetTooptip();
+    handleResetTooltip();
   };
 
   // 미니 달력(B) 렌더 메서드
@@ -240,7 +241,7 @@ const AdminSchedulerBody = () => {
   // 모달 Open 핸들러 - newEvent date 속성 갱신
   const openModal = (info) => {
     if (scheduleForm === 'month') return;
-    handleResetTooptip();
+    handleResetTooltip();
     setNewEvent((prev) => ({ ...prev, date: info.dateStr }));
     setModalOpen(true);
   };
@@ -262,7 +263,7 @@ const AdminSchedulerBody = () => {
   };
 
   // Tooltip Reset 핸들러
-  const handleResetTooptip = () => {
+  const handleResetTooltip = () => {
     setSelectedEventId(-1);
     setTooltip({
       visible: false,
@@ -277,7 +278,7 @@ const AdminSchedulerBody = () => {
 
     // 툴팁이 켜진 경우 끄기 (토글)
     if (tooltip.visible && tooltip.content.id === id) {
-      handleResetTooptip();
+      handleResetTooltip();
       return;
     }
     // 이벤트 요소의 위치 계산
@@ -370,73 +371,73 @@ const AdminSchedulerBody = () => {
       backgroundColor: newEvent.backgroundColor || '#BAE0FF',
     };
 
-    // 이벤트 반복 추가
-    if (newEvent.isAllAdd && newEvent.recursiveEndDate) {
-      const recursiveEndDate = new Date(newEvent.recursiveEndDate); // 종료일
-      const dayOfWeek = startDate.getDay(); // 시작 날짜의 요일
-
-      const recursiveEvents = []; // 반복 이벤트 목록
-      let groupIdx = -1;
-      // [startDate ~ recursiveEndDate] date === dayOfWeek 비교
-      for (
-        let date = new Date(startDate);
-        date <= recursiveEndDate;
-        date.setDate(date.getDate() + 1)
-      ) {
-        if (date.getDay() === dayOfWeek) {
-          const eventStartDate = date;
-          const eventEndDate = new Date(
-            date.getTime() + newEvent.courseTimes * 60 * 1000
-          );
-
-          const res = await handleScheduleCreate({
-            ...newEventData,
-            start: convertToKST(eventStartDate).toISOString(), // 한국 시간
-            end: convertToKST(eventEndDate).toISOString(), // 한국 시간
-            groupIdx,
-          });
-
-          if (res.status === 200) {
-            // groupIdx 스케줄 PK로 갱신 - 최초 1회
-            if (groupIdx === -1) groupIdx = res.data.data.id;
-
-            // 서버에서 반환받은 event ID 적용하기
-            recursiveEvents.push({
-              ...newEventData,
-              id: res.data.data.id,
-              start: eventStartDate.toISOString(),
-              end: eventEndDate.toISOString(),
-              groupIdx,
-            });
-          } else {
-            alert('Recursive Insert Fail');
-            break;
-          }
-        }
-      }
-      // 반복 이벤트 목록 추가
-      setEvents((prevEvents) => [...prevEvents, ...recursiveEvents]);
-    }
     // 이벤트 단일 추가
-    else {
-      // 서버 이벤트 추가 요청
-      const res = await handleScheduleCreate({
-        ...newEventData,
-        start: startDateKST.toISOString(), // 한국 시간
-        end: endDateKST.toISOString(), // 한국 시간
-      });
-      if (res.status === 200) {
-        setEvents((prevEvents) => [
-          ...prevEvents,
-          {
-            ...newEventData,
-            id: res.data.data.id, // 추가된 이벤트의 DB Table PK
-          },
-        ]);
-      } else alert('Insert Fail');
+    // 서버 이벤트 추가 요청
+    const res = await handleScheduleCreate({
+      ...newEventData,
+      start: startDateKST.toISOString(), // 한국 시간
+      end: endDateKST.toISOString(), // 한국 시간
+    });
+    if (res.status === 200) {
+      setEvents((prevEvents) => [
+        ...prevEvents,
+        {
+          ...newEventData,
+          id: res.data.data.id, // 추가된 이벤트의 DB Table PK
+        },
+      ]);
+    } else alert('Insert Fail');
+
+    handleResetTooltip();
+    closeModal();
+  };
+
+  const handleGroupInsertEvent = async (newEvent) => {
+    if (!handleNewEventCheck(newEvent)) return;
+
+    const startDate = new Date(newEvent.date);
+    const endDate = new Date(
+      startDate.getTime() + newEvent.courseTimes * 60 * 1000
+    );
+
+    const startDateKST = convertToKST(startDate);
+    const endDateKST = convertToKST(endDate);
+
+    const baseEventData = {
+      title: newEvent.title,
+      start: startDateKST.toISOString(),
+      end: endDateKST.toISOString(),
+      extendedProps: {
+        teacherName: newEvent.teacherName,
+        courseName: newEvent.courseName,
+        participants: newEvent.participants,
+        times: newEvent.times,
+        courseTimes: newEvent.courseTimes,
+        notes: newEvent.notes,
+      },
+      backgroundColor: newEvent.backgroundColor || '#BAE0FF',
+    };
+
+    const requestData = {
+      ...baseEventData,
+      isAllAdd: newEvent.isAllAdd,
+      recursiveEndDate: newEvent.recursiveEndDate,
+    };
+
+    // 서버로 전송
+    const res = await handleScheduleGroupCreate(requestData);
+    if (res.status === 200) {
+      setEvents((prevEvents) => [
+        ...prevEvents,
+        ...res.data.data.map((el) => {
+          return { ...baseEventData, ...el };
+        }),
+      ]);
+    } else {
+      alert('Insert Fail');
     }
 
-    handleResetTooptip();
+    handleResetTooltip();
     closeModal();
   };
   // 이벤트 Drop 핸들러 start 정보만 수정
@@ -466,7 +467,7 @@ const AdminSchedulerBody = () => {
       if (aCalendarRef.current) {
         aCalendarRef.current.getApi().gotoDate(startDate); // A 캘린더 날짜 이동
       }
-      handleResetTooptip();
+      handleResetTooltip();
       // 로컬 상태 업데이트 - UTC 적용
       setEvents((prevEvents) =>
         prevEvents.map((evt) =>
@@ -519,7 +520,7 @@ const AdminSchedulerBody = () => {
           )
         );
     } else alert('Update Fail');
-    handleResetTooptip();
+    handleResetTooltip();
   };
   // 이벤트 Delete 핸들러
   const handleDeleteEvent = async (eventId) => {
@@ -531,7 +532,7 @@ const AdminSchedulerBody = () => {
       setEvents((prevEvents) =>
         prevEvents.filter((event) => event.id !== Number(eventId))
       );
-      handleResetTooptip();
+      handleResetTooltip();
     } else alert('Delete Fail');
   };
   // 이벤트 Group Delete 핸들러
@@ -543,7 +544,7 @@ const AdminSchedulerBody = () => {
       setEvents((prevEvents) =>
         prevEvents.filter((event) => event.groupIdx !== Number(groupIdx))
       );
-      handleResetTooptip();
+      handleResetTooltip();
     } else alert('Delete Fail');
   };
 
@@ -551,6 +552,10 @@ const AdminSchedulerBody = () => {
   const handleSearch = (e) => {
     setSearchQuery(e.target.value.toLowerCase());
   };
+
+  // useEffect(() => {
+  //   console.log(events);
+  // }, [events]);
 
   // 공휴일 Data Get
   useEffect(() => {
@@ -671,7 +676,7 @@ const AdminSchedulerBody = () => {
               customToday: {
                 text: 'today',
                 click: () => {
-                  handleResetTooptip();
+                  handleResetTooltip();
                   updateSelectedDate(today); // 선택된 날짜 초기화
                   aCalendarRef.current?.getApi().gotoDate(today); // 오늘 날짜로 이동
                 },
@@ -679,7 +684,7 @@ const AdminSchedulerBody = () => {
               customWeek: {
                 text: '주간', // "timeGridWeek" 버튼의 텍스트 변경
                 click: () => {
-                  handleResetTooptip();
+                  handleResetTooltip();
                   setScheduleForm('week');
                   aCalendarRef.current?.getApi().changeView('timeGridWeek');
                 },
@@ -687,7 +692,7 @@ const AdminSchedulerBody = () => {
               customMonth: {
                 text: '월간', // "dayGridMonth" 버튼의 텍스트 변경
                 click: () => {
-                  handleResetTooptip();
+                  handleResetTooltip();
                   setScheduleForm('month');
                   aCalendarRef.current?.getApi().changeView('dayGridMonth');
                 },
@@ -739,6 +744,7 @@ const AdminSchedulerBody = () => {
           dayArr={dayArr}
           colors={colors}
           handleAddEvent={handleInsertEvent}
+          handleGroupInsertEvent={handleGroupInsertEvent}
           timeCalulate={timeCalulate}
         />
       </Container>
@@ -758,7 +764,7 @@ const AdminSchedulerBody = () => {
             backgroundColor={tooltip.content.backgroundColor}
             onEdit={handleEventClickUpdate} // 툴팁에서 이벤트 내용 수정
             timeCalulate={timeCalulate}
-            handleResetTooptip={handleResetTooptip}
+            handleResetTooltip={handleResetTooltip}
             handleGroupDelete={handleGroupDelete}
             dayArr={dayArr}
             colors={colors}

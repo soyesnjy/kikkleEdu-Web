@@ -52,6 +52,29 @@ export const handleScheduleCreate = async (input) => {
     };
   }
 };
+// Group CREATE
+export const handleScheduleGroupCreate = async (input) => {
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_URL}/scheduler/create/group`,
+      { data: input },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
+        },
+        withCredentials: true,
+      }
+    );
+    return response;
+  } catch (err) {
+    console.error(err);
+    return {
+      status: err.response?.status || 500,
+      message: err.response?.data?.message || 'Unknown error',
+    };
+  }
+};
 // Drag UPDATE
 export const handleScheduleDragUpdate = async (input) => {
   try {

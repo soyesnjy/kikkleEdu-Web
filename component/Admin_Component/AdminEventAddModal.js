@@ -12,6 +12,7 @@ export default function AdminEventAddModal({
   dayArr,
   colors,
   handleAddEvent,
+  handleGroupInsertEvent,
   timeCalulate,
 }) {
   const [checkTerms, setCheckTerms] = useState(false); // 일정 반복 체크 여부
@@ -27,10 +28,15 @@ export default function AdminEventAddModal({
   };
   // Event Add Click 핸들러
   const handleAddEventClick = () => {
-    handleAddEvent({
-      ...newEvent,
-      isAllAdd: checkTerms, // 반복 추가 트리거
-    });
+    // 반복 추가
+    if (checkTerms) {
+      handleGroupInsertEvent({
+        ...newEvent,
+        isAllAdd: checkTerms,
+      });
+    }
+    // 단일 추가
+    else handleAddEvent(newEvent);
   };
 
   return (

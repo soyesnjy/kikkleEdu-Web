@@ -15,7 +15,7 @@ const AdminTooltip = ({
   onEdit,
   backgroundColor,
   timeCalulate,
-  handleResetTooptip,
+  handleResetTooltip,
   handleGroupDelete,
   dayArr,
   colors,
@@ -31,7 +31,6 @@ const AdminTooltip = ({
   const [updatedNotes, setUpdatedNotes] = useState('');
   const [isAllEdit, setIsAllEdit] = useState(false);
 
-  // console.log(end);
   // Update Toggle 핸들러
   const handleupdateIsOpenToggle = () => {
     setUpdateIsOpen(!updateIsOpen);
@@ -75,7 +74,7 @@ const AdminTooltip = ({
   const handleGroupDeleteClick = () => {
     if (confirm('전체 삭제 하시겠습니까?') === true) {
       handleGroupDelete(event.groupIdx);
-      handleResetTooptip();
+      handleResetTooltip();
     }
   };
 
@@ -111,7 +110,7 @@ const AdminTooltip = ({
                   style={{ maxWidth: '100%', height: 'auto' }}
                 />
               </EditButton>
-              <EditButton onClick={handleResetTooptip}>
+              <EditButton onClick={handleResetTooltip}>
                 <Image
                   alt={'Cancle'}
                   src={'/src/Admin_IMG/Admin_Cancle_IMG.png'}
@@ -255,7 +254,7 @@ const AdminTooltip = ({
                   style={{ maxWidth: '100%', height: 'auto' }}
                 />
               </EditButton>
-              <EditButton onClick={handleResetTooptip}>
+              <EditButton onClick={handleResetTooltip}>
                 <Image
                   alt={'check'}
                   src={'/src/Admin_IMG/Admin_Cancle_IMG.png'}
