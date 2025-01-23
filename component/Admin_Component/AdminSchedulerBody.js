@@ -802,7 +802,7 @@ const MiniCalendarWrapper = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   .fc {
-    width: 17vw;
+    width: 330px;
     height: 400px;
     padding: 1rem;
 
@@ -956,10 +956,10 @@ const SchedulerWrapper = styled.div`
     overflow-y: auto;
   }
 
-  .fc-timegrid-col,
+  /* .fc-timegrid-col,
   .fc-col-header-cell {
     width: 150%;
-  }
+  } */
 
   // todayCell 관련 (주간 + 월간)
   .fc-timegrid-col.fc-day-today,
