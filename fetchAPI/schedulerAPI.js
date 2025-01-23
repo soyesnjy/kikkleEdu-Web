@@ -52,28 +52,6 @@ export const handleScheduleCreate = async (input) => {
     };
   }
 };
-// #TODO: DELETE
-export const handleScheduleDelete = async (query) => {
-  try {
-    const response = await axios.delete(
-      `${process.env.NEXT_PUBLIC_URL}/scheduler/delete?${query?.eventId ? `eventId=${query?.eventId}&` : ''}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
-        },
-        withCredentials: true,
-      }
-    );
-    // console.log(response.data);
-    return response;
-  } catch (err) {
-    console.error(err);
-    return {
-      status: err.response.status,
-    };
-  }
-};
 // Drag UPDATE
 export const handleScheduleDragUpdate = async (input) => {
   try {
@@ -112,6 +90,50 @@ export const handleScheduleClickUpdate = async (input) => {
       }
     );
     // console.log(response);
+    return response;
+  } catch (err) {
+    console.error(err);
+    return {
+      status: err.response.status,
+    };
+  }
+};
+// DELETE
+export const handleScheduleDelete = async (query) => {
+  try {
+    const response = await axios.delete(
+      `${process.env.NEXT_PUBLIC_URL}/scheduler/delete?${query?.eventId ? `eventId=${query?.eventId}&` : ''}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
+        },
+        withCredentials: true,
+      }
+    );
+    // console.log(response.data);
+    return response;
+  } catch (err) {
+    console.error(err);
+    return {
+      status: err.response.status,
+    };
+  }
+};
+// Group DELETE
+export const handleScheduleGroupDelete = async (query) => {
+  try {
+    const response = await axios.delete(
+      `${process.env.NEXT_PUBLIC_URL}/scheduler/delete/group?${query?.groupIdx ? `groupIdx=${query?.groupIdx}&` : ''}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
+        },
+        withCredentials: true,
+      }
+    );
+    // console.log(response.data);
     return response;
   } catch (err) {
     console.error(err);

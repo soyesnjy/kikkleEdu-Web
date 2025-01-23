@@ -16,6 +16,7 @@ const AdminTooltip = ({
   backgroundColor,
   timeCalulate,
   handleResetTooptip,
+  handleGroupDelete,
   dayArr,
   colors,
 }) => {
@@ -68,6 +69,13 @@ const AdminTooltip = ({
         backgroundColor: updatedBackColor,
       });
       handleupdateIsOpenToggle();
+    }
+  };
+  // Group Delete Click 핸들러
+  const handleGroupDeleteClick = () => {
+    if (confirm('전체삭제 하시겠습니까?') === true) {
+      handleGroupDelete(event.groupIdx);
+      handleResetTooptip();
     }
   };
 
@@ -225,6 +233,7 @@ const AdminTooltip = ({
                   <RecursiveLabel for="checkTerms" checkTerms={isAllEdit}>
                     {`전체수정`}
                   </RecursiveLabel>
+                  <button onClick={handleGroupDeleteClick}>전체 삭제</button>
                 </RowContainer>
               </DetailRow>
             ) : null}
@@ -441,7 +450,7 @@ const RowContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 `;
 
 const Icon = styled.svg`

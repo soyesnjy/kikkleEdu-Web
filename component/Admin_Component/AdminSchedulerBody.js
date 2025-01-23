@@ -17,6 +17,7 @@ import {
   handleScheduleClickUpdate,
   handleScheduleCreate,
   handleScheduleDelete,
+  handleScheduleGroupDelete,
   handleScheduleHolidayGet,
 } from '@/fetchAPI/schedulerAPI';
 
@@ -274,8 +275,6 @@ const AdminSchedulerBody = () => {
     const { id, title, start, end, extendedProps, backgroundColor } =
       info.event;
 
-    console.log({ id, title, start, end, extendedProps, backgroundColor });
-
     // 툴팁이 켜진 경우 끄기 (토글)
     if (tooltip.visible && tooltip.content.id === id) {
       handleResetTooptip();
@@ -397,17 +396,22 @@ const AdminSchedulerBody = () => {
             groupIdx,
           });
 
-          // groupIdx 스케줄 PK로 갱신 - 최초 1회
-          if (groupIdx === -1) groupIdx = res.data.data.id;
+          if (res.status === 200) {
+            // groupIdx 스케줄 PK로 갱신 - 최초 1회
+            if (groupIdx === -1) groupIdx = res.data.data.id;
 
-          // 서버에서 반환받은 event ID 적용하기
-          recursiveEvents.push({
-            ...newEventData,
-            id: res.data.data.id,
-            start: eventStartDate.toISOString(),
-            end: eventEndDate.toISOString(),
-            groupIdx,
-          });
+            // 서버에서 반환받은 event ID 적용하기
+            recursiveEvents.push({
+              ...newEventData,
+              id: res.data.data.id,
+              start: eventStartDate.toISOString(),
+              end: eventEndDate.toISOString(),
+              groupIdx,
+            });
+          } else {
+            alert('Recursive Insert Fail');
+            break;
+          }
         }
       }
       // 반복 이벤트 목록 추가
@@ -526,6 +530,19 @@ const AdminSchedulerBody = () => {
       // 로컬 상태 업데이트
       setEvents((prevEvents) =>
         prevEvents.filter((event) => event.id !== Number(eventId))
+      );
+      handleResetTooptip();
+    } else alert('Delete Fail');
+  };
+
+  // 이벤트 Group Delete 핸들러
+  const handleGroupDelete = async (groupIdx) => {
+    const res = await handleScheduleGroupDelete({ groupIdx });
+
+    if (res.status === 200) {
+      // 로컬 상태 업데이트
+      setEvents((prevEvents) =>
+        prevEvents.filter((event) => event.groupIdx !== Number(groupIdx))
       );
       handleResetTooptip();
     } else alert('Delete Fail');
@@ -744,6 +761,7 @@ const AdminSchedulerBody = () => {
             onEdit={handleEventClickUpdate} // 툴팁에서 이벤트 내용 수정
             timeCalulate={timeCalulate}
             handleResetTooptip={handleResetTooptip}
+            handleGroupDelete={handleGroupDelete}
             dayArr={dayArr}
             colors={colors}
           />
