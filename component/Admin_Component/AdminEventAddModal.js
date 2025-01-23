@@ -89,27 +89,29 @@ export default function AdminEventAddModal({
           <SubContainer>
             <StyledSpan>타임수</StyledSpan>
             <StyledInput
-              type="number"
+              type="text"
               min="0"
               value={newEvent.times}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, times: Number(e.target.value) })
-              }
+              onChange={(e) => {
+                const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 허용
+                setNewEvent({ ...newEvent, times: value ? Number(value) : '' });
+              }}
               width="80%"
             />
           </SubContainer>
           <SubContainer>
             <StyledSpan>인원수</StyledSpan>
             <StyledInput
-              type="number"
+              type="text"
               min="0"
               value={newEvent.participants}
-              onChange={(e) =>
+              onChange={(e) => {
+                const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 허용
                 setNewEvent({
                   ...newEvent,
-                  participants: Number(e.target.value),
-                })
-              }
+                  participants: value ? Number(value) : '',
+                });
+              }}
               width="70%"
             />
           </SubContainer>
