@@ -335,7 +335,7 @@ const AdminSchedulerBody = () => {
       return false;
     }
     if (event.recursiveEndDate && new Date(event.recursiveEndDate) < today) {
-      alert('날짜를 똑바로 입력하세요 (오늘 이전 날짜 불가능)');
+      alert('날짜를 똑바로 입력하세요 (오늘 포함 이전 날짜 불가능)');
       return false;
     }
 
@@ -391,9 +391,14 @@ const AdminSchedulerBody = () => {
     handleResetTooltip();
     closeModal();
   };
-
+  // 이벤트 Group Insert 핸들러
   const handleGroupInsertEvent = async (newEvent) => {
     if (!handleNewEventCheck(newEvent)) return;
+
+    if (!newEvent.recursiveEndDate) {
+      alert('날짜를 선택해주세요');
+      return;
+    }
 
     const startDate = new Date(newEvent.date);
     const endDate = new Date(
@@ -429,8 +434,8 @@ const AdminSchedulerBody = () => {
     if (res.status === 200) {
       setEvents((prevEvents) => [
         ...prevEvents,
-        ...res.data.data.map((el) => {
-          return { ...baseEventData, ...el };
+        ...res.data.data.map((resData) => {
+          return { ...baseEventData, ...resData };
         }),
       ]);
     } else {

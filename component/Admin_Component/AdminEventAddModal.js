@@ -11,8 +11,8 @@ export default function AdminEventAddModal({
   setNewEvent,
   dayArr,
   colors,
-  handleAddEvent,
-  handleGroupInsertEvent,
+  handleAddEvent, // 단일 추가 핸들러
+  handleGroupInsertEvent, // 반복 추가 핸들러
   timeCalulate,
 }) {
   const [checkTerms, setCheckTerms] = useState(false); // 일정 반복 체크 여부
