@@ -290,9 +290,9 @@ const AdminSchedulerBody = () => {
 
     // 이벤트가 마지막 주(금,토요일)인 경우
     if (new Date(start).getDay() === 6 || new Date(start).getDay() === 5) {
-      delete tooltipPosition.left; // 왼쪽 위치 제거
       tooltipPosition.left = rect.left + window.scrollX - 300; // 툴팁을 왼쪽으로 표시 (Tooltip Width === 300)
     }
+
     setSelectedEventId(id);
     setTooltip({
       visible: true,

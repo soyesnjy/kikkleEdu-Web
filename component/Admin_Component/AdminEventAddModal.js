@@ -43,7 +43,7 @@ export default function AdminEventAddModal({
     <EventAddModal
       isOpen={modalOpen}
       onRequestClose={handleCloseModal} // ModalContent 외부 클릭 이벤트
-      ariaHideApp={false}
+      // ariaHideApp={false}
       contentLabel="Add Event Modal"
     >
       <ModalContent>
