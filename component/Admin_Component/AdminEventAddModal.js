@@ -45,6 +45,7 @@ export default function AdminEventAddModal({
       onRequestClose={handleCloseModal} // ModalContent 외부 클릭 이벤트
       // ariaHideApp={false}
       contentLabel="Add Event Modal"
+      shouldFocusAfterRender={false} // Modal Open 시, 첫번째 input에 자동 포커스 되는 것 방지
     >
       <ModalContent>
         <RowContainer>
