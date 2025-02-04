@@ -49,6 +49,7 @@ export const handleScheduleCreate = async (input) => {
     return {
       status: err.response.status,
       message: err.response.data.message,
+      data: [],
     };
   }
 };
@@ -72,6 +73,7 @@ export const handleScheduleGroupCreate = async (input) => {
     return {
       status: err.response?.status || 500,
       message: err.response?.data?.message || 'Unknown error',
+      data: [],
     };
   }
 };
@@ -182,12 +184,15 @@ export const handleScheduleHolidayGet = async (today) => {
         .replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), // YYYYMMDD → YYYY-MM-DD
       name: holiday.dateName,
     }));
-
-    return formattedHolidays;
+    return {
+      status: 200,
+      data: formattedHolidays,
+    };
   } catch (err) {
     console.error(err);
     return {
       status: err.response.status,
+      data: [],
     };
   }
 };

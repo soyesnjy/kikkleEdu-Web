@@ -171,7 +171,7 @@ export default function AdminEventAddModal({
                 <polyline points="20 6 9 17 4 12" />
               </Icon>
             </StyledCheckbox>
-            <RecursiveSpan checkTerms={checkTerms}>
+            <RecursiveSpan check={checkTerms}>
               {timeCalulate(newEvent.date, true)}
             </RecursiveSpan>
             ~
@@ -210,6 +210,18 @@ export default function AdminEventAddModal({
     </EventAddModal>
   );
 }
+
+type SubContainerType = {
+  borderBottom?: boolean;
+};
+
+type EventButtonType = {
+  isPending?: boolean;
+};
+
+type CheckType = {
+  check?: boolean;
+};
 
 const EventAddModal = styled(Modal)`
   width: 462px;
@@ -270,7 +282,7 @@ const RowContainer = styled.div`
   gap: 1rem;
 `;
 
-const SubContainer = styled.div`
+const SubContainer = styled.div<SubContainerType>`
   width: 100%;
   color: #4e4e4e;
 
@@ -329,7 +341,7 @@ const StyledTextarea = styled.textarea`
   text-align: left;
 `;
 
-const EventButton = styled.button`
+const EventButton = styled.button<EventButtonType>`
   width: 100px;
 
   border: none;
@@ -368,7 +380,7 @@ const Icon = styled.svg`
   stroke-width: 3px;
 `;
 
-const StyledCheckbox = styled.div`
+const StyledCheckbox = styled.div<CheckType>`
   display: inline-block;
   width: 26px;
   height: 26px;
@@ -396,11 +408,11 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   width: 1px;
 `;
 
-const RecursiveSpan = styled.span`
+const RecursiveSpan = styled.span<CheckType>`
   font-size: 1rem;
   font-weight: 600;
   font-family: Pretendard;
-  color: ${(props) => (props.checkTerms ? 'black' : '#D9D9D9')};
+  color: ${(props) => (props.check ? 'black' : '#D9D9D9')};
 
   user-select: none;
 `;

@@ -22,9 +22,26 @@ import {
   handleScheduleHolidayGet,
 } from '@/fetchAPI/schedulerAPI';
 
-const dayArr = ['일', '월', '화', '수', '목', '금', '토'];
-const today = new Date();
-const colors = [
+type EventType = {
+  id: number;
+  groupIdx?: number;
+  start: string;
+  end: string;
+  extendedProps: {
+    teacherName: string;
+    courseName: string;
+    participants: number;
+    times: number;
+    courseTimes: number;
+    notes: string;
+  };
+  backgroundColor: string;
+  title: string;
+};
+
+const dayArr: string[] = ['일', '월', '화', '수', '목', '금', '토'];
+const today: Date = new Date();
+const colors: { label: string; value: string }[] = [
   { label: '확정', value: '#BAE0FF' },
   { label: '신규', value: '#F0C9FB' },
   { label: '폐강', value: '#FFF' },
@@ -34,7 +51,7 @@ const colors = [
 ];
 
 // Date Format String 변환 메서드 (HH:MM)
-const timeCalulate = (date, all) => {
+const timeCalulate = (date: Date, all: boolean) => {
   const dateObj = new Date(date);
 
   if (all) {
@@ -50,46 +67,52 @@ const timeCalulate = (date, all) => {
   return `${hour}:${min}`;
 };
 // KST 변환 메서드
-const convertToKST = (utcDate) => {
+const convertToKST = (utcDate: Date) => {
   const kstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000); // UTC+9
   return kstDate;
 };
+// 이벤트 id Number -> String 변환 메서드
+const transformedEvents = (events: EventType[]) => {
+  return events.map((event) => ({
+    ...event,
+    id: event.id.toString(), // id를 string으로 변환
+  }));
+};
 
 const AdminSchedulerBody = () => {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<EventType[]>([]);
   const [newEvent, setNewEvent] = useState({
     title: '',
-    teacherName: '', // 신규
+    teacherName: '',
     courseName: '',
     participants: 0,
     times: 0,
-    courseTimes: 0, // 신규
+    courseTimes: 0,
     notes: '',
     backgroundColor: '',
     date: '',
-    recursiveEndDate: '', // 신규
+    recursiveEndDate: '',
   });
-  const [currentDateMonth, setCurrentDateMonth] = useState(
+  const [currentDateMonth, setCurrentDateMonth] = useState<number>(
     today.getMonth() + 1
   ); // A 캘린더 currentDate Month
   const [holidays, setHolidays] = useState([]); // 공휴일 데이터 배열 (공공데이터)
-  const [modalOpen, setModalOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedDate, setSelectedDate] = useState(today); // 미니 달력(B)에서 선택된 날짜
-  const [selectedEventId, setSelectedEventId] = useState(-1); // 선택된 eventID (이벤트 Delete 용도)
-  const [scheduleForm, setScheduleForm] = useState('week'); // 스케줄폼 (week || month)
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedDate, setSelectedDate] = useState<Date>(today); // 미니 달력(B)에서 선택된 날짜
+  const [selectedEventId, setSelectedEventId] = useState<number>(-1); // 선택된 eventID (이벤트 Delete 용도)
+  const [scheduleForm, setScheduleForm] = useState<string>('week'); // 스케줄폼 (week || month)
   const [tooltip, setTooltip] = useState({
     visible: false,
     content: null,
     position: { top: 0, left: 0 },
-  }); // 툴팁 상태
+  }); // Tooltip 상태
 
-  const selectedDateRef = useRef(selectedDate); // 실시간 selectedDate 참조
+  const selectedDateRef = useRef<Date | null>(selectedDate); // 실시간 selectedDate 참조
   const aCalendarRef = useRef(null); // A캘린더의 ref
   const bCalendarRef = useRef(null); // B캘린더의 ref
 
-  // 공휴일 Check 메서드
-  const isHoliday = (date) => {
+  const isHoliday = (date: Date): boolean => {
     if (!holidays.length) return false;
     return holidays.some(
       (holiday) => new Date(holiday.date).toDateString() === date.toDateString()
@@ -569,8 +592,8 @@ const AdminSchedulerBody = () => {
   useEffect(() => {
     try {
       if (!holidays.length) {
-        handleScheduleHolidayGet(today).then((formattedHolidays) => {
-          setHolidays(formattedHolidays);
+        handleScheduleHolidayGet(today).then((res) => {
+          if (res.status === 200) setHolidays(res.data);
         });
       }
     } catch (err) {
@@ -606,6 +629,7 @@ const AdminSchedulerBody = () => {
             monthQuery: currentDateMonth, // 선택 날짜
             searchQuery,
           }).then((res) => {
+            console.log(res.data);
             setEvents(res.data);
           });
         }
@@ -727,7 +751,7 @@ const AdminSchedulerBody = () => {
             allDaySlot={false}
             datesSet={handleDatesSetA} // 날짜 이동 이벤트 핸들러
             dateClick={openModal} // 날짜 클릭 시 이벤트 추가 모달 오픈
-            events={events}
+            events={transformedEvents(events)} // 이벤트 데이터
             eventClick={handleOpenTooltip} // 이벤트 Click
             eventContent={renderEventCellA} // 이벤트 Cell
             editable={true} // week Form일 경우에만 편집 가능
@@ -781,6 +805,20 @@ const AdminSchedulerBody = () => {
       )}
     </>
   );
+};
+
+type SchedulerWrapperType = {
+  form: string;
+};
+
+type TooltipContainerType = {
+  left?: number;
+  top?: number;
+};
+
+type GridDayMonthContainerType = {
+  isOtherMonth: boolean;
+  color: string;
 };
 
 // Styled Components
@@ -924,7 +962,7 @@ const MiniCalendarTitle = styled.div`
   text-align: center;
 `;
 
-const SchedulerWrapper = styled.div`
+const SchedulerWrapper = styled.div<SchedulerWrapperType>`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -1103,7 +1141,7 @@ const SearchInput = styled.input`
   text-align: left;
 `;
 
-const AdminTooltipContainer = styled.div`
+const AdminTooltipContainer = styled.div<TooltipContainerType>`
   position: absolute;
   top: ${(props) => `${props.top}px`};
   left: ${(props) => `${props.left}px`};
@@ -1121,7 +1159,7 @@ const SlotLabelContent = styled.span`
   text-align: left;
 `;
 
-const GridDayMonthContainerB = styled.div`
+const GridDayMonthContainerB = styled.div<GridDayMonthContainerType>`
   background-color: ${(props) =>
     props.isOtherMonth ? '#e0e0e0' : '#f5f5f5'}; /* 이전/다음 달 배경 */
   color: ${(props) =>
@@ -1136,7 +1174,7 @@ const GridDayMonthContainerB = styled.div`
   text-align: left;
 `;
 
-const GridDayMonthContainerA = styled.div`
+const GridDayMonthContainerA = styled.div<GridDayMonthContainerType>`
   background-color: white;
   color: ${(props) => (props.isOtherMonth ? '' : props.color)};
 

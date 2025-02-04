@@ -15,10 +15,10 @@ const AdminEvents = ({
   const [fontSize, setFontSize] = useState('');
   const ref = useRef(null);
 
-  // 겹치는 스케줄 폰트 조정
+  // 스케줄 겹칠 경우 폰트 크기 조절
   useEffect(() => {
     const observer = new ResizeObserver((entries) => {
-      for (let entry of entries) {
+      for (const entry of entries) {
         const { width } = entry.contentRect;
         if (width < 45)
           setFontSize('0.55rem'); // 4개 이상
@@ -42,7 +42,7 @@ const AdminEvents = ({
   }, []);
 
   return (
-    <Event
+    <EventContainer
       ref={ref}
       selected={selectedEventId === eventId}
       backColor={eventBackColor}
@@ -56,11 +56,17 @@ const AdminEvents = ({
 ${eventTeacher || '강사명없음'}`
         }`}
       </b>
-    </Event>
+    </EventContainer>
   );
 };
 
-const Event = styled.div`
+type EventContainerType = {
+  backColor?: string;
+  selected?: boolean;
+  fontSize?: string;
+};
+
+const EventContainer = styled.div<EventContainerType>`
   height: 100%;
 
   background-color: ${(props) => props.backColor || '#fff'};

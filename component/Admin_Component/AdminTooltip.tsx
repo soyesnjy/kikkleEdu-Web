@@ -161,7 +161,7 @@ const AdminTooltip = ({
                   min="0"
                   value={updatedTimes}
                   onChange={(e) => {
-                    setUpdatedTimes(e.target.value);
+                    setUpdatedTimes(Number(e.target.value));
                   }}
                 />
               </Value>
@@ -174,7 +174,7 @@ const AdminTooltip = ({
                   min="0"
                   value={updatedParticipants}
                   onChange={(e) => {
-                    setUpdatedParticipants(e.target.value);
+                    setUpdatedParticipants(Number(e.target.value));
                   }}
                 />
               </Value>
@@ -201,7 +201,7 @@ const AdminTooltip = ({
               <Label>기타 보고</Label>
               <Value>
                 <StyledTextarea
-                  type="text"
+                  // type="text"
                   value={updatedNotes}
                   onChange={(e) => {
                     setUpdatedNotes(e.target.value);
@@ -229,7 +229,7 @@ const AdminTooltip = ({
                       <polyline points="20 6 9 17 4 12" />
                     </Icon>
                   </StyledCheckbox>
-                  <RecursiveLabel for="checkTerms" checkTerms={isAllEdit}>
+                  <RecursiveLabel check={isAllEdit}>
                     {`전체수정`}
                   </RecursiveLabel>
                   <GroupDeleteButton
@@ -309,6 +309,10 @@ const AdminTooltip = ({
       )}
     </TooltipContainer>
   );
+};
+
+type ColorBoxType = {
+  backColor?: string;
 };
 
 const TooltipContainer = styled.div`
@@ -420,7 +424,7 @@ const Value = styled.div`
   text-align: left;
 `;
 
-const ColorBox = styled.div`
+const ColorBox = styled.div<ColorBoxType>`
   width: 100%;
   height: 100%;
   background-color: ${(props) => props.backColor || 'none'};
@@ -462,7 +466,11 @@ const Icon = styled.svg`
   stroke-width: 3px;
 `;
 
-const StyledCheckbox = styled.div`
+type CheckType = {
+  check?: boolean;
+};
+
+const StyledCheckbox = styled.div<CheckType>`
   display: inline-block;
   width: 26px;
   height: 26px;
@@ -490,11 +498,11 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   width: 1px;
 `;
 
-const RecursiveLabel = styled.label`
+const RecursiveLabel = styled.label<CheckType>`
   font-size: 1rem;
   font-weight: 600;
   font-family: Pretendard;
-  color: ${(props) => (props.checkTerms ? 'black' : '#D9D9D9')};
+  color: ${(props) => (props.check ? 'black' : '#D9D9D9')};
 
   user-select: none;
 `;
