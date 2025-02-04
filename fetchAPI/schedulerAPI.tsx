@@ -168,22 +168,38 @@ export const handleScheduleGroupDelete = async (query) => {
   }
 };
 
+// 공휴일 API 반환 Data Type
+type HolidayType = {
+  dateKind: string;
+  dateName: string; // 공휴일명 (ex. 설날, 추석)
+  isHoliday: string; // 공휴일 여부 (Y/N)
+  locdate: string; // 공휴일 날짜 (YYYYMMDD)
+  seq: number; // 공휴일 순번
+};
+// 공휴일 Formatted Data Type
+type FormattedHolidayType = {
+  date: string;
+  name: string;
+};
 // 공휴일 READ
-export const handleScheduleHolidayGet = async (today) => {
+export const handleScheduleHolidayGet = async (today: Date) => {
   try {
     const response = await axios.get(
       `https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?serviceKey=${process.env.NEXT_PUBLIC_SERVICE_KEY}&solYear=${today.getFullYear()}&numOfRows=30`
     );
 
-    // console.log(response);
-    const data = response.data.response.body.items.item || [];
-    const holidayList = Array.isArray(data) ? data : [data]; // 데이터가 배열인지 확인
-    const formattedHolidays = holidayList.map((holiday) => ({
-      date: holiday.locdate
-        .toString()
-        .replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), // YYYYMMDD → YYYY-MM-DD
-      name: holiday.dateName,
-    }));
+    const holidayData: HolidayType[] =
+      response.data.response.body.items.item || [];
+
+    const formattedHolidays: FormattedHolidayType[] = holidayData.map(
+      (holiday: HolidayType) => ({
+        date: holiday.locdate
+          .toString()
+          .replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'), // YYYYMMDD → YYYY-MM-DD
+        name: holiday.dateName,
+      })
+    );
+
     return {
       status: 200,
       data: formattedHolidays,

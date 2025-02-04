@@ -22,6 +22,7 @@ import {
   handleScheduleHolidayGet,
 } from '@/fetchAPI/schedulerAPI';
 
+// 이벤트 객체 Type
 type EventType = {
   id: number;
   groupIdx?: number;
@@ -30,9 +31,9 @@ type EventType = {
   extendedProps: {
     teacherName: string;
     courseName: string;
-    participants: number;
-    times: number;
-    courseTimes: number;
+    participants: number; // 인원수
+    times: number; // 타임수
+    courseTimes: number; // 수업시간
     notes: string;
   };
   backgroundColor: string;
@@ -51,7 +52,7 @@ const colors: { label: string; value: string }[] = [
 ];
 
 // Date Format String 변환 메서드 (HH:MM)
-const timeCalulate = (date: Date, all: boolean) => {
+const timeCalulate = (date: Date, all: boolean): string => {
   const dateObj = new Date(date);
 
   if (all) {
@@ -67,11 +68,11 @@ const timeCalulate = (date: Date, all: boolean) => {
   return `${hour}:${min}`;
 };
 // KST 변환 메서드
-const convertToKST = (utcDate: Date) => {
+const convertToKST = (utcDate: Date): Date => {
   const kstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000); // UTC+9
   return kstDate;
 };
-// 이벤트 id Number -> String 변환 메서드
+// 이벤트 id [Number -> String] 변환 메서드
 const transformedEvents = (events: EventType[]) => {
   return events.map((event) => ({
     ...event,
@@ -629,7 +630,6 @@ const AdminSchedulerBody = () => {
             monthQuery: currentDateMonth, // 선택 날짜
             searchQuery,
           }).then((res) => {
-            console.log(res.data);
             setEvents(res.data);
           });
         }
