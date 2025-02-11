@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -22,10 +22,10 @@ import {
   handleScheduleHolidayGet,
 } from '@/fetchAPI/schedulerAPI';
 
-// 이벤트 객체 Type
+// 이벤트(스케줄) 객체 Type
 type EventType = {
   id: number;
-  groupIdx?: number;
+  groupIdx?: number; // 그룹 인덱스
   start: string;
   end: string;
   extendedProps: {
@@ -113,19 +113,24 @@ const AdminSchedulerBody = () => {
   const aCalendarRef = useRef(null); // A캘린더의 ref
   const bCalendarRef = useRef(null); // B캘린더의 ref
 
-  const isHoliday = (date: Date): boolean => {
-    if (!holidays.length) return false;
-    return holidays.some(
-      (holiday) => new Date(holiday.date).toDateString() === date.toDateString()
-    );
-  };
+  // 공휴일 확인 메서드
+  const isHoliday = useCallback(
+    (date: Date): boolean => {
+      if (!holidays.length) return false;
+      return holidays.some(
+        (holiday) =>
+          new Date(holiday.date).toDateString() === date.toDateString()
+      );
+    },
+    [holidays]
+  );
   // selectedDate 업데이트 핸들러 - 미니 달력(B)에서 선택된 날짜 업데이트와 동시에 참조(selectedDateRef) 업데이트
-  const updateSelectedDate = (date) => {
+  const updateSelectedDate = useCallback((date: Date) => {
     setSelectedDate(date);
     selectedDateRef.current = date; // 상태와 참조 동기화
-  };
+  }, []);
   // 미니 달력(B) 날짜 클릭 핸들러 - A캘린더와 동기화
-  const handleDateClickB = (info) => {
+  const handleDateClickB = useCallback((info) => {
     const newDate = new Date(info.date);
     updateSelectedDate(newDate); // 선택된 날짜 업데이트
 
@@ -135,9 +140,9 @@ const AdminSchedulerBody = () => {
 
     // 툴팁 닫기
     handleResetTooltip();
-  };
+  }, []);
   // 메인 스케줄러(A) 날짜 변경 핸들러 - B캘린더와 동기화
-  const handleDatesSetA = (info) => {
+  const handleDatesSetA = useCallback((info) => {
     const startDate = new Date(info.start);
     const endDate = new Date(info.end);
     const selectedMonth = selectedDateRef?.current?.getMonth();
@@ -163,10 +168,10 @@ const AdminSchedulerBody = () => {
 
     // 툴팁 닫기
     handleResetTooltip();
-  };
+  }, []);
 
   // 미니 달력(B) 렌더 메서드
-  const renderDayHeaderB = (arg) => {
+  const renderDayHeaderB = useCallback((arg) => {
     const dayStyle = {
       color:
         arg.date.getDay() === 0
@@ -177,38 +182,42 @@ const AdminSchedulerBody = () => {
     };
 
     return <div style={dayStyle}>{`${dayArr[arg.date.getDay()]}`}</div>;
-  };
-  const renderDayCellB = (arg) => {
-    const dateObj = new Date(arg.date);
+  }, []);
 
-    // 오늘 날짜와 선택된 날짜를 비교
-    const isHighlighted =
-      selectedDate && dateObj.toDateString() === selectedDate.toDateString();
+  const renderDayCellB = useCallback(
+    (arg) => {
+      const dateObj = new Date(arg.date);
 
-    // 이전/다음 달 날짜인지 확인
-    const isOtherMonth =
-      arg.date.getMonth() !== arg.view.currentStart.getMonth();
+      // 오늘 날짜와 선택된 날짜를 비교
+      const isHighlighted =
+        selectedDate && dateObj.toDateString() === selectedDate.toDateString();
 
-    return (
-      <GridDayMonthContainerB
-        className={`fc-daygrid-day-frame ${
-          isHighlighted ? 'highlighted-date-range' : ''
-        }`}
-        isOtherMonth={isOtherMonth}
-        color={
-          arg.date.getDay() === 0 || isHoliday(arg.date)
-            ? 'red'
-            : arg.date.getDay() === 6
-              ? 'blue'
-              : '#7e7e7e'
-        }
-      >
-        {dateObj.getDate()}
-      </GridDayMonthContainerB>
-    );
-  };
+      // 이전/다음 달 날짜인지 확인
+      const isOtherMonth =
+        arg.date.getMonth() !== arg.view.currentStart.getMonth();
+
+      return (
+        <GridDayMonthContainerB
+          className={`fc-daygrid-day-frame ${
+            isHighlighted ? 'highlighted-date-range' : ''
+          }`}
+          isOtherMonth={isOtherMonth}
+          color={
+            arg.date.getDay() === 0 || isHoliday(arg.date)
+              ? 'red'
+              : arg.date.getDay() === 6
+                ? 'blue'
+                : '#7e7e7e'
+          }
+        >
+          {dateObj.getDate()}
+        </GridDayMonthContainerB>
+      );
+    },
+    [selectedDate]
+  );
   // 메인 스케줄러(A) 렌더 메서드
-  const renderDayHeaderA = (arg) => {
+  const renderDayHeaderA = useCallback((arg) => {
     const dayStyle = {
       color:
         arg.date.getDay() === 0 || isHoliday(arg.date)
@@ -223,8 +232,8 @@ const AdminSchedulerBody = () => {
         {`${scheduleForm === 'week' ? arg.date.getDate() : ''} ${dayArr[arg.date.getDay()]}`}
       </div>
     );
-  };
-  const renderDayCellA = (arg) => {
+  }, []);
+  const renderDayCellA = useCallback((arg) => {
     const dateObj = new Date(arg.date);
 
     // 이전/다음 달 날짜인지 확인
@@ -246,31 +255,37 @@ const AdminSchedulerBody = () => {
         {dateObj.getDate()}
       </GridDayMonthContainerA>
     );
-  };
-  const renderEventCellA = (arg) => {
-    return (
-      <AdminEvents
-        eventId={arg.event.id}
-        eventTitle={arg.event.title}
-        eventTeacher={arg.event.extendedProps.teacherName}
-        eventStart={arg.event.start}
-        eventBackColor={arg.event.backgroundColor}
-        scheduleForm={scheduleForm}
-        selectedEventId={selectedEventId}
-        timeCalulate={timeCalulate}
-      />
-    );
-  };
+  }, []);
+  const renderEventCellA = useCallback(
+    (arg) => {
+      return (
+        <AdminEvents
+          eventId={arg.event.id}
+          eventTitle={arg.event.title}
+          eventTeacher={arg.event.extendedProps.teacherName}
+          eventStart={arg.event.start}
+          eventBackColor={arg.event.backgroundColor}
+          scheduleForm={scheduleForm}
+          selectedEventId={selectedEventId}
+          timeCalulate={timeCalulate}
+        />
+      );
+    },
+    [scheduleForm, selectedEventId]
+  );
 
   // 모달 Open 핸들러 - newEvent date 속성 갱신
-  const openModal = (info) => {
-    if (scheduleForm === 'month') return;
-    handleResetTooltip();
-    setNewEvent((prev) => ({ ...prev, date: info.dateStr }));
-    setModalOpen(true);
-  };
+  const openModal = useCallback(
+    (info) => {
+      if (scheduleForm === 'month') return;
+      handleResetTooltip();
+      setNewEvent((prev) => ({ ...prev, date: info.dateStr }));
+      setModalOpen(true);
+    },
+    [scheduleForm]
+  );
   // 모달 Close 핸들러 - newEvent 초기화
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setModalOpen(false);
     setNewEvent({
       title: '',
@@ -284,53 +299,56 @@ const AdminSchedulerBody = () => {
       date: '',
       recursiveEndDate: '', // 신규
     });
-  };
+  }, []);
 
   // Tooltip Reset 핸들러
-  const handleResetTooltip = () => {
+  const handleResetTooltip = useCallback(() => {
     setSelectedEventId(-1);
     setTooltip({
       visible: false,
       content: null,
       position: { top: 0, left: 0 },
     });
-  };
+  }, []);
   // Tooltip Open 핸들러 - Tooltip 위치 계산
-  const handleOpenTooltip = (info) => {
-    const { id, title, start, end, extendedProps, backgroundColor } =
-      info.event;
+  const handleOpenTooltip = useCallback(
+    (info) => {
+      const { id, title, start, end, extendedProps, backgroundColor } =
+        info.event;
 
-    // 툴팁이 켜진 경우 끄기 (토글)
-    if (tooltip.visible && tooltip.content.id === id) {
-      handleResetTooltip();
-      return;
-    }
-    // 이벤트 요소의 위치 계산
-    const rect = info.el.getBoundingClientRect();
-    const tooltipPosition = {
-      top: rect.top + window.scrollY, // 중앙 Y
-      left: rect.left + window.scrollX + rect.width, // 오른쪽에 표시
-    };
+      // 툴팁이 켜진 경우 끄기 (토글)
+      if (tooltip.visible && tooltip.content.id === id) {
+        handleResetTooltip();
+        return;
+      }
+      // 이벤트 요소의 위치 계산
+      const rect = info.el.getBoundingClientRect();
+      const tooltipPosition = {
+        top: rect.top + window.scrollY, // 중앙 Y
+        left: rect.left + window.scrollX + rect.width, // 오른쪽에 표시
+      };
 
-    // 이벤트가 마지막 주(금,토요일)인 경우
-    if (new Date(start).getDay() === 6 || new Date(start).getDay() === 5) {
-      tooltipPosition.left = rect.left + window.scrollX - 300; // 툴팁을 왼쪽으로 표시 (Tooltip Width === 300)
-    }
+      // 이벤트가 마지막 주(금,토요일)인 경우
+      if (new Date(start).getDay() === 6 || new Date(start).getDay() === 5) {
+        tooltipPosition.left = rect.left + window.scrollX - 300; // 툴팁을 왼쪽으로 표시 (Tooltip Width === 300)
+      }
 
-    setSelectedEventId(id);
-    setTooltip({
-      visible: true,
-      content: {
-        id,
-        title,
-        start,
-        end,
-        eventProps: extendedProps,
-        backgroundColor,
-      },
-      position: tooltipPosition,
-    });
-  };
+      setSelectedEventId(id);
+      setTooltip({
+        visible: true,
+        content: {
+          id,
+          title,
+          start,
+          end,
+          eventProps: extendedProps,
+          backgroundColor,
+        },
+        position: tooltipPosition,
+      });
+    },
+    [tooltip]
+  );
 
   // (new)이벤트 Check 핸들러
   const handleNewEventCheck = (event) => {
