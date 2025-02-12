@@ -48,7 +48,9 @@ export default function AdminEventAddModal({
       shouldFocusAfterRender={false} // Modal Open 시, 첫번째 input에 자동 포커스 되는 것 방지
     >
       <ModalContent>
+        {/* [title + teacherName] Container */}
         <RowContainer>
+          {/* title(제목) Container */}
           <SubContainer>
             <StyledSpan>제목</StyledSpan>
             <StyledInput
@@ -60,6 +62,7 @@ export default function AdminEventAddModal({
               width="80%"
             />
           </SubContainer>
+          {/* teacherName(강사명) Container */}
           <SubContainer>
             <StyledSpan>강사</StyledSpan>
             <StyledInput
@@ -72,6 +75,7 @@ export default function AdminEventAddModal({
             />
           </SubContainer>
         </RowContainer>
+        {/* courseName(강좌명) Container */}
         <SubContainer borderBottom={true}>
           <StyledSpan>강좌명</StyledSpan>
           <StyledInput
@@ -83,9 +87,11 @@ export default function AdminEventAddModal({
             width="100%"
           />
         </SubContainer>
+        {/* date Container (onChange 없음) */}
         <SubContainer>
           {`요일/시간: ${dayArr[new Date(newEvent.date).getDay()]}요일 / ${timeCalulate(newEvent.date)}~${timeCalulate(new Date(new Date(newEvent.date).getTime() + newEvent.courseTimes * 60 * 1000))}`}
         </SubContainer>
+        {/* times(타임수) Container */}
         <RowContainer>
           <SubContainer>
             <StyledSpan>타임수</StyledSpan>
@@ -117,6 +123,7 @@ export default function AdminEventAddModal({
             />
           </SubContainer>
         </RowContainer>
+        {/* courseTimes(수업 시간) Container */}
         <SubContainer>
           <StyledSpan>Time</StyledSpan>
           <AdminCustomTimesSelect
@@ -129,6 +136,7 @@ export default function AdminEventAddModal({
             }}
           />
         </SubContainer>
+        {/* backgroundColor(색상) Container */}
         <SubContainer>
           <StyledSpan>Color</StyledSpan>
           <AdminCustomColorSelect
@@ -141,6 +149,7 @@ export default function AdminEventAddModal({
             }}
           />
         </SubContainer>
+        {/* notes(메모) Container */}
         <SubContainer>
           <StyledSpan>Notes</StyledSpan>
           <StyledTextarea
@@ -150,7 +159,7 @@ export default function AdminEventAddModal({
             }
           />
         </SubContainer>
-        {/* 반복 이벤트 추가 */}
+        {/* Recursive(반복 이벤트) Container */}
         <SubContainer>
           <StyledSpan>반복</StyledSpan>
           <RowContainer>
@@ -178,6 +187,7 @@ export default function AdminEventAddModal({
             <StyledInput
               disabled={!checkTerms}
               type="date"
+              defaultValue={newEvent.date.slice(0, 10)}
               onChange={(e) => {
                 setNewEvent({
                   ...newEvent,
@@ -187,6 +197,7 @@ export default function AdminEventAddModal({
             />
           </RowContainer>
         </SubContainer>
+        {/* Button(저장/취소) Container */}
         <RowContainer>
           <EventButton
             isPending={true}

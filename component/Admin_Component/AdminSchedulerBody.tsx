@@ -275,15 +275,11 @@ const AdminSchedulerBody = () => {
   );
 
   // 모달 Open 핸들러 - newEvent date 속성 갱신
-  const openModal = useCallback(
-    (info) => {
-      if (scheduleForm === 'month') return;
-      handleResetTooltip();
-      setNewEvent((prev) => ({ ...prev, date: info.dateStr }));
-      setModalOpen(true);
-    },
-    [scheduleForm]
-  );
+  const openModal = useCallback((info) => {
+    handleResetTooltip(); // Tooltip 닫기
+    setNewEvent((prevNewEvent) => ({ ...prevNewEvent, date: info.dateStr })); // newEvent date 속성 갱신
+    setModalOpen(true);
+  }, []);
   // 모달 Close 핸들러 - newEvent 초기화
   const handleCloseModal = useCallback(() => {
     setModalOpen(false);
@@ -757,7 +753,7 @@ const AdminSchedulerBody = () => {
               // 기존 시간 표시와 함께 추가 텍스트를 삽입
               return (
                 <SlotLabelContainer>
-                  <SlotLabelContent>{arg.text}</SlotLabelContent>{' '}
+                  <SlotLabelContent>{arg.text}</SlotLabelContent>
                 </SlotLabelContainer>
               );
             }}
@@ -768,7 +764,7 @@ const AdminSchedulerBody = () => {
             // slotLabelInterval="00:10:00" // 1시간마다 라벨 표시
             allDaySlot={false}
             datesSet={handleDatesSetA} // 날짜 이동 이벤트 핸들러
-            dateClick={openModal} // 날짜 클릭 시 이벤트 추가 모달 오픈
+            dateClick={scheduleForm === 'week' ? openModal : null} // 날짜 클릭 시 이벤트 추가 모달 오픈
             events={transformedEvents(events)} // 이벤트 데이터
             eventClick={handleOpenTooltip} // 이벤트 Click
             eventContent={renderEventCellA} // 이벤트 Cell
@@ -991,18 +987,11 @@ const SchedulerWrapper = styled.div<SchedulerWrapperType>`
     padding: 1rem 0;
     height: auto;
 
-    --fc-event-border-color: 'none'; // Default Border color 제거
+    --fc-event-border-color: 'none'; // Default 이벤트 테두리 제거
   }
 
   .fc-timegrid-slot {
     border-bottom: 1px solid #ddd;
-  }
-
-  .fc-timegrid-col,
-  .fc-col-header-cell {
-  }
-
-  .fc-timegrid-event-harness {
   }
 
   // Month dayCell 관련
@@ -1011,11 +1000,6 @@ const SchedulerWrapper = styled.div<SchedulerWrapperType>`
     overflow-x: hidden;
     overflow-y: auto;
   }
-
-  /* .fc-timegrid-col,
-  .fc-col-header-cell {
-    width: 150%;
-  } */
 
   // todayCell 관련 (주간 + 월간)
   .fc-timegrid-col.fc-day-today,
