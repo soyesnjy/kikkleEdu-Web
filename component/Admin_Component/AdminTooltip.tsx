@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
@@ -6,20 +5,70 @@ import Image from 'next/image';
 import AdminCustomColorSelect from './AdminCustomColorSelect';
 import AdminCustomTimesSelect from './AdminCustomTimesSelect';
 
+// 툴팁 이벤트 객체 Type
+type TooltipEventType = {
+  id: number; // 이벤트(스케줄) 고유번호
+  groupIdx: number; // 그룹 인덱스
+  start: string; // 시작 시간
+  end: string; // 종료 시간
+  title: string; // 제목
+  teacherName: string; // 강사명
+  courseName: string; // 강좌명
+  participants: number; // 참여인원
+  times: number; // 타임수
+  courseTimes: number; // 강좌시간
+  notes: string; // 메모
+  backgroundColor: string; // 배경색
+};
+
+// 수정 이벤트 객체 Type
+type UpdateEventType = {
+  id: number;
+  groupIdx: number;
+  title: string;
+  end: string;
+  extendedProps: {
+    teacherName: string;
+    courseName: string;
+    participants: number;
+    times: number;
+    courseTimes: number;
+    notes: string;
+  };
+  backgroundColor: string;
+  isAllEdit: boolean;
+};
+
+// Props Type
+type PropsType = {
+  id: string;
+  title: string;
+  start: Date;
+  end: Date;
+  event: TooltipEventType;
+  handleEventClickUpdate: (event: UpdateEventType) => void; // 수정 이벤트 핸들러
+  backgroundColor: string;
+  timeCalulate: (date: Date, all?: boolean) => string; // 시간 계산 함수
+  handleResetTooltip: () => void; // 툴팁 리셋 핸들러
+  handleGroupDelete: (groupIdx: number) => void; // 그룹 삭제 핸들러
+  dayArr: string[];
+  colors: { label: string; value: string }[];
+};
+
 const AdminTooltip = ({
   id,
   title,
   start,
   end,
   event,
-  onEdit,
+  handleEventClickUpdate,
   backgroundColor,
   timeCalulate,
   handleResetTooltip,
   handleGroupDelete,
   dayArr,
   colors,
-}) => {
+}: PropsType) => {
   const [updateIsOpen, setUpdateIsOpen] = useState(false);
   const [updatedTitle, setUpdatedTitle] = useState('');
   const [updatedTeacherName, setUpdatedTeacherName] = useState('');
@@ -36,7 +85,7 @@ const AdminTooltip = ({
     setUpdateIsOpen(!updateIsOpen);
   };
   // Update State Reset 핸들러
-  const handleupdateReset = () => {
+  const handleUpdateReset = () => {
     setUpdatedTitle(title);
     setUpdatedTeacherName(event.teacherName);
     setUpdatedCourseName(event.courseName);
@@ -49,8 +98,7 @@ const AdminTooltip = ({
   // Update Click 핸들러
   const handleUpdateClick = () => {
     if (confirm('수정 하시겠습니까?') === true) {
-      onEdit({
-        isAllEdit,
+      handleEventClickUpdate({
         id: Number(id),
         groupIdx: event.groupIdx,
         title: updatedTitle,
@@ -66,6 +114,7 @@ const AdminTooltip = ({
           notes: updatedNotes,
         },
         backgroundColor: updatedBackColor,
+        isAllEdit,
       });
       handleupdateIsOpenToggle();
     }
@@ -79,7 +128,7 @@ const AdminTooltip = ({
   };
 
   useEffect(() => {
-    handleupdateReset();
+    handleUpdateReset();
     setUpdateIsOpen(false);
   }, [id]);
 

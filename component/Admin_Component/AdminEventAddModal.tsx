@@ -4,6 +4,34 @@ import Modal from 'react-modal';
 import AdminCustomColorSelect from './AdminCustomColorSelect';
 import AdminCustomTimesSelect from './AdminCustomTimesSelect';
 
+// newEvent 객체 Type
+type NewEventType = {
+  title: string; //  제목
+  teacherName: string; // 강사
+  courseName: string; // 강좌명
+  participants: number; // 인원수
+  times: number; // 타임수
+  courseTimes: number; // 수업시간
+  notes: string; // 메모
+  backgroundColor: string; // 배경색
+  date: string; // 날짜
+  recursiveEndDate: string; // 반복 종료 날짜
+  isAllAdd?: boolean; // 전체 추가 여부
+};
+
+// Props Type
+type PropsType = {
+  modalOpen: boolean; // Modal Open 여부
+  closeModal: () => void; // Modal Close 핸들러
+  newEvent: NewEventType; // newEvent 객체
+  setNewEvent: React.Dispatch<React.SetStateAction<NewEventType>>; // newEvent 객체 Setter
+  dayArr: string[]; // 요일 배열
+  colors: { label: string; value: string }[]; // 색상 배열
+  handleAddEvent: (newEvent: NewEventType) => void; // 단일 추가 핸들러
+  handleGroupInsertEvent: (newEvent: NewEventType) => void; // 반복 추가 핸들러
+  timeCalulate: (date: string | Date, isRecursive?: boolean) => string; // 시간 계산 함수
+};
+
 export default function AdminEventAddModal({
   modalOpen,
   closeModal,
@@ -14,7 +42,7 @@ export default function AdminEventAddModal({
   handleAddEvent, // 단일 추가 핸들러
   handleGroupInsertEvent, // 반복 추가 핸들러
   timeCalulate,
-}) {
+}: PropsType) {
   const [checkTerms, setCheckTerms] = useState(false); // 일정 반복 체크 여부
 
   // Modal Close 핸들러
@@ -101,7 +129,7 @@ export default function AdminEventAddModal({
               value={newEvent.times}
               onChange={(e) => {
                 const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 허용
-                setNewEvent({ ...newEvent, times: value ? Number(value) : '' });
+                setNewEvent({ ...newEvent, times: Number(value) });
               }}
               width="80%"
             />
@@ -116,7 +144,7 @@ export default function AdminEventAddModal({
                 const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 허용
                 setNewEvent({
                   ...newEvent,
-                  participants: value ? Number(value) : '',
+                  participants: Number(value),
                 });
               }}
               width="70%"
@@ -181,9 +209,8 @@ export default function AdminEventAddModal({
               </Icon>
             </StyledCheckbox>
             <RecursiveSpan check={checkTerms}>
-              {timeCalulate(newEvent.date, true)}
+              {`${timeCalulate(newEvent.date, true)} ~ `}
             </RecursiveSpan>
-            ~
             <StyledInput
               disabled={!checkTerms}
               type="date"

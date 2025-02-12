@@ -40,6 +40,21 @@ type EventType = {
   title: string;
 };
 
+// newEvent 객체 Type
+type NewEventType = {
+  title: string; //  제목
+  teacherName: string; // 강사
+  courseName: string; // 강좌명
+  participants: number; // 인원수
+  times: number; // 타임수
+  courseTimes: number; // 수업시간
+  notes: string; // 메모
+  backgroundColor: string; // 배경색
+  date: string; // 날짜
+  recursiveEndDate: string; // 반복 종료 날짜
+  isAllAdd?: boolean; // 전체 추가 여부
+};
+
 const dayArr: string[] = ['일', '월', '화', '수', '목', '금', '토'];
 const today: Date = new Date();
 const colors: { label: string; value: string }[] = [
@@ -82,7 +97,7 @@ const transformedEvents = (events: EventType[]) => {
 
 const AdminSchedulerBody = () => {
   const [events, setEvents] = useState<EventType[]>([]);
-  const [newEvent, setNewEvent] = useState({
+  const [newEvent, setNewEvent] = useState<NewEventType>({
     title: '',
     teacherName: '',
     courseName: '',
@@ -275,7 +290,7 @@ const AdminSchedulerBody = () => {
   );
 
   // 모달 Open 핸들러 - newEvent date 속성 갱신
-  const openModal = useCallback((info) => {
+  const openModal = useCallback((info: { dateStr: string }) => {
     handleResetTooltip(); // Tooltip 닫기
     setNewEvent((prevNewEvent) => ({ ...prevNewEvent, date: info.dateStr })); // newEvent date 속성 갱신
     setModalOpen(true);
@@ -348,33 +363,43 @@ const AdminSchedulerBody = () => {
 
   // (new)이벤트 Check 핸들러
   const handleNewEventCheck = (event) => {
-    if (!event.title) {
+    const {
+      title,
+      teacherName,
+      courseName,
+      times,
+      courseTimes,
+      backgroundColor,
+      recursiveEndDate,
+    } = event;
+
+    if (!title) {
       alert('제목을 입력하세요');
       return false;
     }
-    if (!event.teacherName) {
+    if (!teacherName) {
       alert('강사를 입력하세요');
       return false;
     }
-    if (!event.courseName) {
+    if (!courseName) {
       alert('강좌명을 입력하세요');
       return false;
     }
-    if (!event.times) {
+    if (!times) {
       alert('타임수를 입력하세요');
       return false;
     }
-    if (!event.courseTimes) {
+    if (!courseTimes) {
       alert('수업시간을 선택하세요');
       return false;
     }
-    if (!event.backgroundColor) {
+    if (!backgroundColor) {
       alert('색상을 선택하세요');
       return false;
     }
     if (
-      event.recursiveEndDate &&
-      new Date(event.recursiveEndDate) < new Date(newEvent.date)
+      recursiveEndDate &&
+      new Date(recursiveEndDate) < new Date(newEvent.date)
     ) {
       alert('날짜를 똑바로 입력하세요 (이전 날짜 불가능)');
       return false;
@@ -808,10 +833,10 @@ const AdminSchedulerBody = () => {
             end={tooltip.content.end}
             event={tooltip.content.eventProps}
             backgroundColor={tooltip.content.backgroundColor}
-            onEdit={handleEventClickUpdate} // 툴팁에서 이벤트 내용 수정
-            timeCalulate={timeCalulate}
+            handleEventClickUpdate={handleEventClickUpdate} // 툴팁에서 이벤트 내용 수정
             handleResetTooltip={handleResetTooltip}
             handleGroupDelete={handleGroupDelete}
+            timeCalulate={timeCalulate}
             dayArr={dayArr}
             colors={colors}
           />

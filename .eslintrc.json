@@ -31,8 +31,10 @@
   // 사용자 정의 규칙 설정
   "rules": {
     "react/prop-types": "off", // prop-types 사용 안 함
+    "react-hooks/exhaustive-deps": "off", // 의존성 배열 사용 안 함
     "@typescript-eslint/explicit-module-boundary-types": "off", // 명시적 모듈 경계 타입 사용 안 함
-    "prettier/prettier": "off", // Prettier 관련 에러 비활성화
-    "@typescript-eslint/no-unused-vars": "warn" // TypeScript 사용되지 않는 변수 경고
+    "@typescript-eslint/no-unused-vars": "warn", // TypeScript 사용되지 않는 변수 경고
+    "@typescript-eslint/no-explicit-any": "off", // any 타입 허용
+    "prettier/prettier": "off" // Prettier 관련 에러 비활성화
   }
 }
