@@ -29,7 +29,7 @@ type PropsType = {
   colors: { label: string; value: string }[]; // 색상 배열
   handleAddEvent: (newEvent: NewEventType) => void; // 단일 추가 핸들러
   handleGroupInsertEvent: (newEvent: NewEventType) => void; // 반복 추가 핸들러
-  timeCalulate: (date: string | Date, isRecursive?: boolean) => string; // 시간 계산 함수
+  timeCalulate: (date: string | Date, all?: boolean) => string; // 시간 계산 함수
 };
 
 export default function AdminEventAddModal({

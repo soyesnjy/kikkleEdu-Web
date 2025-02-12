@@ -11,6 +11,8 @@ import TopButton from '@/component/Home_Component/TopButton';
 import { AnimatePresence } from 'framer-motion';
 
 import { RecoilRoot } from 'recoil';
+import { useQuery, QueryClient, QueryClientProvider } from 'react-query';
+const queryClient = new QueryClient();
 
 import { appWithTranslation } from 'next-i18next';
 
@@ -28,19 +30,21 @@ function App({ Component, pageProps }) {
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0"
         />
       </Head>
-      <RecoilRoot>
-        <AnimatePresence mode="wait">
-          <Nav />
-          <Component {...pageProps} />
-          <TopButton />
-          <Footer />
-          {/* <Page key={router.asPath}>
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <AnimatePresence mode="wait">
+            <Nav />
+            <Component {...pageProps} />
+            <TopButton />
+            <Footer />
+            {/* <Page key={router.asPath}>
             <Nav />
             <Component {...pageProps} />
             <Footer />
           </Page> */}
-        </AnimatePresence>
-      </RecoilRoot>
+          </AnimatePresence>
+        </RecoilRoot>
+      </QueryClientProvider>
       {/* <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.2/dist/browser/pixi.min.js"></script>
       <script src="/Live2D/live2d.min.js"></script>
