@@ -140,36 +140,6 @@ const AdminSchedulerBody = () => {
   const aCalendarRef = useRef(null); // A캘린더의 ref
   const bCalendarRef = useRef(null); // B캘린더의 ref
 
-  // Serach Query Debounce
-  const useDebounce = (value: string, delay: number = 500) => {
-    const [debouncedValue, setDebouncedValue] = useState(value);
-
-    useEffect(() => {
-      const handler = setTimeout(() => {
-        setDebouncedValue(value);
-      }, delay);
-
-      return () => {
-        clearTimeout(handler);
-      };
-    }, [value, delay]);
-
-    return debouncedValue;
-  };
-  const debouncedSearchQuery = useDebounce(searchQuery, 500);
-
-  // React Query 데이터 가져오기
-  const { data, isLoading, error } = useQuery(
-    ['events', currentDateMonth, debouncedSearchQuery], // Query Key
-    reactQueryFetchEvent, // Query Function
-    {
-      enabled: currentDateMonth > 0, // 유효한 값일 때만 실행
-      staleTime: 5000, // 5초 동안 신선한 상태 유지
-      cacheTime: 10000, // 10초 동안 캐시 유지
-      keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
-    }
-  );
-
   // 공휴일 확인 메서드
   const isHoliday = useCallback(
     (date: Date): boolean => {
@@ -666,6 +636,36 @@ const AdminSchedulerBody = () => {
     setSearchQuery(e.target.value.toLowerCase());
   };
 
+  // Serach Query Debounce
+  const useDebounce = (value: string, delay: number = 500) => {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [value, delay]);
+
+    return debouncedValue;
+  };
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
+
+  // React Query 데이터 가져오기
+  const { data, isLoading, error } = useQuery(
+    ['events', currentDateMonth, debouncedSearchQuery], // Query Key
+    reactQueryFetchEvent, // Query Function
+    {
+      enabled: currentDateMonth > 0, // 유효한 값일 때만 실행
+      staleTime: 5000, // 5초 동안 신선한 상태 유지
+      cacheTime: 10000, // 10초 동안 캐시 유지
+      keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
+    }
+  );
+
   // useEffect(() => {
   //   console.log(events);
   // }, [events]);
@@ -683,47 +683,7 @@ const AdminSchedulerBody = () => {
     }
   }, []);
 
-  // Event GET (Month 변경)
-  // useEffect(() => {
-  //   try {
-  //     if (currentDateMonth > 0) {
-  //       // 스케줄 Get Handler 호출
-  //       handleScheduleGet({
-  //         monthQuery: currentDateMonth, // 선택 날짜
-  //         searchQuery,
-  //       }).then((res) => {
-  //         setEvents(res.data);
-  //       });
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [currentDateMonth]);
-
-  // Event GET (강사 검색)
-  // useEffect(() => {
-  //   try {
-  //     // 디바운싱 0.5초 적용
-  //     const debounce = setTimeout(() => {
-  //       if (currentDateMonth > 0) {
-  //         // 스케줄 Get Handler 호출
-  //         handleScheduleGet({
-  //           monthQuery: currentDateMonth, // 선택 날짜
-  //           searchQuery,
-  //         }).then((res) => {
-  //           setEvents(res.data);
-  //         });
-  //       }
-  //     }, 500);
-  //     return () => {
-  //       clearTimeout(debounce);
-  //     };
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [searchQuery]);
-
-  // 가져온 데이터를 `events` 상태에 반영
+  // 가져온 서버 데이터를 `events` 상태에 반영
   useEffect(() => {
     if (data) setEvents(data);
   }, [data]);
