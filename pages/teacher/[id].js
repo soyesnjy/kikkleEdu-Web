@@ -75,8 +75,8 @@ const TeacherDetailPage = () => {
   const router = useRouter();
   // CSR
   const { id } = router.query; // URL의 동적 파라미터를 가져옴
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
-  const [login, setLogin] = useRecoilState(log);
+  const [mobileFlag] = useRecoilState(mobile);
+  const [login] = useRecoilState(log);
 
   const [data, setData] = useState({});
   const [teacherDataArr, setTeacherDataArr] = useState([]);
@@ -166,7 +166,7 @@ const TeacherDetailPage = () => {
                 borderRadius: '24px',
               }}
               placeholder="blur"
-              blurDataURL={`/loding.gif`}
+              blurDataURL={`/loading.svg`}
             />
           )}
 
@@ -211,7 +211,7 @@ const TeacherDetailPage = () => {
                 borderRadius: '24px',
               }}
               placeholder="blur"
-              blurDataURL={`/loding.gif`}
+              blurDataURL={`/loading.svg`}
             />
           </MiddleProfileImgContainer>
         )}

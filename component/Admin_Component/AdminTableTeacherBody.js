@@ -261,7 +261,7 @@ const AdminTableTeacherBody = ({ data }) => {
                     height={56}
                     style={{ maxWidth: '100%', height: 'auto' }}
                     placeholder="blur"
-                    blurDataURL={`/loding.gif`}
+                    blurDataURL={`/loading.svg`}
                   />
                 )}
               </ShowContainer>
