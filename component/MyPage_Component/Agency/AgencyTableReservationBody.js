@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 // import { handleMypageUpdate } from '@/fetchAPI/mypageAPI';
 // import Swal from 'sweetalert2';
 // import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
 
 const AgencyTableReservationBody = ({ data, setIsOpen }) => {
-  // const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
-
-  useEffect(() => {}, [data]);
-
   return (
     <TableRow>
       <TableCell>{data.kk_class_title}</TableCell>
