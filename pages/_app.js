@@ -10,6 +10,7 @@ import TopButton from '@/component/Home_Component/TopButton';
 // import Page from '@/component/Motion_Paging/Page'; // 모든 페이지 이동 시 적용되는 페이지 애니메이션
 import { AnimatePresence } from 'framer-motion';
 
+import { Analytics } from '@vercel/analytics/react';
 import { RecoilRoot } from 'recoil';
 import { useQuery, QueryClient, QueryClientProvider } from 'react-query';
 const queryClient = new QueryClient();
@@ -35,13 +36,14 @@ function App({ Component, pageProps }) {
           <AnimatePresence mode="wait">
             <Nav />
             <Component {...pageProps} />
+            <Analytics />
             <TopButton />
             <Footer />
             {/* <Page key={router.asPath}>
             <Nav />
             <Component {...pageProps} />
             <Footer />
-          </Page> */}
+            </Page> */}
           </AnimatePresence>
         </RecoilRoot>
       </QueryClientProvider>
