@@ -3,6 +3,8 @@
   padding: 0;
   margin: 0;
   font-family: 'times';
+
+  -webkit-tap-highlight-color: transparent;
 }
 
 @font-face {
@@ -87,11 +89,11 @@ body {
   font-size: 50px;
 }
 
-button,
+/* button,
 a,
 div {
   -webkit-tap-highlight-color: transparent;
-}
+} */
 
 /** :: React Scroll Animation CSS :: **/
 
