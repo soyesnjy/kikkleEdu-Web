@@ -120,7 +120,7 @@ type HomeProps = {
 // Test
 // Home 페이지
 export default function Home({ teacherDataArr }: HomeProps) {
-  const [mobileFlag, setMobileFlag] = useRecoilState<boolean>(mobile);
+  const [mobileFlag] = useRecoilState<boolean>(mobile);
 
   return (
     <MasterContainer>

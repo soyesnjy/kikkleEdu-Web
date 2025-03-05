@@ -87,6 +87,12 @@ body {
   font-size: 50px;
 }
 
+button,
+a,
+div[onClick] {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /** :: React Scroll Animation CSS :: **/
 
 @keyframes scroll-animation-top-sm {
