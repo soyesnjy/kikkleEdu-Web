@@ -43,10 +43,12 @@ const ShopGoods = ({ title, imgPath, tagColor, price }: ShopGoodsType) => {
         // customData: {
         //   item: item.id,
         // },
+        redirectUrl: `${process.env.NEXT_PUBLIC_REDIRECT_URI}/shop`,
       });
     } catch (e) {
       console.error(e);
       alert('PortOne Browser Fail');
+      setModalFlag(false);
       return;
     }
 

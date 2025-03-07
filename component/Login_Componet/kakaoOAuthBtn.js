@@ -22,7 +22,7 @@ const KakaoOAuthBtn = ({ setUrl }) => {
 
     // Kakao 인증 페이지로 이동
     // window.Kakao.Auth.authorize({
-    //   redirectUri: `${process.env.NEXT_PUBLIC_REDIRECT_URI}?type=kakao`, // 로그인 성공 후 리디렉션 될 페이지의 URI
+    //   redirectUri: `${process.env.NEXT_PUBLIC_REDIRECT_URI}/kikle/login?type=kakao`, // 로그인 성공 후 리디렉션 될 페이지의 URI
     //   prompt: 'select_account',
     // });
   };
