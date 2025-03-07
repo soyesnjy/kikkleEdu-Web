@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ShopHeaderSection from '@/component/Shop_Component/ShopHeaderSection';
 import ShopMiddleSection from '@/component/Shop_Component/ShopMiddleSection';
 import EndSection from '@/component/Home_Component/EndSection';
+import ShopGoods from '@/component/Shop_Component/ShopGoods';
 
 type shopDefaultArrType = {
   imgPath: string;
@@ -95,22 +96,13 @@ const Shop = () => {
           {shopDefaultArr.map((el) => {
             const { title, imgPath, price, tagColor } = el;
             return (
-              <ShopGoodsContainer
+              <ShopGoods
                 key={`${title}_${imgPath}`}
-                onClick={() => {
-                  alert('상품 준비중입니다');
-                  return;
-                }}
-              >
-                <ShopGoodsTag tagcolor={tagColor}>{`태그`}</ShopGoodsTag>
-                <ShopGoodsImageContainer imgpath={imgPath || ''} />
-                <ShopGoodsTextContainer>
-                  <ShopGoodsTitle>{title}</ShopGoodsTitle>
-                  <ShopGoodsSubTitle>
-                    {`${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원`}
-                  </ShopGoodsSubTitle>
-                </ShopGoodsTextContainer>
-              </ShopGoodsContainer>
+                title={title}
+                imgPath={imgPath}
+                tagColor={tagColor}
+                price={price}
+              />
             );
           })}
         </ShopContainer>
