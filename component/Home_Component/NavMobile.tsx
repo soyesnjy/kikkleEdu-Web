@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 
 import { useRecoilState } from 'recoil';
-import { log } from '../../store/state';
+import { log } from '@/store/state';
 
 import NavDropDown from './NavDropDown';
 
@@ -25,7 +25,8 @@ const NavMobile = ({
   menuItems,
   logoutHandler,
 }: NavMobileComponentType) => {
-  const [login, setLogin] = useRecoilState(log);
+  const [login] = useRecoilState(log);
+
   const menuRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {

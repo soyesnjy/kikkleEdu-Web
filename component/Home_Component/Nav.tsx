@@ -7,12 +7,13 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/router';
 
 import { useRecoilState } from 'recoil';
-import { log, mobile, uid, agencyClass } from '../../store/state';
+import { log, mobile, uid, agencyClass } from '@/store/state';
 
 import { logoutAPI } from '@/fetchAPI/loginAPI';
 import NavList from './NavList';
 import NavMobile from './NavMobile';
 import Swal from 'sweetalert2';
+import useDisableScroll from '@/hook/useDisableScroll'; // 커스텀 훅 가져오기
 
 type NavListInfoType = {
   title: string;
@@ -73,11 +74,14 @@ export default function Nav() {
   const currentPath = router.pathname;
 
   const [login, setLogin] = useRecoilState(log);
-  const [userId, setUserId] = useRecoilState(uid);
+  const [_, setUserId] = useRecoilState(uid);
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
   const [mobileNavisOpen, setMobileNavisOpen] = useState(false);
+
+  // Custom Hook 설정 - 스크롤 막기 기능 적용
+  useDisableScroll(mobileNavisOpen);
 
   // 전역 상태 MobileFlag 처리 - 모바일 반응형 플래그
   const handleResize = (): void => {
