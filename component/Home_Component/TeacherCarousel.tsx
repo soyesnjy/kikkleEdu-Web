@@ -24,7 +24,7 @@ type TeacherCarouselProps = {
 
 const TeacherCarousel = ({ teacherDataArr }: TeacherCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0); // 가운데 카드로 시작
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const [mobileFlag] = useRecoilState(mobile);
 
   const handlePrevClick = (): void => {
     setCurrentIndex((prevIndex) =>

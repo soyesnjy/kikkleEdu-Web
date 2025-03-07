@@ -33,7 +33,7 @@ const LessonSection = ({
             </Link>
           </ContentContainer>
           <ImageContainer>
-            <Overlay />
+            {/* <Overlay /> */}
             <Image
               src={imgUrl}
               alt={'lesson_img'}
@@ -46,7 +46,7 @@ const LessonSection = ({
       ) : type === 'right' ? (
         <>
           <ImageContainer>
-            <Overlay />
+            {/* <Overlay /> */}
             <Image
               src={imgUrl}
               alt={'lesson_img'}

@@ -490,9 +490,9 @@ const SectionTenth = styled.section`
   align-items: center;
 
   @media (max-width: 768px) {
-    height: 100%;
-    flex-direction: column;
+    height: 120%;
     padding: 2rem;
+    flex-direction: column;
     background-size: cover;
   }
 `;
