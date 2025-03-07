@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import ShopHeaderSection from '@/component/Shop_Component/ShopHeaderSection';
 import ShopMiddleSection from '@/component/Shop_Component/ShopMiddleSection';
 import EndSection from '@/component/Home_Component/EndSection';
 import ShopGoods from '@/component/Shop_Component/ShopGoods';
+
+import { useRecoilState } from 'recoil';
+import { modal } from '@/store/state';
+import useDisableScroll from '@/hook/useDisableScroll'; // 커스텀 훅 가져오기
 
 type shopDefaultArrType = {
   imgPath: string;
@@ -81,8 +85,13 @@ const shopDefaultArr: shopDefaultArrType[] = [
 ];
 
 const Shop = () => {
+  const [modalFlag] = useRecoilState(modal);
+
+  // Custom Hook 설정 - 스크롤 막기 기능 적용
+  useDisableScroll(modalFlag);
+
   return (
-    <MainContainer>
+    <MainContainer modalState={modalFlag}>
       {/* Header Section */}
       <ShopHeaderSection
         description={`소예키즈에서 제작해 제공되는 다양한 상품들을 확인하고 구매하는 시스템`}
@@ -119,15 +128,11 @@ const Shop = () => {
 
 export default Shop;
 
-type ImgPathType = {
-  imgpath?: string;
+type MainContainerType = {
+  modalState?: boolean;
 };
 
-type TagColorType = {
-  tagcolor?: string;
-};
-
-const MainContainer = styled.main`
+const MainContainer = styled.main<MainContainerType>`
   width: 100%;
   background-color: white;
 
@@ -135,6 +140,8 @@ const MainContainer = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  overflow: ${(props) => (props.modalState ? 'hidden' : 'auto')};
 `;
 
 const ShopListSection = styled.section`
@@ -171,109 +178,4 @@ const ShopContainer = styled.div`
     grid-template-columns: repeat(1, 1fr);
     grid-template-rows: 1fr;
   }
-`;
-
-const ShopGoodsContainer = styled.div`
-  width: 275px;
-  height: 334px;
-
-  position: relative;
-
-  border-radius: 12px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-
-  /* 반응형 크기 조정 */
-  @media (max-width: 768px) {
-  }
-`;
-
-const ShopGoodsImageContainer = styled.div<ImgPathType>`
-  width: 100%;
-  height: 50%;
-
-  background: url(${(props) => props.imgpath || '/half-moon.png'});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  border-radius: 12px 12px 0 0;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-
-  cursor: pointer;
-
-  /* 반응형 크기 조정 */
-  @media (max-width: 768px) {
-  }
-`;
-
-const ShopGoodsTextContainer = styled.div`
-  width: 100%;
-  height: 50%;
-  padding: 1.3rem;
-
-  border-radius: 0 0 12px 12px;
-  border: 2px solid #f4f5f6;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-
-  gap: 2rem;
-  cursor: pointer;
-
-  /* 반응형 크기 조정 */
-  @media (max-width: 768px) {
-  }
-`;
-
-const ShopGoodsTitle = styled.div`
-  font-family: Pretendard;
-  font-weight: 600;
-  font-size: 1rem;
-  color: black;
-
-  white-space: pre;
-
-  flex: 1;
-`;
-
-const ShopGoodsSubTitle = styled.div`
-  font-family: Pretendard;
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: black;
-
-  flex: 1;
-`;
-
-const ShopGoodsTag = styled.button<TagColorType>`
-  position: absolute;
-  top: 5%;
-  left: 5%;
-
-  background-color: ${(props) => props.tagcolor};
-
-  padding: 6px 12px;
-  border-radius: 16px;
-  border: none;
-
-  font-family: Pretendard;
-  font-weight: 400;
-  font-size: 1rem;
-  color: white;
 `;

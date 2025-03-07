@@ -89,6 +89,11 @@ body {
   font-size: 50px;
 }
 
+/* Swal2 default padding delete */
+.swal2-container {
+  padding: 0 !important;
+}
+
 /* button,
 a,
 div {

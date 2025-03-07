@@ -36,4 +36,10 @@ const agencyClass = atom({
   default: '',
 });
 
-export { log, avarta, uid, mobile, userClass, agencyClass };
+// 모달 상태
+const modal = atom({
+  key: 'modal',
+  default: false,
+});
+
+export { log, avarta, uid, mobile, userClass, agencyClass, modal };

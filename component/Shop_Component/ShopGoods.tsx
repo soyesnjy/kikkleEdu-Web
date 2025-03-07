@@ -3,6 +3,9 @@ import PortOne from '@portone/browser-sdk/v2'; // 포트원 브라우저 sdk
 import Swal from 'sweetalert2';
 import { handlePortOnePayCompleate } from '@/fetchAPI/shopAPI';
 
+import { useRecoilState } from 'recoil';
+import { modal } from '@/store/state';
+
 type ShopGoodsType = {
   imgPath: string;
   title: string;
@@ -11,6 +14,8 @@ type ShopGoodsType = {
 };
 
 const ShopGoods = ({ title, imgPath, tagColor, price }: ShopGoodsType) => {
+  const [_, setModalFlag] = useRecoilState(modal);
+
   // 랜덤 ID 생성 함수
   function randomId() {
     return [...crypto.getRandomValues(new Uint32Array(2))]
@@ -21,7 +26,8 @@ const ShopGoods = ({ title, imgPath, tagColor, price }: ShopGoodsType) => {
   // 포트원 실행 함수
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    // 모달 상태 ON
+    setModalFlag(true);
     let payment;
     const paymentId = randomId();
     try {
@@ -50,7 +56,10 @@ const ShopGoods = ({ title, imgPath, tagColor, price }: ShopGoodsType) => {
         icon: 'error',
         title: '결제 취소',
         showConfirmButton: true,
+        scrollbarPadding: false, // 자동 padding-right 방지
         // timer: 1000,
+      }).then(() => {
+        setModalFlag(false);
       });
       return;
     }
@@ -71,6 +80,9 @@ const ShopGoods = ({ title, imgPath, tagColor, price }: ShopGoodsType) => {
         text: 'Test Payment Success!',
         showConfirmButton: false,
         timer: 1500,
+        scrollbarPadding: false, // 자동 padding-right 방지
+      }).then(() => {
+        setModalFlag(false);
       });
     }
     // 결제 실패
@@ -80,6 +92,9 @@ const ShopGoods = ({ title, imgPath, tagColor, price }: ShopGoodsType) => {
         title: '결제 실패',
         showConfirmButton: false,
         timer: 1000,
+        scrollbarPadding: false, // 자동 padding-right 방지
+      }).then(() => {
+        setModalFlag(false);
       });
     }
   };
