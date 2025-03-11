@@ -214,6 +214,10 @@ export default function Home({ teacherDataArr }: HomeProps) {
       {/* 섹션10 */}
       <ScrollAnimation startingPoint="bottom" delay={0.2}>
         <SectionTenth>
+          <Background
+            imgPath={`/src/Home_IMG/Home_Section_10_Background_IMG.png`}
+            imgAlt={'Section10 Background IMG'}
+          />
           <TeacherCarousel teacherDataArr={teacherDataArr} />
         </SectionTenth>
       </ScrollAnimation>
@@ -477,22 +481,17 @@ const SectionFifthtoNineth = styled.section<SectionFifthtoNinethProps>`
 
 const SectionTenth = styled.section`
   width: 100vw;
-  height: 67vw;
-  background-color: white;
+  min-height: 70vw;
 
-  background-image: url('/src/Home_IMG/Home_Section_10_Background_IMG.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-color: white;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
   @media (max-width: 768px) {
-    height: 120%;
-    padding: 2rem;
+    height: 100vh;
+    margin-top: 2rem;
     flex-direction: column;
-    background-size: cover;
   }
 `;

@@ -12,7 +12,7 @@ import { AnimatePresence } from 'framer-motion';
 
 import { Analytics } from '@vercel/analytics/react';
 import { RecoilRoot } from 'recoil';
-import { useQuery, QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
 const queryClient = new QueryClient();
 
 import { appWithTranslation } from 'next-i18next';

@@ -7,7 +7,6 @@ import Link from 'next/link';
 
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
-import { loadingImg } from '@/component/Common_Component/LoadingBase64';
 
 // Teacher Data Type 지정
 type TeacherDataType = {
@@ -62,7 +61,12 @@ const TeacherCarousel = ({ teacherDataArr }: TeacherCarouselProps) => {
       </Description>
       <CarouselContainer>
         <Button onClick={handlePrevClick} dir={'pre'}>
-          <span className="material-symbols-outlined">arrow_back</span>
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: mobileFlag ? '1.7rem' : '2.2rem' }}
+          >
+            arrow_back
+          </span>
         </Button>
         <CarouselWrapper>
           <ProfilesContainer
@@ -89,8 +93,6 @@ const TeacherCarousel = ({ teacherDataArr }: TeacherCarouselProps) => {
                   style={{
                     borderRadius: '50%',
                   }}
-                  placeholder="blur"
-                  blurDataURL={loadingImg}
                 />
                 <ProfileName>{profile.name}</ProfileName>
                 <ProfileDescription>
@@ -104,7 +106,12 @@ const TeacherCarousel = ({ teacherDataArr }: TeacherCarouselProps) => {
           </ProfilesContainer>
         </CarouselWrapper>
         <Button onClick={handleNextClick} dir={'next'}>
-          <span className="material-symbols-outlined">arrow_forward</span>
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: mobileFlag ? '1.7rem' : '2.2rem' }}
+          >
+            arrow_forward
+          </span>
         </Button>
       </CarouselContainer>
       <Dots>
@@ -136,6 +143,12 @@ const Section = styled.section`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  z-index: 10;
+
+  @media (max-width: 728px) {
+    padding: 0rem;
+  }
 `;
 
 const Title = styled.h2`
@@ -154,7 +167,7 @@ const Description = styled.p`
   margin-bottom: 2rem;
 
   @media (max-width: 728px) {
-    width: 30%;
+    width: 28%;
   }
 `;
 
@@ -174,30 +187,36 @@ const CarouselContainer = styled.div`
 `;
 
 const CarouselWrapper = styled.div`
-  width: 1240px;
+  width: 1230px;
   overflow: hidden;
 `;
 
 const ProfilesContainer = styled.div`
   display: flex;
+
   transition: transform 0.5s ease-in-out;
 
-  min-height: 300px;
+  @media (max-width: 728px) {
+    width: 1060px;
+    padding-left: 1.7rem;
+  }
 `;
 
 const ProfileCard = styled.div<ActivePropertyCommonType>`
   width: 379px;
   min-height: 487px;
-  background-color: ${(props) => (props.active ? 'white' : 'transparent')};
-  border: ${(props) => (props.active ? 'none' : '3px solid white')};
-
-  border-radius: 50px;
   padding: 2rem;
   margin: 0 1rem;
+
+  background-color: ${(props) => (props.active ? 'white' : 'transparent')};
+  border: ${(props) => (props.active ? 'none' : '3px solid white')};
+  border-radius: 50px;
+
   flex-shrink: 0;
   text-align: left;
   box-shadow: ${(props) =>
     props.active ? '0px 4px 6px rgba(0, 0, 0, 0.1)' : 'none'};
+
   transition:
     background-color 0.3s ease-in-out,
     box-shadow 0.3s ease-in-out;
@@ -217,6 +236,9 @@ const ProfileCard = styled.div<ActivePropertyCommonType>`
   }
 
   @media (max-width: 728px) {
+    width: 320px;
+    min-height: 457px;
+
     padding: 2.5rem;
   }
 `;
@@ -253,15 +275,13 @@ const ReadMoreButton = styled.button`
 `;
 
 const Button = styled.button`
-  width: 36px;
-  height: 36px;
+  width: 2.2rem;
+  height: 2.2rem;
 
   background-color: white;
   border: none;
   border-radius: 100%;
   color: #a3a3a3;
-
-  padding: 0;
 
   display: flex;
   justify-content: center;
@@ -272,7 +292,7 @@ const Button = styled.button`
   }
 
   cursor: pointer;
-  z-index: 10;
+  z-index: 12;
 
   &:hover {
     background-color: #ff8500;
@@ -280,8 +300,10 @@ const Button = styled.button`
   }
 
   @media (max-width: 1080px) {
+    width: 1.8rem;
+    height: 1.8rem;
     position: absolute;
-    left: ${(props) => (props.dir === 'pre' ? '1.5%' : '28%')};
+    left: ${(props) => (props.dir === 'pre' ? '1.3%' : '29.3%')};
   }
 `;
 

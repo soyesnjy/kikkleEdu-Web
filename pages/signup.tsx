@@ -80,8 +80,8 @@ export default function Signup() {
   // const [fileA, setFileA] = useState(null);
 
   // Recoil 전역 변수
-  const [login, setLogin] = useRecoilState(log);
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const [login] = useRecoilState(log);
+  const [mobileFlag] = useRecoilState(mobile);
 
   const router = useRouter();
 
