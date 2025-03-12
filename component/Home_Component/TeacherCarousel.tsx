@@ -2,8 +2,7 @@
 import styled from 'styled-components';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import TeacherCard from './TeacherCard';
 
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
@@ -60,6 +59,7 @@ const TeacherCarousel = ({ teacherDataArr }: TeacherCarouselProps) => {
         가입강사들을 찾아봐주세요.`}
       </Description>
       <CarouselContainer>
+        {/* 이전 버튼 */}
         <Button onClick={handlePrevClick} dir={'pre'}>
           <span
             className="material-symbols-outlined"
@@ -68,6 +68,7 @@ const TeacherCarousel = ({ teacherDataArr }: TeacherCarouselProps) => {
             arrow_back
           </span>
         </Button>
+        {/* Teacher Carousel */}
         <CarouselWrapper>
           <ProfilesContainer
             style={{
@@ -77,34 +78,25 @@ const TeacherCarousel = ({ teacherDataArr }: TeacherCarouselProps) => {
               transition: 'transform 0.5s ease-in-out',
             }}
           >
-            {teacherDataArr.map((profile: TeacherDataType, index: number) => (
-              <ProfileCard
-                key={profile.id}
-                active={index === currentIndex ? 'true' : null}
-              >
-                <Image
-                  src={
-                    profile.profileImg ||
+            {teacherDataArr.map((profile: TeacherDataType, index: number) => {
+              const { id, profileImg, name, introduce } = profile;
+              return (
+                <TeacherCard
+                  key={`${profileImg}+${id}`}
+                  id={id}
+                  active={index === currentIndex ? 'true' : null}
+                  profileImg={
+                    profileImg ||
                     '/src/Teacher_IMG/Teacher_Pupu_Profile_IMG.png'
                   }
-                  alt="profile_IMG"
-                  width={103}
-                  height={103}
-                  style={{
-                    borderRadius: '50%',
-                  }}
+                  name={name}
+                  introduce={introduce}
                 />
-                <ProfileName>{profile.name}</ProfileName>
-                <ProfileDescription>
-                  {profile.introduce || `강사 ${profile.name}입니다!`}
-                </ProfileDescription>
-                <Link href={`/teacher/${profile.id}`}>
-                  <ReadMoreButton>{`Read More`}</ReadMoreButton>
-                </Link>
-              </ProfileCard>
-            ))}
+              );
+            })}
           </ProfilesContainer>
         </CarouselWrapper>
+        {/* 다음 버튼 */}
         <Button onClick={handleNextClick} dir={'next'}>
           <span
             className="material-symbols-outlined"
@@ -199,78 +191,6 @@ const ProfilesContainer = styled.div`
   @media (max-width: 728px) {
     width: 1060px;
     padding-left: 1.7rem;
-  }
-`;
-
-const ProfileCard = styled.div<ActivePropertyCommonType>`
-  width: 379px;
-  min-height: 487px;
-  padding: 2rem;
-  margin: 0 1rem;
-
-  background-color: ${(props) => (props.active ? 'white' : 'transparent')};
-  border: ${(props) => (props.active ? 'none' : '3px solid white')};
-  border-radius: 50px;
-
-  flex-shrink: 0;
-  text-align: left;
-  box-shadow: ${(props) =>
-    props.active ? '0px 4px 6px rgba(0, 0, 0, 0.1)' : 'none'};
-
-  transition:
-    background-color 0.3s ease-in-out,
-    box-shadow 0.3s ease-in-out;
-
-  user-select: none;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  gap: 1rem;
-
-  h3,
-  p {
-    color: ${(props) => (props.active ? 'black' : 'white')};
-  }
-
-  @media (max-width: 728px) {
-    width: 320px;
-    min-height: 457px;
-
-    padding: 2.5rem;
-  }
-`;
-
-const ProfileName = styled.h3`
-  font-size: 1.2rem;
-  font-weight: bold;
-  font-family: Nunito;
-  margin-bottom: 0.5rem;
-`;
-
-const ProfileDescription = styled.p`
-  min-height: 6rem;
-  font-size: 1rem;
-  font-family: Pretendard;
-  color: #555;
-  margin-bottom: 1.5rem;
-`;
-
-const ReadMoreButton = styled.button`
-  background-color: #ff8500;
-  color: white;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 10px;
-  font-size: 14px;
-  font-family: Pretendard;
-
-  cursor: pointer;
-
-  &:hover {
-    background-color: darkorange;
   }
 `;
 

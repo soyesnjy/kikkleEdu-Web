@@ -18,6 +18,7 @@ const Background = ({ imgPath, imgAlt }: BackgroundProps) => {
       style={{
         objectFit: 'cover',
       }}
+      priority={true}
     />
   );
 };
