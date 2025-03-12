@@ -62,8 +62,8 @@ const youtubeUrl = '//www.youtube.com/embed/Cb0jnKtZP4o';
 const agencyType = '초등학교';
 
 const ElementPage = ({ teacherDataArr, classDataArr }) => {
-  const [agency, setAgency] = useRecoilState(agencyClass);
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const [agency] = useRecoilState(agencyClass);
+  const [mobileFlag] = useRecoilState(mobile);
   // const [classDataArr, setClassDataArr] = useState([]);
   // const [teacherDataArr, setTeacherDataArr] = useState([]);
   const router = useRouter();
