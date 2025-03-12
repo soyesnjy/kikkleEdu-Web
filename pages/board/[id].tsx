@@ -1,8 +1,11 @@
+import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'; // Next.js의 useRouter 사용
-import styled from 'styled-components';
+
 import { useRecoilState } from 'recoil';
 import { agencyClass } from '../../store/state';
+import { useQuery } from 'react-query';
+
 import {
   handleBoardGet,
   handleBoardUpdate,
@@ -22,10 +25,19 @@ type BoardDataType = {
   authorIdx?: number;
 };
 
+const dummyData = {
+  title: 'dummy Title',
+  author: 'dummy Author',
+  date: 'dummy Date',
+  content: 'dummy Content',
+  isPrivate: false,
+  authorIdx: -1,
+};
+
 const BoardDetail = () => {
   const router = useRouter();
   const { id } = router.query; // URL의 동적 파라미터를 가져옴
-  const [post, setPost] = useState<BoardDataType>();
+  const [post, setPost] = useState<BoardDataType>(dummyData);
   const [agencyType] = useRecoilState(agencyClass);
 
   const [updateFlag, setUpdateFlag] = useState(false);
@@ -106,22 +118,42 @@ const BoardDetail = () => {
     }
   };
 
-  useEffect(() => {
-    if (id) {
-      handleBoardGet({ boardIdx: id })
-        .then((res) => res.data)
-        .then((data) => {
-          setPost(data.data[0]);
-          setTitle(data.data[0].title);
-          setContent(data.data[0].content);
-        });
+  // React Query - 서버에서 데이터를 가져오는 API 함수
+  const reactQueryFetchBoard = async ({ queryKey }) => {
+    const [, id] = queryKey;
+    const response = await handleBoardGet({
+      boardIdx: id,
+    });
+    return response.data;
+  };
+
+  // React Query 데이터 가져오기
+  const { data, isLoading, error } = useQuery(
+    ['boardDetail', id], // Query Key
+    reactQueryFetchBoard, // Query Function
+    {
+      staleTime: 5000, // 5초 동안 신선한 상태 유지
+      cacheTime: 10000, // 10초 동안 캐시 유지
+      keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
     }
-  }, [id]);
+  );
+
+  // 가져온 서버 데이터를 상태에 반영
+  useEffect(() => {
+    if (data) {
+      setPost(data.data[0]);
+      setTitle(data.data[0].title);
+      setContent(data.data[0].content);
+    }
+  }, [data]);
 
   return (
     <MasterContainer>
       {/* 헤더 섹션 */}
       <BoardHeaderSection />
+      {/* Loading && Error Handling */}
+      {isLoading ? <div>Loading...</div> : null}
+      {error ? <div>Error...</div> : null}
       {/* 디테일 섹션 */}
       {updateFlag ? (
         <DetailContainer>

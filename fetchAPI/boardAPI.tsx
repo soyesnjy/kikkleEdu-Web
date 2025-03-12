@@ -8,6 +8,7 @@ type BoardDataType = {
   content: string;
   isPrivate?: boolean;
   authorIdx?: number;
+  number?: string;
 };
 
 // handleSignupCreate API 반환 데이터 타입 지정

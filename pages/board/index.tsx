@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { log, agencyClass } from '@/store/state';
 
+import { useQuery } from 'react-query';
 import { handleBoardGet } from '@/fetchAPI/boardAPI';
 
 import { useRouter } from 'next/router';
@@ -15,66 +16,79 @@ import BoardHeaderSection from '@/component/Board_Component/BoardHeaderSection';
 import BoardItem from '@/component/Board_Component/BoardItem';
 import Pagination from '@/component/Common_Component/Pagination';
 
-const dummyPosts = [
-  {
-    number: -1,
-    title: 'Network Error 발생',
-    author: '',
-    date: '1999-00-00',
-    isNotice: true,
-    isPrivate: false,
-  },
-];
+// Teacher Data Type
+type BoardDataType = {
+  number?: string;
+};
 
 export default function BoardList() {
   const [login] = useRecoilState(log);
   const [agencyType] = useRecoilState(agencyClass);
 
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<BoardDataType[]>([]);
   const [page, setPage] = useState(1);
   const [lastPageNum, setLastPageNum] = useState(1);
 
   const router = useRouter();
 
-  const handleItemClick = (id) => {
+  const handleItemClick = (id: string) => {
     router.push(`/board/${id}`); // 게시글 ID로 이동
   };
 
   // 로그인 권한이 없는 상태에서의 접근 시 login 페이지로 redirect
   useEffect(() => {
-    // 로그인 필요
     const loginSession = JSON.parse(localStorage.getItem('log'));
     if (!loginSession) {
       alert('로그인이 필요한 서비스입니다!');
       router.replace('/login');
       return;
     }
+  }, [login]);
 
-    handleBoardGet({ pageNum: page })
-      .then((res) => res.data)
-      .then((data) => {
-        setPosts(data.data);
-        setLastPageNum(data.lastPageNum);
-      })
-      .catch((err) => {
-        console.log(err);
-        setPosts(dummyPosts);
-      });
-  }, [login, page]);
+  // React Query - 서버에서 데이터를 가져오는 API 함수
+  const reactQueryFetchBoard = async ({ queryKey }) => {
+    const [, page] = queryKey;
+    const response = await handleBoardGet({
+      pageNum: page,
+    });
+    return response.data;
+  };
+
+  // React Query 데이터 가져오기
+  const { data, isLoading, error } = useQuery(
+    ['board', page], // Query Key
+    reactQueryFetchBoard, // Query Function
+    {
+      staleTime: 5000, // 5초 동안 신선한 상태 유지
+      cacheTime: 10000, // 10초 동안 캐시 유지
+      keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
+    }
+  );
+
+  // 가져온 서버 데이터를 상태에 반영
+  useEffect(() => {
+    if (data) {
+      setPosts(data.data);
+      setLastPageNum(data.lastPageNum);
+    }
+  }, [data]);
 
   return (
     <MainContainer>
       {/* 헤더 섹션 */}
       <BoardHeaderSection />
+      {/* Loading && Error Handling */}
+      {isLoading ? <div>Loading...</div> : null}
+      {error ? <div>Error...</div> : null}
       {/* 게시판 */}
       <BoardContainer>
         <Table>
           <thead>
             <TableRow>
-              <TableHeader>번호</TableHeader>
-              <TableHeader>제목</TableHeader>
-              <TableHeader>작성자</TableHeader>
-              <TableHeader>작성일</TableHeader>
+              <TableHeader>{`번호`}</TableHeader>
+              <TableHeader>{`제목`}</TableHeader>
+              <TableHeader>{`작성자`}</TableHeader>
+              <TableHeader>{`작성일`}</TableHeader>
             </TableRow>
           </thead>
           <tbody>
