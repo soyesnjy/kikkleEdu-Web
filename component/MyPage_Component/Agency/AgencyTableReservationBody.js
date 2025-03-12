@@ -82,6 +82,11 @@ const PayButton = styled.button`
   color: white;
 
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
 `;
 
 export default AgencyTableReservationBody;
