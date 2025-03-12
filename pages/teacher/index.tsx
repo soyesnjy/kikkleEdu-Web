@@ -5,9 +5,9 @@ import { useEffect, useState } from 'react';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { useRouter } from 'next/router';
 
-import EndSection from '@/component/Home_Component/EndSection';
 import TeacherSearchBar from '@/component/Home_Component/TeacherSearchBar';
 import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
+import EndSection from '@/component/Home_Component/EndSection';
 
 const TeacherListPage = () => {
   const [teacherClass, setTeacherClass] = useState('');

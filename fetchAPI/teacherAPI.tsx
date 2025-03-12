@@ -6,6 +6,11 @@ type TeacherDataType = {
   kk_teacher_name: string;
   kk_teacher_introduction: string;
   kk_teacher_profileImg_path: string;
+  kk_teacher_education: string;
+  kk_teacher_history: string;
+  kk_teacher_location: string;
+  kk_teacher_dayofweek: string;
+  kk_teacher_class_titles: string;
 };
 
 // handleSignupCreate API 반환 데이터 타입 지정

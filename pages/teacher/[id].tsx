@@ -24,6 +24,7 @@ const dummyData = {
   kk_teacher_location: '',
   kk_teacher_dayofweek: '',
   kk_teacher_class_titles: '',
+  kk_teacher_profileImg_path: '',
 };
 
 // Default Profile Img return Method
@@ -73,16 +74,14 @@ const ramdomDefaultImg = () => {
 
 const TeacherDetailPage = () => {
   const router = useRouter();
-  // CSR
   const { id } = router.query; // URL의 동적 파라미터를 가져옴
   const [mobileFlag] = useRecoilState(mobile);
   const [login] = useRecoilState(log);
 
-  const [data, setData] = useState({});
+  const [data, setData] = useState(dummyData);
   const [teacherDataArr, setTeacherDataArr] = useState([]);
   const [profileImgSrc, setProfileImgSrc] = useState('');
 
-  // CSR
   useEffect(() => {
     if (localStorage.getItem('teacherDataArr')) {
       setTeacherDataArr([
@@ -125,34 +124,34 @@ const TeacherDetailPage = () => {
     }
   }, [data]);
 
-  // const handleGoBack = () => {
-  //   router.push('/teacher'); // 강사 List 페이지로 이동
-  // };
-
   return (
     <MainContainer>
       {/* 헤더 섹션 */}
       <HeaderSection>
         <HeaderContent>
-          <Title>Kids Class edu</Title>
-          <Subtitle>강사</Subtitle>
+          <Title>{`Kids Class edu`}</Title>
+          <Subtitle>{`강사`}</Subtitle>
           <HeaderIntroDiv>
-            소예키즈 소개 - <GreenColorSpan>강사</GreenColorSpan>
+            {`소예키즈 소개 - `}
+            <GreenColorSpan>{`강사`}</GreenColorSpan>
           </HeaderIntroDiv>
         </HeaderContent>
       </HeaderSection>
       <MiddleSection>
         <MiddleContainer>
-          <MiddleTitle>KK EDU - ballet</MiddleTitle>
+          <MiddleTitle>{`KK EDU - ballet`}</MiddleTitle>
           <MiddleTextContainer>
-            <MiddleSubtitle>강사 - {data?.kk_teacher_name}</MiddleSubtitle>
+            <MiddleSubtitle>
+              {`강사 - `}
+              {data?.kk_teacher_name}
+            </MiddleSubtitle>
             <MiddleDescription>
               {data?.kk_teacher_introduction
                 ? data?.kk_teacher_introduction
                 : `강사 ${data?.kk_teacher_name}입니다!`}
             </MiddleDescription>
           </MiddleTextContainer>
-
+          {/* Mobile */}
           {mobileFlag && (
             <Image
               key={profileImgSrc}
@@ -165,38 +164,34 @@ const TeacherDetailPage = () => {
                 height: 'auto',
                 borderRadius: '24px',
               }}
-              placeholder="blur"
-              blurDataURL={`/loading.svg`}
+              priority={true}
             />
           )}
-
           <MiddleTextContainer>
-            <MiddleSubtitleSmall>경력 및 학력</MiddleSubtitleSmall>
+            <MiddleSubtitleSmall>{`경력 및 학력`}</MiddleSubtitleSmall>
             <MiddleDescription>
               {data?.kk_teacher_education}
               <br />
               {data?.kk_teacher_history}
             </MiddleDescription>
           </MiddleTextContainer>
-
           <MiddleTextContainer>
-            <MiddleSubtitleSmall>수업 가능 지역</MiddleSubtitleSmall>
+            <MiddleSubtitleSmall>{`수업 가능 지역`}</MiddleSubtitleSmall>
             <MiddleDescription>{data?.kk_teacher_location}</MiddleDescription>
           </MiddleTextContainer>
-
           <MiddleTextContainer>
-            <MiddleSubtitleSmall>수업 가능 일정</MiddleSubtitleSmall>
+            <MiddleSubtitleSmall>{`수업 가능 일정`}</MiddleSubtitleSmall>
             <MiddleDescription>{data?.kk_teacher_dayofweek}</MiddleDescription>
           </MiddleTextContainer>
-
           <MiddleTextContainer>
-            <MiddleSubtitleSmall>가능 수업</MiddleSubtitleSmall>
+            <MiddleSubtitleSmall>{`가능 수업`}</MiddleSubtitleSmall>
             <MiddleDescription>
               {data?.kk_teacher_class_titles}
             </MiddleDescription>
           </MiddleTextContainer>
         </MiddleContainer>
 
+        {/* Web */}
         {!mobileFlag && (
           <MiddleProfileImgContainer>
             <Image
@@ -219,7 +214,7 @@ const TeacherDetailPage = () => {
       {/* localStorage 강사 데이터가 있는 경우 */}
       {teacherDataArr.length > 0 && (
         <TeacherListSection>
-          <MiddleSubtitleSmall>강사 리스트</MiddleSubtitleSmall>
+          <MiddleSubtitleSmall>{`강사 리스트`}</MiddleSubtitleSmall>
           <ProgramTeacherContainer
             teacherDataArr={teacherDataArr}
             mobileFlag={mobileFlag}
@@ -354,18 +349,15 @@ const GreenColorSpan = styled.span`
 `;
 
 const MiddleSection = styled.section`
-  width: 80vw;
+  width: 75%;
   min-height: 100vh;
   position: relative;
 
-  padding: 0 4rem 0 4rem;
   border-radius: 24px;
 
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-
-  gap: 3rem;
 
   @media (max-width: 768px) {
     width: 100vw;
@@ -378,6 +370,7 @@ const MiddleSection = styled.section`
 
 const MiddleContainer = styled.div`
   border-radius: 24px;
+
   height: 100%;
   position: relative;
 
@@ -390,9 +383,9 @@ const MiddleContainer = styled.div`
 `;
 
 const MiddleTextContainer = styled.section`
-  border-radius: 24px;
+  max-width: 700px;
   height: 100%;
-  position: relative;
+  border-radius: 24px;
 
   display: flex;
   flex-direction: column;
@@ -400,6 +393,8 @@ const MiddleTextContainer = styled.section`
   align-items: flex-start;
 
   gap: 0.6rem;
+
+  position: relative;
 `;
 
 const MiddleTitle = styled.h1`
@@ -424,6 +419,7 @@ const MiddleSubtitleSmall = styled.h2`
 `;
 
 const MiddleDescription = styled.p`
+  max-width: 100%;
   font-size: 1.1rem;
   font-family: Pretendard;
   font-weight: 400;
@@ -432,26 +428,25 @@ const MiddleDescription = styled.p`
   margin-top: 0.5rem;
 
   line-height: 1.5;
+
+  @media (max-width: 768px) {
+  }
 `;
 
 const MiddleProfileImgContainer = styled.div`
+  max-width: 494px;
+  max-height: 464px;
+
   border-radius: 24px;
-  width: 496px;
-  height: 464px;
-
-  position: relative;
-
-  /* background-image: url('/src/Teacher_IMG/Teacher_Dummy_Profile_IMG.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat; */
 
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
 
   gap: 3rem;
+
+  position: relative;
 `;
 
 const TeacherListSection = styled.div`
