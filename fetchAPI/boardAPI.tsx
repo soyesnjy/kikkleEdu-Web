@@ -1,8 +1,30 @@
 import axios from 'axios';
 
+// Teacher Data Type
+type BoardDataType = {
+  title: string;
+  author: string;
+  date: string;
+  content: string;
+  isPrivate?: boolean;
+  authorIdx?: number;
+};
+
+// handleSignupCreate API 반환 데이터 타입 지정
+type BoardGetResponseDataType = {
+  message?: string;
+  status: number;
+  data?: {
+    message: string;
+    data: BoardDataType[];
+    lastPageNum: any;
+  };
+};
+
 // READ
-// 2024.12.03: 구조 분해 할당 로직으로 변경
-export const handleBoardGet = async (query) => {
+export const handleBoardGet = async (
+  query
+): Promise<BoardGetResponseDataType> => {
   const { boardIdx, pageNum } = query;
   try {
     const response = await axios.get(

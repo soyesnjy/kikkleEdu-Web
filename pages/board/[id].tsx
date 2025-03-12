@@ -10,34 +10,27 @@ import {
 } from '@/fetchAPI/boardAPI';
 import Swal from 'sweetalert2';
 
-const dummyData = {
-  title: 'dummy Title',
-  author: 'dummy Author',
-  date: 'dummy Date',
-  content: 'dummy Content',
+import BoardHeaderSection from '@/component/Board_Component/BoardHeaderSection';
+
+// Teacher Data Type
+type BoardDataType = {
+  title: string;
+  author: string;
+  date: string;
+  content: string;
+  isPrivate?: boolean;
+  authorIdx?: number;
 };
 
 const BoardDetail = () => {
   const router = useRouter();
   const { id } = router.query; // URL의 동적 파라미터를 가져옴
-  const [post, setPost] = useState(dummyData);
-  const [agencyType, setAgencyType] = useRecoilState(agencyClass);
+  const [post, setPost] = useState<BoardDataType>();
+  const [agencyType] = useRecoilState(agencyClass);
 
   const [updateFlag, setUpdateFlag] = useState(false);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-
-  useEffect(() => {
-    if (id) {
-      handleBoardGet({ boardIdx: id })
-        .then((res) => res.data)
-        .then((data) => {
-          setPost(data.data[0]);
-          setTitle(data.data[0].title);
-          setContent(data.data[0].content);
-        });
-    }
-  }, [id]);
 
   const handleGoBack = () => {
     router.push('/board'); // 목록 페이지로 이동
@@ -113,21 +106,22 @@ const BoardDetail = () => {
     }
   };
 
+  useEffect(() => {
+    if (id) {
+      handleBoardGet({ boardIdx: id })
+        .then((res) => res.data)
+        .then((data) => {
+          setPost(data.data[0]);
+          setTitle(data.data[0].title);
+          setContent(data.data[0].content);
+        });
+    }
+  }, [id]);
+
   return (
     <MasterContainer>
       {/* 헤더 섹션 */}
-      <HeaderSection>
-        <HeaderContent>
-          <Title>Kids Class edu</Title>
-          <Subtitle>문의 하기</Subtitle>
-          <Description>
-            소예키즈에서 제공하는 다양한 공지와 질문을 편하게 적어주세요
-          </Description>
-          <HeaderIntroDiv>
-            소예키즈 소개 - <GreenColorSpan>게시판</GreenColorSpan>
-          </HeaderIntroDiv>
-        </HeaderContent>
-      </HeaderSection>
+      <BoardHeaderSection />
       {/* 디테일 섹션 */}
       {updateFlag ? (
         <DetailContainer>
@@ -246,41 +240,6 @@ const MasterContainer = styled.div`
   min-height: 100vh;
 `;
 
-const HeaderSection = styled.section`
-  width: 80vw;
-  min-height: 21vw;
-  position: relative;
-
-  background-image: url('/src/Introduce_IMG/Introduce_Header_Background_IMG.png');
-  background-size: contain;
-  background-position: center;
-  /* background-repeat: no-repeat; */
-  background-color: #f4eee5;
-
-  padding: 0 4rem 0 4rem;
-  border-radius: 24px;
-
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-
-  gap: 1rem;
-
-  @media (max-width: 768px) {
-    width: 90vw;
-    min-height: 300px;
-    padding: 0 2rem;
-  }
-`;
-
-const HeaderContent = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.5rem;
-`;
-
 const Title = styled.h1`
   color: #333;
 
@@ -293,56 +252,13 @@ const Title = styled.h1`
   }
 `;
 
-const Subtitle = styled.h2`
-  color: #333;
-
-  font-size: 2.2rem;
-  font-family: Pretendard;
-  font-weight: 700;
-`;
-
-const Description = styled.p`
-  color: white;
-
-  font-size: 1.1rem;
-  font-family: Pretendard;
-  font-weight: 400;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const HeaderIntroDiv = styled.div`
-  width: fit-content;
-  padding: 1rem 1.5rem;
-
-  position: absolute;
-  bottom: 0;
-  right: 3rem;
-
-  background-color: white;
-  border-radius: 25px 25px 0 0;
-
-  font-size: 1.1rem;
-  font-family: Pretendard;
-  font-weight: 600;
-`;
-
-const GreenColorSpan = styled.span`
-  color: #45b26b;
-  font-size: 1.1rem;
-  font-family: Pretendard;
-  font-weight: 600;
-`;
-
 const DetailContainer = styled.div`
-  width: 80%;
+  width: 80vw;
   margin: 0 auto;
   padding: 2rem 0;
 
   @media (max-width: 768px) {
-    width: 95%;
+    width: 90vw;
     padding: 1rem 0;
   }
 `;
