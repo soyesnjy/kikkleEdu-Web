@@ -7,6 +7,7 @@ import { mobile } from '@/store/state';
 
 import { handleClassGet } from '@/fetchAPI/classAPI';
 
+import TeacherSearchBar from '@/component/Home_Component/TeacherSearchBar';
 import EndSection from '@/component/Home_Component/EndSection';
 
 const classDefaultArr = [
@@ -55,7 +56,7 @@ const classDefaultArr = [
 const ContentPage = () => {
   const [classTag, setClassTag] = useState('ballet');
   const [classDataArr, serClassDataArr] = useState([]);
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const [mobileFlag] = useRecoilState(mobile);
 
   const router = useRouter();
 
@@ -83,82 +84,33 @@ const ContentPage = () => {
       {/* 헤더 섹션 */}
       <HeaderSection>
         <HeaderContent>
-          <Title>Kids Class edu</Title>
-          <Subtitle>콘텐츠 소개</Subtitle>
+          <Title>{`Kids Class edu`}</Title>
+          <Subtitle>{`콘텐츠 소개`}</Subtitle>
           <Description>
             {`소예키즈에서 연구개발한 다양한 예체능
 교육프로그램을 연령대별로 제공하고 있으며 기관이 원하는
 프로그램을 선택 & 제공하고 있습니다.`}
           </Description>
           <HeaderIntroDiv>
-            소예키즈 소개 - <GreenColorSpan>콘텐츠 소개</GreenColorSpan>
+            {`소예키즈 소개 - `}
+            <GreenColorSpan>{`콘텐츠 소개`}</GreenColorSpan>
           </HeaderIntroDiv>
         </HeaderContent>
       </HeaderSection>
       {/* 미들 섹션 */}
       <MiddleSection>
-        {/* <Image
-          src="/src/Introduce_IMG/Introduce_Middle_Icon_IMG.png"
-          alt="Icon"
-          width={178}
-          height={213}
-          style={{ maxWidth: '100%', height: 'auto' }}
-        /> */}
         <MiddleContainer>
-          <MiddleTitle>KK EDU - Contents</MiddleTitle>
-          <MiddleSubtitle>콘텐츠 소개</MiddleSubtitle>
+          <MiddleTitle>{`KK EDU - Contents`}</MiddleTitle>
+          <MiddleSubtitle>{`콘텐츠 소개`}</MiddleSubtitle>
         </MiddleContainer>
       </MiddleSection>
       {/* 수업 프로그램 섹션 */}
       <MiddleSectionThird>
         {/* 수업 카테고리 */}
-        <SearchContainer>
-          <TagButton
-            selected={classTag === 'ballet'}
-            value="ballet"
-            onClick={(e) => {
-              setClassTag(e.target.value);
-            }}
-          >
-            발레
-          </TagButton>
-          <TagButton
-            selected={classTag === 'dance'}
-            value="dance"
-            onClick={(e) => {
-              setClassTag(e.target.value);
-            }}
-          >
-            댄스
-          </TagButton>
-          <TagButton
-            selected={classTag === 'yoga'}
-            value="yoga"
-            onClick={(e) => {
-              setClassTag(e.target.value);
-            }}
-          >
-            요가
-          </TagButton>
-          <TagButton
-            selected={classTag === 'pila'}
-            value="pila"
-            onClick={(e) => {
-              setClassTag(e.target.value);
-            }}
-          >
-            필라테스
-          </TagButton>
-          <TagButton
-            selected={classTag === 'art'}
-            value="art"
-            onClick={(e) => {
-              setClassTag(e.target.value);
-            }}
-          >
-            미술
-          </TagButton>
-        </SearchContainer>
+        <TeacherSearchBar
+          teacherClass={classTag}
+          setTeacherClass={setClassTag}
+        />
         <ProgramContainer>
           {classDataArr.map((el, index) => {
             const { title, imgPath, routePath } = el;
@@ -380,54 +332,6 @@ const MiddleSectionThird = styled.section`
   }
 `;
 
-const SearchContainer = styled.section`
-  width: 60%;
-  border-radius: 24px;
-
-  display: flex;
-  justify-content: flex-end;
-
-  gap: 1rem;
-
-  @media (max-width: 768px) {
-    width: 80%;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.3rem;
-  }
-`;
-
-const TagButton = styled.button`
-  background-color: ${(props) =>
-    props.selected ? '#378E56' : 'rgba(255, 255, 255, 0.01)'};
-  border: 1px solid #378e56;
-  border-radius: 24px;
-
-  padding: 0.7rem 2rem;
-
-  color: ${(props) => (props.selected ? 'white' : 'black')};
-  text-align: center;
-  text-decoration: none;
-
-  font-size: 1rem;
-  font-weight: 600;
-  font-family: Pretendard;
-
-  cursor: pointer;
-  &:hover {
-    background-color: #378e56;
-    color: white;
-  }
-  transition: 0.2s;
-
-  @media (max-width: 768px) {
-    min-width: 70px;
-    font-size: 1rem;
-    padding: 1rem;
-    margin-bottom: 0;
-  }
-`;
-
 const ProgramContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -443,7 +347,12 @@ const ProgramContainer = styled.div`
   }
 `;
 
-const ProgramContentContainer = styled.div`
+type ProgramContentType = {
+  selected?: boolean;
+  imgPath?: string;
+};
+
+const ProgramContentContainer = styled.div<ProgramContentType>`
   width: 280px;
   height: 280px;
 

@@ -1,9 +1,27 @@
 import axios from 'axios';
 
+// Teacher Data Type
+type TeacherDataType = {
+  kk_teacher_idx: number;
+  kk_teacher_name: string;
+  kk_teacher_introduction: string;
+  kk_teacher_profileImg_path: string;
+};
+
+// handleSignupCreate API 반환 데이터 타입 지정
+type TeacherGetResponseDataType = {
+  message?: string;
+  status: number;
+  data?: {
+    message: string;
+    data: TeacherDataType[];
+  };
+};
+
 // READ
-// 2024.08.22: 쿼리 삽입 기능 추가
-// 2024.12.03: 구조 분해 할당 로직으로 변경
-export const handleTeacherGet = async (query) => {
+export const handleTeacherGet = async (
+  query
+): Promise<TeacherGetResponseDataType> => {
   const {
     main,
     classType,

@@ -5,8 +5,8 @@ import React from 'react';
 // End Section Type 지정
 type EndSectionType = {
   Title: string;
-  btnTitle: string;
-  routePath: string;
+  btnTitle?: string;
+  routePath?: string;
 };
 
 export default function EndSection({
