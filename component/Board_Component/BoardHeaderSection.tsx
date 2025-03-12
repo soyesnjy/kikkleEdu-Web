@@ -5,7 +5,7 @@ const BoardHeaderSection = () => {
     <HeaderSection>
       <HeaderContent>
         <Title>{`Kids Class edu`}</Title>
-        <Subtitle>{`문의 하기`}</Subtitle>
+        <Subtitle>{`공지 사항`}</Subtitle>
         <HeaderIntroDiv>
           {`소예키즈 소개 - `}
           <GreenColorSpan>{`게시판`}</GreenColorSpan>
