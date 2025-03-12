@@ -419,6 +419,7 @@ const SectionFirst = styled.section`
 
 const FirstMobileContainer = styled.div`
   margin: 3rem 0;
+  z-index: 10;
   @media (max-width: 768px) {
     background-color: white;
   }
