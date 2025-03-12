@@ -129,7 +129,7 @@ const MyPage = () => {
     } else if (activeTab === 'privacy') {
       handleTeacherGet({ teacherIdx: localStorage.getItem('userIdx') })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status === 200) return res.data;
           alert(res.message);
           if (res.status === 401) loginSessionClear();
