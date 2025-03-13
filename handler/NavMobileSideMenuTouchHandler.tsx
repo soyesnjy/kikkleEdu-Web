@@ -5,30 +5,40 @@ import { isNavOpenState } from '@/store/state';
 const NavMobileSideMenuTouchHandler = () => {
   const [isOpen, setIsOpen] = useRecoilState(isNavOpenState);
   const [startX, setStartX] = useState<number | null>(null);
+  const [startY, setStartY] = useState<number | null>(null);
 
   useEffect(() => {
     const handleTouchStart = (e: TouchEvent) => {
       setStartX(e.touches[0].clientX);
+      setStartY(e.touches[0].clientY);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (startX === null) return;
+      if (startX === null || startY === null) return;
       const touchX = e.touches[0].clientX;
-      const diffX = touchX - startX;
+      const touchY = e.touches[0].clientY;
 
-      if (diffX > 50 && isOpen) {
-        // ⬅ 좌 → 우 드래그 시 메뉴 닫기
-        setIsOpen(false);
-        setStartX(null);
-      } else if (diffX < -50 && !isOpen) {
-        // ➡ 우 → 좌 드래그 시 메뉴 열기
-        setIsOpen(true);
-        setStartX(null);
+      const diffX = touchX - startX;
+      const diffY = touchY - startY;
+
+      if (Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX > 80 && isOpen) {
+          // ⬅ 좌 → 우 드래그 (닫기)
+          setIsOpen(false);
+          setStartX(null);
+          setStartY(null);
+        } else if (diffX < -80 && !isOpen) {
+          // ➡ 우 → 좌 드래그 (열기)
+          setIsOpen(true);
+          setStartX(null);
+          setStartY(null);
+        }
       }
     };
 
     const handleTouchEnd = () => {
       setStartX(null);
+      setStartY(null);
     };
 
     document.addEventListener('touchstart', handleTouchStart);
