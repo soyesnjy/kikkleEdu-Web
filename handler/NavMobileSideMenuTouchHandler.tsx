@@ -23,12 +23,12 @@ const NavMobileSideMenuTouchHandler = () => {
 
       if (Math.abs(diffX) > Math.abs(diffY)) {
         if (diffX > 80 && isOpen) {
-          // ⬅ 좌 → 우 드래그 (닫기)
+          // 좌 → 우 드래그 (Close)
           setIsOpen(false);
           setStartX(null);
           setStartY(null);
         } else if (diffX < -80 && !isOpen) {
-          // ➡ 우 → 좌 드래그 (열기)
+          // 우 → 좌 드래그 (Open)
           setIsOpen(true);
           setStartX(null);
           setStartY(null);

@@ -5,7 +5,7 @@ import Image from 'next/image';
 const ReservationTeacherProfileCard = ({
   id,
   name,
-  introduce,
+  // introduce,
   imgUrl,
   setSelectedTeacher,
   selectedTeacher,
@@ -33,7 +33,7 @@ const ReservationTeacherProfileCard = ({
 
       <Content>
         <Name>{name}</Name>
-        <Message>{introduce || `강사 ${name}입니다.`}</Message>
+        {/* <Message>{introduce || `강사 ${name}입니다.`}</Message> */}
         <TeacherButton
           value={id}
           selected={selectedTeacher.includes(id)}
@@ -121,16 +121,16 @@ const Name = styled.h2`
   }
 `;
 
-const Message = styled.p`
-  font-family: Pretendard;
-  font-weight: 600;
-  font-size: 12px;
-  color: white;
+// const Message = styled.p`
+//   font-family: Pretendard;
+//   font-weight: 600;
+//   font-size: 12px;
+//   color: white;
 
-  @media (max-width: 768px) {
-    font-size: 10px;
-  }
-`;
+//   @media (max-width: 768px) {
+//     font-size: 10px;
+//   }
+// `;
 
 const TeacherButton = styled.button`
   background-color: white;

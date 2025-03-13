@@ -100,7 +100,7 @@ export default function Reservation() {
   // const maxlengthStd = 15;
   // const regex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 및 한글 자모를 포함하는 정규 표현식
 
-  // 발레 수업 DB 조회
+  // 수업 DB 조회
   useEffect(() => {
     if (!possClassArr.length) {
       // Class Read API 호출 메서드
@@ -157,21 +157,6 @@ export default function Reservation() {
     }
     // 페이지별 NavText 변경
     setNavText(pageTitleArr[pageNumber]);
-
-    // switch (pageNumber) {
-    //   case 0:
-    //     setNavText(pageTitleArr[0]);
-    //     break;
-    //   case 1:
-    //     setNavText('날짜/시간 선택하기');
-    //     break;
-    //   case 2:
-    //     setNavText('강사 선택하기');
-    //     break;
-    //   case 3:
-    //     setNavText('예약 확인하기');
-    //     break;
-    // }
 
     // 화면 최상단으로 올리기
     if (!window.scrollY) return;
@@ -361,17 +346,6 @@ export default function Reservation() {
                           onClick={(e) => {
                             e.preventDefault();
                             setSelectedClass(Number(e.target.value));
-                            // // 선택 취소
-                            // if (possClass.includes(id))
-                            //   setPossClass([
-                            //     ...possClass.filter((el) => el !== id),
-                            //   ]);
-                            // // 선택
-                            // else
-                            //   setPossClass([
-                            //     ...possClass,
-                            //     Number(e.target.value),
-                            //   ]);
                           }}
                         >
                           선택하기
@@ -386,7 +360,7 @@ export default function Reservation() {
             {pageNumber === 1 && (
               <PageContainer>
                 <Calendar setDate={setDateArr} date={dateArr} />
-                <div>시간 선택하기</div>
+                {/* <div>시간 선택하기</div> */}
                 <PartTimeButtonContainer>
                   {partTimeArr.map((el, index) => {
                     const { title, value } = el;
@@ -413,13 +387,13 @@ export default function Reservation() {
                 <ClassContainer rowcount={Math.ceil(possClassArr.length / 5)}>
                   {possTeacherArr.length > 0
                     ? possTeacherArr.map((el) => {
-                        const { id, name, introduce, imgUrl } = el;
+                        const { id, name, imgUrl } = el;
                         return (
                           <ReservationTeacherProfileCard
                             key={id}
                             id={id}
                             name={name}
-                            introduce={introduce}
+                            // introduce={introduce}
                             imgUrl={imgUrl}
                             selectedTeacher={selectedTeacher}
                             setSelectedTeacher={setSelectedTeacher}
@@ -496,39 +470,6 @@ export default function Reservation() {
                     </TextContainer>
                   </FormRow>
                 </Form>
-                <PayButtonContainer>
-                  {/* <PayButton
-                    onClick={(e) => {
-                      e.preventDefault();
-                      // alert('개발중...');
-                      setIsOpen(!isOpen);
-                    }}
-                  >
-                    <Image
-                      src="/src/Reservation_IMG/Icon/Reservation_Icon_Sell_IMG_.png"
-                      alt={'Sell_Img'}
-                      width={59}
-                      height={59}
-                      style={{ maxWidth: '100%', height: 'auto' }}
-                    />
-                    세금계산서 발급
-                  </PayButton> */}
-                  {/* <PayButton
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert('개발중...');
-                    }}
-                  >
-                    <Image
-                      src="/src/Reservation_IMG/Icon/Reservation_Icon_Card_IMG_.png"
-                      alt={'Card_Img'}
-                      width={59}
-                      height={59}
-                      style={{ maxWidth: '100%', height: 'auto' }}
-                    />
-                    카드 결제
-                  </PayButton> */}
-                </PayButtonContainer>
               </PageContainer>
             )}
           </InputContainer>
@@ -1095,11 +1036,19 @@ const DateTextContainer = styled.div`
 const DateTextSubContainer = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+  }
 `;
 
 const Row = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
 `;
 
 const Month = styled.div`
@@ -1114,6 +1063,12 @@ const Month = styled.div`
   text-align: left;
 
   white-space: pre-wrap;
+
+  @media (max-width: 768px) {
+    width: 50px;
+    padding-right: 0rem;
+    font-size: 0.9rem;
+  }
 `;
 
 const Days = styled.div`
@@ -1128,4 +1083,9 @@ const Days = styled.div`
 
   white-space: pre-wrap;
   flex-grow: 1;
+
+  @media (max-width: 768px) {
+    max-width: 90px;
+    padding-right: 0;
+  }
 `;
