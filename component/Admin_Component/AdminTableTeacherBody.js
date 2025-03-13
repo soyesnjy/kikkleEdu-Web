@@ -491,19 +491,6 @@ const StyledA = styled.a`
   text-align: left;
 `;
 
-const ShowButton = styled.button`
-  text-decoration: none;
-  padding: 0.1rem;
-  border-radius: 6px;
-
-  cursor: pointer;
-
-  font-size: 0.7rem;
-  font-family: Pretendard;
-  font-weight: 700;
-  text-align: left;
-`;
-
 const Status = styled.span`
   color: ${({ status }) => (status ? 'blue' : 'red')};
   font-size: 0.9rem;

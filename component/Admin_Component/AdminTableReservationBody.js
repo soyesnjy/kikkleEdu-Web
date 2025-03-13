@@ -73,10 +73,6 @@ const AdminTableReservationBody = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
 
-  // const [name, setName] = useState('');
-  // const [partTime, setPartTime] = useState('');
-  // const [phoneNum, setPhoneNum] = useState('');
-
   const [reservationIdx, setReservationIdx] = useState(0);
   const [dateArr, setDateArr] = useState([]);
   const [dayArr, setDayArr] = useState([]);
@@ -115,6 +111,7 @@ const AdminTableReservationBody = ({ data }) => {
     }
   }, [dateArr]);
 
+  // 예약 수정 핸들러
   const reservationUpdateHandler = async (e) => {
     e.preventDefault();
 
@@ -173,7 +170,7 @@ const AdminTableReservationBody = ({ data }) => {
       console.error('기관 업데이트 실패:', error);
     }
   };
-
+  // 예약 삭제 핸들러
   const reservationDeleteHandler = async () => {
     try {
       if (confirm('삭제 하시겠습니까?') === true) {
@@ -218,26 +215,29 @@ const AdminTableReservationBody = ({ data }) => {
           <TableCell>{formatPhoneNumber(data.kk_agency_phoneNum)}</TableCell>
           <TableCell>{data.kk_class_title}</TableCell>
           <TableCell>
-            [ {dateArr[0]} ~ {dateArr[dateArr.length - 1]} ] -{' '}
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                // alert('개발중...');
-                setIsOpen(!isOpen);
-              }}
-            >
-              전체보기
-            </button>
+            <CellContainer>
+              {`${dateArr[0]}\n ${dateArr[dateArr.length - 1]}`}
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  // alert('개발중...');
+                  setIsOpen(!isOpen);
+                }}
+              >
+                전체보기
+              </button>
+            </CellContainer>
           </TableCell>
           <TableCell>
-            {data.kk_teacher_idx
-              ? teacherArr.filter((el) => el.idx === data.kk_teacher_idx)[0]
-                  ?.name
-              : 'Non Matching'}
+            {data.kk_teacher_idx ? (
+              teacherArr.filter((el) => el.idx === data.kk_teacher_idx)[0]?.name
+            ) : (
+              <NonMatchingSpan>미정</NonMatchingSpan>
+            )}
           </TableCell>
           <TableCell>{dayArr.join('/')}</TableCell>
           <TableCell>{data.kk_reservation_time}</TableCell>
-          <TableCell>개발중...</TableCell>
+          {/* <TableCell>진행중</TableCell> */}
           <TableCell>
             <Status status={data.kk_reservation_approve_status}>
               {data.kk_reservation_approve_status === 0 ? '미승인' : '승인'}
@@ -267,7 +267,7 @@ const AdminTableReservationBody = ({ data }) => {
               <ReservationModalContentContainer>
                 <ReservationModalContentHeaderContainer>
                   <ReservationModalHeaderTitle>
-                    {`All Reservation Dates\n(총 ${dateArr.length}일)`}
+                    {`전체 날짜 (총 ${dateArr.length}일)`}
                   </ReservationModalHeaderTitle>
                   <CloseButton
                     onClick={(e) => {
@@ -290,17 +290,18 @@ const AdminTableReservationBody = ({ data }) => {
           <TableCell>{formatPhoneNumber(data.kk_agency_phoneNum)}</TableCell>
           <TableCell>{data.kk_class_title}</TableCell>
           <TableCell>
-            [ {updatedDateArr[0]} ~ {updatedDateArr[updatedDateArr.length - 1]}{' '}
-            ] -{' '}
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                // alert('개발중...');
-                setIsUpdateOpen(!isUpdateOpen);
-              }}
-            >
-              날짜수정
-            </button>
+            <CellContainer>
+              {`${updatedDateArr[0]}\n ${updatedDateArr[updatedDateArr.length - 1]}`}
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  // alert('개발중...');
+                  setIsUpdateOpen(!isUpdateOpen);
+                }}
+              >
+                날짜수정
+              </button>
+            </CellContainer>
           </TableCell>
           <TableCell>
             <select
@@ -309,7 +310,7 @@ const AdminTableReservationBody = ({ data }) => {
               onChange={(e) => setMatchingTeacher(Number(e.target.value))}
             >
               <option value="-1">선택</option>
-              {teacherArr.map((el, index) => {
+              {teacherArr.map((el) => {
                 return (
                   <option key={el.idx} value={el.idx}>
                     {el.name}
@@ -320,7 +321,7 @@ const AdminTableReservationBody = ({ data }) => {
           </TableCell>
           <TableCell>{dayArr.join('/')}</TableCell>
           <TableCell>{data.kk_reservation_time}</TableCell>
-          <TableCell>개발중...</TableCell>
+          {/* <TableCell>진행중</TableCell> */}
           <TableCell>
             <select
               id="pet-select"
@@ -389,7 +390,10 @@ const TableRow = styled.tr`
 `;
 
 const TableCell = styled.td`
-  padding: 1rem;
+  max-width: 100px;
+
+  padding: 1rem 0.4rem;
+  padding-left: 1rem;
   border-bottom: 1px solid #ddd;
 
   font-size: 0.9rem;
@@ -397,11 +401,80 @@ const TableCell = styled.td`
   font-weight: 700;
   text-align: left;
 
+  select,
+  a {
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-family: Pretendard;
+    font-weight: 700;
+    text-align: left;
+
+    option {
+      font-size: 0.9rem;
+      font-family: Pretendard;
+      font-weight: 700;
+      text-align: left;
+
+      :hover {
+        background-color: white;
+        opacity: 0.8;
+      }
+    }
+
+    :nth-child(2) {
+      color: blue;
+    }
+    :nth-child(3) {
+      color: red;
+    }
+  }
+
   @media (max-width: 768px) {
     min-width: 100px;
     padding: 0.3rem;
     font-size: 0.8rem;
     text-align: center;
+  }
+`;
+
+const NonMatchingSpan = styled.span`
+  color: red;
+
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 700;
+  text-align: left;
+`;
+
+const CellContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  font-size: 0.8rem;
+  font-family: Pretendard;
+  font-weight: 600;
+  text-align: left;
+
+  white-space: pre-line;
+
+  button {
+    width: 70px;
+    padding: 0.1rem 0;
+    background-color: #61b15a;
+    color: white;
+    border-radius: 6px;
+    border: 1px solid gray;
+
+    font-size: 0.8rem;
+    font-family: Pretendard;
+    font-weight: 600;
+    text-align: center;
+
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
   }
 `;
 
@@ -416,12 +489,31 @@ const Status = styled.span`
 const ButtonContainer = styled.div`
   display: flex;
   gap: 0.5rem;
+
+  :nth-child(1) {
+    background-color: #61b15a;
+    color: white;
+  }
+
+  :nth-child(2) {
+    background-color: rgb(249, 25, 25);
+    color: white;
+  }
 `;
 
 const Button = styled.button`
   padding: 0.2rem 0.4rem;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 600;
+  text-align: left;
 `;
 
+// Modal 관련
 const ReservationModalContainer = styled.div`
   width: 100vw;
   height: 100vh;
@@ -504,9 +596,5 @@ const CloseIcon = () => (
     />
   </svg>
 );
-
-// const StyledInput = styled.input`
-//   max-width: 7rem;
-// `;
 
 export default AdminTableReservationBody;
