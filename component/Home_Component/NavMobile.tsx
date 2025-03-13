@@ -26,7 +26,6 @@ const NavMobile = ({
   logoutHandler,
 }: NavMobileComponentType) => {
   const [login] = useRecoilState(log);
-  const [startX, setStartX] = useState<number | null>(null);
 
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -47,44 +46,6 @@ const NavMobile = ({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  // 터치 드래그
-  useEffect(() => {
-    const handleTouchStart = (e: TouchEvent) => {
-      setStartX(e.touches[0].clientX);
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (startX === null) return;
-      const touchX = e.touches[0].clientX;
-      const diffX = touchX - startX;
-
-      if (diffX > 50) {
-        // 50px 이상 드래그했을 때 닫힘
-        toggleMenu();
-        setStartX(null);
-      }
-    };
-
-    const handleTouchEnd = () => {
-      setStartX(null);
-    };
-
-    const sideMenu = menuRef.current;
-    if (sideMenu) {
-      sideMenu.addEventListener('touchstart', handleTouchStart);
-      sideMenu.addEventListener('touchmove', handleTouchMove);
-      sideMenu.addEventListener('touchend', handleTouchEnd);
-    }
-
-    return () => {
-      if (sideMenu) {
-        sideMenu.removeEventListener('touchstart', handleTouchStart);
-        sideMenu.removeEventListener('touchmove', handleTouchMove);
-        sideMenu.removeEventListener('touchend', handleTouchEnd);
-      }
-    };
-  }, [isOpen, startX]);
 
   return (
     <NavMenuContainer ref={menuRef}>

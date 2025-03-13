@@ -42,4 +42,18 @@ const modal = atom({
   default: false,
 });
 
-export { log, avarta, uid, mobile, userClass, agencyClass, modal };
+const isNavOpenState = atom({
+  key: 'isNavOpenState',
+  default: false,
+});
+
+export {
+  log,
+  avarta,
+  uid,
+  mobile,
+  userClass,
+  agencyClass,
+  modal,
+  isNavOpenState,
+};

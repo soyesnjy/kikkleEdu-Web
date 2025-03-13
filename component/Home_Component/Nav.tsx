@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/router';
 
 import { useRecoilState } from 'recoil';
-import { log, mobile, uid, agencyClass } from '@/store/state';
+import { log, mobile, uid, agencyClass, isNavOpenState } from '@/store/state';
 
 import { logoutAPI } from '@/fetchAPI/loginAPI';
 import NavList from './NavList';
@@ -78,7 +78,8 @@ export default function Nav() {
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
   const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
 
-  const [mobileNavisOpen, setMobileNavisOpen] = useState(false);
+  // const [mobileNavisOpen, setMobileNavisOpen] = useState(false);
+  const [mobileNavisOpen, setMobileNavisOpen] = useRecoilState(isNavOpenState);
 
   // Custom Hook 설정 - 스크롤 막기 기능 적용
   useDisableScroll(mobileNavisOpen);
