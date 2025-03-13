@@ -249,7 +249,7 @@ const AdminTableTeacherBody = ({ data }) => {
                   target="_blank"
                   onClick={() => setIsOpen(!isOpen)}
                 >
-                  {isOpen ? 'close' : 'open'}
+                  {isOpen ? 'Close' : 'Open'}
                 </ShowButton>
                 {isOpen && (
                   <Image
@@ -275,7 +275,7 @@ const AdminTableTeacherBody = ({ data }) => {
           <TableCell>{data.kk_teacher_education}</TableCell>
           <TableCell>
             <a href={data.kk_teacher_file_path} target="_blank">
-              Download
+              File
             </a>
           </TableCell>
           <TableCell>
@@ -300,12 +300,14 @@ const AdminTableTeacherBody = ({ data }) => {
         <TableRow>
           <TableCell>{data.kk_teacher_idx}</TableCell>
           <TableCell>
-            {data.kk_teacher_uid} / {data.kk_teacher_pwd}
+            <div>{data.kk_teacher_uid}</div>
+            <div>{data.kk_teacher_pwd}</div>
           </TableCell>
           <TableCell>
             <StyledInput
               value={name}
               onChange={(e) => setName(e.target.value)}
+              width={'4.3rem'}
             />
           </TableCell>
           <TableCell>
@@ -318,6 +320,7 @@ const AdminTableTeacherBody = ({ data }) => {
             <StyledInput
               value={formatPhoneNumber(phoneNum)}
               onChange={(e) => setPhoneNum(e.target.value)}
+              width={'7.6rem'}
             />
           </TableCell>
           <TableCell>
@@ -325,6 +328,7 @@ const AdminTableTeacherBody = ({ data }) => {
               type="file"
               accept=".jpg, .png, .jpeg"
               onChange={handleProfileImgChange}
+              width={'5.4rem'}
             />
             {profilePreviewImg && (
               <PreviewImage src={profilePreviewImg} alt="미리보기 이미지" />
@@ -382,13 +386,10 @@ const AdminTableTeacherBody = ({ data }) => {
           </TableCell>
           <TableCell>
             <a href={data.kk_teacher_file_path} target="_blank">
-              Download
+              File
             </a>
           </TableCell>
           <TableCell>
-            {/* <Status status={data.kk_teacher_approve_status}>
-              {data.kk_teacher_approve_status === 0 ? '미승인' : '승인'}
-            </Status> */}
             <select
               id="pet-select"
               value={approveStatus}
@@ -428,13 +429,54 @@ const TableRow = styled.tr`
 
 const TableCell = styled.td`
   max-width: 150px;
+  height: 90px;
+
   padding: 1rem 0.4rem;
   border-bottom: 1px solid #ddd;
 
   font-size: 0.9rem;
   font-family: Pretendard;
   font-weight: 700;
-  text-align: left;
+  text-align: center;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  div {
+    font-size: 0.8rem;
+    font-family: Pretendard;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  select,
+  a {
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-family: Pretendard;
+    font-weight: 700;
+    text-align: left;
+
+    option {
+      font-size: 0.9rem;
+      font-family: Pretendard;
+      font-weight: 700;
+      text-align: left;
+
+      :hover {
+        background-color: white;
+        opacity: 0.8;
+      }
+    }
+
+    :nth-child(2) {
+      color: blue;
+    }
+    :nth-child(3) {
+      color: red;
+    }
+  }
 
   @media (max-width: 768px) {
     min-width: 100px;
@@ -464,6 +506,10 @@ const StyledA = styled.a`
 
 const ShowButton = styled.button`
   text-decoration: none;
+  padding: 0.1rem;
+  border-radius: 6px;
+
+  cursor: pointer;
 
   font-size: 0.7rem;
   font-family: Pretendard;
@@ -482,18 +528,62 @@ const Status = styled.span`
 const ButtonContainer = styled.div`
   display: flex;
   gap: 0.5rem;
+
+  :nth-child(1) {
+    background-color: #61b15a;
+    color: white;
+  }
+
+  :nth-child(2) {
+    background-color: rgb(249, 25, 25);
+    color: white;
+  }
 `;
 
 const Button = styled.button`
   padding: 0.2rem 0.4rem;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 600;
+  text-align: left;
 `;
 
 const StyledInput = styled.input`
-  max-width: 7rem;
+  width: ${(props) => props.width}; /* 너무 길어지는 것을 방지 */
+  padding: 0.2rem;
+  border-radius: 5px;
+  border: 1px solid black;
+
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 600;
+  text-align: left;
+
+  :active {
+    border: 2px solid black;
+  }
 `;
 
 const StyledTextArea = styled.textarea`
-  max-width: 9rem;
+  width: 100%;
+  min-height: 2.5rem;
+  resize: vertical; /* 높이만 변경 가능 */
+
+  padding: 0.2rem;
+  border-radius: 7px;
+
+  font-size: 0.8rem;
+  font-family: Pretendard;
+  font-weight: 600;
+  text-align: left;
+
+  :active {
+    border: 2px solid black;
+  }
 `;
 
 const PreviewImage = styled.img`
