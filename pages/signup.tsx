@@ -396,7 +396,11 @@ export default function Signup() {
     <SignUpPageContainer>
       <FormWrap>
         <div>
-          <H1>{`키클에듀 id를 생성하세요.`}</H1>
+          <H1>
+            {mobileFlag
+              ? `키클에듀 계정을\n 생성하세요`
+              : `키클에듀 계정을 생성하세요`}
+          </H1>
           <H4>{`개인정보는 회원가입 확인에만 이용됩니다.`}</H4>
           <UserClassButtonContainer>
             <UserClassButton
@@ -990,13 +994,20 @@ const PageContainer = styled.div`
 `;
 
 const H1 = styled.h1`
-  font-size: 40px;
+  font-size: 2.5rem;
   font-family: Pretendard;
   font-weight: 600;
   color: white;
 
   margin-top: 1rem;
   margin-bottom: 3rem;
+
+  white-space: pre-line;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    text-align: center;
+  }
 `;
 
 const H4 = styled.h4`
@@ -1199,6 +1210,11 @@ const TermsCheckboxContainer = styled.div`
   align-items: center;
 
   margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0.3rem 1rem;
+    margin-bottom: 0;
+  }
 `;
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
