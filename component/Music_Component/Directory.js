@@ -8,9 +8,9 @@ import { useRecoilState } from 'recoil';
 import { agencyClass, mobile } from '@/store/state';
 
 const titleMap = {
-  music: 'Music',
-  video: 'Video',
-  class: 'Class',
+  music: '수업 음원 자료',
+  video: '수업 영상 자료',
+  class: '수업 강의 계획서',
 };
 
 const Directory = ({ data, form }) => {
@@ -20,8 +20,8 @@ const Directory = ({ data, form }) => {
   const [isRoot, setIsRoot] = useState(true);
   const [trackData, setTrackData] = useState({});
   const [audioKey, setAudioKey] = useState(0); // unique key for AudioPlayer
-  const [agencyType, setAgencyType] = useRecoilState(agencyClass);
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const [agencyType] = useRecoilState(agencyClass);
+  const [mobileFlag] = useRecoilState(mobile);
   // const [videoUrl, setVideoUrl] = useState();
 
   useEffect(() => {
@@ -51,31 +51,10 @@ const Directory = ({ data, form }) => {
     setTrackData({});
   };
 
-  // const fetchVideoUrl = async (fileID) => {
-  //   const API_KEY = 'AIzaSyC1ht2GAZkBDnnktEfmVQJVWL0jc2hwQoU';
-  //   try {
-  //     const response = await fetch(
-  //       `https://www.googleapis.com/drive/v3/files/${fileID}?alt=media&key=${API_KEY}`
-  //     );
-
-  //     return response.url;
-  //   } catch (err) {
-  //     console.error(err);
-  //     return '';
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (trackData.fileID) {
-  //     handleDirectoryVideoUrl({ fileId: trackData.fileID }).then((data) => {
-  //       setVideoUrl(data.url);
-  //     });
-  //   }
-  // }, [trackData]);
-
   return (
     <Container>
       <Title>{titleMap[form]}</Title>
+      {/* 관리자 전용 자료 생성 폼 */}
       {agencyType === 'admin' && (
         <UploadContainer>
           <UploadForm
@@ -108,10 +87,6 @@ const Directory = ({ data, form }) => {
       </List>
       {trackData.url && (
         <TrackContainer>
-          {/* <h2>{trackData.kk_directory_name}</h2> */}
-          {/* <AudioPlayer key={audioKey} controls autoPlay>
-              <source src={trackData.url} type="audio/mp3" />
-            </AudioPlayer> */}
           {form === 'video' ? (
             <iframe
               key={audioKey}

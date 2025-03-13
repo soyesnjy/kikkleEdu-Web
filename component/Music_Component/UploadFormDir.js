@@ -47,7 +47,7 @@ const UploadFormDir = ({ directories, form }) => {
     e.preventDefault();
 
     if (!directoryName) {
-      alert('디렉토리명 입력 ㄱㄱ');
+      alert('폴더명을 입력하세요');
       return;
     }
 
@@ -79,20 +79,20 @@ const UploadFormDir = ({ directories, form }) => {
     }
   };
 
-  const handleChange = (currentNode, selectedNodes) => {
+  const handleChange = (currentNode) => {
     setSelectedDirectory(currentNode);
   };
 
   return (
     <FormContainer>
-      <h3>Directory Create Form</h3>
+      <h3>폴더 생성</h3>
       <form onSubmit={handleSubmit}>
         <FormGroup>
-          <Label htmlFor="directory">Directory</Label>
+          <Label htmlFor="directory">폴더</Label>
           <DropdownTreeSelect
             texts={{
               placeholder:
-                selectedDirectory?.kk_directory_name || 'Choose a directory',
+                selectedDirectory?.kk_directory_name || '폴더를 선택해주세요',
               noMatches: 'No matches found',
             }}
             data={treeData}
@@ -102,16 +102,17 @@ const UploadFormDir = ({ directories, form }) => {
           />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="directoryName">Directory Name</Label>
-          <Input
+          <Label htmlFor="directoryName">폴더 이름</Label>
+          <StyledInput
             value={directoryName}
             type="text"
             id="directoryName"
             onChange={(e) => setDirectoryName(e.target.value)}
           />
         </FormGroup>
+        <InfoSpan>*폴더 미선택 시 Root 경로에 폴더가 생성됩니다</InfoSpan>
         <Button type="submit" disabled={isPending}>
-          {isPending ? 'Uploading...' : 'Upload'}
+          {isPending ? '생성중...' : '생성'}
         </Button>
       </form>
     </FormContainer>
@@ -119,6 +120,8 @@ const UploadFormDir = ({ directories, form }) => {
 };
 
 const FormContainer = styled.div`
+  width: 250px;
+
   margin: 20px;
   padding: 1rem;
   border: 1px solid green;
@@ -126,6 +129,16 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  h3 {
+    font-family: Pretendard;
+    font-weight: 600;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -133,22 +146,51 @@ const FormGroup = styled.div`
 `;
 
 const Label = styled.label`
-  display: block;
+  padding-left: 0.2rem;
   margin-bottom: 5px;
+
+  display: block;
+
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 600;
 `;
 
-const Input = styled.input`
-  display: block;
+const StyledInput = styled.input`
   width: 100%;
-  padding: 8px;
+  padding: 4px;
   margin-bottom: 10px;
+
+  display: block;
+
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 400;
+`;
+
+const InfoSpan = styled.span`
+  padding-left: 0.2rem;
+  margin-bottom: 5px;
+
+  display: block;
+  color: blue;
+  font-size: 0.7rem;
+  font-family: Pretendard;
+  font-weight: 600;
 `;
 
 const Button = styled.button`
-  padding: 10px 15px;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  border: none;
+
   background-color: #4caf50;
   color: white;
-  border: none;
+
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+
   cursor: pointer;
 `;
 

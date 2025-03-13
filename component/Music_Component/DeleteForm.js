@@ -44,10 +44,6 @@ const DeleteForm = ({ directories, form }) => {
     setTreeData(buildTreeData(directories));
   }, [directories]);
 
-  // useEffect(() => {
-  //   console.log(selectedDirectory);
-  // }, [selectedDirectory]);
-
   const deleteHandleSubmit = async (e) => {
     e.preventDefault();
 
@@ -86,14 +82,14 @@ const DeleteForm = ({ directories, form }) => {
 
   return (
     <FormContainer>
-      <h3>Directory Delete Form</h3>
+      <h3>폴더 삭제</h3>
       <form onSubmit={deleteHandleSubmit}>
         <FormGroup>
-          <Label htmlFor="directory">Directory</Label>
+          <Label htmlFor="directory">폴더</Label>
           <DropdownTreeSelect
             texts={{
               placeholder:
-                selectedDirectory?.kk_directory_name || 'Choose a directory',
+                selectedDirectory?.kk_directory_name || '폴더를 선택해주세요',
               noMatches: 'No matches found',
             }}
             data={treeData}
@@ -103,10 +99,10 @@ const DeleteForm = ({ directories, form }) => {
           />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="directory">Delete subfolder</Label>
+          <WarningSpan>*폴더 내부의 파일 전체가 삭제됩니다</WarningSpan>
         </FormGroup>
         <Button type="submit" disabled={isPending}>
-          {isPending ? 'Deleting...' : 'Delete'}
+          {isPending ? '삭제중...' : '삭제'}
         </Button>
       </form>
     </FormContainer>
@@ -114,7 +110,8 @@ const DeleteForm = ({ directories, form }) => {
 };
 
 const FormContainer = styled.div`
-  min-height: 250px;
+  width: 250px;
+
   margin: 20px;
   padding: 1rem;
   border: 1px solid green;
@@ -122,6 +119,16 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  h3 {
+    font-family: Pretendard;
+    font-weight: 600;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -129,22 +136,39 @@ const FormGroup = styled.div`
 `;
 
 const Label = styled.label`
-  display: block;
+  padding-left: 0.2rem;
   margin-bottom: 5px;
+
+  display: block;
+
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 600;
 `;
 
-// const Input = styled.input`
-//   display: block;
-//   width: 100%;
-//   padding: 8px;
-//   margin-bottom: 10px;
-// `;
+const WarningSpan = styled.span`
+  padding-left: 0.2rem;
+  margin-bottom: 5px;
+
+  display: block;
+  color: red;
+  font-size: 0.7rem;
+  font-family: Pretendard;
+  font-weight: 600;
+`;
 
 const Button = styled.button`
-  padding: 10px 15px;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  border: none;
+
   background-color: #4caf50;
   color: white;
-  border: none;
+
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+
   cursor: pointer;
 `;
 

@@ -3,12 +3,13 @@
 /* eslint-disable no-async-promise-executor */
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
+
 import {
   handleDirectoryCreate,
-  // handleVideoCreate,
   handleVideoV2Create,
 } from '@/fetchAPI/directoryAPI';
-import { useRouter } from 'next/router';
+
 import Swal from 'sweetalert2';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 import 'react-dropdown-tree-select/dist/styles.css';
@@ -25,7 +26,7 @@ const UploadForm = ({ directories, form }) => {
   const [isPending, setIsPending] = useState(false);
   const [fileName, setFileName] = useState('');
   const [fileCode, setFileCode] = useState('');
-  // const [file, setFile] = useState(null);
+
   const [files, setFiles] = useState(null);
   const router = useRouter();
 
@@ -55,25 +56,6 @@ const UploadForm = ({ directories, form }) => {
 
       return roots;
     };
-
-    // const buildTreeData = (dirs) => {
-    //   const map = {};
-    //   const roots = [];
-
-    //   dirs.forEach((dir) => {
-    //     map[dir.id] = { ...dir, label: dir.name, value: dir.id, children: [] };
-    //   });
-
-    //   dirs.forEach((dir) => {
-    //     if (dir.parent_id === null) {
-    //       roots.push(map[dir.id]);
-    //     } else {
-    //       map[dir.parent_id].children.push(map[dir.id]);
-    //     }
-    //   });
-
-    //   return roots;
-    // };
 
     setTreeData(buildTreeData(directories));
   }, [directories]);
@@ -155,61 +137,6 @@ const UploadForm = ({ directories, form }) => {
     }
   };
 
-  // const handleVideoSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   // alert('개발 중인 기능입니다.');
-  //   // return;
-
-  //   if (!selectedDirectory) {
-  //     alert('폴더를 선택하세요.');
-  //     return;
-  //   }
-
-  //   if (!files || files.length === 0) {
-  //     alert('파일을 선택하세요.');
-  //     return;
-  //   }
-  //   setIsPending(true);
-  //   try {
-  //     // FormData 생성 및 파일 추가
-  //     const formData = new FormData();
-  //     formData.append('file', files[0]); // 'file'이라는 이름으로 파일 추가
-  //     formData.append('form', form);
-  //     formData.append('directoryId', selectedDirectory.value);
-  //     formData.append('fileName', files[0].name);
-  //     // console.log(files[0]);
-
-  //     // fetch를 사용하여 서버로 FormData 전송
-  //     // const response = await fetch(
-  //     //   `${process.env.NEXT_PUBLIC_URL}/directory/create/video`,
-  //     //   {
-  //     //     method: 'POST',
-  //     //     body: formData,
-  //     //   }
-  //     // );
-
-  //     const response = await handleVideoCreate(formData);
-
-  //     if (response.status === 200) {
-  //       Swal.fire({
-  //         icon: 'success',
-  //         title: 'Upload Success!',
-  //         text: 'Page Reload',
-  //         showConfirmButton: false,
-  //         timer: 1500,
-  //       }).then(() => {
-  //         router.reload();
-  //       });
-  //     } else {
-  //       console.error('Upload failed');
-  //       alert('Upload Failed');
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
   const handleVideoV2Submit = async (e) => {
     e.preventDefault();
 
@@ -266,14 +193,14 @@ const UploadForm = ({ directories, form }) => {
 
   return (
     <FormContainer>
-      <h3>File Create Form</h3>
+      <h3>{`파일 생성`}</h3>
       <form onSubmit={form === 'video' ? handleVideoV2Submit : handleSubmit}>
         <FormGroup>
-          <Label htmlFor="directory">Directory</Label>
+          <Label htmlFor="directory">{`폴더`}</Label>
           <DropdownTreeSelect
             texts={{
               placeholder:
-                selectedDirectory?.kk_directory_name || 'Choose a directory',
+                selectedDirectory?.kk_directory_name || '폴더를 선택해주세요',
               noMatches: 'No matches found',
             }}
             data={treeData}
@@ -283,18 +210,12 @@ const UploadForm = ({ directories, form }) => {
           />
         </FormGroup>
         <FormGroup>
-          {form !== 'video' ? <Label htmlFor="file">File</Label> : null}
-          {/* <Input
-            type="file"
-            id="file"
-            accept={acceptMap[form]}
-            onChange={(e) => setFiles(e.target.files[0])}
-          /> */}
+          {form !== 'video' ? <Label htmlFor="file">파일</Label> : null}
           {form === 'video' ? (
             <>
               <>
-                <label>Video Name</label>
-                <Input
+                <Label>파일명</Label>
+                <StyledInput
                   type="text"
                   id="fileName"
                   value={fileName}
@@ -302,17 +223,18 @@ const UploadForm = ({ directories, form }) => {
                 />
               </>
               <>
-                <label>Video Code</label>
-                <Input
+                <Label>코드</Label>
+                <StyledInput
                   type="text"
                   id="fileCode"
                   value={fileCode}
                   onChange={(e) => setFileCode(e.target.value)} // FileList를 상태로 저장
                 />
+                <InfoSpan>*영상 파일의 URL 주소를 입력하세요</InfoSpan>
               </>
             </>
           ) : (
-            <Input
+            <StyledInput
               type="file"
               id="file"
               multiple
@@ -322,7 +244,7 @@ const UploadForm = ({ directories, form }) => {
           )}
         </FormGroup>
         <Button type="submit" disabled={isPending}>
-          {isPending ? 'Uploading...' : 'Upload'}
+          {isPending ? '생성중...' : '생성'}
         </Button>
       </form>
     </FormContainer>
@@ -330,6 +252,8 @@ const UploadForm = ({ directories, form }) => {
 };
 
 const FormContainer = styled.div`
+  width: 250px;
+
   margin: 20px;
   padding: 1rem;
   border: 1px solid green;
@@ -337,6 +261,16 @@ const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  h3 {
+    font-family: Pretendard;
+    font-weight: 600;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -344,22 +278,51 @@ const FormGroup = styled.div`
 `;
 
 const Label = styled.label`
-  display: block;
+  padding-left: 0.2rem;
   margin-bottom: 5px;
+
+  display: block;
+
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 600;
 `;
 
-const Input = styled.input`
-  display: block;
+const StyledInput = styled.input`
   width: 100%;
-  padding: 8px;
+  padding: 4px;
   margin-bottom: 10px;
+
+  display: block;
+
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 400;
+`;
+
+const InfoSpan = styled.span`
+  padding-left: 0.2rem;
+  margin-bottom: 5px;
+
+  display: block;
+  color: blue;
+  font-size: 0.7rem;
+  font-family: Pretendard;
+  font-weight: 600;
 `;
 
 const Button = styled.button`
-  padding: 10px 15px;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  border: none;
+
   background-color: #4caf50;
   color: white;
-  border: none;
+
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+
   cursor: pointer;
 `;
 
