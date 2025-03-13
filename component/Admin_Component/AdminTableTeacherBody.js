@@ -43,8 +43,6 @@ const AdminTableTeacherBody = ({ data }) => {
   const [approveStatus, setApproveStatus] = useState(-1);
   const [profilePreviewImg, setprofilePreviewImg] = useState(null);
 
-  const [isOpen, setIsOpen] = useState(false);
-
   useEffect(() => {
     setTeacherIdx(data.kk_teacher_idx);
     setIntroduce(data.kk_teacher_introduction);
@@ -242,30 +240,19 @@ const AdminTableTeacherBody = ({ data }) => {
             {data.kk_teacher_profileImg_path ? (
               <ShowContainer>
                 <StyledA href={data.kk_teacher_profileImg_path} target="_blank">
-                  Link
-                </StyledA>
-                <ShowButton
-                  // href={data.kk_teacher_profileImg_path}
-                  target="_blank"
-                  onClick={() => setIsOpen(!isOpen)}
-                >
-                  {isOpen ? 'Close' : 'Open'}
-                </ShowButton>
-                {isOpen && (
                   <Image
                     key={data.kk_teacher_profileImg_path}
                     src={data.kk_teacher_profileImg_path}
-                    alt="Icon"
+                    alt="Teacher Profile IMG (Mini)"
                     width={56}
                     height={56}
                     style={{ maxWidth: '100%', height: 'auto' }}
-                    placeholder="blur"
-                    blurDataURL={`/loading.svg`}
+                    priority={true}
                   />
-                )}
+                </StyledA>
               </ShowContainer>
             ) : (
-              'X'
+              'NonImage'
             )}
           </TableCell>
           <TableCell>{data.kk_teacher_location}</TableCell>
