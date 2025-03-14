@@ -217,9 +217,15 @@ const MyPage = () => {
           {activeTab === 'privacy' && (
             <TeacherTablePrivacyBody data={teacherData} />
           )}
-          {activeTab === 'music' && <Directory data={data} form={activeTab} />}
-          {activeTab === 'video' && <Directory data={data} form={activeTab} />}
-          {activeTab === 'class' && <Directory data={data} form={activeTab} />}
+          {activeTab === 'music' && (
+            <Directory data={data} activeTab={activeTab} />
+          )}
+          {activeTab === 'video' && (
+            <Directory data={data} activeTab={activeTab} />
+          )}
+          {activeTab === 'class' && (
+            <Directory data={data} activeTab={activeTab} />
+          )}
         </TableContainer>
         {activeTab === 'attend' && (
           <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
