@@ -139,7 +139,7 @@ const ProgramTeacherContainer = ({ teacherDataArr, mobileFlag }) => {
           </Button>
         )}
       </ProgramContainer>
-      {mobileFlag && (
+      {/* {mobileFlag && (
         <DotContainer>
           {teacherDataArr.map((el, index) => {
             const { routePath, idx } = el;
@@ -153,7 +153,7 @@ const ProgramTeacherContainer = ({ teacherDataArr, mobileFlag }) => {
             );
           })}
         </DotContainer>
-      )}
+      )} */}
     </Container>
   );
 };
