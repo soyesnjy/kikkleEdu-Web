@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import UploadForm from './UploadForm'; // 새로운 업로드 폼 컴포넌트
 import UploadFormDir from './UploadFormDir';
 import DeleteForm from './DeleteForm';
+import { useQuery } from 'react-query';
 
 import { useRecoilState } from 'recoil';
 import { agencyClass, mobile } from '@/store/state';
+import { handleDirectoryRead } from '@/fetchAPI/directoryAPI';
 
 const titleMap = {
   music: '수업 음원 자료',
@@ -13,47 +15,93 @@ const titleMap = {
   class: '수업 강의 계획서',
 };
 
-const Directory = ({ data, form }) => {
+// React Query - 서버에서 데이터를 가져오는 API 함수
+const reactQueryFetchEvent = async ({ queryKey }) => {
+  const [, activeTab] = queryKey;
+  const res = await handleDirectoryRead({ form: activeTab });
+  const data = res.data;
+
+  const formattedData = data.directories.map((dir) => ({
+    ...dir,
+    url:
+      dir.kk_directory_type === 'file'
+        ? data.tracks.find(
+            (track) => track.kk_directory_idx === dir.kk_directory_idx
+          )?.kk_file_path
+        : null,
+  }));
+
+  return formattedData;
+};
+
+// Props Type
+type PropsType = {
+  activeTab: string; // 관리자 탭 식별자 state
+};
+
+const Directory = ({ activeTab }: PropsType) => {
+  const [trackData, setTrackData] = useState({ url: '' });
   const [path, setPath] = useState([null]); // root path with null
   const [items, setItems] = useState([]);
   const [selecteditems, setSelecteditems] = useState(0);
   const [isRoot, setIsRoot] = useState(true);
-  const [trackData, setTrackData] = useState({});
   const [audioKey, setAudioKey] = useState(0); // unique key for AudioPlayer
+
   const [agencyType] = useRecoilState(agencyClass);
   const [mobileFlag] = useRecoilState(mobile);
-  // const [videoUrl, setVideoUrl] = useState();
+
+  // React Query 데이터 가져오기
+  const { data, isLoading, error } = useQuery(
+    ['shareData', activeTab], // Query Key
+    reactQueryFetchEvent, // Query Function
+    {
+      enabled: activeTab !== '', // 유효한 값일 때만 실행
+      staleTime: 5000, // 5초 동안 신선한 상태 유지
+      cacheTime: 60 * 60 * 1000, // 1시간 동안 캐시 유지
+      keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
+    }
+  );
 
   useEffect(() => {
-    const currentParentId = path[path.length - 1];
-    const currentItems = data.filter(
-      (item) => item.kk_directory_parent_idx === currentParentId
-    );
-    setItems(currentItems);
-    setIsRoot(path.length === 1);
+    // 현재 폴더의 아이템 요소 갱신
+    if (data) {
+      const currentParentId = path[path.length - 1];
+      const currentItems = data.filter(
+        (item) => item.kk_directory_parent_idx === currentParentId
+      );
+      setItems(currentItems);
+      setIsRoot(path.length === 1); // path가 1인 경우 Root
+    }
   }, [path, data]);
 
+  // 파일 및 폴더 Click Handler
   const handleItemClick = (item) => {
-    // console.log(item);
+    // 폴더
     if (item.kk_directory_type === 'directory') {
       setPath([...path, item.kk_directory_idx]);
-      setTrackData({});
-    } else {
+      setTrackData({ url: '' });
+    }
+    // 파일
+    else {
       setTrackData(item);
       setSelecteditems(item.kk_directory_idx);
       setAudioKey((prevKey) => prevKey + 1); // change key to re-render AudioPlayer
     }
   };
 
+  // 뒤로가기 Click Handler
   const handleBackClick = () => {
     setPath(path.slice(0, -1));
     setSelecteditems(0);
-    setTrackData({});
+    setTrackData({ url: '' });
   };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error...</div>;
 
   return (
     <Container>
-      <Title>{titleMap[form]}</Title>
+      <Title>{titleMap[activeTab]}</Title>
       {/* 관리자 전용 자료 생성 폼 */}
       {agencyType === 'admin' && (
         <UploadContainer>
@@ -61,18 +109,19 @@ const Directory = ({ data, form }) => {
             directories={data.filter(
               (item) => item.kk_directory_type === 'directory'
             )}
-            form={form}
+            form={activeTab}
           />
           <UploadFormDir
             directories={data.filter(
               (item) => item.kk_directory_type === 'directory'
             )}
-            form={form}
+            form={activeTab}
           />
-          <DeleteForm directories={data} form={form} />
+          <DeleteForm directories={data} form={activeTab} />
         </UploadContainer>
       )}
       <List>
+        {/* Root 폴더가 아닌 경우에만 뒤로가기 버튼 추가 */}
         {!isRoot && <BackButton onClick={handleBackClick}>Back</BackButton>}
         {items.map((item, index) => (
           <ListItem
@@ -87,7 +136,7 @@ const Directory = ({ data, form }) => {
       </List>
       {trackData.url && (
         <TrackContainer>
-          {form === 'video' ? (
+          {activeTab === 'video' ? (
             <iframe
               key={audioKey}
               src={trackData.url}
@@ -107,21 +156,24 @@ const Directory = ({ data, form }) => {
                       border: 'none',
                     }
               }
-              // width={mobileFlag ? '370' : '450'}
-              // height="270"
             />
           ) : (
             <iframe
               key={audioKey}
               src={trackData.url}
               width={mobileFlag ? '100%' : '450'}
-              height={mobileFlag ? '170' : '70'}
+              height={mobileFlag ? '130' : '70'}
             />
           )}
         </TrackContainer>
       )}
     </Container>
   );
+};
+
+type ListItemType = {
+  type?: string;
+  selected?: boolean;
 };
 
 const Container = styled.div`
@@ -164,7 +216,7 @@ const List = styled.ul`
   }
 `;
 
-const ListItem = styled.li`
+const ListItem = styled.li<ListItemType>`
   margin: 5px 0;
   padding: 0.5rem;
 
@@ -174,7 +226,7 @@ const ListItem = styled.li`
 
   cursor: pointer;
 
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-family: Pretendard;
   font-weight: 700;
   text-align: center;
@@ -184,6 +236,10 @@ const ListItem = styled.li`
   &:hover {
     opacity: 0.8;
   }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const StyledLink = styled.a`
@@ -192,12 +248,20 @@ const StyledLink = styled.a`
 `;
 
 const BackButton = styled.button`
+  padding: 10px 20px;
+  margin-top: 20px;
+
   background-color: #4caf50;
   color: white;
   border: none;
-  padding: 10px 20px;
+  border-radius: 1rem;
+
+  font-size: 1rem;
+  font-family: Pretendard;
+  font-weight: 400;
+  text-align: center;
+
   cursor: pointer;
-  margin-top: 20px;
 `;
 
 const TrackContainer = styled.div`

@@ -1,7 +1,38 @@
 import axios from 'axios';
 
+// Directory Data Type
+type DirectoryDataType = {
+  kk_directory_created_at: string;
+  kk_directory_form: string;
+  kk_directory_idx: number;
+  kk_directory_name: string;
+  kk_directory_parent_idx?: number;
+  kk_directory_type: string;
+  kk_directory_updated_at: string;
+};
+// Track Data Type
+type TrackDataType = {
+  kk_directory_idx: number;
+  kk_file_created_at: string;
+  kk_file_data_id: string;
+  kk_file_form: string;
+  kk_file_idx: number;
+  kk_file_name: string;
+  kk_file_path: string;
+  kk_file_updated_at: string;
+};
+
+// API 반환 데이터 타입 지정
+type DirectoryReadResponseDataType = {
+  status?: number;
+  message?: string;
+  data: { directories: DirectoryDataType[]; tracks: TrackDataType[] };
+};
+
 // READ
-export const handleDirectoryRead = async (query) => {
+export const handleDirectoryRead = async (query: {
+  form: string;
+}): Promise<DirectoryReadResponseDataType> => {
   try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_URL}/directory/read?${query?.form ? `form=${query?.form}&` : ''}`,
@@ -13,13 +44,14 @@ export const handleDirectoryRead = async (query) => {
         withCredentials: true,
       }
     );
-    // console.log(response.data);
+    console.log(response.data);
     return response;
   } catch (err) {
     console.error(err);
     return {
-      message: err.response.data.message,
       status: err.response.status,
+      message: err.response.data.message,
+      data: { directories: [], tracks: [] },
     };
   }
 };
