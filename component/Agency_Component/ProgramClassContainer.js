@@ -3,6 +3,8 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
+import useDisableSideMenu from '@/hook/useDisableSideMenu';
+
 const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
   const containerRef = useRef(null);
 
@@ -11,6 +13,9 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [dragDistance, setDragDistance] = useState(0); // 드래그 거리 추적
+
+  const carouselRef = useRef(null);
+  useDisableSideMenu(carouselRef); // 사이드 메뉴 예외 처리
 
   const MIN_DRAG_DISTANCE = 5; // 드래그와 클릭을 구분할 최소 거리
 
@@ -94,7 +99,7 @@ const ProgramClassContainer = ({ classDataArr, mobileFlag }) => {
   };
 
   return (
-    <Container>
+    <Container ref={carouselRef}>
       <ProgramContainer
         length={classDataArr?.length || 0}
         ref={containerRef}

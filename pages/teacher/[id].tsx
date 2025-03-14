@@ -9,10 +9,10 @@ import { useRouter } from 'next/router'; // Next.js의 useRouter 사용
 import styled from 'styled-components';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import Image from 'next/image';
-// import { loadingImg } from '@/component/Common_Component/LoadingBase64';
 
 import { useRecoilState } from 'recoil';
 import { mobile, log } from '@/store/state';
+
 import EndSection from '@/component/Home_Component/EndSection';
 import ProgramTeacherContainer from '@/component/Teacher_Componet/ProgramTeacherContainer';
 

@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
+import useDisableSideMenu from '@/hook/useDisableSideMenu';
 
 const ProgramTeacherContainer = ({ teacherDataArr, mobileFlag }) => {
   const containerRef = useRef(null);
@@ -12,6 +13,9 @@ const ProgramTeacherContainer = ({ teacherDataArr, mobileFlag }) => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [dragDistance, setDragDistance] = useState(0); // 드래그 거리 추적
+
+  const carouselRef = useRef(null);
+  useDisableSideMenu(carouselRef); // 사이드 메뉴 예외 처리
 
   const MIN_DRAG_DISTANCE = 5; // 드래그와 클릭을 구분할 최소 거리
 
@@ -95,7 +99,7 @@ const ProgramTeacherContainer = ({ teacherDataArr, mobileFlag }) => {
   };
 
   return (
-    <Container>
+    <Container ref={carouselRef}>
       <ProgramContainer
         length={teacherDataArr.length}
         ref={containerRef}

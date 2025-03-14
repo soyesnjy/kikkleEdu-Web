@@ -194,8 +194,8 @@ const CustomPrevArrow = ({ onClick }) => {
 };
 
 const IntroductionCarousel = () => {
-  const [isDragging, setIsDragging] = useState(false);
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const [_, setIsDragging] = useState(false);
+  const [mobileFlag] = useRecoilState(mobile);
 
   // 캐러셀 넘기기 관련 이벤트 처리
   const handleMouseDown = () => {

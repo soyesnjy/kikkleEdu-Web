@@ -1,10 +1,14 @@
 import styled from 'styled-components';
-// import Link from 'next/link';
-// import Image from 'next/image';
+import React, { useRef } from 'react';
+
 import PatentCarousel from '@/component/Introduction_Component/PatentCarousel';
 import EndSection from '@/component/Home_Component/EndSection';
 
+import useDisableSideMenu from '@/hook/useDisableSideMenu';
+
 const PatentPage = () => {
+  const carouselRef = useRef(null);
+  useDisableSideMenu(carouselRef); // 사이드 메뉴 예외 처리
   return (
     <MainContainer>
       {/* 헤더 섹션 */}
@@ -25,7 +29,9 @@ const PatentPage = () => {
         </MiddleContainer>
       </MiddleSection>
       {/* 특허 섹션 */}
-      <PatentCarousel />
+      <CarouselContainer ref={carouselRef}>
+        <PatentCarousel />
+      </CarouselContainer>
       {/* 엔드 섹션 */}
       <EndSection btnTitle={'파트너사'} routePath={'/introduce/partner'} />
     </MainContainer>
@@ -120,17 +126,17 @@ const Subtitle = styled.h2`
   }
 `;
 
-const Description = styled.p`
-  color: white;
+// const Description = styled.p`
+//   color: white;
 
-  font-size: 1.1rem;
-  font-family: Pretendard;
-  font-weight: 400;
+//   font-size: 1.1rem;
+//   font-family: Pretendard;
+//   font-weight: 400;
 
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
+//   @media (max-width: 768px) {
+//     display: none;
+//   }
+// `;
 
 const HeaderIntroDiv = styled.div`
   width: fit-content;
@@ -202,4 +208,13 @@ const MiddleSubtitle = styled.h2`
   font-weight: 700;
 
   white-space: pre;
+`;
+
+const CarouselContainer = styled.div`
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

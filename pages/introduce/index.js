@@ -1,16 +1,20 @@
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import { loadingImg } from '@/component/Common_Component/LoadingBase64';
 
-import IntroductionCarousel from '@/component/Introduction_Component/IntroductionCarousel';
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
 
+import IntroductionCarousel from '@/component/Introduction_Component/IntroductionCarousel';
 import EndSection from '@/component/Home_Component/EndSection';
+
+import useDisableSideMenu from '@/hook/useDisableSideMenu';
 
 const HistoryPage = () => {
   const [mobileFlag] = useRecoilState(mobile);
-  // const router = useRouter();
+  const carouselRef = useRef(null);
+  useDisableSideMenu(carouselRef); // 사이드 메뉴 예외 처리
 
   return (
     <MainContainer>
@@ -44,7 +48,9 @@ const HistoryPage = () => {
         </MiddleContainer>
       </MiddleSection>
       {/* 달력 섹션 */}
-      <IntroductionCarousel />
+      <CarouselContainer ref={carouselRef}>
+        <IntroductionCarousel />
+      </CarouselContainer>
       {/* 엔드 섹션 */}
       <EndSection
         Title={`우리아이의 성장 소예키즈와 함께 \n 몸과 마음을 성장시켜요`}
@@ -223,4 +229,13 @@ const MiddleSubtitle = styled.h2`
   font-size: 2rem;
   font-family: Pretendard;
   font-weight: 700;
+`;
+
+const CarouselContainer = styled.div`
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
