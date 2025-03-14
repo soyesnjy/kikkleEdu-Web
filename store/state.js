@@ -47,6 +47,11 @@ const isNavOpenState = atom({
   default: false,
 });
 
+const isSideMenuDisabled = atom({
+  key: 'isSideMenuDisabled',
+  default: false,
+});
+
 export {
   log,
   avarta,
@@ -56,4 +61,5 @@ export {
   agencyClass,
   modal,
   isNavOpenState,
+  isSideMenuDisabled,
 };

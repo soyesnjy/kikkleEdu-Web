@@ -13,7 +13,7 @@ const slideArr = [
 ];
 
 const PartnerCarouselMobile = () => {
-  const [isDragging, setIsDragging] = useState(false);
+  const [_, setIsDragging] = useState(false);
 
   // 캐러셀 넘기기 관련 이벤트 처리
   const handleMouseDown = () => {
@@ -56,8 +56,6 @@ const PartnerCarouselMobile = () => {
 export default PartnerCarouselMobile;
 
 const StyledSlider = styled(Slider)`
-  width: 1920px;
-  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;

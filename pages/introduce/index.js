@@ -9,7 +9,7 @@ import { mobile } from '@/store/state';
 import EndSection from '@/component/Home_Component/EndSection';
 
 const HistoryPage = () => {
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const [mobileFlag] = useRecoilState(mobile);
   // const router = useRouter();
 
   return (

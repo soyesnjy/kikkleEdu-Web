@@ -1,3 +1,5 @@
+import React, { useRef } from 'react';
+
 import styled from 'styled-components';
 import Image from 'next/image';
 import { useRecoilState } from 'recoil';
@@ -6,8 +8,12 @@ import { mobile } from '@/store/state';
 import EndSection from '@/component/Home_Component/EndSection';
 import PartnerCarouselMobile from '@/component/Introduction_Component/PartnerCarouselMobile';
 
+import useDisableSideMenu from '@/hook/useDisableSideMenu';
+
 const PartnerPage = () => {
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const [mobileFlag] = useRecoilState(mobile);
+  const carouselRef = useRef(null);
+  useDisableSideMenu(carouselRef); // 사이드 메뉴 예외 처리
 
   return (
     <MainContainer>
@@ -43,7 +49,9 @@ const PartnerPage = () => {
             style={{ maxWidth: '100%', height: 'auto' }}
           />
         ) : (
-          <PartnerCarouselMobile />
+          <PartnerCarouselContainer ref={carouselRef}>
+            <PartnerCarouselMobile />
+          </PartnerCarouselContainer>
         )}
       </PartnerSection>
       {/* 엔드 섹션 */}
@@ -251,4 +259,13 @@ const PartnerTitle = styled.h1`
   @media (max-width: 768px) {
     font-size: 2rem;
   }
+`;
+
+const PartnerCarouselContainer = styled.div`
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

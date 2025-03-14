@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { isNavOpenState } from '@/store/state';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { isNavOpenState, isSideMenuDisabled } from '@/store/state';
 
 const NavMobileSideMenuTouchHandler = () => {
   const [isOpen, setIsOpen] = useRecoilState(isNavOpenState);
+  const isMenuDisabled = useRecoilValue(isSideMenuDisabled); // 예외 처리 여부
   const [startX, setStartX] = useState<number | null>(null);
   const [startY, setStartY] = useState<number | null>(null);
 
@@ -14,7 +15,7 @@ const NavMobileSideMenuTouchHandler = () => {
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (startX === null || startY === null) return;
+      if (startX === null || startY === null || isMenuDisabled) return;
       const touchX = e.touches[0].clientX;
       const touchY = e.touches[0].clientY;
 
