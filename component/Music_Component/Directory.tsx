@@ -136,7 +136,7 @@ const Directory = ({ activeTab }: PropsType) => {
       </List>
       {trackData.url && (
         <TrackContainer>
-          {activeTab === 'video' ? (
+          {activeTab === 'video' && (
             <iframe
               key={audioKey}
               src={trackData.url}
@@ -157,7 +157,16 @@ const Directory = ({ activeTab }: PropsType) => {
                     }
               }
             />
-          ) : (
+          )}
+          {activeTab === 'music' && (
+            <iframe
+              key={audioKey}
+              src={trackData.url}
+              width={mobileFlag ? '100%' : '450'}
+              height={mobileFlag ? '130' : '70'}
+            />
+          )}
+          {activeTab === 'class' && (
             <iframe
               key={audioKey}
               src={trackData.url}
