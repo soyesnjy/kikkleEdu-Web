@@ -5,13 +5,14 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 
 import { useRecoilState } from 'recoil';
-import { log, agencyClass } from '@/store/state';
+import { agencyClass } from '@/store/state';
 
 import { useQuery } from 'react-query';
 import { handleBoardGet } from '@/fetchAPI/boardAPI';
 
 import { useRouter } from 'next/router';
 
+import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 import BoardHeaderSection from '@/component/Board_Component/BoardHeaderSection';
 import BoardItem from '@/component/Board_Component/BoardItem';
 import Pagination from '@/component/Common_Component/Pagination';
@@ -22,7 +23,6 @@ type BoardDataType = {
 };
 
 export default function BoardList() {
-  const [login] = useRecoilState(log);
   const [agencyType] = useRecoilState(agencyClass);
 
   const [posts, setPosts] = useState<BoardDataType[]>([]);
@@ -30,20 +30,11 @@ export default function BoardList() {
   const [lastPageNum, setLastPageNum] = useState(1);
 
   const router = useRouter();
+  useLoginSessionCheck();
 
   const handleItemClick = (id: string) => {
     router.push(`/board/${id}`); // 게시글 ID로 이동
   };
-
-  // 로그인 권한이 없는 상태에서의 접근 시 login 페이지로 redirect
-  useEffect(() => {
-    const loginSession = JSON.parse(localStorage.getItem('log'));
-    if (!loginSession) {
-      alert('로그인이 필요한 서비스입니다!');
-      router.replace('/login');
-      return;
-    }
-  }, [login]);
 
   // React Query - 서버에서 데이터를 가져오는 API 함수
   const reactQueryFetchBoard = async ({ queryKey }) => {

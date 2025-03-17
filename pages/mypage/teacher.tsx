@@ -53,10 +53,10 @@ const MyPage = () => {
   const fetchAttendData = async () => {
     const userIdx = localStorage.getItem('userIdx');
     const res = await handleMypageTeacherAttendGet({ userIdx, pageNum: page });
-    if (res.status === 401) {
-      loginSessionClear();
-      alert(res.data.message);
-    }
+    // if (res.status === 401) {
+    //   loginSessionClear();
+    //   alert(res.data.message);
+    // }
     return res.data;
   };
 

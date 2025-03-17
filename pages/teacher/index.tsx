@@ -11,7 +11,7 @@ import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard'
 import EndSection from '@/component/Home_Component/EndSection';
 
 const TeacherListPage = () => {
-  const [teacherClass, setTeacherClass] = useState('');
+  const [teacherClass, setTeacherClass] = useState('ballet');
   const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
 
   const router = useRouter();

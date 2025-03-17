@@ -13,6 +13,7 @@ import Image from 'next/image';
 import { useRecoilState } from 'recoil';
 import { mobile, log } from '@/store/state';
 
+import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 import EndSection from '@/component/Home_Component/EndSection';
 import ProgramTeacherContainer from '@/component/Teacher_Componet/ProgramTeacherContainer';
 
@@ -82,6 +83,8 @@ const TeacherDetailPage = () => {
   const [teacherDataArr, setTeacherDataArr] = useState([]);
   const [profileImgSrc, setProfileImgSrc] = useState('');
 
+  useLoginSessionCheck();
+
   useEffect(() => {
     if (localStorage.getItem('teacherDataArr')) {
       setTeacherDataArr([
@@ -107,15 +110,6 @@ const TeacherDetailPage = () => {
         });
     }
   }, [id]);
-
-  useEffect(() => {
-    // 로그인 시 메인 페이지로 이동
-    const loginSession = JSON.parse(localStorage.getItem('log'));
-    if (!loginSession) {
-      router.replace('/login');
-      return;
-    }
-  }, [login]);
 
   // 이미지 삽입 (옵셔널 체이닝)
   useEffect(() => {
