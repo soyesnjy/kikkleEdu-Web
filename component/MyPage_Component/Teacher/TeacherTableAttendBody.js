@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { handleMypageUpdate } from '@/fetchAPI/mypageAPI';
+
 import Swal from 'sweetalert2';
 import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
 
@@ -34,7 +35,6 @@ const todayCheckHandler = (date) => {
 };
 
 const TeacherTableAttendBody = ({ data, page }) => {
-  const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
   const [attendIdx, setAttendIdx] = useState(0);
   const [attendStatus, setAttendStatus] = useState(0);
   const [attendTrigger, setAttendTrigger] = useState(0);
@@ -58,7 +58,6 @@ const TeacherTableAttendBody = ({ data, page }) => {
       return;
     }
 
-    setIsPending(true);
     try {
       const res = await handleMypageUpdate({
         AttendData: {
@@ -89,8 +88,6 @@ const TeacherTableAttendBody = ({ data, page }) => {
           title: 'Attend Update Fail',
         });
       }
-      // 회원가입 버튼 활성화
-      setIsPending(false);
     } catch (error) {
       console.error('출석 업데이트 실패:', error);
     }

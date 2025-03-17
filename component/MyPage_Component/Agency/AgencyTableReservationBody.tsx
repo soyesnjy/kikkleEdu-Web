@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import PayModal from '@/component/MyPage_Component/PayModal';
 
-const formatPhoneNumber = (phone) => {
+const formatPhoneNumber = (phone: string) => {
   // `+82`로 시작하지 않으면 그대로 반환
   if (!phone?.startsWith('+82')) return phone;
 
@@ -54,6 +54,10 @@ const AgencyTableReservationBody = ({ data }) => {
   );
 };
 
+type StatusType = {
+  status?: boolean;
+};
+
 const TableRow = styled.tr`
   &:nth-child(even) {
     background-color: #f9f9f9;
@@ -82,7 +86,7 @@ const TableCell = styled.td`
   }
 `;
 
-const Status = styled.span`
+const Status = styled.span<StatusType>`
   color: ${({ status }) => (status ? 'blue' : 'red')};
   font-size: 0.9rem;
   font-family: Pretendard;

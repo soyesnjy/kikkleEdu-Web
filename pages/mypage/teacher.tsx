@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
 import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
-import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
+import { useQuery } from 'react-query';
 
 import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 
@@ -13,13 +13,6 @@ import Directory from '@/component/Music_Component/Directory';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
 import TeacherTablePrivacyBody from '@/component/MyPage_Component/Teacher/TeacherTablePrivacyBody';
 import Pagination from '@/component/Common_Component/Pagination';
-
-const attendErrorData = [
-  {
-    kk_teacher_name: '미승인 회원입니다',
-  },
-  // 추가 데이터
-];
 
 const agencyTypeArr = [
   '유치원',
@@ -31,10 +24,9 @@ const agencyTypeArr = [
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('');
-  const [tableData, setTableData] = useState([]);
+  // const [tableData, setTableData] = useState([]);
+  // const [lastPageNum, setLastPageNum] = useState(1);
   const [page, setPage] = useState(1);
-  const [lastPageNum, setLastPageNum] = useState(1);
-  const [teacherData, setTeacherData] = useState(null); // 강사 데이터
 
   const router = useRouter();
   useLoginSessionCheck(); // 로그인 여부 확인
@@ -52,6 +44,40 @@ const MyPage = () => {
       router.push('/');
     }
   };
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
+
+  // 출석 데이터 요청 함수
+  const fetchAttendData = async () => {
+    const userIdx = localStorage.getItem('userIdx');
+    const res = await handleMypageTeacherAttendGet({ userIdx, pageNum: page });
+    if (res.status === 401) {
+      loginSessionClear();
+      alert(res.data.message);
+    }
+    return res.data;
+  };
+
+  // useQuery 적용
+  const {
+    data: attendData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['attendData', page],
+    queryFn: fetchAttendData,
+    staleTime: 5000, // 5초 동안 신선한 상태 유지
+    cacheTime: 10000, // 10초 동안 캐시 유지
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  // 테이블 데이터와 마지막 페이지 번호 업데이트
+  const tableData = activeTab === 'attend' ? attendData?.data : [];
+  const lastPageNum = activeTab === 'attend' ? attendData?.lastPageNum : 1;
 
   useEffect(() => {
     // 기관 로그인 진입 제한
@@ -73,53 +99,10 @@ const MyPage = () => {
 
   // 일반 조회 (탭 || 페이지)
   useEffect(() => {
-    if (activeTab === 'attend') {
-      handleMypageTeacherAttendGet({
-        userIdx: localStorage.getItem('userIdx'),
-        pageNum: page,
-      })
-        .then((res) => {
-          if (res.status === 401) {
-            loginSessionClear();
-            alert(res.data.message);
-          }
-          return res.data;
-        })
-        .then((data) => {
-          // console.log(data);
-          setTableData(data.data);
-          setLastPageNum(data.lastPageNum);
-        })
-        .catch((error) => {
-          console.log(error);
-          setTableData(attendErrorData);
-        });
-    } else if (activeTab === 'privacy') {
-      handleTeacherGet({ teacherIdx: localStorage.getItem('userIdx') })
-        .then((res) => {
-          // console.log(res);
-          if (res.status === 401) {
-            loginSessionClear();
-            alert(res.message);
-          }
-          return res.data;
-        })
-        .then((data) => {
-          // console.log(data);
-          setTeacherData(data.data[0]); // 강사 정보 state 갱신
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
     // 탭 변경 시 페이지 초기화
     if (localStorage.getItem('activeTab') !== activeTab) setPage(1);
     localStorage.setItem('activeTab', activeTab);
   }, [activeTab, page]);
-
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
 
   return (
     <MasterContainer>
@@ -142,15 +125,9 @@ const MyPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {tableData.length > 0
-                  ? tableData.map((data, index) => (
-                      <TeacherTableAttendBody
-                        key={index}
-                        data={data}
-                        page={page}
-                      />
-                    ))
-                  : null}
+                {tableData?.map((data, index) => (
+                  <TeacherTableAttendBody key={index} data={data} page={page} />
+                ))}
               </tbody>
             </Table>
           )}
@@ -159,9 +136,7 @@ const MyPage = () => {
           {activeTab === 'video' && <Directory activeTab={activeTab} />}
           {activeTab === 'class' && <Directory activeTab={activeTab} />}
           {/* 회원정보 수정 */}
-          {activeTab === 'privacy' && (
-            <TeacherTablePrivacyBody data={teacherData} />
-          )}
+          {activeTab === 'privacy' && <TeacherTablePrivacyBody />}
         </TabContainer>
         {activeTab === 'attend' && (
           <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />

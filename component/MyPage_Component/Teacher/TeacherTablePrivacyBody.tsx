@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import {
-  handleSignupDelete,
-  handleSignupUpdate,
-  // handleSignupUpdate_v2,
-} from '@/fetchAPI/signupAPI';
-import { handleClassGet } from '@/fetchAPI/classAPI';
 import Image from 'next/image';
 
-import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
+import { useQuery } from 'react-query';
+
+import { handleSignupDelete, handleSignupUpdate } from '@/fetchAPI/signupAPI';
+import { handleClassGet } from '@/fetchAPI/classAPI';
+import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
+
 import { logoutAPI } from '@/fetchAPI/loginAPI';
 import { useRecoilState } from 'recoil';
 import { log, uid, agencyClass, mobile } from '@/store/state';
 
+import Swal from 'sweetalert2';
 import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
 
 const possLocalArr = ['서울', '부산', '기타'];
@@ -24,17 +24,28 @@ const partTimeArr = [
   { title: '야간 (6:00~10:00)', value: '야간' },
 ];
 
-const TeacherTablePrivacyBody = ({ data }) => {
-  const router = useRouter();
+const formatPhoneNumber = (phone) => {
+  // `+82`로 시작하지 않으면 그대로 반환
+  if (!phone?.startsWith('+82')) return phone;
+
+  // 국가번호(+82) 제거하고 나머지 번호만 추출
+  const numbers = phone.slice(3);
+
+  // 뒤에서부터 8자리 추출 (010-xxxx-xxxx 형식)
+  const lastEightDigits = numbers.slice(-8);
+
+  // 4자리씩 나누어 형식에 맞게 조합
+  return `010-${lastEightDigits.slice(0, 4)}-${lastEightDigits.slice(4)}`;
+};
+
+const TeacherTablePrivacyBody = () => {
   const [login, setLogin] = useRecoilState(log);
   const [userId, setUserId] = useRecoilState(uid);
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const [mobileFlag] = useRecoilState(mobile);
 
-  const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
-
+  const [teacherData, setTeacherData] = useState(null); // 강사 데이터
   const [possClassArr, setPossClassArr] = useState([]);
-
   const [teacherIdx, setTeacherIdx] = useState(0);
   const [introduce, setIntroduce] = useState('');
   const [name, setName] = useState('');
@@ -46,9 +57,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
   const [history, setHistory] = useState(''); // 경력
   const [education, setEducation] = useState(''); // 학력
 
-  const [profileImg, setProfileImg] = useState(null);
-  // const [approveStatus, setApproveStatus] = useState(-1);
-  // const [profilePreviewImg, setprofilePreviewImg] = useState(null);
+  const router = useRouter();
 
   // 데이터 초기화 메서드
   const initData = (data) => {
@@ -74,6 +83,31 @@ const TeacherTablePrivacyBody = ({ data }) => {
     setEducation(data.kk_teacher_education);
   };
 
+  // 개인정보 요청 함수
+  const fetchPrivacyData = async () => {
+    const teacherIdx = localStorage.getItem('userIdx');
+    const res = await handleTeacherGet({ teacherIdx });
+    if (res.status === 401) {
+      alert(res.message);
+    }
+    return res.data;
+  };
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['privacyData'],
+    queryFn: fetchPrivacyData,
+    staleTime: 5000, // 5초 동안 신선한 상태 유지
+    cacheTime: 10000, // 10초 동안 캐시 유지
+    keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
+    onSuccess: (data) => {
+      setTeacherData(data.data[0]); // 강사 정보 state 갱신
+    },
+    onError: (error) => {
+      console.error(error);
+      setTeacherData([]);
+    },
+  });
+
   // 발레 수업 DB 조회
   useEffect(() => {
     if (!possClassArr.length) {
@@ -92,128 +126,61 @@ const TeacherTablePrivacyBody = ({ data }) => {
   }, []);
 
   useEffect(() => {
-    if (data) {
-      // console.log(data);
-      initData(data);
+    if (teacherData) {
+      initData(teacherData);
     }
-  }, [data]);
-
-  // useEffect(() => {
-  //   console.log(possClass);
-  // }, [possClass]);
+  }, [teacherData]);
 
   // 강사 정보 update 핸들러
   const signupUpdateHandler = async (e) => {
     e.preventDefault();
 
     if (confirm('회원 정보를 수정 하시겠습니까?') === true) {
-      setIsPending(true);
+      try {
+        const res = await handleSignupUpdate({
+          SignUpData: {
+            userIdx: teacherIdx,
+            userClass: 'teacher',
+            introduce,
+            name,
+            phoneNum,
+            location,
+            possDay, // 강사 수업 가능 요일
+            possClass, // 강사 가능 수업
+            possTimes, // 강사 가능 시간대
+            history,
+            education,
+            approveStatus: 1,
+          },
+        });
 
-      const reader = new FileReader();
-      // 파일 onloadend 메서드
-      reader.onloadend = async () => {
-        const base64Data = reader.result;
-        try {
-          const res = await handleSignupUpdate({
-            SignUpData: {
-              userIdx: teacherIdx,
-              userClass: 'teacher',
-              introduce,
-              name,
-              phoneNum,
-              location,
-              history,
-              education,
-              fileData: {
-                fileName: profileImg.name,
-                fileType: profileImg.type,
-                baseData: base64Data,
-              },
-              approveStatus: 1,
-            },
+        if (res.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            title: '회원 정보 수정 성공!',
+            text: 'Page Reloading...',
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            // // 화면 새로고침
+            // window.location.reload();
           });
-
-          if (res.status === 200) {
-            Swal.fire({
-              icon: 'success',
-              title: 'Update Success!',
-              text: 'Page Reloading...',
-              showConfirmButton: false,
-              timer: 1500,
-            }).then(() => {
-              // 화면 새로고침
-              window.location.reload();
-            });
-          } else if (res.status === 403) {
-            Swal.fire({
-              icon: 'error',
-              title: '중복된 이메일입니다',
-            });
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Update Fail',
-            });
-          }
-          // 회원가입 버튼 활성화
-          setIsPending(false);
-        } catch (error) {
-          console.error('업로드 실패:', error);
-        }
-      };
-      // profileImg가 있을 경우 -> reader의 파일 정보를 읽고 onloadend 메서드 실행
-      if (profileImg) reader?.readAsDataURL(profileImg);
-      // profileImg가 없을 경우 -> 아래 코드 실행
-      else {
-        try {
-          const res = await handleSignupUpdate({
-            SignUpData: {
-              userIdx: teacherIdx,
-              userClass: 'teacher',
-              introduce,
-              name,
-              phoneNum,
-              location,
-              possDay, // 강사 수업 가능 요일
-              possClass, // 강사 가능 수업
-              possTimes, // 강사 가능 시간대
-              history,
-              education,
-              approveStatus: 1,
-            },
+        } else if (res.status === 403) {
+          Swal.fire({
+            icon: 'error',
+            title: '중복된 이메일입니다',
           });
-
-          if (res.status === 200) {
-            Swal.fire({
-              icon: 'success',
-              title: '회원 정보 수정 성공!',
-              text: 'Page Reloading...',
-              showConfirmButton: false,
-              timer: 1500,
-            }).then(() => {
-              // // 화면 새로고침
-              // window.location.reload();
-            });
-          } else if (res.status === 403) {
-            Swal.fire({
-              icon: 'error',
-              title: '중복된 이메일입니다',
-            });
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: '수정 실패...',
-            });
-          }
-          // 회원가입 버튼 활성화
-          setIsPending(false);
-        } catch (error) {
-          console.error(error);
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: '수정 실패...',
+          });
         }
+      } catch (error) {
+        console.error(error);
       }
     } else return;
   };
-
   // 강사 정보 delete 핸들러
   const teacherDeleteHandler = async () => {
     try {
@@ -254,12 +221,15 @@ const TeacherTablePrivacyBody = ({ data }) => {
     }
   };
 
-  return data ? (
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error...</div>;
+
+  return teacherData ? (
     <PrivacyContainer>
       <ProfileImageContainer>
         <Image
           src={
-            data?.kk_teacher_profileImg_path ||
+            teacherData?.kk_teacher_profileImg_path ||
             '/src/Teacher_IMG/Teacher_Pupu_Profile_IMG.png'
           }
           alt="profile_IMG"
@@ -269,11 +239,11 @@ const TeacherTablePrivacyBody = ({ data }) => {
             borderRadius: '10%',
           }}
         />
-        <UserName>강사 {data?.kk_teacher_name}</UserName>
+        <UserName>강사 {teacherData?.kk_teacher_name}</UserName>
       </ProfileImageContainer>
       <PageContainer>
         <Form>
-          <FormRow color={true}>
+          <FormRow>
             <Label>이름</Label>
             <InputContainer>
               <StyledInput
@@ -335,7 +305,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
               <StyledInput
                 type="text"
                 id="phoneNum"
-                value={phoneNum}
+                value={formatPhoneNumber(phoneNum)}
                 placeholder="010-XXXX-XXXX"
                 onChange={(e) => {
                   setPhoneNum(e.target.value);
@@ -343,7 +313,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
               />
             </InputContainer>
           </FormRow>
-          <FormRow color={true}>
+          <FormRow>
             <Label>희망 수업</Label>
             <CheckboxGroup grid={mobileFlag ? 2 : 5}>
               {possClassArr.map((el, index) => {
@@ -351,7 +321,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
                 return (
                   <CheckboxContainer
                     key={index}
-                    value={id}
+                    // value={id}
                     onClick={() => {
                       // 선택 취소
                       if (possClass.includes(id))
@@ -361,31 +331,10 @@ const TeacherTablePrivacyBody = ({ data }) => {
                     }}
                   >
                     <CheckboxWrapper status={possClass.includes(id)}>
-                      <CheckIcon fontSize="8px" />
+                      <CheckIcon fontSize="inherit" />
                     </CheckboxWrapper>
                     <CheckboxLabel>{title}</CheckboxLabel>
                   </CheckboxContainer>
-
-                  // 구버전 코드
-                  // <CheckboxWrapper key={index}>
-                  //   <StyledInput
-                  //     type="checkbox"
-                  //     id={id}
-                  //     value={id}
-                  //     checked={possClass.includes(id)}
-                  // onChange={(e) => {
-                  //   // 선택 취소
-                  //   if (possClass.includes(id))
-                  //     setPossClass([
-                  //       ...possClass.filter((el) => el !== id),
-                  //     ]);
-                  //   // 선택
-                  //   else
-                  //     setPossClass([...possClass, Number(e.target.value)]);
-                  // }}
-                  //   />
-                  //   <StyledLabel htmlFor={id}>{title}</StyledLabel>
-                  // </CheckboxWrapper>
                 );
               })}
             </CheckboxGroup>
@@ -420,7 +369,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
                 return (
                   <CheckboxContainer
                     key={index}
-                    value={day}
+                    // value={day}
                     onClick={() => {
                       // 선택 취소
                       if (possDay.includes(day))
@@ -430,7 +379,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
                     }}
                   >
                     <CheckboxWrapper status={possDay.includes(day)}>
-                      <CheckIcon fontSize="8px" />
+                      <CheckIcon fontSize="inherit" />
                     </CheckboxWrapper>
                     <CheckboxLabel>{day}</CheckboxLabel>
                   </CheckboxContainer>
@@ -446,7 +395,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
                 return (
                   <CheckboxContainer
                     key={index}
-                    value={value}
+                    // value={value}
                     onClick={() => {
                       // 선택 취소
                       if (possTimes.includes(value))
@@ -458,7 +407,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
                     }}
                   >
                     <CheckboxWrapper status={possTimes.includes(value)}>
-                      <CheckIcon fontSize="8px" />
+                      <CheckIcon fontSize="inherit" />
                     </CheckboxWrapper>
                     <CheckboxLabel>{title}</CheckboxLabel>
                   </CheckboxContainer>
@@ -473,7 +422,7 @@ const TeacherTablePrivacyBody = ({ data }) => {
           <CancelButton
             onClick={() => {
               // 기존 강사 정보로 초기화
-              initData(data);
+              initData(teacherData);
             }}
           >
             취소하기
@@ -565,7 +514,11 @@ const Form = styled.div`
   flex-direction: column;
 `;
 
-const FormRow = styled.div`
+type FormRowType = {
+  bottomColor?: boolean;
+};
+
+const FormRow = styled.div<FormRowType>`
   display: flex;
   align-items: center;
 
@@ -625,7 +578,11 @@ const StyledLabel = styled.label`
   cursor: pointer;
 `;
 
-const CheckboxGroup = styled.div`
+type CheckboxGroupType = {
+  grid: number;
+};
+
+const CheckboxGroup = styled.div<CheckboxGroupType>`
   flex: 4;
 
   display: ${(props) => (props.grid ? 'grid' : 'flex')};
@@ -658,7 +615,11 @@ const CheckboxContainer = styled.div`
   }
 `;
 
-const CheckboxWrapper = styled.div`
+type CheckboxWrapperType = {
+  status: boolean;
+};
+
+const CheckboxWrapper = styled.div<CheckboxWrapperType>`
   display: flex;
   justify-content: center;
   align-items: center;

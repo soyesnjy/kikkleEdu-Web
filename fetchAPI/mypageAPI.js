@@ -25,7 +25,7 @@ ${pageNum ? `pageNum=${pageNum}&` : ''}`,
     return {
       status: err.response.status,
       message: err.response.data.message,
-      data: {},
+      data: [],
     };
   }
 };
@@ -49,7 +49,7 @@ export const handleMypageAgencyReservationGet = async (query) => {
     return {
       message: err.response.data.message,
       status: err.response.status,
-      data: {},
+      data: [],
     };
   }
 };
@@ -76,6 +76,7 @@ export const handleMypageCreate = async (post) => {
     return {
       message: err.response.data.message,
       status: err.response.status,
+      data: [],
     };
   }
 };
@@ -100,6 +101,7 @@ export const handleMypageUpdate = async (post) => {
     return {
       message: err.response.data.message,
       status: err.response.status,
+      data: [],
     };
   }
 };
@@ -123,6 +125,7 @@ export const handleMypageDelete = async (query) => {
     return {
       message: err.response.data.message,
       status: err.response.status,
+      data: [],
     };
   }
 };

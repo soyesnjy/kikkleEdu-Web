@@ -32,10 +32,10 @@ const MyPage = () => {
   const router = useRouter();
   useLoginSessionCheck(); // 로그인 여부 확인
 
+  // Tab Click Handler
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-
   // Reservation Request Method
   const fetchReservationData = async () => {
     const userIdx = localStorage.getItem('userIdx');
@@ -45,7 +45,6 @@ const MyPage = () => {
     });
     return res.data;
   };
-
   // Teacher Request Method
   const fetchInstructorData = async () => {
     const agencyIdx = localStorage.getItem('userIdx');
@@ -140,12 +139,13 @@ const MyPage = () => {
         <Header>{`마이페이지 - 기관`}</Header>
         <AgencyTab activeTab={activeTab} handleTabClick={handleTabClick} />
         {activeTab === 'reservation' && isLoadingReservation && (
-          <p>로딩 중...</p>
+          <p>Loading...</p>
         )}
-        {activeTab === 'instructor' && isLoadingInstructor && <p>로딩 중...</p>}
-
-        {activeTab === 'reservation' && errorReservation && <p>에러 발생</p>}
-        {activeTab === 'instructor' && errorInstructor && <p>에러 발생</p>}
+        {activeTab === 'instructor' && isLoadingInstructor && (
+          <p>Loading....</p>
+        )}
+        {activeTab === 'reservation' && errorReservation && <p>Error!</p>}
+        {activeTab === 'instructor' && errorInstructor && <p>Error!!</p>}
         <TableContainer>
           <Table>
             {/* Table Header */}

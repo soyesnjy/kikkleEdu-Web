@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
 
 // 날짜 -> 요일 변환 메서드
 const getDayName = (dateString) => {
   // 요일 배열을 만듭니다. 0: 일요일, 1: 월요일, ... , 6: 토요일
   const days = ['일', '월', '화', '수', '목', '금', '토'];
-
   // 입력된 문자열을 Date 객체로 변환합니다.
   const date = new Date(dateString);
 
   // 날짜가 유효한지 확인합니다.
-  if (isNaN(date)) {
+  if (isNaN(date.getTime())) {
     return 'Invalid Date';
   }
 
@@ -22,7 +20,7 @@ const getDayName = (dateString) => {
   return days[dayIndex];
 };
 
-const formatPhoneNumber = (phone) => {
+const formatPhoneNumber = (phone: string) => {
   // `+82`로 시작하지 않으면 그대로 반환
   if (!phone?.startsWith('+82')) return phone;
 
@@ -37,14 +35,6 @@ const formatPhoneNumber = (phone) => {
 };
 
 const AgencyTableAttendBody = ({ data }) => {
-  const [attendIdx, setAttendIdx] = useState(0);
-  const [attendStatus, setAttendStatus] = useState(0);
-
-  useEffect(() => {
-    setAttendIdx(data.kk_attend_idx);
-    setAttendStatus(data.kk_attend_status);
-  }, [data]);
-
   return (
     <TableRow>
       <TableCell>{data.kk_class_title}</TableCell>
@@ -60,6 +50,10 @@ const AgencyTableAttendBody = ({ data }) => {
       </TableCell>
     </TableRow>
   );
+};
+
+type StatusType = {
+  status?: boolean;
 };
 
 const TableRow = styled.tr`
@@ -90,7 +84,7 @@ const TableCell = styled.td`
   }
 `;
 
-const Status = styled.span`
+const Status = styled.span<StatusType>`
   color: ${({ status }) => (status ? 'blue' : 'red')};
   font-size: 0.9rem;
   font-family: Pretendard;
