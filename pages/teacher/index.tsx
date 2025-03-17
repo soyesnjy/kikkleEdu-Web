@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import { useRouter } from 'next/router';
+import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 
 import TeacherSearchBar from '@/component/Home_Component/TeacherSearchBar';
 import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
@@ -14,6 +15,7 @@ const TeacherListPage = () => {
   const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
 
   const router = useRouter();
+  useLoginSessionCheck();
 
   // 로그인 세션 Clear 메서드
   const loginSessionClear = () => {
@@ -28,19 +30,6 @@ const TeacherListPage = () => {
       router.push('/');
     }
   };
-
-  // 강사 List 조회
-  useEffect(() => {
-    // 미로그인 시 메인 페이지로 이동
-    const loginSession = JSON.parse(localStorage.getItem('log'));
-    if (!loginSession) {
-      alert('로그인이 필요한 서비스입니다!');
-      router.replace('/login');
-      return;
-    }
-
-    setTeacherClass(localStorage.getItem('teacherClassTag') || 'ballet');
-  }, []);
 
   // 강사 태그 조회
   useEffect(() => {

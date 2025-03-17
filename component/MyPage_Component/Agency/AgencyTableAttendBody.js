@@ -22,6 +22,20 @@ const getDayName = (dateString) => {
   return days[dayIndex];
 };
 
+const formatPhoneNumber = (phone) => {
+  // `+82`로 시작하지 않으면 그대로 반환
+  if (!phone?.startsWith('+82')) return phone;
+
+  // 국가번호(+82) 제거하고 나머지 번호만 추출
+  const numbers = phone.slice(3);
+
+  // 뒤에서부터 8자리 추출 (010-xxxx-xxxx 형식)
+  const lastEightDigits = numbers.slice(-8);
+
+  // 4자리씩 나누어 형식에 맞게 조합
+  return `010-${lastEightDigits.slice(0, 4)}-${lastEightDigits.slice(4)}`;
+};
+
 const AgencyTableAttendBody = ({ data }) => {
   const [attendIdx, setAttendIdx] = useState(0);
   const [attendStatus, setAttendStatus] = useState(0);
@@ -38,7 +52,7 @@ const AgencyTableAttendBody = ({ data }) => {
       <TableCell>{data.kk_attend_date}</TableCell>
       <TableCell>{getDayName(data.kk_attend_date)}</TableCell>
       <TableCell>{data.kk_reservation_time}</TableCell>
-      <TableCell>{data.kk_teacher_phoneNum}</TableCell>
+      <TableCell>{formatPhoneNumber(data.kk_teacher_phoneNum)}</TableCell>
       <TableCell>
         <Status status={data.kk_attend_status}>
           {data.kk_attend_status ? '출석' : '미출석'}

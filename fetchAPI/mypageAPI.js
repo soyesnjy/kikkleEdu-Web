@@ -23,8 +23,9 @@ ${pageNum ? `pageNum=${pageNum}&` : ''}`,
   } catch (err) {
     console.error(err);
     return {
-      message: err.response.data.message,
       status: err.response.status,
+      message: err.response.data.message,
+      data: {},
     };
   }
 };
@@ -48,6 +49,7 @@ export const handleMypageAgencyReservationGet = async (query) => {
     return {
       message: err.response.data.message,
       status: err.response.status,
+      data: {},
     };
   }
 };

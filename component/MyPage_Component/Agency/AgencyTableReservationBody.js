@@ -1,35 +1,56 @@
 import React from 'react';
 import styled from 'styled-components';
-// import { handleMypageUpdate } from '@/fetchAPI/mypageAPI';
-// import Swal from 'sweetalert2';
-// import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
+import { useState } from 'react';
+import PayModal from '@/component/MyPage_Component/PayModal';
 
-const AgencyTableReservationBody = ({ data, setIsOpen }) => {
+const formatPhoneNumber = (phone) => {
+  // `+82`로 시작하지 않으면 그대로 반환
+  if (!phone?.startsWith('+82')) return phone;
+
+  // 국가번호(+82) 제거하고 나머지 번호만 추출
+  const numbers = phone.slice(3);
+
+  // 뒤에서부터 8자리 추출 (010-xxxx-xxxx 형식)
+  const lastEightDigits = numbers.slice(-8);
+
+  // 4자리씩 나누어 형식에 맞게 조합
+  return `010-${lastEightDigits.slice(0, 4)}-${lastEightDigits.slice(4)}`;
+};
+
+const AgencyTableReservationBody = ({ data }) => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <TableRow>
-      <TableCell>{data.kk_class_title}</TableCell>
-      <TableCell>
-        {data.kk_teacher_name ? data.kk_teacher_name : '매칭중...'}
-      </TableCell>
-      <TableCell>
-        {data.kk_reservation_start_date} ~ {data.kk_reservation_end_date}
-      </TableCell>
-      <TableCell>
-        {data.kk_teacher_phoneNum ? data.kk_teacher_phoneNum : '매칭중...'}
-      </TableCell>
-      <TableCell>
-        <Status status={data.kk_reservation_approve_status}>
-          {data.kk_reservation_approve_status ? '승인' : '미승인'}
-        </Status>
-      </TableCell>
-      <TableCell>
-        {data.kk_reservation_approve_status ? (
-          <PayButton onClick={() => setIsOpen(true)}>세금 계산서</PayButton>
-        ) : (
-          <Status status={data.kk_reservation_approve_status}>대기중...</Status>
-        )}
-      </TableCell>
-    </TableRow>
+    <>
+      <TableRow>
+        <TableCell>{data.kk_class_title}</TableCell>
+        <TableCell>
+          {data.kk_teacher_name ? data.kk_teacher_name : '매칭중...'}
+        </TableCell>
+        <TableCell>
+          {data.kk_reservation_start_date} ~ {data.kk_reservation_end_date}
+        </TableCell>
+        <TableCell>
+          {data.kk_teacher_phoneNum
+            ? formatPhoneNumber(data.kk_teacher_phoneNum)
+            : '매칭중...'}
+        </TableCell>
+        <TableCell>
+          <Status status={data.kk_reservation_approve_status}>
+            {data.kk_reservation_approve_status ? '승인' : '미승인'}
+          </Status>
+        </TableCell>
+        <TableCell>
+          {data.kk_reservation_approve_status ? (
+            <PayButton onClick={() => setIsOpen(true)}>세금 계산서</PayButton>
+          ) : (
+            <Status status={data.kk_reservation_approve_status}>
+              대기중...
+            </Status>
+          )}
+        </TableCell>
+      </TableRow>
+      <PayModal isOpen={isOpen} setIsOpen={setIsOpen} />
+    </>
   );
 };
 
