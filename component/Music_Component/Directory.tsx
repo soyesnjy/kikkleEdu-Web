@@ -18,6 +18,7 @@ const titleMap = {
 // React Query - 서버에서 데이터를 가져오는 API 함수
 const reactQueryFetchEvent = async ({ queryKey }) => {
   const [, activeTab] = queryKey;
+  // activeTab에 해당되는 모든 폴더, 파일 데이터 요청
   const res = await handleDirectoryRead({ form: activeTab });
   const data = res.data;
 
@@ -120,20 +121,21 @@ const Directory = ({ activeTab }: PropsType) => {
           <DeleteForm directories={data} form={activeTab} />
         </UploadContainer>
       )}
-      <List>
+      <DirctoryUl>
         {/* Root 폴더가 아닌 경우에만 뒤로가기 버튼 추가 */}
-        {!isRoot && <BackButton onClick={handleBackClick}>Back</BackButton>}
+        {!isRoot && <BackButton onClick={handleBackClick}>{`Back`}</BackButton>}
         {items.map((item, index) => (
-          <ListItem
+          <DirctoryLi
             key={index}
             onClick={() => handleItemClick(item)}
             type={item.kk_directory_type}
             selected={item.kk_directory_idx === selecteditems}
           >
             <StyledLink>{item.kk_directory_name}</StyledLink>
-          </ListItem>
+          </DirctoryLi>
         ))}
-      </List>
+      </DirctoryUl>
+      {/* 파일을 클릭한 경우 */}
       {trackData.url && (
         <TrackContainer>
           {activeTab === 'video' && (
@@ -211,7 +213,7 @@ const UploadContainer = styled.div`
   }
 `;
 
-const List = styled.ul`
+const DirctoryUl = styled.ul`
   width: 500px;
   list-style: none;
   padding: 1rem;
@@ -225,7 +227,7 @@ const List = styled.ul`
   }
 `;
 
-const ListItem = styled.li<ListItemType>`
+const DirctoryLi = styled.li<ListItemType>`
   margin: 5px 0;
   padding: 0.5rem;
 

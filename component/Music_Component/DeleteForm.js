@@ -97,8 +97,6 @@ const DeleteForm = ({ directories, form }) => {
             className="dropdown"
             mode="multiSelect"
           />
-        </FormGroup>
-        <FormGroup>
           <WarningSpan>*폴더 내부의 파일 전체가 삭제됩니다</WarningSpan>
         </FormGroup>
         <Button type="submit" disabled={isPending}>
@@ -126,8 +124,10 @@ const FormContainer = styled.div`
   }
 
   form {
+    min-height: 200px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
   }
 `;
 

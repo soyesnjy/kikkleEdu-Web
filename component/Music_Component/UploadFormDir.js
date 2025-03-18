@@ -100,6 +100,7 @@ const UploadFormDir = ({ directories, form }) => {
             className="dropdown"
             mode="multiSelect"
           />
+          <InfoSpan>*폴더 미선택 시 Root 경로에 폴더가 생성됩니다</InfoSpan>
         </FormGroup>
         <FormGroup>
           <Label htmlFor="directoryName">폴더 이름</Label>
@@ -110,7 +111,6 @@ const UploadFormDir = ({ directories, form }) => {
             onChange={(e) => setDirectoryName(e.target.value)}
           />
         </FormGroup>
-        <InfoSpan>*폴더 미선택 시 Root 경로에 폴더가 생성됩니다</InfoSpan>
         <Button type="submit" disabled={isPending}>
           {isPending ? '생성중...' : '생성'}
         </Button>
@@ -136,8 +136,10 @@ const FormContainer = styled.div`
   }
 
   form {
+    min-height: 200px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
   }
 `;
 

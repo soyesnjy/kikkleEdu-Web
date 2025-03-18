@@ -187,7 +187,7 @@ const UploadForm = ({ directories, form }) => {
     }
   };
 
-  const handleChange = (currentNode, selectedNodes) => {
+  const handleChange = (currentNode) => {
     setSelectedDirectory(currentNode);
   };
 
@@ -253,7 +253,6 @@ const UploadForm = ({ directories, form }) => {
 
 const FormContainer = styled.div`
   width: 250px;
-
   margin: 20px;
   padding: 1rem;
   border: 1px solid green;
@@ -268,8 +267,10 @@ const FormContainer = styled.div`
   }
 
   form {
+    min-height: 200px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
   }
 `;
 

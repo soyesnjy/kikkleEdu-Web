@@ -73,8 +73,7 @@ const UploadFormTest = ({ directories }) => {
     }
   };
 
-  const handleChange = (currentNode, selectedNodes) => {
-    console.log(currentNode);
+  const handleChange = (currentNode) => {
     setSelectedDirectory(currentNode);
   };
 
