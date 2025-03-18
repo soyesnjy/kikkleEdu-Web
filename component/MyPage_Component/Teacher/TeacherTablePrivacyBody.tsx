@@ -24,7 +24,7 @@ const partTimeArr = [
   { title: '야간 (6:00~10:00)', value: '야간' },
 ];
 
-const formatPhoneNumber = (phone) => {
+const formatPhoneNumber = (phone: string) => {
   // `+82`로 시작하지 않으면 그대로 반환
   if (!phone?.startsWith('+82')) return phone;
 
@@ -99,9 +99,6 @@ const TeacherTablePrivacyBody = () => {
     staleTime: 5000, // 5초 동안 신선한 상태 유지
     cacheTime: 10000, // 10초 동안 캐시 유지
     keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
-    onSuccess: (data) => {
-      setTeacherData(data.data[0]); // 강사 정보 state 갱신
-    },
     onError: (error) => {
       console.error(error);
       setTeacherData([]);
@@ -126,10 +123,17 @@ const TeacherTablePrivacyBody = () => {
   }, []);
 
   useEffect(() => {
-    if (teacherData) {
-      initData(teacherData);
+    if (data) {
+      setTeacherData(data.data[0]);
+      initData(data.data[0]);
     }
-  }, [teacherData]);
+  }, [data]);
+
+  // useEffect(() => {
+  //   if (teacherData) {
+  //     initData(teacherData);
+  //   }
+  // }, [teacherData]);
 
   // 강사 정보 update 핸들러
   const signupUpdateHandler = async (e) => {
@@ -224,7 +228,7 @@ const TeacherTablePrivacyBody = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error...</div>;
 
-  return teacherData ? (
+  return data ? (
     <PrivacyContainer>
       <ProfileImageContainer>
         <Image

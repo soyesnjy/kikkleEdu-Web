@@ -2,23 +2,23 @@ import axios from 'axios';
 
 // Directory Data Type
 type DirectoryDataType = {
-  kk_directory_created_at: string;
-  kk_directory_form: string;
   kk_directory_idx: number;
-  kk_directory_name: string;
   kk_directory_parent_idx?: number;
+  kk_directory_form: string;
+  kk_directory_name: string;
   kk_directory_type: string;
+  kk_directory_created_at: string;
   kk_directory_updated_at: string;
 };
 // Track Data Type
 type TrackDataType = {
   kk_directory_idx: number;
-  kk_file_created_at: string;
   kk_file_data_id: string;
   kk_file_form: string;
   kk_file_idx: number;
   kk_file_name: string;
   kk_file_path: string;
+  kk_file_created_at: string;
   kk_file_updated_at: string;
 };
 
@@ -35,7 +35,8 @@ export const handleDirectoryRead = async (query: {
 }): Promise<DirectoryReadResponseDataType> => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_URL}/directory/read?${query?.form ? `form=${query?.form}&` : ''}`,
+      `${process.env.NEXT_PUBLIC_URL}/directory/read?
+${query?.form ? `form=${query?.form}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',

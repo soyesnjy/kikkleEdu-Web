@@ -1,38 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
+
+import { useRecoilValue } from 'recoil';
+import { agencyClass, mobile } from '@/store/state';
+
+import { useQuery } from 'react-query';
+import { handleDirectoryRead } from '@/fetchAPI/directoryAPI';
+
 import UploadForm from './UploadForm'; // 새로운 업로드 폼 컴포넌트
 import UploadFormDir from './UploadFormDir';
 import DeleteForm from './DeleteForm';
-import { useQuery } from 'react-query';
-
-import { useRecoilState } from 'recoil';
-import { agencyClass, mobile } from '@/store/state';
-import { handleDirectoryRead } from '@/fetchAPI/directoryAPI';
 
 const titleMap = {
   music: '수업 음원 자료',
   video: '수업 영상 자료',
   class: '수업 강의 계획서',
-};
-
-// React Query - 서버에서 데이터를 가져오는 API 함수
-const reactQueryFetchEvent = async ({ queryKey }) => {
-  const [, activeTab] = queryKey;
-  // activeTab에 해당되는 모든 폴더, 파일 데이터 요청
-  const res = await handleDirectoryRead({ form: activeTab });
-  const data = res.data;
-
-  const formattedData = data.directories.map((dir) => ({
-    ...dir,
-    url:
-      dir.kk_directory_type === 'file'
-        ? data.tracks.find(
-            (track) => track.kk_directory_idx === dir.kk_directory_idx
-          )?.kk_file_path
-        : null,
-  }));
-
-  return formattedData;
 };
 
 // Props Type
@@ -41,61 +23,83 @@ type PropsType = {
 };
 
 const Directory = ({ activeTab }: PropsType) => {
-  const [trackData, setTrackData] = useState({ url: '' });
-  const [path, setPath] = useState([null]); // root path with null
-  const [items, setItems] = useState([]);
-  const [selecteditems, setSelecteditems] = useState(0);
-  const [isRoot, setIsRoot] = useState(true);
-  const [audioKey, setAudioKey] = useState(0); // unique key for AudioPlayer
+  const [path, setPath] = useState([null]); // 폴더 Depth 경로
+  const [selectedItems, setSelectedItems] = useState(0); // 선택된 아이템 Idx
+  const [fileData, setFileData] = useState({ url: '' }); // File 데이터
+  const [audioKey, setAudioKey] = useState(0); // 리렌더링 트리거
 
-  const [agencyType] = useRecoilState(agencyClass);
-  const [mobileFlag] = useRecoilState(mobile);
+  const agencyType = useRecoilValue(agencyClass);
+  const mobileFlag = useRecoilValue(mobile);
 
+  // activeTab 값이 변경될 경우 state 초기화
+  useEffect(() => {
+    setFileData({ url: '' });
+    setPath([null]);
+    setSelectedItems(0);
+  }, [activeTab]);
+
+  // React Query - 서버에서 데이터를 가져오는 API 함수
+  const reactQueryFetchDirectory = async ({ queryKey }) => {
+    const [, activeTab] = queryKey;
+    // activeTab에 해당되는 모든 폴더, 파일 데이터 요청
+    const res = await handleDirectoryRead({ form: activeTab });
+    const data = res.data;
+
+    const formattedData = data.directories.map((dir) => ({
+      ...dir,
+      // 파일인 경우 url 속성 추가
+      url:
+        dir.kk_directory_type === 'file'
+          ? data.tracks.find(
+              (track) => track.kk_directory_idx === dir.kk_directory_idx
+            )?.kk_file_path
+          : null,
+    }));
+
+    return formattedData;
+  };
   // React Query 데이터 가져오기
   const { data, isLoading, error } = useQuery(
     ['shareData', activeTab], // Query Key
-    reactQueryFetchEvent, // Query Function
+    reactQueryFetchDirectory, // Query Function
     {
-      enabled: activeTab !== '', // 유효한 값일 때만 실행
-      staleTime: 5000, // 5초 동안 신선한 상태 유지
-      cacheTime: 60 * 60 * 1000, // 1시간 동안 캐시 유지
+      // 유효한 값일 경우만 실행
+      enabled: ['music', 'video', 'class'].includes(activeTab),
+      staleTime: 5000, // 5초 동안 상태 유지
+      cacheTime: 10000, // 10초 동안 캐시 유지
       keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
     }
   );
 
-  useEffect(() => {
-    // 현재 폴더의 아이템 요소 갱신
-    if (data) {
-      const currentParentId = path[path.length - 1];
-      const currentItems = data.filter(
-        (item) => item.kk_directory_parent_idx === currentParentId
-      );
-      setItems(currentItems);
-      setIsRoot(path.length === 1); // path가 1인 경우 Root
-    }
-  }, [path, data]);
-
   // 파일 및 폴더 Click Handler
-  const handleItemClick = (item) => {
-    // 폴더
+  const handleItemClick = (item): void => {
+    // 폴더 Click
     if (item.kk_directory_type === 'directory') {
       setPath([...path, item.kk_directory_idx]);
-      setTrackData({ url: '' });
+      setFileData({ url: '' }); // 파일 데이터 초기화
     }
-    // 파일
+    // 파일 Click
     else {
-      setTrackData(item);
-      setSelecteditems(item.kk_directory_idx);
-      setAudioKey((prevKey) => prevKey + 1); // change key to re-render AudioPlayer
+      setFileData(item);
+      setSelectedItems(item.kk_directory_idx);
+      setAudioKey((prevKey) => prevKey + 1);
     }
+  };
+  // 뒤로가기 Click Handler
+  const handleBackClick = (): void => {
+    setPath(path.slice(0, -1));
+    setSelectedItems(0);
+    setFileData({ url: '' });
   };
 
-  // 뒤로가기 Click Handler
-  const handleBackClick = () => {
-    setPath(path.slice(0, -1));
-    setSelecteditems(0);
-    setTrackData({ url: '' });
-  };
+  // 현재 폴더의 자식요소
+  const currentItems = useMemo(
+    () =>
+      data?.filter(
+        (item) => item.kk_directory_parent_idx === path[path.length - 1]
+      ) || [],
+    [data, path]
+  );
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error...</div>;
@@ -103,7 +107,7 @@ const Directory = ({ activeTab }: PropsType) => {
   return (
     <Container>
       <Title>{titleMap[activeTab]}</Title>
-      {/* 관리자 전용 자료 생성 폼 */}
+      {/* 관리자 전용 폼 */}
       {agencyType === 'admin' && (
         <UploadContainer>
           <UploadForm
@@ -123,25 +127,27 @@ const Directory = ({ activeTab }: PropsType) => {
       )}
       <DirctoryUl>
         {/* Root 폴더가 아닌 경우에만 뒤로가기 버튼 추가 */}
-        {!isRoot && <BackButton onClick={handleBackClick}>{`Back`}</BackButton>}
-        {items.map((item, index) => (
+        {path.length !== 1 && (
+          <BackButton onClick={handleBackClick}>{`Back`}</BackButton>
+        )}
+        {/* 현재 폴더 자식요소 */}
+        {currentItems.map((item, index) => (
           <DirctoryLi
             key={index}
+            selected={item.kk_directory_idx === selectedItems}
             onClick={() => handleItemClick(item)}
-            type={item.kk_directory_type}
-            selected={item.kk_directory_idx === selecteditems}
           >
-            <StyledLink>{item.kk_directory_name}</StyledLink>
+            <DirctoryName>{item.kk_directory_name}</DirctoryName>
           </DirctoryLi>
         ))}
       </DirctoryUl>
       {/* 파일을 클릭한 경우 */}
-      {trackData.url && (
+      {fileData.url && (
         <TrackContainer>
-          {activeTab === 'video' && (
+          {activeTab === 'video' ? (
             <iframe
               key={audioKey}
-              src={trackData.url}
+              src={fileData.url}
               allowFullScreen
               allow="fullscreen"
               style={
@@ -159,19 +165,10 @@ const Directory = ({ activeTab }: PropsType) => {
                     }
               }
             />
-          )}
-          {activeTab === 'music' && (
+          ) : (
             <iframe
               key={audioKey}
-              src={trackData.url}
-              width={mobileFlag ? '100%' : '450'}
-              height={mobileFlag ? '130' : '70'}
-            />
-          )}
-          {activeTab === 'class' && (
-            <iframe
-              key={audioKey}
-              src={trackData.url}
+              src={fileData.url}
               width={mobileFlag ? '100%' : '450'}
               height={mobileFlag ? '130' : '70'}
             />
@@ -221,7 +218,6 @@ const DirctoryUl = styled.ul`
   border-radius: 24px;
 
   @media (max-width: 768px) {
-    min-width: 390px;
     width: 100%;
     padding: 1rem;
   }
@@ -232,8 +228,7 @@ const DirctoryLi = styled.li<ListItemType>`
   padding: 0.5rem;
 
   background-color: ${(props) => (props.selected ? '#398E56' : '#45b26b')};
-
-  border-radius: 24px;
+  border-radius: 1rem;
 
   cursor: pointer;
 
@@ -242,7 +237,7 @@ const DirctoryLi = styled.li<ListItemType>`
   font-weight: 700;
   text-align: center;
 
-  transition: 0.3s;
+  transition: 0.5s;
 
   &:hover {
     opacity: 0.8;
@@ -253,7 +248,7 @@ const DirctoryLi = styled.li<ListItemType>`
   }
 `;
 
-const StyledLink = styled.a`
+const DirctoryName = styled.span`
   text-decoration: none;
   color: white;
 `;

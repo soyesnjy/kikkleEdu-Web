@@ -9,9 +9,9 @@ import { useQuery } from 'react-query';
 import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 
 import TeacherTab from '@/component/MyPage_Component/Teacher/TeacherTab';
-import Directory from '@/component/Music_Component/Directory';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
 import TeacherTablePrivacyBody from '@/component/MyPage_Component/Teacher/TeacherTablePrivacyBody';
+import Directory from '@/component/Music_Component/Directory';
 import Pagination from '@/component/Common_Component/Pagination';
 
 const agencyTypeArr = [
@@ -24,39 +24,19 @@ const agencyTypeArr = [
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('');
-  // const [tableData, setTableData] = useState([]);
-  // const [lastPageNum, setLastPageNum] = useState(1);
   const [page, setPage] = useState(1);
 
   const router = useRouter();
   useLoginSessionCheck(); // 로그인 여부 확인
 
-  // 로그인 세션 Clear 메서드
-  const loginSessionClear = () => {
-    const loginSession = localStorage.getItem('log');
-    if (loginSession) {
-      localStorage.setItem(
-        'log',
-        JSON.stringify({
-          expires: 0, // 로그인 세션 24시간 설정
-        })
-      );
-      router.push('/');
-    }
-  };
-
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-
   // 출석 데이터 요청 함수
   const fetchAttendData = async () => {
     const userIdx = localStorage.getItem('userIdx');
     const res = await handleMypageTeacherAttendGet({ userIdx, pageNum: page });
-    // if (res.status === 401) {
-    //   loginSessionClear();
-    //   alert(res.data.message);
-    // }
+
     return res.data;
   };
 
@@ -104,65 +84,57 @@ const MyPage = () => {
     localStorage.setItem('activeTab', activeTab);
   }, [activeTab, page]);
 
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error...</div>;
+
   return (
-    <MasterContainer>
-      <MyPageContainer>
-        <Header>{`마이페이지 - 강사`}</Header>
-        <TeacherTab activeTab={activeTab} handleTabClick={handleTabClick} />
-        <TabContainer>
-          {activeTab === 'attend' && (
-            <Table>
-              <thead>
-                <tr>
-                  <TableHeader>{`수업명`}</TableHeader>
-                  <TableHeader>{`기관명`}</TableHeader>
-                  <TableHeader>{`강사`}</TableHeader>
-                  <TableHeader>{`날짜`}</TableHeader>
-                  <TableHeader>{`요일`}</TableHeader>
-                  <TableHeader>{`시간대`}</TableHeader>
-                  <TableHeader>{`출근 현황`}</TableHeader>
-                  <TableHeader></TableHeader>
-                </tr>
-              </thead>
-              <tbody>
-                {tableData?.map((data, index) => (
-                  <TeacherTableAttendBody key={index} data={data} page={page} />
-                ))}
-              </tbody>
-            </Table>
-          )}
-          {/* 수업 자료 */}
-          {activeTab === 'music' && <Directory activeTab={activeTab} />}
-          {activeTab === 'video' && <Directory activeTab={activeTab} />}
-          {activeTab === 'class' && <Directory activeTab={activeTab} />}
-          {/* 회원정보 수정 */}
-          {activeTab === 'privacy' && <TeacherTablePrivacyBody />}
-        </TabContainer>
+    <MyPageContainer>
+      <Header>{`마이페이지 - 강사`}</Header>
+      <TeacherTab activeTab={activeTab} handleTabClick={handleTabClick} />
+      <TabContainer>
+        {/* 수업 출석 */}
         {activeTab === 'attend' && (
-          <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
+          <Table>
+            <thead>
+              <tr>
+                <TableHeader>{`수업명`}</TableHeader>
+                <TableHeader>{`기관명`}</TableHeader>
+                <TableHeader>{`강사`}</TableHeader>
+                <TableHeader>{`날짜`}</TableHeader>
+                <TableHeader>{`요일`}</TableHeader>
+                <TableHeader>{`시간대`}</TableHeader>
+                <TableHeader>{`출근 현황`}</TableHeader>
+                <TableHeader></TableHeader>
+              </tr>
+            </thead>
+            <tbody>
+              {tableData?.map((data, index) => (
+                <TeacherTableAttendBody key={index} data={data} page={page} />
+              ))}
+            </tbody>
+          </Table>
         )}
-      </MyPageContainer>
-    </MasterContainer>
+        {/* 수업 자료 공유 */}
+        {['music', 'video', 'class'].includes(activeTab) && (
+          <Directory activeTab={activeTab} />
+        )}
+        {/* 회원정보 수정 */}
+        {activeTab === 'privacy' && <TeacherTablePrivacyBody />}
+      </TabContainer>
+      {activeTab === 'attend' && (
+        <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
+      )}
+    </MyPageContainer>
   );
 };
 
 // styled-component의 animation 설정 방법 (keyframes 메서드 사용)
-const MasterContainer = styled.div`
-  width: 100vw;
-  min-height: 100vh;
-  background-color: white;
-  margin: 0 auto;
-  padding-top: 2rem;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
 
 const MyPageContainer = styled.div`
-  width: 85%;
+  width: 85vw;
+  min-height: 100vh;
   margin: 0 auto;
-  padding-top: 2rem;
+  padding-top: 4rem;
 
   @media (max-width: 768px) {
     width: 100%;
