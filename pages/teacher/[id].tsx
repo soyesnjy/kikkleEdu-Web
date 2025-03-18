@@ -103,7 +103,7 @@ const TeacherDetailPage = () => {
   }, []);
 
   // React Query - 서버에서 데이터를 가져오는 API 함수
-  const reactQueryFetchEvent = async ({ queryKey }) => {
+  const reactQueryFetchTeacherData = async ({ queryKey }) => {
     const [, id] = queryKey;
     const response = await handleTeacherGet({ teacherIdx: id });
     return response.data;
@@ -111,25 +111,24 @@ const TeacherDetailPage = () => {
 
   // React Query 데이터 가져오기
   const {
-    data: _,
+    data: teacherData,
     isLoading,
     error,
   } = useQuery(
-    ['events', id], // Query Key
-    reactQueryFetchEvent, // Query Function
+    ['teacherData', id], // Query Key
+    reactQueryFetchTeacherData, // Query Function
     {
       staleTime: 5000, // 5초 동안 신선한 상태 유지
       cacheTime: 10000, // 10초 동안 캐시 유지
       keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
-      refetchOnWindowFocus: false, // 브라우저 포커스 변경 시 refetch 방지
-      refetchOnReconnect: false, // 네트워크 재연결 시 refetch 방지
-      refetchOnMount: false, // 컴포넌트 마운트 시 refetch 방지
+      // refetchOnWindowFocus: false, // 브라우저 포커스 변경 시 refetch 방지
+      // refetchOnReconnect: false, // 네트워크 재연결 시 refetch 방지
+      // refetchOnMount: false, // 컴포넌트 마운트 시 refetch 방지
       onSuccess: (data) => {
         if (data.data.length === 0) {
           alert('승인되지 않은 강사입니다');
           router.back();
         }
-        setData(data.data[0]); // 강사 정보 state 갱신
       },
       onError: (error) => {
         console.error(error);
@@ -138,20 +137,11 @@ const TeacherDetailPage = () => {
     }
   );
 
-  // useEffect(() => {
-  //   if (id) {
-  //     handleTeacherGet({ teacherIdx: id })
-  //       .then((res) => res.data)
-  //       .then((data) => {
-  //         if (data.data.length) setData(data.data[0]);
-  //         else setData(dummyData);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //         setData(dummyData);
-  //       });
-  //   }
-  // }, [id]);
+  useEffect(() => {
+    if (teacherData) {
+      setData(teacherData.data[0]);
+    }
+  }, [teacherData]);
 
   return (
     <MainContainer>
