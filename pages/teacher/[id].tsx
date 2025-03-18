@@ -1,21 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-// SSR
-// import axios from 'axios';
-// import cookie from 'cookie';
-
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router'; // Next.js의 useRouter 사용
 import styled from 'styled-components';
-import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useQuery } from 'react-query';
 
 import { useRecoilState } from 'recoil';
-import { mobile, log } from '@/store/state';
+import { mobile } from '@/store/state';
+import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 
 import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
-import EndSection from '@/component/Home_Component/EndSection';
 import ProgramTeacherContainer from '@/component/Teacher_Componet/ProgramTeacherContainer';
+import EndSection from '@/component/Home_Component/EndSection';
+
+type TeacherDataType = {
+  kk_teacher_name: string;
+  kk_teacher_introduction: string;
+  kk_teacher_education: string;
+  kk_teacher_history: string;
+  kk_teacher_location: string;
+  kk_teacher_dayofweek: string;
+  kk_teacher_class_titles: string;
+  kk_teacher_profileImg_path: string;
+};
 
 const dummyData = {
   kk_teacher_name: '',
@@ -40,6 +48,9 @@ const ramdomDefaultImg = () => {
 };
 
 // SSR
+// import axios from 'axios';
+// import cookie from 'cookie';
+
 // export async function getServerSideProps(context) {
 //   const { id } = context.query; // URL에서 ID를 추출
 //   const cookies = context.req.cookies;
@@ -74,14 +85,12 @@ const ramdomDefaultImg = () => {
 // }
 
 const TeacherDetailPage = () => {
+  const [mobileFlag] = useRecoilState(mobile);
+  const [data, setData] = useState<TeacherDataType>();
+  const [teacherDataArr, setTeacherDataArr] = useState([]);
+
   const router = useRouter();
   const { id } = router.query; // URL의 동적 파라미터를 가져옴
-  const [mobileFlag] = useRecoilState(mobile);
-  const [login] = useRecoilState(log);
-
-  const [data, setData] = useState(dummyData);
-  const [teacherDataArr, setTeacherDataArr] = useState([]);
-  const [profileImgSrc, setProfileImgSrc] = useState('');
 
   useLoginSessionCheck();
 
@@ -91,32 +100,58 @@ const TeacherDetailPage = () => {
         ...JSON.parse(localStorage.getItem('teacherDataArr')),
       ]);
     }
-    // return () => {
-    //   localStorage.removeItem('teacherDataArr');
-    // };
   }, []);
 
-  useEffect(() => {
-    if (id) {
-      handleTeacherGet({ teacherIdx: id })
-        .then((res) => res.data)
-        .then((data) => {
-          if (data.data.length) setData(data.data[0]);
-          else setData(dummyData);
-        })
-        .catch((err) => {
-          console.log(err);
-          setData(dummyData);
-        });
-    }
-  }, [id]);
+  // React Query - 서버에서 데이터를 가져오는 API 함수
+  const reactQueryFetchEvent = async ({ queryKey }) => {
+    const [, id] = queryKey;
+    const response = await handleTeacherGet({ teacherIdx: id });
+    return response.data;
+  };
 
-  // 이미지 삽입 (옵셔널 체이닝)
-  useEffect(() => {
-    if (data?.kk_teacher_profileImg_path !== undefined) {
-      setProfileImgSrc(data.kk_teacher_profileImg_path || ramdomDefaultImg());
+  // React Query 데이터 가져오기
+  const {
+    data: _,
+    isLoading,
+    error,
+  } = useQuery(
+    ['events', id], // Query Key
+    reactQueryFetchEvent, // Query Function
+    {
+      staleTime: 5000, // 5초 동안 신선한 상태 유지
+      cacheTime: 10000, // 10초 동안 캐시 유지
+      keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
+      refetchOnWindowFocus: false, // 브라우저 포커스 변경 시 refetch 방지
+      refetchOnReconnect: false, // 네트워크 재연결 시 refetch 방지
+      refetchOnMount: false, // 컴포넌트 마운트 시 refetch 방지
+      onSuccess: (data) => {
+        if (data.data.length === 0) {
+          alert('승인되지 않은 강사입니다');
+          router.back();
+        }
+        setData(data.data[0]); // 강사 정보 state 갱신
+      },
+      onError: (error) => {
+        console.error(error);
+        setData(dummyData);
+      },
     }
-  }, [data]);
+  );
+
+  // useEffect(() => {
+  //   if (id) {
+  //     handleTeacherGet({ teacherIdx: id })
+  //       .then((res) => res.data)
+  //       .then((data) => {
+  //         if (data.data.length) setData(data.data[0]);
+  //         else setData(dummyData);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //         setData(dummyData);
+  //       });
+  //   }
+  // }, [id]);
 
   return (
     <MainContainer>
@@ -131,6 +166,8 @@ const TeacherDetailPage = () => {
           </HeaderIntroDiv>
         </HeaderContent>
       </HeaderSection>
+      {isLoading ? <div>Loading...</div> : null}
+      {error ? <div>Error...</div> : null}
       <MiddleSection>
         <MiddleContainer>
           <MiddleTitle>{`KK EDU - ballet`}</MiddleTitle>
@@ -148,8 +185,8 @@ const TeacherDetailPage = () => {
           {/* Mobile */}
           {mobileFlag && (
             <Image
-              key={profileImgSrc}
-              src={profileImgSrc}
+              key={data?.kk_teacher_profileImg_path + id}
+              src={data?.kk_teacher_profileImg_path || ramdomDefaultImg()}
               alt="Teacher_Profile_IMG"
               width={390}
               height={418}
@@ -189,8 +226,8 @@ const TeacherDetailPage = () => {
         {!mobileFlag && (
           <MiddleProfileImgContainer>
             <Image
-              key={profileImgSrc}
-              src={profileImgSrc}
+              key={data?.kk_teacher_profileImg_path + id}
+              src={data?.kk_teacher_profileImg_path || ramdomDefaultImg()}
               alt="Teacher_Profile_IMG"
               width={390}
               height={418}
@@ -199,8 +236,7 @@ const TeacherDetailPage = () => {
                 height: 'auto',
                 borderRadius: '24px',
               }}
-              placeholder="blur"
-              blurDataURL={`/loading.svg`}
+              priority={true}
             />
           </MiddleProfileImgContainer>
         )}
@@ -209,10 +245,7 @@ const TeacherDetailPage = () => {
       {teacherDataArr.length > 0 && (
         <TeacherListSection>
           <MiddleSubtitleSmall>{`강사 리스트`}</MiddleSubtitleSmall>
-          <ProgramTeacherContainer
-            teacherDataArr={teacherDataArr}
-            mobileFlag={mobileFlag}
-          />
+          <ProgramTeacherContainer mobileFlag={mobileFlag} />
         </TeacherListSection>
       )}
 

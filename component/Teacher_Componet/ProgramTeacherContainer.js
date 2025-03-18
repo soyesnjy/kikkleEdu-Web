@@ -1,20 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+
 import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
 import useDisableSideMenu from '@/hook/useDisableSideMenu';
 
-const ProgramTeacherContainer = ({ teacherDataArr, mobileFlag }) => {
-  const containerRef = useRef(null);
-
-  const router = useRouter();
+const ProgramTeacherContainer = ({ mobileFlag }) => {
+  const [teacherDataArr, setTeacherDataArr] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [dragDistance, setDragDistance] = useState(0); // 드래그 거리 추적
 
+  const router = useRouter();
+  const containerRef = useRef(null);
   const carouselRef = useRef(null);
+
   useDisableSideMenu(carouselRef); // 사이드 메뉴 예외 처리
 
   const MIN_DRAG_DISTANCE = 5; // 드래그와 클릭을 구분할 최소 거리
@@ -31,20 +33,21 @@ const ProgramTeacherContainer = ({ teacherDataArr, mobileFlag }) => {
     }
   };
 
-  const dotActiveHandler = (index, length) => {
-    const scrollWidth = containerRef?.current?.scrollWidth;
-    const scrollLeft = containerRef?.current?.scrollLeft;
+  // const dotActiveHandler = (index, length) => {
+  //   const scrollWidth = containerRef?.current?.scrollWidth;
+  //   const scrollLeft = containerRef?.current?.scrollLeft;
 
-    return (
-      (scrollWidth / length) * index <= scrollLeft * 1.2 &&
-      scrollLeft * 1.2 <=
-        (index === length - 1
-          ? scrollWidth + 150
-          : (scrollWidth / length) * (index + 1))
-    );
-  };
+  //   return (
+  //     (scrollWidth / length) * index <= scrollLeft * 1.2 &&
+  //     scrollLeft * 1.2 <=
+  //       (index === length - 1
+  //         ? scrollWidth + 150
+  //         : (scrollWidth / length) * (index + 1))
+  //   );
+  // };
 
   // 마우스 클릭하여 드래그 시작할 때 실행
+
   const onDragStart = (e) => {
     e.preventDefault();
     setIsDragging(true);
@@ -97,6 +100,14 @@ const ProgramTeacherContainer = ({ teacherDataArr, mobileFlag }) => {
     }
     setIsDragging(false);
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('teacherDataArr')) {
+      setTeacherDataArr([
+        ...JSON.parse(localStorage.getItem('teacherDataArr')),
+      ]);
+    }
+  }, []);
 
   return (
     <Container ref={carouselRef}>
@@ -224,39 +235,39 @@ const ProgramContentContainer = styled.div`
   }
 `;
 
-const ProgramTitle = styled.div`
-  font-family: Pretendard;
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: white;
-  z-index: 1;
-`;
+// const ProgramTitle = styled.div`
+//   font-family: Pretendard;
+//   font-weight: 700;
+//   font-size: 1.2rem;
+//   color: white;
+//   z-index: 1;
+// `;
 
-const DotContainer = styled.div`
-  display: none;
+// const DotContainer = styled.div`
+//   display: none;
 
-  @media (max-width: 768px) {
-    width: 90vw;
-    min-height: 2rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+//   @media (max-width: 768px) {
+//     width: 90vw;
+//     min-height: 2rem;
+//     display: flex;
+//     flex-wrap: wrap;
+//     justify-content: center;
+//     align-items: center;
 
-    /* display: grid;
-    grid-template-columns: repeat(12, 2fr); */
-  }
-`;
+//     /* display: grid;
+//     grid-template-columns: repeat(12, 2fr); */
+//   }
+// `;
 
-const Dot = styled.div`
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: ${({ active }) => (active ? '#4cb0b2' : '#ddd')};
-  margin: 0 5px;
-  transition: background-color 0.3s;
-  cursor: pointer;
-`;
+// const Dot = styled.div`
+//   width: 10px;
+//   height: 10px;
+//   border-radius: 50%;
+//   background-color: ${({ active }) => (active ? '#4cb0b2' : '#ddd')};
+//   margin: 0 5px;
+//   transition: background-color 0.3s;
+//   cursor: pointer;
+// `;
 
 const Button = styled.button`
   width: 36px;

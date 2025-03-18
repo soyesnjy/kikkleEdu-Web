@@ -1,23 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 
-// import { loadingImg } from '@/component/Common_Component/LoadingBase64';
+type PropsType = {
+  name: string;
+  introduce: string;
+  imgUrl: string;
+  onClick: () => void;
+};
 
-const TeacherProfileCard = ({ name, introduce, imgUrl, onClick }) => {
-  const [imageSrc, setImageSrc] = useState(null);
-
-  // 이미지가 로드된 후 src를 상태로 저장
-  useEffect(() => {
-    setImageSrc(imgUrl || '/src/Teacher_IMG/Teacher_Soyes_Profile_IMG.png'); // 로드할 이미지 경로 설정
-  }, [imgUrl]);
-
+const TeacherProfileCard = ({
+  name,
+  introduce,
+  imgUrl,
+  onClick,
+}: PropsType) => {
   return (
     <Wrapper onClick={onClick}>
-      {imageSrc && (
+      {imgUrl && (
         <StyledImage
-          src={imageSrc}
+          src={imgUrl}
           alt="Background Image"
           width={300}
           height={300}
@@ -27,7 +30,9 @@ const TeacherProfileCard = ({ name, introduce, imgUrl, onClick }) => {
       )}
       <Content>
         <Name>{name}</Name>
-        <Message>{introduce || `강사 ${name}입니다.`}</Message>
+        <TeacherProfileIntroduce>
+          {introduce || `강사 ${name}입니다.`}
+        </TeacherProfileIntroduce>
       </Content>
     </Wrapper>
   );
@@ -100,13 +105,18 @@ const Name = styled.h2`
   }
 `;
 
-const Message = styled.p`
+const TeacherProfileIntroduce = styled.p`
+  height: 1.8rem;
+  overflow: hidden;
+
   font-family: Pretendard;
   font-weight: 400;
   font-size: 12px;
   text-align: left;
 
   @media (max-width: 768px) {
+    width: 100%;
+    height: 1.5rem;
     font-size: 10px;
   }
 `;

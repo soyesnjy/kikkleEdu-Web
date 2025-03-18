@@ -81,7 +81,7 @@ export const handleDirectoryCreate = async (input) => {
   }
 };
 
-// CREATE Video
+// (구) CREATE Video
 export const handleVideoCreate = async (formData) => {
   try {
     const response = await axios.post(
