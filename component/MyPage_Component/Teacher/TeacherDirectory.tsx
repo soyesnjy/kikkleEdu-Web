@@ -1,8 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
-import { useRecoilValue } from 'recoil';
-import { mobile } from '@/store/state';
 
 import { useQuery } from 'react-query';
 import { handleDirectoryRead } from '@/fetchAPI/directoryAPI';
@@ -29,17 +26,15 @@ type PropsType = {
 };
 
 const TeacherDirectory = ({ activeTab }: PropsType) => {
-  const [path, setPath] = useState([null]); // 폴더 Depth 경로
+  const [dirDepthStack, setDirDepthStack] = useState([null]); // Directory Depth Stack
   const [selectedItems, setSelectedItems] = useState(0); // 선택된 아이템 Idx
-  const [fileData, setFileData] = useState<Partial<ItemType>>({ url: null }); // File 데이터
+  const [itemUrl, setItemUrl] = useState<string>(''); // Item Url
   const [audioKey, setAudioKey] = useState(0); // 리렌더링 트리거
-
-  const mobileFlag = useRecoilValue(mobile);
 
   // activeTab 값이 변경될 경우 state 초기화
   useEffect(() => {
-    setFileData({ url: '' });
-    setPath([null]);
+    setItemUrl('');
+    setDirDepthStack([null]);
     setSelectedItems(0);
   }, [activeTab]);
 
@@ -63,7 +58,7 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
     isLoading,
     error,
   } = useQuery(
-    ['shareData', activeTab, path[path.length - 1] || null],
+    ['shareData', activeTab, dirDepthStack[dirDepthStack.length - 1] || null],
     reactQueryFetchDirectory,
     {
       enabled: ['music', 'video', 'class'].includes(activeTab),
@@ -76,21 +71,21 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
   const handleItemClick = (item: ItemType): void => {
     // 폴더 Click
     if (item.kk_directory_type === 'directory') {
-      setPath([...path, item.kk_directory_idx]);
-      setFileData({ url: null }); // 파일 데이터 초기화
+      setDirDepthStack([...dirDepthStack, item.kk_directory_idx]);
+      setItemUrl(''); // 파일 데이터 초기화
     }
     // 파일 Click
     else {
-      setFileData(item);
+      setItemUrl(item.url);
       setSelectedItems(item.kk_directory_idx);
       setAudioKey((prevKey) => prevKey + 1);
     }
   };
   // 뒤로가기 Click Handler
   const handleBackClick = (): void => {
-    setPath(path.slice(0, -1));
+    setDirDepthStack(dirDepthStack.slice(0, -1));
     setSelectedItems(0);
-    setFileData({ url: '' });
+    setItemUrl('');
   };
 
   if (isLoading) return <LoadingModal isOpen={isLoading} />;
@@ -101,7 +96,7 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
       <Title>{titleMap[activeTab]}</Title>
       <DirctoryUl>
         {/* Non Root Directory => BackButton */}
-        {path.length !== 1 && (
+        {dirDepthStack.length !== 1 && (
           <BackButton onClick={handleBackClick}>{`Back`}</BackButton>
         )}
         {/* Directory Items */}
@@ -116,22 +111,17 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
         ))}
       </DirctoryUl>
       {/* File Click */}
-      {fileData.url && (
+      {itemUrl && (
         <>
           {activeTab === 'video' ? (
             <VideoIframe
               key={audioKey}
-              src={fileData.url}
+              src={itemUrl}
               allowFullScreen
               allow="fullscreen"
             />
           ) : (
-            <iframe
-              key={audioKey}
-              src={fileData.url}
-              width={mobileFlag ? '100%' : '450'}
-              height={mobileFlag ? '130' : '70'}
-            />
+            <CommonIframe key={audioKey} src={itemUrl} />
           )}
         </>
       )}
@@ -254,6 +244,18 @@ const VideoIframe = styled.iframe`
   @media (max-width: 768px) {
     width: 95vw;
     height: 62vw;
+    border: none;
+  }
+`;
+
+const CommonIframe = styled.iframe`
+  width: 450px;
+  height: 70px;
+  border: none;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 130px;
     border: none;
   }
 `;
