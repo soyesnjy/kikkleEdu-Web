@@ -15,6 +15,7 @@ import { log, uid, agencyClass, mobile } from '@/store/state';
 
 import Swal from 'sweetalert2';
 import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
+import LoadingModal from '@/component/Common_Component/LoadingModal';
 
 const possLocalArr = ['서울', '부산', '기타'];
 const possDayArr = ['월', '화', '수', '목', '금', '토', '일'];
@@ -225,7 +226,7 @@ const TeacherTablePrivacyBody = () => {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingModal isOpen={isLoading} />;
   if (error) return <div>Error...</div>;
 
   return data ? (

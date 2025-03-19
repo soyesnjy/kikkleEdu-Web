@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
 import { useQuery } from 'react-query';
 
+import LoadingModal from '@/component/Common_Component/LoadingModal';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
 import Pagination from '@/component/Common_Component/Pagination';
 
@@ -37,7 +38,7 @@ const TeacherTableAttend = () => {
   tableData = useMemo(() => attendData?.data, [attendData]);
   lastPageNum = useMemo(() => attendData?.lastPageNum, [attendData]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingModal isOpen={isLoading} />;
   if (error) return <div>Error...</div>;
 
   return (
@@ -78,8 +79,6 @@ const TabContainer = styled.div`
   overflow-x: auto;
 
   @media (max-width: 768px) {
-    justify-content: center;
-    align-items: flex-start;
   }
 `;
 

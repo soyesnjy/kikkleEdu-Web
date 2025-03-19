@@ -6,11 +6,24 @@ import { mobile } from '@/store/state';
 
 import { useQuery } from 'react-query';
 import { handleDirectoryRead } from '@/fetchAPI/directoryAPI';
+import LoadingModal from '@/component/Common_Component/LoadingModal';
 
 const titleMap = {
   music: '수업 음원 자료',
   video: '수업 영상 자료',
   class: '수업 강의 계획서',
+};
+
+// Track Data Type
+type ItemType = {
+  kk_directory_idx: number;
+  kk_directory_parent_idx?: number;
+  kk_directory_name: string;
+  kk_directory_form: string;
+  kk_directory_type: string;
+  kk_directory_created_at: string;
+  kk_directory_updated_at: string;
+  url: string;
 };
 
 // Props Type
@@ -21,7 +34,7 @@ type PropsType = {
 const TeacherDirectory = ({ activeTab }: PropsType) => {
   const [path, setPath] = useState([null]); // 폴더 Depth 경로
   const [selectedItems, setSelectedItems] = useState(0); // 선택된 아이템 Idx
-  const [fileData, setFileData] = useState({ url: '' }); // File 데이터
+  const [fileData, setFileData] = useState({ url: null }); // File 데이터
   const [audioKey, setAudioKey] = useState(0); // 리렌더링 트리거
 
   const mobileFlag = useRecoilValue(mobile);
@@ -67,11 +80,11 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
   );
 
   // 파일 및 폴더 Click Handler
-  const handleItemClick = (item): void => {
+  const handleItemClick = (item: ItemType): void => {
     // 폴더 Click
     if (item.kk_directory_type === 'directory') {
       setPath([...path, item.kk_directory_idx]);
-      setFileData({ url: '' }); // 파일 데이터 초기화
+      setFileData({ url: null }); // 파일 데이터 초기화
     }
     // 파일 Click
     else {
@@ -88,15 +101,16 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
   };
 
   // 현재 폴더의 자식요소
-  const currentItems = useMemo(
+  const currentItems: ItemType[] = useMemo(
     () =>
       data?.filter(
-        (item) => item.kk_directory_parent_idx === path[path.length - 1]
+        (item: ItemType) =>
+          item.kk_directory_parent_idx === path[path.length - 1]
       ) || [],
     [data, path]
   );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingModal isOpen={isLoading} />;
   if (error) return <div>Error...</div>;
 
   return (
@@ -109,38 +123,24 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
         )}
         {/* 현재 폴더 자식요소 */}
         {currentItems.map((item, index) => (
-          <DirctoryLi
+          <DirctoryItem
             key={index}
             selected={item.kk_directory_idx === selectedItems}
             onClick={() => handleItemClick(item)}
           >
             <DirctoryName>{item.kk_directory_name}</DirctoryName>
-          </DirctoryLi>
+          </DirctoryItem>
         ))}
       </DirctoryUl>
       {/* 파일을 클릭한 경우 */}
       {fileData.url && (
         <TrackContainer>
           {activeTab === 'video' ? (
-            <iframe
+            <VideoIframe
               key={audioKey}
               src={fileData.url}
               allowFullScreen
               allow="fullscreen"
-              style={
-                mobileFlag
-                  ? {
-                      width: '100%',
-                      height: '250px',
-                      border: 'none',
-                    }
-                  : {
-                      width: '100vw',
-                      maxWidth: '1080px',
-                      height: '360px',
-                      border: 'none',
-                    }
-              }
             />
           ) : (
             <iframe
@@ -156,18 +156,19 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
   );
 };
 
-type ListItemType = {
+type DirctoryItemType = {
   type?: string;
   selected?: boolean;
 };
 
 const Container = styled.div`
   width: 100%;
+  padding: 1rem;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
 
   gap: 1rem;
 
@@ -178,10 +179,12 @@ const Container = styled.div`
 
 const DirctoryUl = styled.ul`
   width: 500px;
-  list-style: none;
   padding: 1rem;
+
   border: 1px solid green;
   border-radius: 24px;
+
+  list-style: none;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -189,7 +192,7 @@ const DirctoryUl = styled.ul`
   }
 `;
 
-const DirctoryLi = styled.li<ListItemType>`
+const DirctoryItem = styled.li<DirctoryItemType>`
   margin: 5px 0;
   padding: 0.5rem;
 
@@ -239,6 +242,7 @@ const BackButton = styled.button`
 const TrackContainer = styled.div`
   width: 100%;
   padding: 1rem;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -252,11 +256,10 @@ const TrackContainer = styled.div`
 
 const Title = styled.h1`
   width: 500px;
-  background-color: #378e56;
-  color: white;
-
   padding: 1rem;
 
+  background-color: #378e56;
+  color: white;
   border-radius: 20px;
 
   font-size: 2rem;
@@ -269,9 +272,23 @@ const Title = styled.h1`
   }
 `;
 
-// const AudioPlayer = styled.audio`
-//   width: 100%;
-//   margin-top: 20px;
-// `;
+const VideoIframe = styled.iframe`
+  width: 40vw;
+  height: 30vw;
+  border: none;
+
+  @media (max-width: 1080px) {
+    width: 100vw;
+    height: 100vh;
+    border: none;
+  }
+
+  @media (max-width: 768px) {
+    width: 100vw;
+    max-width: 1080px;
+    height: 360px;
+    border: none;
+  }
+`;
 
 export default TeacherDirectory;
