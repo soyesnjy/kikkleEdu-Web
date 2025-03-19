@@ -20,7 +20,7 @@ const acceptMap = {
   class: '.zip',
 };
 
-const UploadForm = ({ directories, form }) => {
+const AdminDirectoryUploadForm = ({ directories, form }) => {
   const [treeData, setTreeData] = useState([]);
   const [selectedDirectory, setSelectedDirectory] = useState(null);
   const [isPending, setIsPending] = useState(false);
@@ -327,4 +327,4 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-export default UploadForm;
+export default AdminDirectoryUploadForm;

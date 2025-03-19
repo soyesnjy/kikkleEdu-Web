@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { handleDirectoryCreate } from '@/fetchAPI/directoryAPI';
+import { handleDirectoryDelete } from '@/fetchAPI/directoryAPI';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 import 'react-dropdown-tree-select/dist/styles.css';
 
-const UploadFormDir = ({ directories, form }) => {
+const AdminDirectoryDeleteForm = ({ directories, form }) => {
   const [treeData, setTreeData] = useState([]);
   const [selectedDirectory, setSelectedDirectory] = useState('');
   const [isPending, setIsPending] = useState(false);
-  const [directoryName, setDirectoryName] = useState('');
 
   const router = useRouter();
+
   useEffect(() => {
     const buildTreeData = (dirs) => {
       const map = {};
@@ -23,6 +23,7 @@ const UploadFormDir = ({ directories, form }) => {
           ...dir,
           label: dir.kk_directory_name,
           value: dir.kk_directory_idx,
+          type: dir.kk_directory_type,
           children: [],
         };
       });
@@ -43,29 +44,21 @@ const UploadFormDir = ({ directories, form }) => {
     setTreeData(buildTreeData(directories));
   }, [directories]);
 
-  const handleSubmit = async (e) => {
+  const deleteHandleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!directoryName) {
-      alert('폴더명을 입력하세요');
-      return;
-    }
 
     setIsPending(true);
 
-    const formData = {
-      type: 'directory',
+    const response = await handleDirectoryDelete({
+      directoryIdx: selectedDirectory.kk_directory_idx,
+      type: selectedDirectory.kk_directory_type,
       form,
-      directoryId: selectedDirectory.kk_directory_idx,
-      directoryName,
-    };
-
-    const response = await handleDirectoryCreate(formData);
+    });
 
     if (response.status === 200) {
       Swal.fire({
         icon: 'success',
-        title: 'Directory Upload Success!',
+        title: 'Delete Success!',
         text: 'Page Reload',
         showConfirmButton: false,
         timer: 1500,
@@ -74,8 +67,12 @@ const UploadFormDir = ({ directories, form }) => {
         router.reload();
       });
     } else {
-      console.error('Directory Upload failed');
-      alert('Directory Upload failed');
+      Swal.fire({
+        icon: 'error',
+        title: 'Directory Upload failed',
+        showConfirmButton: false,
+        timer: 1000,
+      });
     }
   };
 
@@ -85,8 +82,8 @@ const UploadFormDir = ({ directories, form }) => {
 
   return (
     <FormContainer>
-      <h3>폴더 생성</h3>
-      <form onSubmit={handleSubmit}>
+      <h3>폴더 삭제</h3>
+      <form onSubmit={deleteHandleSubmit}>
         <FormGroup>
           <Label htmlFor="directory">폴더</Label>
           <DropdownTreeSelect
@@ -100,19 +97,10 @@ const UploadFormDir = ({ directories, form }) => {
             className="dropdown"
             mode="multiSelect"
           />
-          <InfoSpan>*폴더 미선택 시 Root 경로에 폴더가 생성됩니다</InfoSpan>
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="directoryName">폴더 이름</Label>
-          <StyledInput
-            value={directoryName}
-            type="text"
-            id="directoryName"
-            onChange={(e) => setDirectoryName(e.target.value)}
-          />
+          <WarningSpan>*폴더 내부의 파일 전체가 삭제됩니다</WarningSpan>
         </FormGroup>
         <Button type="submit" disabled={isPending}>
-          {isPending ? '생성중...' : '생성'}
+          {isPending ? '삭제중...' : '삭제'}
         </Button>
       </form>
     </FormContainer>
@@ -158,24 +146,12 @@ const Label = styled.label`
   font-weight: 600;
 `;
 
-const StyledInput = styled.input`
-  width: 100%;
-  padding: 4px;
-  margin-bottom: 10px;
-
-  display: block;
-
-  font-size: 0.9rem;
-  font-family: Pretendard;
-  font-weight: 400;
-`;
-
-const InfoSpan = styled.span`
+const WarningSpan = styled.span`
   padding-left: 0.2rem;
   margin-bottom: 5px;
 
   display: block;
-  color: blue;
+  color: red;
   font-size: 0.7rem;
   font-family: Pretendard;
   font-weight: 600;
@@ -196,4 +172,4 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-export default UploadFormDir;
+export default AdminDirectoryDeleteForm;

@@ -7,9 +7,9 @@ import { agencyClass, mobile } from '@/store/state';
 import { useQuery } from 'react-query';
 import { handleDirectoryRead } from '@/fetchAPI/directoryAPI';
 
-import UploadForm from './UploadForm'; // 새로운 업로드 폼 컴포넌트
-import UploadFormDir from './UploadFormDir';
-import DeleteForm from './DeleteForm';
+import AdminDirectoryUploadForm from './AdminDirectoryUploadForm';
+import AdminDirectoryUploadFormDir from './AdminDirectoryUploadFormDir';
+import AdminDirectoryDeleteForm from './AdminDirectoryDeleteForm';
 
 const titleMap = {
   music: '수업 음원 자료',
@@ -22,7 +22,7 @@ type PropsType = {
   activeTab: string; // 관리자 탭 식별자 state
 };
 
-const Directory = ({ activeTab }: PropsType) => {
+const AdminDirectory = ({ activeTab }: PropsType) => {
   const [path, setPath] = useState([null]); // 폴더 Depth 경로
   const [selectedItems, setSelectedItems] = useState(0); // 선택된 아이템 Idx
   const [fileData, setFileData] = useState({ url: '' }); // File 데이터
@@ -110,19 +110,19 @@ const Directory = ({ activeTab }: PropsType) => {
       {/* 관리자 전용 폼 */}
       {agencyType === 'admin' && (
         <UploadContainer>
-          <UploadForm
+          <AdminDirectoryUploadForm
             directories={data.filter(
               (item) => item.kk_directory_type === 'directory'
             )}
             form={activeTab}
           />
-          <UploadFormDir
+          <AdminDirectoryUploadFormDir
             directories={data.filter(
               (item) => item.kk_directory_type === 'directory'
             )}
             form={activeTab}
           />
-          <DeleteForm directories={data} form={activeTab} />
+          <AdminDirectoryDeleteForm directories={data} form={activeTab} />
         </UploadContainer>
       )}
       <DirctoryUl>
@@ -308,4 +308,4 @@ const Title = styled.h1`
 //   margin-top: 20px;
 // `;
 
-export default Directory;
+export default AdminDirectory;

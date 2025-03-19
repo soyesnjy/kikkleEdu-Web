@@ -8,7 +8,7 @@ import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 import TeacherTab from '@/component/MyPage_Component/Teacher/TeacherTab';
 import TeacherTableAttendTable from '@/component/MyPage_Component/Teacher/TeacherTableAttend';
 import TeacherTablePrivacyBody from '@/component/MyPage_Component/Teacher/TeacherTablePrivacyBody';
-import Directory from '@/component/Music_Component/Directory';
+import TeacherDirectory from '@/component/MyPage_Component/Teacher/TeacherDirectory';
 
 const agencyTypeArr = [
   '유치원',
@@ -56,7 +56,7 @@ const MyPage = () => {
         {activeTab === 'attend' && <TeacherTableAttendTable />}
         {/* 수업 자료 공유 */}
         {['music', 'video', 'class'].includes(activeTab) && (
-          <Directory activeTab={activeTab} />
+          <TeacherDirectory activeTab={activeTab} />
         )}
         {/* 회원 정보 수정 */}
         {activeTab === 'privacy' && <TeacherTablePrivacyBody />}

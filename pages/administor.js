@@ -13,7 +13,7 @@ import AdminTableTeacherBody from '@/component/Admin_Component/AdminTableTeacher
 import AdminTableAgencyBody from '@/component/Admin_Component/AdminTableAgencyBody';
 import AdminTableReservationBody from '@/component/Admin_Component/AdminTableReservationBody';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
-import Directory from '@/component/Music_Component/Directory';
+import AdminDirectory from '@/component/Admin_Component/AdminDirectory';
 import BoardCreate from '@/component/Board_Component/BoardCreate';
 import AdminSchedulerBody from '@/component/Admin_Component/AdminSchedulerBody';
 import Pagination from '@/component/Common_Component/Pagination';
@@ -302,16 +302,13 @@ const Administor = () => {
               </tbody>
             )}
           </Table>
-          {activeTab === 'music' && <Directory activeTab={activeTab} />}
-          {activeTab === 'video' && <Directory activeTab={activeTab} />}
-          {activeTab === 'class' && <Directory activeTab={activeTab} />}
+          {['music', 'video', 'class'].includes(activeTab) && (
+            <AdminDirectory activeTab={activeTab} />
+          )}
           {activeTab === 'notice' && <BoardCreate />}
           {activeTab === 'schedule' && <AdminSchedulerBody />}
         </TableContainer>
-        {(activeTab === 'teacher' ||
-          activeTab === 'agency' ||
-          activeTab === 'reservation' ||
-          activeTab === 'attend') && (
+        {['teacher', 'agency', 'reservation', 'attend'].includes(activeTab) && (
           <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
         )}
       </MyPageContainer>

@@ -14,7 +14,7 @@ import AgencyTab from '@/component/MyPage_Component/Agency/AgencyTab';
 import AgencyTableReservationBody from '@/component/MyPage_Component/Agency/AgencyTableReservationBody';
 import AgencyTableAttendBody from '@/component/MyPage_Component/Agency/AgencyTableAttendBody';
 import AgencyTablePrivacyBody from '@/component/MyPage_Component/Agency/AgencyTablePrivacyBody';
-import Directory from '@/component/Music_Component/Directory';
+import Directory from '@/component/MyPage_Component/Teacher/TeacherDirectory';
 import Pagination from '@/component/Common_Component/Pagination';
 
 const agencyTypeArr = [
