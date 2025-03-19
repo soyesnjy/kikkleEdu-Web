@@ -40,8 +40,8 @@ ${query?.adminForm ? `adminForm=${query?.adminForm}&` : ''}`,
   } catch (err) {
     console.error(err);
     return {
-      status: err.response.status,
-      message: err.response.data.message,
+      status: err.status,
+      message: err.message,
       data: { directories: [] },
     };
   }

@@ -43,60 +43,34 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
     setSelectedItems(0);
   }, [activeTab]);
 
-  // // React Query - 서버에서 데이터를 가져오는 API 함수
-  // const reactQueryFetchDirectory = async ({ queryKey }) => {
-  //   const [, activeTab] = queryKey;
-  //   // activeTab에 해당되는 모든 폴더, 파일 데이터 요청
-  //   const res = await handleDirectoryRead({ form: activeTab });
-  //   const data = res.data;
-
-  //   const formattedData = data.directories.map((dir) => ({
-  //     ...dir,
-  //     // 파일인 경우 url 속성 추가
-  //     url:
-  //       dir.kk_directory_type === 'file'
-  //         ? data.tracks.find(
-  //             (track) => track.kk_directory_idx === dir.kk_directory_idx
-  //           )?.kk_file_path
-  //         : null,
-  //   }));
-
-  //   return formattedData;
-  // };
-
+  // React Query - 서버에서 데이터를 가져오는 API 함수
   const reactQueryFetchDirectory = async ({ queryKey }) => {
     const [, activeTab, parentIdx] = queryKey;
     const res = await handleDirectoryRead({ form: activeTab, parentIdx });
-    const data = res.data;
+    const { status, message, data } = res;
+
+    // Error Handling
+    if (status !== 200) {
+      alert(message);
+    }
+
     return data.directories;
   };
 
-  // // React Query 데이터 가져오기
-  // const { data, isLoading, error } = useQuery(
-  //   ['shareData', activeTab], // Query Key
-  //   reactQueryFetchDirectory, // Query Function
-  //   {
-  //     // 유효한 값일 경우만 실행
-  //     enabled: ['music', 'video', 'class'].includes(activeTab),
-  //     staleTime: 5000, // 5초 동안 상태 유지
-  //     cacheTime: 10000, // 10초 동안 캐시 유지
-  //     keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
-  //   }
-  // );
-
-  const { data, isLoading, error } = useQuery(
-    ['shareData', activeTab, path[path.length - 1] || null], // 현재 폴더의 데이터를 요청
+  // React Query 데이터 가져오기
+  const {
+    data: currentItems,
+    isLoading,
+    error,
+  } = useQuery(
+    ['shareData', activeTab, path[path.length - 1] || null],
     reactQueryFetchDirectory,
     {
       enabled: ['music', 'video', 'class'].includes(activeTab),
       staleTime: 5000, // 5초 동안 상태 유지
       cacheTime: 10000, // 10초 동안 캐시 유지
-      // keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
     }
   );
-
-  // 현재 폴더의 자식요소
-  const currentItems: ItemType[] = useMemo(() => data || [], [data, path]);
 
   // 파일 및 폴더 Click Handler
   const handleItemClick = (item: ItemType): void => {
