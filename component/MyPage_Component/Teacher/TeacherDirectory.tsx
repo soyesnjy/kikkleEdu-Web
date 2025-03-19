@@ -134,7 +134,7 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
       </DirctoryUl>
       {/* 파일을 클릭한 경우 */}
       {fileData.url && (
-        <TrackContainer>
+        <>
           {activeTab === 'video' ? (
             <VideoIframe
               key={audioKey}
@@ -150,7 +150,7 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
               height={mobileFlag ? '130' : '70'}
             />
           )}
-        </TrackContainer>
+        </>
       )}
     </Container>
   );
@@ -273,20 +273,19 @@ const Title = styled.h1`
 `;
 
 const VideoIframe = styled.iframe`
-  width: 40vw;
-  height: 30vw;
+  width: 960px;
+  height: 540px;
   border: none;
 
   @media (max-width: 1080px) {
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     border: none;
   }
 
   @media (max-width: 768px) {
-    width: 100vw;
-    max-width: 1080px;
-    height: 360px;
+    width: 95vw;
+    height: 62vw;
     border: none;
   }
 `;
