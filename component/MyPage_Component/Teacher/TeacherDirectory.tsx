@@ -19,11 +19,8 @@ type ItemType = {
   kk_directory_idx: number;
   kk_directory_parent_idx?: number;
   kk_directory_name: string;
-  kk_directory_form: string;
   kk_directory_type: string;
-  kk_directory_created_at: string;
-  kk_directory_updated_at: string;
-  url: string;
+  url?: string;
 };
 
 // Props Type
@@ -34,7 +31,7 @@ type PropsType = {
 const TeacherDirectory = ({ activeTab }: PropsType) => {
   const [path, setPath] = useState([null]); // 폴더 Depth 경로
   const [selectedItems, setSelectedItems] = useState(0); // 선택된 아이템 Idx
-  const [fileData, setFileData] = useState({ url: null }); // File 데이터
+  const [fileData, setFileData] = useState<Partial<ItemType>>({ url: null }); // File 데이터
   const [audioKey, setAudioKey] = useState(0); // 리렌더링 트리거
 
   const mobileFlag = useRecoilValue(mobile);
@@ -66,6 +63,14 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
 
   //   return formattedData;
   // };
+
+  const reactQueryFetchDirectory = async ({ queryKey }) => {
+    const [, activeTab, parentIdx] = queryKey;
+    const res = await handleDirectoryRead({ form: activeTab, parentIdx });
+    const data = res.data;
+    return data.directories;
+  };
+
   // // React Query 데이터 가져오기
   // const { data, isLoading, error } = useQuery(
   //   ['shareData', activeTab], // Query Key
@@ -79,49 +84,19 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
   //   }
   // );
 
-  // 현재 폴더의 자식요소
-  // const currentItems: ItemType[] = useMemo(
-  //   () =>
-  //     data?.filter(
-  //       (item: ItemType) =>
-  //         item.kk_directory_parent_idx === path[path.length - 1]
-  //     ) || [],
-  //   [data, path]
-  // );
-
-  const reactQueryFetchDirectory = async ({ queryKey }) => {
-    const [, activeTab, parentIdx] = queryKey;
-    const res = await handleDirectoryRead({ form: activeTab, parentIdx });
-    const data = res.data;
-    const formattedData = data.directories.map((dir) => ({
-      ...dir,
-      // 파일인 경우 url 속성 추가
-      url:
-        dir.kk_directory_type === 'file'
-          ? data.tracks.find(
-              (track) => track.kk_directory_idx === dir.kk_directory_idx
-            )?.kk_file_path
-          : null,
-    }));
-
-    return formattedData;
-  };
-
   const { data, isLoading, error } = useQuery(
     ['shareData', activeTab, path[path.length - 1] || null], // 현재 폴더의 데이터를 요청
     reactQueryFetchDirectory,
-    { enabled: ['music', 'video', 'class'].includes(activeTab) }
+    {
+      enabled: ['music', 'video', 'class'].includes(activeTab),
+      staleTime: 5000, // 5초 동안 상태 유지
+      cacheTime: 10000, // 10초 동안 캐시 유지
+      // keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
+    }
   );
 
   // 현재 폴더의 자식요소
-  const currentItems: ItemType[] = useMemo(
-    () =>
-      data?.filter(
-        (item: ItemType) =>
-          item.kk_directory_parent_idx === path[path.length - 1]
-      ) || [],
-    [data, path]
-  );
+  const currentItems: ItemType[] = useMemo(() => data || [], [data, path]);
 
   // 파일 및 폴더 Click Handler
   const handleItemClick = (item: ItemType): void => {
@@ -151,11 +126,11 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
     <Container>
       <Title>{titleMap[activeTab]}</Title>
       <DirctoryUl>
-        {/* Root 폴더가 아닌 경우에만 뒤로가기 버튼 추가 */}
+        {/* Non Root Directory => BackButton */}
         {path.length !== 1 && (
           <BackButton onClick={handleBackClick}>{`Back`}</BackButton>
         )}
-        {/* 현재 폴더 자식요소 */}
+        {/* Directory Items */}
         {currentItems.map((item, index) => (
           <DirctoryItem
             key={index}
@@ -166,7 +141,7 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
           </DirctoryItem>
         ))}
       </DirctoryUl>
-      {/* 파일을 클릭한 경우 */}
+      {/* File Click */}
       {fileData.url && (
         <>
           {activeTab === 'video' ? (

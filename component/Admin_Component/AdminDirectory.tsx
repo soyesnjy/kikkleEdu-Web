@@ -43,18 +43,7 @@ const AdminDirectory = ({ activeTab }: PropsType) => {
     const [, activeTab, adminForm] = queryKey;
     const res = await handleDirectoryRead({ form: activeTab, adminForm });
     const data = res.data;
-    const formattedData = data.directories.map((dir) => ({
-      ...dir,
-      // 파일인 경우 url 속성 추가
-      url:
-        dir.kk_directory_type === 'file'
-          ? data.tracks.find(
-              (track) => track.kk_directory_idx === dir.kk_directory_idx
-            )?.kk_file_path
-          : null,
-    }));
-
-    return formattedData;
+    return data.directories;
   };
 
   const { data, isLoading, error } = useQuery(
@@ -63,7 +52,7 @@ const AdminDirectory = ({ activeTab }: PropsType) => {
     { enabled: ['music', 'video', 'class'].includes(activeTab) }
   );
 
-  // 현재 폴더의 자식요소
+  // 현재 폴더의 자식요소 필터링
   const currentItems = useMemo(
     () =>
       data?.filter(
@@ -135,27 +124,13 @@ const AdminDirectory = ({ activeTab }: PropsType) => {
       </DirctoryUl>
       {/* 파일을 클릭한 경우 */}
       {fileData.url && (
-        <TrackContainer>
+        <>
           {activeTab === 'video' ? (
-            <iframe
+            <VideoIframe
               key={audioKey}
               src={fileData.url}
               allowFullScreen
               allow="fullscreen"
-              style={
-                mobileFlag
-                  ? {
-                      width: '100%',
-                      height: '250px',
-                      border: 'none',
-                    }
-                  : {
-                      width: '100vw',
-                      maxWidth: '1080px',
-                      height: '360px',
-                      border: 'none',
-                    }
-              }
             />
           ) : (
             <iframe
@@ -165,7 +140,7 @@ const AdminDirectory = ({ activeTab }: PropsType) => {
               height={mobileFlag ? '130' : '70'}
             />
           )}
-        </TrackContainer>
+        </>
       )}
     </Container>
   );
@@ -295,9 +270,22 @@ const Title = styled.h1`
   }
 `;
 
-// const AudioPlayer = styled.audio`
-//   width: 100%;
-//   margin-top: 20px;
-// `;
+const VideoIframe = styled.iframe`
+  width: 960px;
+  height: 540px;
+  border: none;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    height: 100vh;
+    border: none;
+  }
+
+  @media (max-width: 768px) {
+    width: 95vw;
+    height: 62vw;
+    border: none;
+  }
+`;
 
 export default AdminDirectory;

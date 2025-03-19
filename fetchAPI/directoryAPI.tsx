@@ -4,29 +4,15 @@ import axios from 'axios';
 type DirectoryDataType = {
   kk_directory_idx: number;
   kk_directory_parent_idx?: number;
-  kk_directory_form: string;
   kk_directory_name: string;
   kk_directory_type: string;
-  kk_directory_created_at: string;
-  kk_directory_updated_at: string;
-};
-// Track Data Type
-type TrackDataType = {
-  kk_directory_idx: number;
-  kk_file_data_id: string;
-  kk_file_form: string;
-  kk_file_idx: number;
-  kk_file_name: string;
-  kk_file_path: string;
-  kk_file_created_at: string;
-  kk_file_updated_at: string;
 };
 
 // API 반환 데이터 타입 지정
 type DirectoryReadResponseDataType = {
   status?: number;
   message?: string;
-  data: { directories: DirectoryDataType[]; tracks: TrackDataType[] };
+  data: { directories: DirectoryDataType[] };
 };
 
 // READ
@@ -56,7 +42,7 @@ ${query?.adminForm ? `adminForm=${query?.adminForm}&` : ''}`,
     return {
       status: err.response.status,
       message: err.response.data.message,
-      data: { directories: [], tracks: [] },
+      data: { directories: [] },
     };
   }
 };
