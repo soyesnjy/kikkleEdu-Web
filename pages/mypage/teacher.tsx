@@ -30,15 +30,12 @@ const MyPage = () => {
     // 기관 로그인 진입 제한
     const agencyType = localStorage.getItem('agencyType');
     if (agencyTypeArr.includes(agencyType)) {
-      alert('페이지 권한이 없습니다');
-      router.replace('/mypage');
+      alert('페이지 진입 권한이 없습니다');
+      router.replace('/');
       return;
     }
-
     // activeTab 설정
-    if (localStorage.getItem('activeTab'))
-      setActiveTab(localStorage.getItem('activeTab'));
-    else setActiveTab('attend');
+    setActiveTab(localStorage.getItem('activeTab') || 'attend');
 
     return () => {
       localStorage.removeItem('activeTab');
@@ -55,13 +52,13 @@ const MyPage = () => {
       <TeacherHeader>{`마이페이지 - 강사`}</TeacherHeader>
       <TeacherTab activeTab={activeTab} handleTabClick={handleTabClick} />
       <BodyContainer>
-        {/* 수업 출석 */}
+        {/* 수업 출석 관리 */}
         {activeTab === 'attend' && <TeacherTableAttendTable />}
         {/* 수업 자료 공유 */}
         {['music', 'video', 'class'].includes(activeTab) && (
           <Directory activeTab={activeTab} />
         )}
-        {/* 회원정보 수정 */}
+        {/* 회원 정보 수정 */}
         {activeTab === 'privacy' && <TeacherTablePrivacyBody />}
       </BodyContainer>
     </TeacherMyPageContainer>
