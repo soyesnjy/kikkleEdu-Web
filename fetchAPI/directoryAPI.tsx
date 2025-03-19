@@ -32,11 +32,15 @@ type DirectoryReadResponseDataType = {
 // READ
 export const handleDirectoryRead = async (query: {
   form: string;
+  parentIdx?: number;
+  adminForm?: boolean; // Admin Page 전용 쿼리 - 모든 Directory 정보 요청
 }): Promise<DirectoryReadResponseDataType> => {
   try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_URL}/directory/read?
-${query?.form ? `form=${query?.form}&` : ''}`,
+${query?.form ? `form=${query?.form}&` : ''}
+${query?.parentIdx ? `parentIdx=${query?.parentIdx}&` : ''}
+${query?.adminForm ? `adminForm=${query?.adminForm}&` : ''}`,
       {
         headers: {
           'Content-Type': 'application/json',

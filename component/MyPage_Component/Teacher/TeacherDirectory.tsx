@@ -46,13 +46,53 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
     setSelectedItems(0);
   }, [activeTab]);
 
-  // React Query - 서버에서 데이터를 가져오는 API 함수
-  const reactQueryFetchDirectory = async ({ queryKey }) => {
-    const [, activeTab] = queryKey;
-    // activeTab에 해당되는 모든 폴더, 파일 데이터 요청
-    const res = await handleDirectoryRead({ form: activeTab });
-    const data = res.data;
+  // // React Query - 서버에서 데이터를 가져오는 API 함수
+  // const reactQueryFetchDirectory = async ({ queryKey }) => {
+  //   const [, activeTab] = queryKey;
+  //   // activeTab에 해당되는 모든 폴더, 파일 데이터 요청
+  //   const res = await handleDirectoryRead({ form: activeTab });
+  //   const data = res.data;
 
+  //   const formattedData = data.directories.map((dir) => ({
+  //     ...dir,
+  //     // 파일인 경우 url 속성 추가
+  //     url:
+  //       dir.kk_directory_type === 'file'
+  //         ? data.tracks.find(
+  //             (track) => track.kk_directory_idx === dir.kk_directory_idx
+  //           )?.kk_file_path
+  //         : null,
+  //   }));
+
+  //   return formattedData;
+  // };
+  // // React Query 데이터 가져오기
+  // const { data, isLoading, error } = useQuery(
+  //   ['shareData', activeTab], // Query Key
+  //   reactQueryFetchDirectory, // Query Function
+  //   {
+  //     // 유효한 값일 경우만 실행
+  //     enabled: ['music', 'video', 'class'].includes(activeTab),
+  //     staleTime: 5000, // 5초 동안 상태 유지
+  //     cacheTime: 10000, // 10초 동안 캐시 유지
+  //     keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
+  //   }
+  // );
+
+  // 현재 폴더의 자식요소
+  // const currentItems: ItemType[] = useMemo(
+  //   () =>
+  //     data?.filter(
+  //       (item: ItemType) =>
+  //         item.kk_directory_parent_idx === path[path.length - 1]
+  //     ) || [],
+  //   [data, path]
+  // );
+
+  const reactQueryFetchDirectory = async ({ queryKey }) => {
+    const [, activeTab, parentIdx] = queryKey;
+    const res = await handleDirectoryRead({ form: activeTab, parentIdx });
+    const data = res.data;
     const formattedData = data.directories.map((dir) => ({
       ...dir,
       // 파일인 경우 url 속성 추가
@@ -66,17 +106,21 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
 
     return formattedData;
   };
-  // React Query 데이터 가져오기
+
   const { data, isLoading, error } = useQuery(
-    ['shareData', activeTab], // Query Key
-    reactQueryFetchDirectory, // Query Function
-    {
-      // 유효한 값일 경우만 실행
-      enabled: ['music', 'video', 'class'].includes(activeTab),
-      staleTime: 5000, // 5초 동안 상태 유지
-      cacheTime: 10000, // 10초 동안 캐시 유지
-      keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
-    }
+    ['shareData', activeTab, path[path.length - 1] || null], // 현재 폴더의 데이터를 요청
+    reactQueryFetchDirectory,
+    { enabled: ['music', 'video', 'class'].includes(activeTab) }
+  );
+
+  // 현재 폴더의 자식요소
+  const currentItems: ItemType[] = useMemo(
+    () =>
+      data?.filter(
+        (item: ItemType) =>
+          item.kk_directory_parent_idx === path[path.length - 1]
+      ) || [],
+    [data, path]
   );
 
   // 파일 및 폴더 Click Handler
@@ -99,16 +143,6 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
     setSelectedItems(0);
     setFileData({ url: '' });
   };
-
-  // 현재 폴더의 자식요소
-  const currentItems: ItemType[] = useMemo(
-    () =>
-      data?.filter(
-        (item: ItemType) =>
-          item.kk_directory_parent_idx === path[path.length - 1]
-      ) || [],
-    [data, path]
-  );
 
   if (isLoading) return <LoadingModal isOpen={isLoading} />;
   if (error) return <div>Error...</div>;
@@ -237,21 +271,6 @@ const BackButton = styled.button`
   text-align: center;
 
   cursor: pointer;
-`;
-
-const TrackContainer = styled.div`
-  width: 100%;
-  padding: 1rem;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    padding: 0;
-  }
 `;
 
 const Title = styled.h1`
