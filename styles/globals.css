@@ -94,6 +94,30 @@ body {
   padding: 0 !important;
 }
 
+/* DropdownTreeSelect */
+.dropdown-content {
+  li.node.tree {
+    &:hover {
+      color: blue;
+    }
+  }
+
+  li.node.leaf {
+    &:hover {
+      color: blue;
+    }
+  }
+  label {
+    font-size: 0.9rem;
+    font-family: Pretendard;
+    font-weight: 600;
+    text-align: center;
+    input {
+      display: none;
+    }
+  }
+}
+
 /* button,
 a,
 div {
@@ -101,7 +125,6 @@ div {
 } */
 
 /** :: React Scroll Animation CSS :: **/
-
 @keyframes scroll-animation-top-sm {
   from {
     opacity: 0;

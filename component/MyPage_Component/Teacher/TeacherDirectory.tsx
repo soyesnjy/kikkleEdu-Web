@@ -43,12 +43,10 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
     const [, activeTab, parentIdx] = queryKey;
     const res = await handleDirectoryRead({ form: activeTab, parentIdx });
     const { status, message, data } = res;
-
     // Error Handling
     if (status !== 200) {
       alert(message);
     }
-
     return data.directories;
   };
 

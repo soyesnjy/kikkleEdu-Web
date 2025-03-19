@@ -62,12 +62,10 @@ const AdminDirectoryUploadForm = ({ directories, form }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!selectedDirectory) {
       alert('폴더를 선택하세요.');
       return;
     }
-
     if (!files || files.length === 0) {
       alert('파일을 선택하세요.');
       return;
@@ -84,9 +82,6 @@ const AdminDirectoryUploadForm = ({ directories, form }) => {
           const base64String = reader.result
             .replace('data:', '')
             .replace(/^.+,/, '');
-
-          console.log(base64String);
-
           const formData = {
             type: 'file',
             form,
@@ -97,7 +92,6 @@ const AdminDirectoryUploadForm = ({ directories, form }) => {
             },
             directoryId: selectedDirectory.value,
           };
-
           try {
             const response = await handleDirectoryCreate(formData);
             if (response.status === 200) {
@@ -139,15 +133,10 @@ const AdminDirectoryUploadForm = ({ directories, form }) => {
 
   const handleVideoV2Submit = async (e) => {
     e.preventDefault();
-
-    // alert('개발 중인 기능입니다.');
-    // return;
-
     if (!selectedDirectory) {
       alert('폴더를 선택하세요.');
       return;
     }
-
     if (!fileName) {
       alert('파일명을 입력하세요.');
       return;
@@ -156,8 +145,8 @@ const AdminDirectoryUploadForm = ({ directories, form }) => {
       alert('파일코드를 입력하세요.');
       return;
     }
-
     setIsPending(true);
+
     try {
       const formData = {
         fileName,
@@ -186,7 +175,6 @@ const AdminDirectoryUploadForm = ({ directories, form }) => {
       console.log(err);
     }
   };
-
   const handleChange = (currentNode) => {
     setSelectedDirectory(currentNode);
   };
@@ -204,9 +192,9 @@ const AdminDirectoryUploadForm = ({ directories, form }) => {
               noMatches: 'No matches found',
             }}
             data={treeData}
-            onChange={handleChange}
             className="dropdown"
             mode="multiSelect"
+            onChange={handleChange}
           />
         </FormGroup>
         <FormGroup>
