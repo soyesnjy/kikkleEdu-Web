@@ -5,7 +5,7 @@ import { handleMypageUpdate } from '@/fetchAPI/mypageAPI';
 import Swal from 'sweetalert2';
 import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
 
-const getDayName = (dateString) => {
+const getDayName = (dateString: string) => {
   // 요일 배열을 만듭니다. 0: 일요일, 1: 월요일, ... , 6: 토요일
   const days = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -13,9 +13,7 @@ const getDayName = (dateString) => {
   const date = new Date(dateString);
 
   // 날짜가 유효한지 확인합니다.
-  if (isNaN(date)) {
-    return '';
-  }
+  if (isNaN(date.getTime())) return '';
 
   // getDay() 메서드를 사용하여 요일 인덱스를 가져옵니다.
   const dayIndex = date.getDay();
@@ -23,8 +21,7 @@ const getDayName = (dateString) => {
   // 요일 이름을 반환합니다.
   return days[dayIndex];
 };
-
-const todayCheckHandler = (date) => {
+const todayCheckHandler = (date: string) => {
   const dateObj = new Date();
   const year = dateObj.getFullYear();
   const month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
@@ -48,6 +45,7 @@ const TeacherTableAttendBody = ({ data, page }) => {
     setAttendTrigger(0);
   }, [page]);
 
+  // 출석 Update 함수
   const attendUpdateHandler = async (e) => {
     e.preventDefault();
     // 미래 수업 변경 불가 Check
@@ -109,10 +107,10 @@ const TeacherTableAttendBody = ({ data, page }) => {
               setAttendTrigger(1);
             }}
           >
-            <CheckboxWrapper status={attendStatus}>
+            <CheckboxWrapper status={attendStatus === 1}>
               <CheckIcon />
             </CheckboxWrapper>
-            <CheckboxLabel>출근</CheckboxLabel>
+            <CheckboxLabel>{`출근`}</CheckboxLabel>
           </CheckboxContainer>
           <CheckboxContainer
             onClick={() => {
@@ -120,10 +118,10 @@ const TeacherTableAttendBody = ({ data, page }) => {
               setAttendTrigger(1);
             }}
           >
-            <CheckboxWrapper status={!attendStatus}>
+            <CheckboxWrapper status={attendStatus === 0}>
               <CheckIcon />
             </CheckboxWrapper>
-            <CheckboxLabel>미출근</CheckboxLabel>
+            <CheckboxLabel>{`미출근`}</CheckboxLabel>
           </CheckboxContainer>
         </AttendContainer>
       </TableCell>
@@ -133,7 +131,7 @@ const TeacherTableAttendBody = ({ data, page }) => {
           disabled={!attendTrigger}
           attendtrigger={attendTrigger}
         >
-          저장하기
+          {`저장하기`}
         </Button>
       </TableCell>
     </TableRow>
@@ -189,7 +187,11 @@ const CheckboxContainer = styled.div`
   }
 `;
 
-const CheckboxWrapper = styled.div`
+type CheckboxWrapperType = {
+  status: boolean;
+};
+
+const CheckboxWrapper = styled.div<CheckboxWrapperType>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -219,7 +221,10 @@ const CheckboxLabel = styled.span`
   }
 `;
 
-const Button = styled.button`
+type ButtonType = {
+  attendtrigger: number;
+};
+const Button = styled.button<ButtonType>`
   background-color: ${(props) => (props.attendtrigger ? '#61b15a' : '#CACACA')};
   color: white;
   padding: 0.4rem 0.8rem;
