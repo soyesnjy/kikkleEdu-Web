@@ -8,7 +8,7 @@ import { useQuery } from 'react-query';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
 import Pagination from '@/component/Common_Component/Pagination';
 
-const TeacherTableAttendTable = () => {
+const TeacherTableAttend = () => {
   const [page, setPage] = useState(1);
   let tableData = [],
     lastPageNum = [];
@@ -111,4 +111,4 @@ const TableHeader = styled.th`
   }
 `;
 
-export default TeacherTableAttendTable;
+export default TeacherTableAttend;

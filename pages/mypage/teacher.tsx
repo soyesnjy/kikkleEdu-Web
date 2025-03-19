@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 
 import TeacherTab from '@/component/MyPage_Component/Teacher/TeacherTab';
-import TeacherTableAttendTable from '@/component/MyPage_Component/Teacher/TeacherTableAttendTable';
+import TeacherTableAttendTable from '@/component/MyPage_Component/Teacher/TeacherTableAttend';
 import TeacherTablePrivacyBody from '@/component/MyPage_Component/Teacher/TeacherTablePrivacyBody';
 import Directory from '@/component/Music_Component/Directory';
 
