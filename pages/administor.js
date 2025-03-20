@@ -61,7 +61,7 @@ const Administor = () => {
       localStorage.getItem('agencyType') === null ||
       localStorage.getItem('agencyType') !== 'admin'
     ) {
-      console.log(localStorage.getItem('log'));
+      // console.log(localStorage.getItem('log'));
       router.replace('/');
       return;
     }
