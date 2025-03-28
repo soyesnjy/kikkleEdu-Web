@@ -1,3 +1,8 @@
+// app/layout.tsx (Server Component)
+import '@/styles/globals.css';
+import StyledComponentsRegistry from '@/lib/registry';
+import LayoutClient from '@/component/common/LayoutClient';
+
 export default function DashboardLayout({
   children,
 }: {
@@ -6,9 +11,9 @@ export default function DashboardLayout({
   return (
     <html lang="en">
       <body>
-        {/* Layout UI */}
-        {/* Place children where you want to render a page or nested layout */}
-        <main>{children}</main>
+        <StyledComponentsRegistry>
+          <LayoutClient>{children}</LayoutClient>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );

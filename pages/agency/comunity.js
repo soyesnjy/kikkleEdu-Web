@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { agencyClass, mobile } from '@/store/state';
 import { useRecoilState } from 'recoil';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import AgencyHeaderSection from '@/component/Agency_Component/AgencyHeaderSection';
 import AgencyMiddleFirstSection from '@/component/Agency_Component/AgencyMiddleFirstSection';

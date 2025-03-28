@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 import { log, mobile } from '@/store/state';
 

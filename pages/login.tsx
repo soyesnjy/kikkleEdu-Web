@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import { useEffect, useState } from 'react';
 // import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 import { log, uid, agencyClass } from '../store/state';
 

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { useEffect, useState } from 'react';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 
 import TeacherSearchBar from '@/component/Home_Component/TeacherSearchBar';

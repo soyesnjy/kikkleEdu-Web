@@ -9,7 +9,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import { log } from '../../store/state';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import BoardCreate from '@/component/Board_Component/BoardCreate';
 

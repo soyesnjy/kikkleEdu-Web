@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router'; // Next.js의 useRouter 사용
+import { useRouter } from 'next/navigation'; // Next.js의 useRouter 사용
 
 import { useRecoilState } from 'recoil';
 import { agencyClass } from '../../store/state';

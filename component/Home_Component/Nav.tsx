@@ -1,10 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+'use client';
 import styled from 'styled-components';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { useEffect, useCallback, useMemo } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import { useRecoilState } from 'recoil';
 import { log, mobile, uid, agencyClass, isNavOpenState } from '@/store/state';

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { handleReservationCreate } from '@/fetchAPI/reservationAPI';
 // SweetAlert2
 import Swal from 'sweetalert2';

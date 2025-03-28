@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { handleBoardCreate } from '@/fetchAPI/boardAPI';
 
 // 임시 데이터 형식

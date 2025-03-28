@@ -10,7 +10,7 @@ import { agencyClass } from '@/store/state';
 import { useQuery } from 'react-query';
 import { handleBoardGet } from '@/fetchAPI/boardAPI';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 import BoardHeaderSection from '@/component/Board_Component/BoardHeaderSection';

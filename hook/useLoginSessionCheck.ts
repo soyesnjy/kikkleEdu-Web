@@ -1,6 +1,6 @@
 // hooks/useDisableScroll.ts
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 // 로그인 여부를 체크하는 커스텀훅. 미로그인 시 로그인 페이지로 강제이동
 const useLoginSessionCheck = () => {

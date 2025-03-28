@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
 import useDisableSideMenu from '@/hook/useDisableSideMenu';

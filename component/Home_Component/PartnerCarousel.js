@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import Image from 'next/image';
 
