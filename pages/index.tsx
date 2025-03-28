@@ -117,7 +117,7 @@ type HomeProps = {
   teacherDataArr: ClientTeacherDataType[];
 };
 
-// Test
+// Next 14 App Router
 // Home 페이지
 export default function Home({ teacherDataArr }: HomeProps) {
   const [mobileFlag] = useRecoilState<boolean>(mobile);
