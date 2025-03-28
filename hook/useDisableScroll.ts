@@ -1,3 +1,5 @@
+'use client';
+
 // hooks/useDisableScroll.ts
 import { useEffect } from 'react';
 

@@ -5,8 +5,10 @@ export var useScrollAnimation = function (repeat, delay) {
     setIsInViewport = _a[1];
   var ref = useRef(null);
   var timeoutRef = useRef(null); // 타임아웃 참조 추가
+
   useEffect(
     function () {
+      console.log('✅ ref.current:', ref.current); // 👈 여기 추가
       if (!ref.current) return; // 요소가 아직 준비되지 않은 경우 중단
       var callback = function (entries) {
         entries.forEach(function (entry) {
@@ -35,5 +37,6 @@ export var useScrollAnimation = function (repeat, delay) {
     },
     [repeat, delay]
   );
+
   return { isInViewport: isInViewport, ref: ref };
 };

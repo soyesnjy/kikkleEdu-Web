@@ -1,6 +1,5 @@
 // app/layout.tsx (Server Component)
 import '@/styles/globals.css';
-import StyledComponentsRegistry from '@/lib/registry';
 import LayoutClient from '@/component/common/LayoutClient';
 
 export default function DashboardLayout({
@@ -11,9 +10,7 @@ export default function DashboardLayout({
   return (
     <html lang="en">
       <body>
-        <StyledComponentsRegistry>
-          <LayoutClient>{children}</LayoutClient>
-        </StyledComponentsRegistry>
+        <LayoutClient>{children}</LayoutClient>
       </body>
     </html>
   );

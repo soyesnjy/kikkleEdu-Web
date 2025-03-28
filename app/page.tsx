@@ -50,10 +50,8 @@ async function getTeacherData(): Promise<ClientTeacherDataType[]> {
   }
 }
 
-// Next 14 App Router
 // Home 페이지
 export default async function Home() {
   const teacherDataArr = await getTeacherData();
-
   return <HomePage teacherDataArr={teacherDataArr} />;
 }

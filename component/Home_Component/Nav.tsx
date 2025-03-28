@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { useEffect, useCallback, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 import { useRecoilState } from 'recoil';
 import { log, mobile, uid, agencyClass, isNavOpenState } from '@/store/state';
@@ -71,7 +71,7 @@ const navList_info: NavListInfoType[] = [
 
 export default function Nav() {
   const router = useRouter();
-  const currentPath = router.pathname;
+  const currentPath = usePathname();
 
   const [login, setLogin] = useRecoilState(log);
   const [_, setUserId] = useRecoilState(uid);
@@ -173,9 +173,14 @@ export default function Nav() {
     window.addEventListener('resize', handleResize);
 
     // 새로고침 시, localStorage 값 recoil 전역변수에 갱신
-    if (localStorage.getItem('id')) setUserId(localStorage.getItem('id'));
-    if (!agencyType && localStorage.getItem('agencyType'))
-      setAgencyType(localStorage.getItem('agencyType'));
+    const userId = localStorage.getItem('id');
+    if (userId) setUserId(userId);
+    if (!agencyType && localStorage.getItem('agencyType')) {
+      const agencyTypeValue = localStorage.getItem('agencyType');
+      if (agencyTypeValue) {
+        setAgencyType(agencyTypeValue);
+      }
+    }
 
     // Unmoiunt 시, 이벤트 제거
     return () => {
@@ -232,7 +237,7 @@ export default function Nav() {
                   <NavLi key={`Nav_${href}_${label}`}>
                     <Link href={href} passHref>
                       <NavBtn
-                        login={login ? 'true' : null}
+                        login={login ? 'true' : undefined}
                         selected={href === currentPath}
                       >
                         {label}

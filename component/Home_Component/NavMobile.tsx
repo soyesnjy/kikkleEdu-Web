@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+'use client';
+
 import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useRecoilState } from 'recoil';
 import { log } from '@/store/state';

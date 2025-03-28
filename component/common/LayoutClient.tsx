@@ -8,6 +8,7 @@ import NavMobileSideMenuTouchHandler from '@/handler/NavMobileSideMenuTouchHandl
 import { Analytics } from '@vercel/analytics/react';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import StyledComponentsRegistry from '@/lib/registry';
 
 const queryClient = new QueryClient();
 
@@ -17,17 +18,19 @@ export default function LayoutClient({
   children: React.ReactNode;
 }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RecoilRoot>
-        <AnimatePresence mode="wait">
-          <Nav />
-          <NavMobileSideMenuTouchHandler />
-          {children}
-          <Analytics />
-          <TopButton />
-          <Footer />
-        </AnimatePresence>
-      </RecoilRoot>
-    </QueryClientProvider>
+    <StyledComponentsRegistry>
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <AnimatePresence mode="wait">
+            <Nav />
+            <NavMobileSideMenuTouchHandler />
+            {children}
+            <Analytics />
+            <TopButton />
+            <Footer />
+          </AnimatePresence>
+        </RecoilRoot>
+      </QueryClientProvider>
+    </StyledComponentsRegistry>
   );
 }

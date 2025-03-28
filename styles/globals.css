@@ -118,12 +118,6 @@ body {
   }
 }
 
-/* button,
-a,
-div {
-  -webkit-tap-highlight-color: transparent;
-} */
-
 /** :: React Scroll Animation CSS :: **/
 @keyframes scroll-animation-top-sm {
   from {
