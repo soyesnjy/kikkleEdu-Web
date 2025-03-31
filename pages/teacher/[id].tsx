@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
@@ -13,6 +12,7 @@ import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 import ProgramTeacherContainer from '@/component/Teacher_Componet/ProgramTeacherContainer';
 import EndSection from '@/component/Home_Component/EndSection';
+import LoadingModal from '@/component/Common_Component/LoadingModal';
 
 type TeacherDataType = {
   kk_teacher_name: string;
@@ -47,43 +47,6 @@ const ramdomDefaultImg = () => {
   return imgArr[Math.floor(Math.random() * imgArr.length)];
 };
 
-// SSR
-// import axios from 'axios';
-// import cookie from 'cookie';
-
-// export async function getServerSideProps(context) {
-//   const { id } = context.query; // URL에서 ID를 추출
-//   const cookies = context.req.cookies;
-//   let data = dummyData;
-
-//   console.log(context);
-
-//   try {
-//     // 강사 Detail Data
-//     const res = await axios.get(
-//       `${process.env.NEXT_PUBLIC_URL}/teacher/read?teacherIdx=${id}`,
-//       {
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Authorization: `Bearer ${cookies.refreshToken}`,
-//         },
-//         withCredentials: true,
-//       }
-//     );
-
-//     const result = res.data.data;
-//     if (result?.length) {
-//       data = result[0];
-//     }
-//   } catch (err) {
-//     console.error(err.response);
-//   }
-
-//   return {
-//     props: { data }, // 서버에서 가져온 데이터를 페이지로 전달
-//   };
-// }
-
 const TeacherDetailPage = () => {
   const [mobileFlag] = useRecoilState(mobile);
   const [data, setData] = useState<TeacherDataType>();
@@ -92,6 +55,7 @@ const TeacherDetailPage = () => {
   const router = useRouter();
   const { id } = router.query; // URL의 동적 파라미터를 가져옴
 
+  // 권한 체크
   useLoginSessionCheck();
 
   useEffect(() => {
@@ -111,7 +75,7 @@ const TeacherDetailPage = () => {
 
   // React Query 데이터 가져오기
   const {
-    data: teacherData,
+    data: _,
     isLoading,
     error,
   } = useQuery(
@@ -121,14 +85,12 @@ const TeacherDetailPage = () => {
       staleTime: 5000, // 5초 동안 신선한 상태 유지
       cacheTime: 10000, // 10초 동안 캐시 유지
       keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
-      // refetchOnWindowFocus: false, // 브라우저 포커스 변경 시 refetch 방지
-      // refetchOnReconnect: false, // 네트워크 재연결 시 refetch 방지
-      // refetchOnMount: false, // 컴포넌트 마운트 시 refetch 방지
       onSuccess: (data) => {
+        // 미승인 강사 여부 확인
         if (data.data.length === 0) {
           alert('승인되지 않은 강사입니다');
           router.back();
-        }
+        } else setData(data.data[0]);
       },
       onError: (error) => {
         console.error(error);
@@ -136,12 +98,6 @@ const TeacherDetailPage = () => {
       },
     }
   );
-
-  useEffect(() => {
-    if (teacherData) {
-      setData(teacherData.data[0]);
-    }
-  }, [teacherData]);
 
   return (
     <MainContainer>
@@ -156,7 +112,7 @@ const TeacherDetailPage = () => {
           </HeaderIntroDiv>
         </HeaderContent>
       </HeaderSection>
-      {isLoading ? <div>Loading...</div> : null}
+      {isLoading ? <LoadingModal isOpen={isLoading} /> : null}
       {error ? <div>Error...</div> : null}
       <MiddleSection>
         <MiddleContainer>
