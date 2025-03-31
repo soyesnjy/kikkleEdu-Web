@@ -13,6 +13,7 @@ import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 import ProgramTeacherContainer from '@/component/Teacher_Componet/ProgramTeacherContainer';
 import EndSection from '@/component/Home_Component/EndSection';
 import LoadingModal from '@/component/Common_Component/LoadingModal';
+import ProgressiveImage from '@/component/Common_Component/ProgressiveImage';
 
 type TeacherDataType = {
   kk_teacher_name: string;
@@ -130,19 +131,26 @@ const TeacherDetailPage = () => {
           </MiddleTextContainer>
           {/* Mobile */}
           {mobileFlag && (
-            <Image
-              key={data?.kk_teacher_profileImg_path + id}
-              src={data?.kk_teacher_profileImg_path || ramdomDefaultImg()}
-              alt="Teacher_Profile_IMG"
-              width={390}
-              height={418}
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-                borderRadius: '24px',
-              }}
-              priority={true}
-            />
+            // <Image
+            //   key={data?.kk_teacher_profileImg_path + id}
+            //   src={data?.kk_teacher_profileImg_path || ramdomDefaultImg()}
+            //   alt="Teacher_Profile_IMG"
+            //   width={390}
+            //   height={418}
+            //   style={{
+            //     maxWidth: '100%',
+            //     height: 'auto',
+            //     borderRadius: '24px',
+            //   }}
+            //   priority={true}
+            // />
+            <MiddleProfileImgContainer>
+              <ProgressiveImage
+                fileId={data?.kk_teacher_profileImg_path.split('id=')[1]}
+                alt={'Teacher_Profile_IMG'}
+                mobile={true}
+              />
+            </MiddleProfileImgContainer>
           )}
           <MiddleTextContainer>
             <MiddleSubtitleSmall>{`경력 및 학력`}</MiddleSubtitleSmall>
@@ -171,18 +179,9 @@ const TeacherDetailPage = () => {
         {/* Web */}
         {!mobileFlag && (
           <MiddleProfileImgContainer>
-            <Image
-              key={data?.kk_teacher_profileImg_path + id}
-              src={data?.kk_teacher_profileImg_path || ramdomDefaultImg()}
-              alt="Teacher_Profile_IMG"
-              width={390}
-              height={418}
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-                borderRadius: '24px',
-              }}
-              priority={true}
+            <ProgressiveImage
+              fileId={data?.kk_teacher_profileImg_path.split('id=')[1]}
+              alt={'Teacher_Profile_IMG'}
             />
           </MiddleProfileImgContainer>
         )}
