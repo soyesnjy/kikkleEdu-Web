@@ -291,6 +291,7 @@ export default function Login() {
               placeholder="이메일 주소"
               value={id}
               onChange={(e) => setId(e.target.value)}
+              data-testid="id-input"
             />
             <LoginInput
               color="black"
@@ -298,8 +299,12 @@ export default function Login() {
               placeholder="비밀 번호"
               value={pwd}
               onChange={(e) => setPwd(e.target.value)}
+              data-testid="pwd-input"
             />
-            <LoginButton onClick={submitHandler}>{`로그인`}</LoginButton>
+            <LoginButton
+              onClick={submitHandler}
+              data-testid="login-button"
+            >{`로그인`}</LoginButton>
             {/* <StyledLink href="#">비밀번호를 잊으셨나요?</StyledLink> */}
             {/* {userClass === 'teacher' && (
               <Image
