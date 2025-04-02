@@ -130,20 +130,7 @@ const TeacherDetailPage = () => {
             </MiddleDescription>
           </MiddleTextContainer>
           {/* Mobile */}
-          {mobileFlag && (
-            // <Image
-            //   key={data?.kk_teacher_profileImg_path + id}
-            //   src={data?.kk_teacher_profileImg_path || ramdomDefaultImg()}
-            //   alt="Teacher_Profile_IMG"
-            //   width={390}
-            //   height={418}
-            //   style={{
-            //     maxWidth: '100%',
-            //     height: 'auto',
-            //     borderRadius: '24px',
-            //   }}
-            //   priority={true}
-            // />
+          {mobileFlag && data?.kk_teacher_profileImg_path.length && (
             <MiddleProfileImgContainer>
               <ProgressiveImage
                 fileId={data?.kk_teacher_profileImg_path.split('id=')[1]}
@@ -177,7 +164,7 @@ const TeacherDetailPage = () => {
         </MiddleContainer>
 
         {/* Web */}
-        {!mobileFlag && (
+        {!mobileFlag && data?.kk_teacher_profileImg_path.length && (
           <MiddleProfileImgContainer>
             <ProgressiveImage
               fileId={data?.kk_teacher_profileImg_path.split('id=')[1]}
