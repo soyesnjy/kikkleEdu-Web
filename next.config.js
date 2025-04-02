@@ -13,7 +13,13 @@ const nextConfig = {
     defaultLocale: 'ko',
   },
   images: {
-    domains: ['drive.google.com', 'drive.usercontent.google.com'],
+    // remotePatterns: [{ protocol: 'https', hostname: '*' }],
+    domains: [
+      'drive.google.com',
+      'drive.usercontent.google.com',
+      'res.cloudinary.com',
+    ],
+    // unoptimized: true,
   },
   eslint: {
     // 빌드 중 ESLint 오류를 무시합니다.

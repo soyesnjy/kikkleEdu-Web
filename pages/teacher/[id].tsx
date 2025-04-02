@@ -133,7 +133,7 @@ const TeacherDetailPage = () => {
           {mobileFlag && data?.kk_teacher_profileImg_path.length && (
             <MiddleProfileImgContainer>
               <ProgressiveImage
-                fileId={data?.kk_teacher_profileImg_path.split('id=')[1]}
+                profileImg={data?.kk_teacher_profileImg_path}
                 alt={'Teacher_Profile_IMG'}
                 mobile={true}
               />
@@ -167,7 +167,7 @@ const TeacherDetailPage = () => {
         {!mobileFlag && data?.kk_teacher_profileImg_path.length && (
           <MiddleProfileImgContainer>
             <ProgressiveImage
-              fileId={data?.kk_teacher_profileImg_path.split('id=')[1]}
+              profileImg={data?.kk_teacher_profileImg_path}
               alt={'Teacher_Profile_IMG'}
             />
           </MiddleProfileImgContainer>

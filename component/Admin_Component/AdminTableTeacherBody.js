@@ -1,10 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { handleSignupUpdate, handleSignupDelete } from '@/fetchAPI/signupAPI';
 import Swal from 'sweetalert2';
 import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
-import Image from 'next/image';
 
 const partTimeArr = [
   { title: '오전 (10:00~12:00)', value: '오전' },
@@ -240,14 +239,14 @@ const AdminTableTeacherBody = ({ data }) => {
             {data.kk_teacher_profileImg_path ? (
               <ShowContainer>
                 <StyledA href={data.kk_teacher_profileImg_path} target="_blank">
-                  <Image
+                  <img
                     key={data.kk_teacher_profileImg_path}
                     src={data.kk_teacher_profileImg_path}
                     alt="Teacher Profile IMG (Mini)"
                     width={56}
                     height={56}
                     style={{ maxWidth: '100%', height: 'auto' }}
-                    priority={true}
+                    // priority={true}
                   />
                 </StyledA>
               </ShowContainer>

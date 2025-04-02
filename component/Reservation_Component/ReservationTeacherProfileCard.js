@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
 
 const ReservationTeacherProfileCard = ({
   id,
@@ -21,14 +21,20 @@ const ReservationTeacherProfileCard = ({
 
   return (
     <Wrapper selected={selectedTeacher.includes(id)}>
-      <StyledImage
+      <img
         src={
           imageSrc ? imageSrc : '/src/Teacher_IMG/Teacher_Ella_Profile_IMG.png'
         }
         alt="Background Image"
         width={300}
         height={300}
-        style={{ maxWidth: '100%', height: '100%', borderRadius: '25px' }}
+        style={{
+          maxWidth: '100%',
+          height: '100%',
+          borderRadius: '25px',
+          opacity: '0.7',
+          zIndex: '-1 ',
+        }}
       />
 
       <Content>
@@ -75,11 +81,6 @@ const Wrapper = styled.div`
     width: 160px;
     height: 170px;
   }
-`;
-
-const StyledImage = styled(Image)`
-  opacity: 0.7;
-  z-index: -1; /* 이미지가 가장 아래에 위치하도록 */
 `;
 
 const Content = styled.div`
