@@ -12,7 +12,7 @@ const ProgressiveImage = ({
 }) => {
   const [isOriginalLoaded, setIsOriginalLoaded] = useState(false);
 
-  const thumbnailSrc = `https://drive.google.com/thumbnail?id=${fileId}`;
+  // const thumbnailSrc = `https://drive.google.com/thumbnail?id=${fileId}`;
   const originalSrc = `https://drive.google.com/uc?export=view&id=${fileId}`;
 
   return (
@@ -27,12 +27,12 @@ const ProgressiveImage = ({
     >
       {/* 썸네일 (백업용, 빠르게 뜨는 이미지) */}
       <Image
-        src={thumbnailSrc}
+        src={`/loding.gif`}
         alt={`${alt} (thumbnail)`}
         fill
         style={{
           objectFit: 'cover',
-          filter: isOriginalLoaded ? 'blur(10px)' : 'none',
+          filter: isOriginalLoaded ? 'blur(1px)' : 'none',
           transition: 'opacity 0.3s ease-in-out',
         }}
         priority
