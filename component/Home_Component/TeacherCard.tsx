@@ -1,21 +1,19 @@
-import styled from 'styled-components';
-
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
-import Image from 'next/image';
+import styled from 'styled-components';
 import Link from 'next/link';
 
 const TeacherCard = ({ id, active, profileImg, name, introduce }) => {
   return (
     <ProfileCard active={active}>
-      <Image
+      <img
         src={profileImg}
-        alt="profile_IMG"
+        alt="Teacher_Profile_IMG"
         width={103}
         height={103}
         style={{
           borderRadius: '50%',
         }}
-        priority={true}
       />
       <ProfileName>{name}</ProfileName>
       <ProfileDescription>
