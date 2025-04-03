@@ -19,6 +19,6 @@
       "@/*": ["./*"] // @/ 경로를 루트 디렉토리에 매핑
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/program/index.js"],
   "exclude": ["node_modules"]
 }

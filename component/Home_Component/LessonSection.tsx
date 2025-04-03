@@ -1,7 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import Image from 'next/image';
 
 // Home Page Props Type 지정
 type LessonSectionProps = {
@@ -34,7 +34,7 @@ const LessonSection = ({
           </ContentContainer>
           <ImageContainer>
             {/* <Overlay /> */}
-            <Image
+            <img
               src={imgUrl}
               alt={'lesson_img'}
               width={500}
@@ -47,7 +47,7 @@ const LessonSection = ({
         <>
           <ImageContainer>
             {/* <Overlay /> */}
-            <Image
+            <img
               src={imgUrl}
               alt={'lesson_img'}
               width={500}
@@ -73,7 +73,7 @@ const LessonSection = ({
           </ContentContainer>
           <ProgramImageContainer>
             <Overlay />
-            <Image
+            <img
               src={imgUrl}
               alt={'lesson_img'}
               width={500}
@@ -87,19 +87,16 @@ const LessonSection = ({
   );
 };
 
-export default LessonSection;
-
 // Styled Components
 const SectionContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   max-width: 80%;
   margin: 0 auto;
   padding: 2rem;
 
-  gap: 15rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   @media (max-width: 1080px) {
     gap: 1rem;
@@ -222,3 +219,5 @@ const Overlay = styled.div`
   z-index: -1;
   transform: rotate(-2deg);
 `;
+
+export default LessonSection;

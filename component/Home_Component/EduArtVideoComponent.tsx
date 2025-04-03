@@ -2,7 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 
-const EduArtVideoComponent = ({ sectionData }) => {
+type EduArtVideoComponentProps = {
+  sectionData: {
+    title: string;
+    content: string;
+    features: string[];
+    youtubeUrl: string;
+  };
+};
+
+const EduArtVideoComponent = ({ sectionData }: EduArtVideoComponentProps) => {
   const { title, content, features, youtubeUrl } = sectionData;
   return (
     <Container>
@@ -11,7 +20,7 @@ const EduArtVideoComponent = ({ sectionData }) => {
         <RightSection>
           <Content>{content}</Content>
           <FeatureList>
-            {features?.map((feature, index) => (
+            {features?.map((feature: string, index: number) => (
               <FeatureItem key={index}>
                 <Image
                   src="/src/Home_IMG/Icon_IMG/Home_Icon_4_IMG.png"
@@ -43,9 +52,10 @@ export default EduArtVideoComponent;
 
 // Styled Components
 const Container = styled.div`
-  width: 80%;
-  padding: 2rem;
+  width: 100%;
+  max-width: 80%;
   margin: 0 auto;
+  padding: 2rem;
 
   display: flex;
   flex-direction: column;
@@ -58,7 +68,10 @@ const Container = styled.div`
   gap: 4rem;
 
   @media (max-width: 1080px) {
-    width: 100%;
+    margin: 0;
+    padding: 1rem;
+
+    max-width: 100%;
   }
 `;
 
@@ -69,13 +82,16 @@ const LeftSection = styled.div`
   align-items: center;
 
   @media (max-width: 1080px) {
+    padding: 0 2rem;
     flex-direction: column;
     align-items: flex-start;
   }
 `;
 
 const RightSection = styled.div`
-  width: 50%;
+  min-width: 38%;
+  width: fit-content;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -91,7 +107,7 @@ const RightSection = styled.div`
 const Title = styled.h1`
   font-size: 3rem;
   font-weight: bold;
-  font-family: Nunito;
+  font-family: Pretendard;
 
   white-space: pre;
 
@@ -127,7 +143,7 @@ const FeatureItem = styled.li`
 
   font-size: 24px;
   font-weight: 700;
-  font-family: Nunito;
+  font-family: Pretendard;
   color: #000;
 
   gap: 1rem;
@@ -149,6 +165,7 @@ const VideoContent = styled.div`
   z-index: 1;
 
   @media (max-width: 1080px) {
+    margin-top: 0;
     iframe {
       width: 100%;
       height: 328px;
