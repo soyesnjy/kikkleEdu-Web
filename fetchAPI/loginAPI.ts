@@ -47,6 +47,10 @@ export const loginAPI = async (
       status: err.response.status || 500,
       data: {
         message: err.response.data.message || 'Unknown error',
+        userIdx: '',
+        id: '',
+        type: '',
+        refreshToken: '',
       },
     };
   }
