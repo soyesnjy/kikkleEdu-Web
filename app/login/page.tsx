@@ -1,8 +1,8 @@
 'use client';
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
 import Link from 'next/link';
 
 import { useEffect, useState } from 'react';
@@ -126,7 +126,7 @@ export default function Login() {
   return (
     <LoginPageContainer>
       <FormWrap>
-        <Image
+        <img
           src="/src/Login_IMG/Login_Vector_IMG.png"
           alt={'soyes_logo'}
           width={93}
