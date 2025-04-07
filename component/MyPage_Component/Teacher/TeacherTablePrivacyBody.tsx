@@ -1,8 +1,9 @@
+'use client';
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useQuery } from 'react-query';
 
 import { handleSignupDelete, handleSignupUpdate } from '@/fetchAPI/signupAPI';
@@ -232,7 +233,7 @@ const TeacherTablePrivacyBody = () => {
   return data ? (
     <PrivacyContainer>
       <ProfileImageContainer>
-        <Image
+        <img
           src={
             teacherData?.kk_teacher_profileImg_path ||
             '/src/Teacher_IMG/Teacher_Pupu_Profile_IMG.png'
