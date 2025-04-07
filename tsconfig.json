@@ -32,5 +32,5 @@
     "pages/program/index.js",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "Regacy Pages"]
+  "exclude": ["node_modules", "Regacy Pages", "pages"]
 }

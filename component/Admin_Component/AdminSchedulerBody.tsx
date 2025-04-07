@@ -655,7 +655,11 @@ const AdminSchedulerBody = () => {
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   // React Query 데이터 가져오기
-  const { data, isLoading, error } = useQuery(
+  const {
+    data: eventData,
+    isLoading,
+    error,
+  } = useQuery(
     ['events', currentDateMonth, debouncedSearchQuery], // Query Key
     reactQueryFetchEvent, // Query Function
     {
@@ -685,8 +689,8 @@ const AdminSchedulerBody = () => {
 
   // 가져온 서버 데이터를 `events` 상태에 반영
   useEffect(() => {
-    if (data) setEvents(data);
-  }, [data]);
+    if (eventData) setEvents(eventData);
+  }, [eventData]);
 
   // Delete 삭제 기능
   useEffect(() => {

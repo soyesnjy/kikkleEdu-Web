@@ -22,14 +22,12 @@ type SectionFirstType = {
   title: string;
   content: string;
 };
-
 type SectionSecondType = {
   title: string;
   content: string;
   features: string[];
   imgPath: string;
 };
-
 type SectionFifthToNinethType = {
   title: string;
   subtitle: string;
@@ -56,14 +54,12 @@ const section_1_Arr: SectionFirstType[] = [
     content: '교육하고 체험하고 스스로 만드는 움직임',
   },
 ];
-
 const section_2_Data: SectionSecondType = {
   title: 'EDU ART',
   content: '우리아이의 건강한 몸과 마음의 행복을 위해',
   features: ['social', 'physical', 'creativity', 'self-confidence'],
   imgPath: '/src/Home_IMG/Home_Section_2_IMG.png',
 };
-
 const section_5to9_Arr: SectionFifthToNinethType[] = [
   {
     title: '유치원 수업',
@@ -111,13 +107,11 @@ type ClientTeacherDataType = {
   introduce: string;
   profileImg: string;
 };
-
 // Home Page Props Type 지정
 type HomeProps = {
   teacherDataArr: ClientTeacherDataType[];
 };
 
-// Test
 // Home 페이지
 export default function Home({ teacherDataArr }: HomeProps) {
   const [mobileFlag] = useRecoilState<boolean>(mobile);

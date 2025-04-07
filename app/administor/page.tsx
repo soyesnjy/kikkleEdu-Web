@@ -1,8 +1,9 @@
+'use client';
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unreachable */
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import { handleSignupGet } from '@/fetchAPI/signupAPI';
 import { handleReservationGet } from '@/fetchAPI/reservationAPI';
@@ -17,24 +18,7 @@ import AdminDirectory from '@/component/Admin_Component/AdminDirectory';
 import BoardCreate from '@/component/Board_Component/BoardCreate';
 import AdminSchedulerBody from '@/component/Admin_Component/AdminSchedulerBody';
 import Pagination from '@/component/Common_Component/Pagination';
-
-// const dummyTableData = [
-//   {
-//     title: '○○수업',
-//     instructor: '김하나',
-//     date: '2024-07-01 ~ 2024-08-01',
-//     contact: '010-0000-0000',
-//     paymentStatus: '결제 완료',
-//   },
-//   {
-//     title: '○○수업',
-//     instructor: '김하나',
-//     date: '2024-07-01 ~ 2024-08-01',
-//     contact: '010-0000-0000',
-//     paymentStatus: '결제 전',
-//   },
-//   // 추가 데이터
-// ];
+import AdminTableTeacherBodyNew from '@/component/Admin_Component/AdminTableTeacherBodyNew';
 
 const Administor = () => {
   const [activeTab, setActiveTab] = useState('');
@@ -48,11 +32,6 @@ const Administor = () => {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-
-  // // 관리자 권한이 없을 경우 메인페이지로 이동
-  // useEffect(() => {
-  //   if (localStorage.getItem('agencyType') !== 'admin') router.replace('/');
-  // }, [agencyType]);
 
   useEffect(() => {
     // 관리자 권한이 없을 경우 메인페이지로 이동
@@ -85,6 +64,7 @@ const Administor = () => {
         handleSignupGet({ userClass: activeTab, name, pageNum: page })
           .then((res) => res.data)
           .then((data) => {
+            if (data === undefined) return;
             setTableData([...data.data]);
             setLastPageNum(data.lastPageNum);
           });
@@ -94,6 +74,7 @@ const Administor = () => {
         handleSignupGet({ userClass: activeTab, pageNum: page })
           .then((res) => res.data)
           .then((data) => {
+            if (data === undefined) return;
             setTableData([...data.data]);
             setLastPageNum(data.lastPageNum);
           });
@@ -107,6 +88,7 @@ const Administor = () => {
         })
           .then((res) => res.data)
           .then((data) => {
+            if (data === undefined) return;
             setTableData([...data.data]);
             setLastPageNum(data.lastPageNum);
           });
@@ -139,50 +121,50 @@ const Administor = () => {
   }, [activeTab, page]);
 
   // 검색 조회 (디바운싱 적용)
-  useEffect(() => {
-    const debounce = setTimeout(() => {
-      if (activeTab === 'teacher') {
-        handleSignupGet({ userClass: activeTab, name, pageNum: page })
-          .then((res) => res.data)
-          .then((data) => {
-            setTableData(data.data);
-          });
-      } else if (activeTab === 'agency') {
-        handleSignupGet({ userClass: activeTab, name, pageNum: page })
-          .then((res) => res.data)
-          .then((data) => {
-            setTableData(data.data);
-          });
-      } else if (activeTab === 'reservation') {
-        handleReservationGet({
-          userClass: activeTab,
-          date: name,
-          pageNum: page,
-        })
-          .then((res) => res.data)
-          .then((data) => {
-            console.log(data);
-            setTableData(data.data);
-          });
-      } else if (activeTab === 'attend') {
-        handleMypageTeacherAttendGet({
-          // userIdx: localStorage.getItem('userIdx'),
-          name,
-          pageNum: page,
-        })
-          .then((res) => res.data)
-          .then((data) => {
-            console.log(data);
-            setTableData(data.data);
-            setLastPageNum(data.lastPageNum);
-          });
-      }
-    }, 350);
+  // useEffect(() => {
+  //   const debounce = setTimeout(() => {
+  //     if (activeTab === 'teacher') {
+  //       handleSignupGet({ userClass: activeTab, name, pageNum: page })
+  //         .then((res) => res.data)
+  //         .then((data) => {
+  //           setTableData(data.data);
+  //         });
+  //     } else if (activeTab === 'agency') {
+  //       handleSignupGet({ userClass: activeTab, name, pageNum: page })
+  //         .then((res) => res.data)
+  //         .then((data) => {
+  //           setTableData(data.data);
+  //         });
+  //     } else if (activeTab === 'reservation') {
+  //       handleReservationGet({
+  //         userClass: activeTab,
+  //         date: name,
+  //         pageNum: page,
+  //       })
+  //         .then((res) => res.data)
+  //         .then((data) => {
+  //           console.log(data);
+  //           setTableData(data.data);
+  //         });
+  //     } else if (activeTab === 'attend') {
+  //       handleMypageTeacherAttendGet({
+  //         // userIdx: localStorage.getItem('userIdx'),
+  //         name,
+  //         pageNum: page,
+  //       })
+  //         .then((res) => res.data)
+  //         .then((data) => {
+  //           console.log(data);
+  //           setTableData(data.data);
+  //           setLastPageNum(data.lastPageNum);
+  //         });
+  //     }
+  //   }, 350);
 
-    return () => {
-      clearTimeout(debounce);
-    };
-  }, [name]);
+  //   return () => {
+  //     clearTimeout(debounce);
+  //   };
+  // }, [name]);
 
   return (
     <MasterContainer>
@@ -262,14 +244,11 @@ const Administor = () => {
             )}
             {/* Table Body */}
             {activeTab === 'teacher' && (
-              <tbody>
-                {tableData.map((data) => (
-                  <AdminTableTeacherBody
-                    key={JSON.stringify(data)}
-                    data={data}
-                  />
-                ))}
-              </tbody>
+              <AdminTableTeacherBodyNew
+                activeTab={activeTab}
+                page={page}
+                setLastPageNum={setLastPageNum}
+              />
             )}
             {activeTab === 'agency' && (
               <tbody>
@@ -297,6 +276,7 @@ const Administor = () => {
                   <TeacherTableAttendBody
                     key={JSON.stringify(data)}
                     data={data}
+                    page={undefined}
                   />
                 ))}
               </tbody>

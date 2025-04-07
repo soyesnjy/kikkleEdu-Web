@@ -1,7 +1,38 @@
 import axios from 'axios';
 
+// handleSignupCreate API 반환 데이터 타입 지정
+type SignupGetResponseDataType = {
+  message?: string;
+  status: number;
+  data?: {
+    data: {
+      kk_teacher_approve_status: number;
+      kk_teacher_created_at: string;
+      kk_teacher_dayofweek: string;
+      kk_teacher_education: string;
+      kk_teacher_file_path: string;
+      kk_teacher_history: string;
+      kk_teacher_idx: number;
+      kk_teacher_introduction: string;
+      kk_teacher_location: string;
+      kk_teacher_name: string;
+      kk_teacher_phoneNum: string;
+      kk_teacher_profileImg_path: string;
+      kk_teacher_pwd: string;
+      kk_teacher_time: string;
+      kk_teacher_uid: string;
+      kk_teacher_updated_at: string;
+    }[];
+    lastPageNum: number;
+    limit: number;
+    page: string;
+  };
+};
+
 // READ
-export const handleSignupGet = async (query) => {
+export const handleSignupGet = async (
+  query
+): Promise<SignupGetResponseDataType> => {
   const { userClass, name, pageNum } = query;
   try {
     const response = await axios.get(
@@ -17,13 +48,19 @@ ${pageNum ? `pageNum=${pageNum}&` : ''}`,
         withCredentials: true,
       }
     );
-    // console.log(response.data);
+    // console.log(response);
     return response;
   } catch (err) {
     console.error(err);
     return {
       message: err.response.data.message,
       status: err.response.status,
+      data: {
+        data: [],
+        lastPageNum: -1,
+        limit: -1,
+        page: '-1',
+      },
     };
   }
 };

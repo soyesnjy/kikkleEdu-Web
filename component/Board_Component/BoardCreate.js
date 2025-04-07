@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { handleBoardCreate } from '@/fetchAPI/boardAPI';
 
 // 임시 데이터 형식
-const boardData = {
-  agencyIdx: 0, // 기관 고유 idx, 실제 사용 시 변경 필요
-  title: '3',
-  content: '442',
-  isPrivate: false,
-};
+// const boardData = {
+//   agencyIdx: 0, // 기관 고유 idx, 실제 사용 시 변경 필요
+//   title: '3',
+//   content: '442',
+//   isPrivate: false,
+// };
 
 const BoardCreate = () => {
   const [title, setTitle] = useState('');
