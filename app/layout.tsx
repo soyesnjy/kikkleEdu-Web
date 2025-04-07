@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-page-custom-font */
 /* eslint-disable @next/next/google-font-display */
 import '@/styles/globals.css';
-
 import ClientProviders from '@/lib/ClientProviders';
 
 export const metadata = {

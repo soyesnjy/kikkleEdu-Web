@@ -10,7 +10,6 @@ import Nav from '@/component/Home_Component/Nav';
 import Footer from '@/component/Home_Component/Footer';
 import TopButton from '@/component/Home_Component/TopButton';
 import NavMobileSideMenuTouchHandler from '@/handler/NavMobileSideMenuTouchHandler';
-
 const queryClient = new QueryClient();
 
 export default function ClientProviders({ children }: { children: ReactNode }) {
