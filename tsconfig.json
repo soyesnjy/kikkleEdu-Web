@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "noImplicitAny": false, // noImplicitAny": "타입이 명시되지 않은 변수에 'any'를 허용하지 않습니다.
     "skipLibCheck": true,
@@ -20,9 +16,7 @@
     "jsx": "preserve",
     "baseUrl": ".", // 프로젝트 루트 디렉토리를 기준으로 설정
     "paths": {
-      "@/*": [
-        "./*"
-      ] // @/ 경로를 루트 디렉토리에 매핑
+      "@/*": ["./*"] // @/ 경로를 루트 디렉토리에 매핑
     },
     "plugins": [
       {
@@ -38,7 +32,5 @@
     "pages/program/index.js",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules", "Regacy Pages"]
 }
