@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
 import { handleSignupUpdate, handleSignupDelete } from '@/fetchAPI/signupAPI';
 import Swal from 'sweetalert2';
 import CheckIcon from '@mui/icons-material/Check'; // Check 아이콘 사용
@@ -38,7 +39,7 @@ const AdminTableTeacherBodyRow = ({ data }) => {
   const [location, setLocation] = useState('');
   const [history, setHistory] = useState('');
   const [education, setEducation] = useState('');
-  // const [file, setFile] = useState(null);
+
   const [approveStatus, setApproveStatus] = useState(-1);
   const [profilePreviewImg, setprofilePreviewImg] = useState(null);
 
@@ -50,7 +51,6 @@ const AdminTableTeacherBodyRow = ({ data }) => {
     setPossTimes(
       data.kk_teacher_time ? [...data.kk_teacher_time.split('/')] : []
     ); // 시간대 추가
-    // setProfileImg(data.kk_teacher_profileImg_path);
     setLocation(data.kk_teacher_location);
     setHistory(data.kk_teacher_history);
     setEducation(data.kk_teacher_education);

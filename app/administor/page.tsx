@@ -5,20 +5,22 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { handleSignupGet } from '@/fetchAPI/signupAPI';
 import { handleReservationGet } from '@/fetchAPI/reservationAPI';
 import { handleMypageTeacherAttendGet } from '@/fetchAPI/mypageAPI';
 
 import AdminTab from '@/component/Admin_Component/AdminTab';
-import AdminTableTeacherBody from '@/component/Admin_Component/AdminTableTeacherBody';
-import AdminTableAgencyBody from '@/component/Admin_Component/AdminTableAgencyBody';
+// import AdminTableTeacherBody from '@/component/Admin_Component/AdminTableTeacherBody';
+// import AdminTableAgencyBody from '@/component/Admin_Component/AdminTableAgencyBody';
 import AdminTableReservationBody from '@/component/Admin_Component/AdminTableReservationBody';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
+
 import AdminDirectory from '@/component/Admin_Component/AdminDirectory';
 import BoardCreate from '@/component/Board_Component/BoardCreate';
 import AdminSchedulerBody from '@/component/Admin_Component/AdminSchedulerBody';
 import Pagination from '@/component/Common_Component/Pagination';
+
 import AdminTableTeacherBodyNew from '@/component/Admin_Component/AdminTableTeacherBodyNew';
+import AdminTableAgencyBodyNew from '@/component/Admin_Component/AdminTableAgencyBodyNew';
 
 const Administor = () => {
   const [activeTab, setActiveTab] = useState('');
@@ -29,7 +31,7 @@ const Administor = () => {
 
   const router = useRouter();
 
-  const handleTabClick = (tab) => {
+  const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
 
@@ -59,28 +61,7 @@ const Administor = () => {
   useEffect(() => {
     // page 값이 Default가 아닐 경우에만 실행
     if (page !== -1) {
-      // 강사 승인 요청 관리
-      if (activeTab === 'teacher') {
-        handleSignupGet({ userClass: activeTab, name, pageNum: page })
-          .then((res) => res.data)
-          .then((data) => {
-            if (data === undefined) return;
-            setTableData([...data.data]);
-            setLastPageNum(data.lastPageNum);
-          });
-      }
-      // 기관 승인 요청 관리
-      else if (activeTab === 'agency') {
-        handleSignupGet({ userClass: activeTab, pageNum: page })
-          .then((res) => res.data)
-          .then((data) => {
-            if (data === undefined) return;
-            setTableData([...data.data]);
-            setLastPageNum(data.lastPageNum);
-          });
-      }
-      // 기관 예약 요청 관리
-      else if (activeTab === 'reservation') {
+      if (activeTab === 'reservation') {
         handleReservationGet({
           userClass: activeTab,
           date: name,
@@ -113,7 +94,7 @@ const Administor = () => {
       // 탭 변경 시 페이지 초기화
       if (localStorage.getItem('activeTab') !== activeTab) {
         setPage(1);
-        localStorage.setItem('page', 1);
+        localStorage.setItem('page', '1');
       }
       // 탭 저장
       localStorage.setItem('activeTab', activeTab);
@@ -251,14 +232,11 @@ const Administor = () => {
               />
             )}
             {activeTab === 'agency' && (
-              <tbody>
-                {tableData.map((data) => (
-                  <AdminTableAgencyBody
-                    key={JSON.stringify(data)}
-                    data={data}
-                  />
-                ))}
-              </tbody>
+              <AdminTableAgencyBodyNew
+                activeTab={activeTab}
+                page={page}
+                setLastPageNum={setLastPageNum}
+              />
             )}
             {activeTab === 'reservation' && (
               <tbody>

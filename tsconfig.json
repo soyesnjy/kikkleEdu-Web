@@ -30,7 +30,8 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/program/index.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "component/Admin_Component/AdminTableTeacherBodyRow.js"
   ],
   "exclude": ["node_modules", "Regacy Pages", "pages"]
 }

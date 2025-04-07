@@ -5,24 +5,7 @@ type SignupGetResponseDataType = {
   message?: string;
   status: number;
   data?: {
-    data: {
-      kk_teacher_approve_status: number;
-      kk_teacher_created_at: string;
-      kk_teacher_dayofweek: string;
-      kk_teacher_education: string;
-      kk_teacher_file_path: string;
-      kk_teacher_history: string;
-      kk_teacher_idx: number;
-      kk_teacher_introduction: string;
-      kk_teacher_location: string;
-      kk_teacher_name: string;
-      kk_teacher_phoneNum: string;
-      kk_teacher_profileImg_path: string;
-      kk_teacher_pwd: string;
-      kk_teacher_time: string;
-      kk_teacher_uid: string;
-      kk_teacher_updated_at: string;
-    }[];
+    data: any[]; // 너무 많아...
     lastPageNum: number;
     limit: number;
     page: string;
