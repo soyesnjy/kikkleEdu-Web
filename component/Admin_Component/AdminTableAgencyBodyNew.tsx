@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { handleSignupGet } from '@/fetchAPI/signupAPI';
 import { useQuery } from 'react-query';
 
@@ -57,12 +58,54 @@ const AdminTableAgencyBodyNew = ({ activeTab, page, setLastPageNum }) => {
   if (error) return <div>Error...</div>;
 
   return (
-    <tbody>
-      {tableData.map((data) => (
-        <AdminTableAgencyBodyRow key={JSON.stringify(data)} data={data} />
-      ))}
-    </tbody>
+    <Table>
+      <thead>
+        <tr>
+          <TableHeader>기관 번호</TableHeader>
+          <TableHeader>기관 계정정보</TableHeader>
+          <TableHeader>기관명</TableHeader>
+          <TableHeader>기관 주소</TableHeader>
+          <TableHeader>연락처</TableHeader>
+          <TableHeader>기관 유형</TableHeader>
+          <TableHeader>승인 여부</TableHeader>
+          <TableHeader>관리자 옵션</TableHeader>
+        </tr>
+      </thead>
+      <tbody>
+        {tableData.map((data) => (
+          <AdminTableAgencyBodyRow key={JSON.stringify(data)} data={data} />
+        ))}
+      </tbody>
+    </Table>
   );
 };
+
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+
+  @media (max-width: 768px) {
+    width: 90%;
+  }
+`;
+
+const TableHeader = styled.th`
+  border-bottom: 2px solid #61b15a;
+  padding: 1rem;
+  color: #61b15a;
+
+  font-size: 0.9rem;
+  font-family: Pretendard;
+  font-weight: 600;
+  text-align: left;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+    padding: 1rem 0rem;
+    padding-left: 0.5rem;
+    text-align: center;
+  }
+`;
 
 export default AdminTableAgencyBodyNew;
