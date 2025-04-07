@@ -50,7 +50,9 @@ ${classType ? `classType=${classType}&` : ''}`,
   } catch (err) {
     console.error(err);
     return {
+      message: err.response.data.message,
       status: err.response.status,
+      data: { data: [] },
     };
   }
 };

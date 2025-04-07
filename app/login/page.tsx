@@ -116,7 +116,9 @@ export default function Login() {
 
   useEffect(() => {
     const logItem = localStorage.getItem('log');
-    const loginSession = logItem ? JSON.parse(logItem) : null;
+    const loginSession: { expires: string } = logItem
+      ? JSON.parse(logItem)
+      : null;
     if (loginSession) {
       router.replace('/');
       return;
