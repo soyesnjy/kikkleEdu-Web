@@ -152,7 +152,6 @@ async function getTeacherData() {
   }
 }
 
-// Test
 // Home 페이지
 export default async function Home() {
   const teacherDataArr: ClientTeacherDataType[] = await getTeacherData();

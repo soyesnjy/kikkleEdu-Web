@@ -28,6 +28,9 @@ const nextConfig = {
   compiler: {
     styledComponents: true, // styled-components의 SWC 지원 활성화
   },
+  experimental: {
+    appDir: true,
+  },
 };
 
 module.exports = withPWA(nextConfig);
