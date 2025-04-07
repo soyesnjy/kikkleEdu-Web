@@ -1,29 +1,22 @@
+'use client';
 /* eslint-disable no-unreachable */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
-
-import { useRouter } from 'next/router';
-import { handleReservationCreate } from '@/fetchAPI/reservationAPI';
-// SweetAlert2
+import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { log, mobile } from '@/store/state';
 
+import { handleReservationCreate } from '@/fetchAPI/reservationAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 
-// import { useTranslation } from 'next-i18next';
-// import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-
-import 'react-phone-number-input/style.css';
-// import PhoneInput from 'react-phone-number-input';
-// import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
 import Calendar from '@/component/MyPage_Component/Calendar';
 import ReservationTeacherProfileCard from '@/component/Reservation_Component/ReservationTeacherProfileCard';
 import PayModal from '@/component/MyPage_Component/PayModal';
+import 'react-phone-number-input/style.css';
 
 const partTimeArr = [
   { title: '오전 (10:00~12:00)', value: '오전' },
@@ -53,7 +46,6 @@ const groupDatesByMonth = (dates) => {
     return acc;
   }, {});
 };
-
 // 날짜 -> 요일 변환 메서드
 const getUniqueWeekdays = (dateArr) => {
   // 요일 배열
@@ -71,19 +63,26 @@ const getUniqueWeekdays = (dateArr) => {
   return Array.from(uniqueWeekdays);
 };
 
+type PossClassArrType = {
+  id: number;
+  title: string;
+  content: string;
+  imgUrl: string;
+};
+
 // Reservation 페이지
 export default function Reservation() {
   const [pageNumber, setPageNumber] = useState(0); // 강사 페이지 번호
   const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
 
   // Recoil 전역 변수
-  const [login, setLogin] = useRecoilState(log);
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const login = useRecoilValue(log);
+  const mobileFlag = useRecoilValue(mobile);
 
   // (NavBar)
   const [navText, setNavText] = useState(''); // Nav바 Text State
   // (First Page)
-  const [possClassArr, setPossClassArr] = useState([]); // DB Class Select 값
+  const [possClassArr, setPossClassArr] = useState<PossClassArrType[]>([]); // DB Class Select 값
   const [selectedClass, setSelectedClass] = useState(''); // 수업 선택 State
   // (Second Page)
   const [dateArr, setDateArr] = useState([]); // 날짜 선택 배열 State
@@ -105,7 +104,7 @@ export default function Reservation() {
     if (!possClassArr.length) {
       // Class Read API 호출 메서드
       handleClassGet({ classType: '', classDetail: true }) // 추후 기관 타입 recoil 전역변수 넣기
-        .then((res) => res.data.data)
+        .then((res) => res.data?.data || [])
         .then((data) => {
           // console.log(data);
           setPossClassArr([
@@ -126,7 +125,8 @@ export default function Reservation() {
   // 기능 잠금
   useEffect(() => {
     // 로그인 시 메인 페이지로 이동
-    const loginSession = JSON.parse(localStorage.getItem('log'));
+    const logItem = localStorage.getItem('log');
+    const loginSession = logItem ? JSON.parse(logItem) : null;
     if (!loginSession) {
       router.replace('/login');
       return;
