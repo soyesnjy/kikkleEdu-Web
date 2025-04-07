@@ -1,7 +1,34 @@
 import axios from 'axios';
 
+// Teacher Data Type
+type TeacherAttendType = {
+  kk_agency_name: string;
+  kk_attend_date: string;
+  kk_attend_idx: number;
+  kk_attend_status: number;
+  kk_class_title: string;
+  kk_reservation_time: string;
+  kk_teacher_name: string;
+  kk_teacher_phoneNum: string;
+  total_count: number;
+};
+
+// handleSignupCreate API 반환 데이터 타입 지정
+type TeacherAttendGetResponseDataType = {
+  message?: string;
+  status: number;
+  data?: {
+    data: TeacherAttendType[];
+    lastPageNum: number;
+    limit: number;
+    page: string;
+  };
+};
+
 // Teacher Attend READ
-export const handleMypageTeacherAttendGet = async (query) => {
+export const handleMypageTeacherAttendGet = async (
+  query
+): Promise<TeacherAttendGetResponseDataType> => {
   const { agencyIdx, userIdx, name, pageNum } = query;
   try {
     const response = await axios.get(
@@ -18,14 +45,19 @@ ${pageNum ? `pageNum=${pageNum}&` : ''}`,
         withCredentials: true,
       }
     );
-    // console.log(response.data);
+    // console.log(response);
     return response;
   } catch (err) {
     console.error(err);
     return {
       status: err.response.status,
       message: err.response.data.message,
-      data: [],
+      data: {
+        data: [],
+        lastPageNum: -1,
+        limit: -1,
+        page: '-1',
+      },
     };
   }
 };

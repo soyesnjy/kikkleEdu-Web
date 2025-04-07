@@ -18,15 +18,13 @@ const reactQueryFetchEvent = async ({ queryKey }) => {
 
 type TableDataType = {
   kk_agency_name: string;
-  kk_agency_phoneNum: string;
-  kk_class_idx: number;
+  kk_attend_date: string;
+  kk_attend_idx: number;
+  kk_attend_status: number;
   kk_class_title: string;
-  kk_reservation_approve_status: number;
-  kk_reservation_date: string;
-  kk_reservation_idx: number;
   kk_reservation_time: string;
-  kk_teacher_idx: number;
-  teacher_info: string;
+  kk_teacher_name: string;
+  kk_teacher_phoneNum: string;
   total_count: number;
 };
 
@@ -52,6 +50,7 @@ const AdminTeacherTableAttendBodyNew = ({
   // 가져온 서버 데이터를 상태에 반영
   useEffect(() => {
     if (data) {
+      if (data === undefined) return;
       setTableData([...data.data]);
       setLastPageNum(data.lastPageNum);
     }
