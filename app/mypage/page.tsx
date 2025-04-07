@@ -102,70 +102,72 @@ const MyPage = () => {
   }, []);
 
   return (
-    <MasterContainer>
-      <MyPageContainer>
-        <Header>{`마이페이지 - 기관`}</Header>
-        <AgencyTab activeTab={activeTab} handleTabClick={handleTabClick} />
-        {activeTab === 'reservation' && isLoadingReservation && (
-          <p>Loading...</p>
-        )}
-        {activeTab === 'instructor' && isLoadingInstructor && (
-          <p>Loading....</p>
-        )}
-        {activeTab === 'reservation' && errorReservation && <p>Error!</p>}
-        {activeTab === 'instructor' && errorInstructor && <p>Error!!</p>}
-        <TableContainer>
-          <Table>
-            {/* Table Header */}
-            {activeTab === 'reservation' && (
-              <thead>
-                <tr>
-                  <TableHeader>{`타이틀`}</TableHeader>
-                  <TableHeader>{`강사`}</TableHeader>
-                  <TableHeader>{`날짜`}</TableHeader>
-                  <TableHeader>{`연락처`}</TableHeader>
-                  <TableHeader>{`승인 여부`}</TableHeader>
-                  <TableHeader>{`결제 여부`}</TableHeader>
-                </tr>
-              </thead>
-            )}
-            {activeTab === 'instructor' && (
-              <thead>
-                <tr>
-                  <TableHeader>{`타이틀`}</TableHeader>
-                  <TableHeader>{`강사`}</TableHeader>
-                  <TableHeader>{`날짜`}</TableHeader>
-                  <TableHeader>{`요일`}</TableHeader>
-                  <TableHeader>{`시간대`}</TableHeader>
-                  <TableHeader>{`연락처`}</TableHeader>
-                  <TableHeader>{`출석 여부`}</TableHeader>
-                </tr>
-              </thead>
-            )}
-            {/* Table Body */}
-            {activeTab === 'reservation' && (
-              <tbody>
-                {tableData?.map((data, index) => (
-                  <AgencyTableReservationBody key={index} data={data} />
-                ))}
-              </tbody>
-            )}
-            {activeTab === 'instructor' && (
-              <tbody>
-                {tableData?.map((data, index) => (
-                  <AgencyTableAttendBody key={index} data={data} />
-                ))}
-              </tbody>
-            )}
-          </Table>
-          {activeTab === 'privacy' && <AgencyTablePrivacyBody />}
-          {activeTab === 'class' && <Directory activeTab={activeTab} />}
-        </TableContainer>
-        {(activeTab === 'reservation' || activeTab === 'instructor') && (
-          <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
-        )}
-      </MyPageContainer>
-    </MasterContainer>
+    <>
+      {activeTab === 'reservation' && isLoadingReservation && <p>Loading...</p>}
+      {activeTab === 'instructor' && isLoadingInstructor && <p>Loading....</p>}
+      {activeTab === 'reservation' && errorReservation && <p>Error!</p>}
+      {activeTab === 'instructor' && errorInstructor && <p>Error!!</p>}
+      <MasterContainer>
+        <MyPageContainer>
+          <Header>{`마이페이지 - 기관`}</Header>
+          <AgencyTab activeTab={activeTab} handleTabClick={handleTabClick} />
+          <TableContainer>
+            <Table>
+              {/* Table Header */}
+              {activeTab === 'reservation' && (
+                <thead>
+                  <tr>
+                    <TableHeader>{`타이틀`}</TableHeader>
+                    <TableHeader>{`강사`}</TableHeader>
+                    <TableHeader>{`날짜`}</TableHeader>
+                    <TableHeader>{`연락처`}</TableHeader>
+                    <TableHeader>{`승인 여부`}</TableHeader>
+                    <TableHeader>{`결제 여부`}</TableHeader>
+                  </tr>
+                </thead>
+              )}
+              {activeTab === 'instructor' && (
+                <thead>
+                  <tr>
+                    <TableHeader>{`타이틀`}</TableHeader>
+                    <TableHeader>{`강사`}</TableHeader>
+                    <TableHeader>{`날짜`}</TableHeader>
+                    <TableHeader>{`요일`}</TableHeader>
+                    <TableHeader>{`시간대`}</TableHeader>
+                    <TableHeader>{`연락처`}</TableHeader>
+                    <TableHeader>{`출석 여부`}</TableHeader>
+                  </tr>
+                </thead>
+              )}
+              {/* Table Body */}
+              {activeTab === 'reservation' && (
+                <tbody>
+                  {tableData?.map((data, index) => (
+                    <AgencyTableReservationBody key={index} data={data} />
+                  ))}
+                </tbody>
+              )}
+              {activeTab === 'instructor' && (
+                <tbody>
+                  {tableData?.map((data, index) => (
+                    <AgencyTableAttendBody key={index} data={data} />
+                  ))}
+                </tbody>
+              )}
+            </Table>
+            {activeTab === 'privacy' && <AgencyTablePrivacyBody />}
+            {activeTab === 'class' && <Directory activeTab={activeTab} />}
+          </TableContainer>
+          {(activeTab === 'reservation' || activeTab === 'instructor') && (
+            <Pagination
+              page={page}
+              setPage={setPage}
+              lastPageNum={lastPageNum}
+            />
+          )}
+        </MyPageContainer>
+      </MasterContainer>
+    </>
   );
 };
 
