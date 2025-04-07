@@ -174,9 +174,9 @@ export default function Nav() {
     window.addEventListener('resize', handleResize);
 
     // 새로고침 시, localStorage 값 recoil 전역변수에 갱신
-    if (localStorage.getItem('id')) setUserId(localStorage.getItem('id'));
+    if (localStorage.getItem('id')) setUserId(localStorage.getItem('id') || '');
     if (!agencyType && localStorage.getItem('agencyType'))
-      setAgencyType(localStorage.getItem('agencyType'));
+      setAgencyType(localStorage.getItem('agencyType') || '');
 
     // Unmoiunt 시, 이벤트 제거
     return () => {
@@ -233,7 +233,7 @@ export default function Nav() {
                   <NavLi key={`Nav_${href}_${label}`}>
                     <Link href={href} passHref>
                       <NavBtn
-                        login={login ? 'true' : null}
+                        login={login ? 'true' : ''}
                         selected={href === currentPath}
                       >
                         {label}

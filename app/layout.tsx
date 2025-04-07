@@ -7,6 +7,7 @@ import StyledComponentsRegistry from '@/lib/registry';
 import Nav from '@/component/Home_Component/Nav';
 import Footer from '@/component/Home_Component/Footer';
 import TopButton from '@/component/Home_Component/TopButton';
+import NavMobileSideMenuTouchHandler from '@/handler/NavMobileSideMenuTouchHandler'; // NavMobile SideMeue Open Trigger
 
 import { AnimatePresence } from 'framer-motion';
 import { RecoilRoot } from 'recoil';
@@ -38,6 +39,7 @@ export default function RootLayout({
             <RecoilRoot>
               <AnimatePresence mode="wait">
                 <Nav />
+                <NavMobileSideMenuTouchHandler />
                 {children}
                 <Analytics />
                 <TopButton />

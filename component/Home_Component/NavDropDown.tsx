@@ -1,8 +1,9 @@
+'use client';
 import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 type NavDropDownComponentType = {
@@ -13,6 +14,7 @@ type NavDropDownComponentType = {
 const NavDropDown = ({ toggleMenu, navItem }: NavDropDownComponentType) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const currentPath = usePathname();
 
   const toggleDropDown = () => {
     setIsOpen(!isOpen);
@@ -37,7 +39,7 @@ const NavDropDown = ({ toggleMenu, navItem }: NavDropDownComponentType) => {
             return (
               <NavDropDownLabel
                 key={`NavDropDownLabel_${href}_${label}_${index}`}
-                selected={router.pathname === href}
+                selected={currentPath === href}
                 onClick={() => {
                   // toggleDropDown();
                   toggleMenu();

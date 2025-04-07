@@ -203,14 +203,16 @@ export default async function Home() {
             startingPoint={index % 2 ? 'right' : 'left'}
             delay={0.1}
           >
-            <SectionFifthtoNineth backgroundColor={el.backgroundColor}>
+            <SectionFifthtoNineth
+              backgroundColor={el.backgroundColor || '#FFFFFF'}
+            >
               <LessonSection
                 title={title}
                 subtitle={subtitle}
                 imgUrl={imgUrl}
                 type={index % 2 ? 'right' : 'left'}
                 routePath={routePath}
-                info={undefined}
+                info=""
               />
             </SectionFifthtoNineth>
           </ScrollAnimation>

@@ -30,7 +30,7 @@ const LessonSection = ({
             <Title>{`${title}`}</Title>
             <Subtitle>{`${subtitle}`}</Subtitle>
             <Link href={routePath}>
-              <Button>바로 가기</Button>
+              <Button>{`바로 가기`}</Button>
             </Link>
           </ContentContainer>
           <ImageContainer>
@@ -60,16 +60,16 @@ const LessonSection = ({
             <Title>{`${title}`}</Title>
             <Subtitle>{`${subtitle}`}</Subtitle>
             <Link href={routePath}>
-              <Button>바로 가기</Button>
+              <Button>{`바로 가기`}</Button>
             </Link>
           </ContentContainer>
         </>
       ) : (
         <>
           <ContentContainer>
-            <Title>{`${title}`} 소개</Title>
+            <Title>{`${title} 소개`}</Title>
             <Subtitle>{`${subtitle}`}</Subtitle>
-            <InfoTitle>Infomation</InfoTitle>
+            <InfoTitle>{`Infomation`}</InfoTitle>
             <Subtitle>{`${info}`}</Subtitle>
           </ContentContainer>
           <ProgramImageContainer>

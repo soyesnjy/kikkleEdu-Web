@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { isNavOpenState, isSideMenuDisabled } from '@/store/state';

@@ -41,7 +41,7 @@ const TeacherCarousel = ({ teacherDataArr }: TeacherCarouselProps) => {
     setCurrentIndex(index);
   };
 
-  const getTranslateStyle = (): string => {
+  const getTranslateStyle = () => {
     if (currentIndex < Math.ceil(teacherDataArr.length / 2))
       return `translateX(calc(0%))`;
     else if (currentIndex >= Math.ceil(teacherDataArr.length / 2))
@@ -111,7 +111,7 @@ const TeacherCarousel = ({ teacherDataArr }: TeacherCarouselProps) => {
         {teacherDataArr.map((_, index: number) => (
           <Dot
             key={index}
-            active={index === currentIndex ? 'true' : null}
+            active={index === currentIndex ? 'true' : ''}
             onClick={() => handleDotClick(index)}
           />
         ))}
