@@ -1,10 +1,11 @@
+'use client';
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { useEffect, useCallback, useMemo } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 
 import { useRecoilState } from 'recoil';
 import { log, mobile, uid, agencyClass, isNavOpenState } from '@/store/state';
@@ -71,7 +72,7 @@ const navList_info: NavListInfoType[] = [
 
 export default function Nav() {
   const router = useRouter();
-  const currentPath = router.pathname;
+  const currentPath = usePathname();
 
   const [login, setLogin] = useRecoilState(log);
   const [_, setUserId] = useRecoilState(uid);

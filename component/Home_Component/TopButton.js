@@ -1,6 +1,6 @@
+'use client';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-// import { BsFillArrowUpCircleFill } from 'react-icons/bs';
 
 export default function TopButton() {
   const [showButton, setShowButton] = useState(false);

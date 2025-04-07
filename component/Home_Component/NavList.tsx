@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 
 type NavListComponentType = {
@@ -11,8 +11,7 @@ type NavListComponentType = {
 
 export default function NavList({ title, items }: NavListComponentType) {
   const menuRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
-  const currentPath = router.pathname;
+  const currentPath = usePathname();
   const [showMenu, setShowMenu] = useState(false);
 
   // 메뉴 외부 클릭 핸들러
