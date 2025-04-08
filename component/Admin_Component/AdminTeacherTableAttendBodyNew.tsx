@@ -37,7 +37,7 @@ const AdminTeacherTableAttendBodyNew = ({
 
   // React Query 데이터 가져오기
   const { data, isLoading, error } = useQuery(
-    ['events', page], // Query Key
+    ['attend', page], // Query Key
     reactQueryFetchEvent, // Query Function
     {
       enabled: activeTab === 'attend', // 유효한 값일 때만 실행

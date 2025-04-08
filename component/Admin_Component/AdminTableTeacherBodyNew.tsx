@@ -32,7 +32,7 @@ const AdminTableTeacherBodyNew = ({ activeTab, page, setLastPageNum }) => {
 
   // React Query 데이터 가져오기
   const { data, isLoading, error } = useQuery(
-    ['events', activeTab, page], // Query Key
+    ['teacher', activeTab, page], // Query Key
     reactQueryFetchEvent, // Query Function
     {
       enabled: activeTab === 'teacher', // 유효한 값일 때만 실행

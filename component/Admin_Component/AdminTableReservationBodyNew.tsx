@@ -36,7 +36,7 @@ const AdminTableReservationBodyNew = ({ activeTab, page, setLastPageNum }) => {
 
   // React Query 데이터 가져오기
   const { data, isLoading, error } = useQuery(
-    ['events', page], // Query Key
+    ['reservation', page], // Query Key
     reactQueryFetchEvent, // Query Function
     {
       enabled: activeTab === 'reservation', // 유효한 값일 때만 실행

@@ -58,46 +58,46 @@ const Administor = () => {
         <AdminTab activeTab={activeTab} handleTabClick={handleTabClick} />
         <TableContainer>
           {/* 수업출석 관리 */}
-          {activeTab === 'attend' && (
+          {activeTab === 'attend' ? (
             <AdminTeacherTableAttendBodyNew
               activeTab={activeTab}
               page={page}
               setLastPageNum={setLastPageNum}
             />
-          )}
+          ) : null}
           {/* 강사회원 관리 */}
-          {activeTab === 'teacher' && (
+          {activeTab === 'teacher' ? (
             <AdminTableTeacherBodyNew
               activeTab={activeTab}
               page={page}
               setLastPageNum={setLastPageNum}
             />
-          )}
+          ) : null}
           {/* 기관회원 관리 */}
-          {activeTab === 'agency' && (
+          {activeTab === 'agency' ? (
             <AdminTableAgencyBodyNew
               activeTab={activeTab}
               page={page}
               setLastPageNum={setLastPageNum}
             />
-          )}
+          ) : null}
           {/* 수업예약 관리 */}
-          {activeTab === 'reservation' && (
+          {activeTab === 'reservation' ? (
             <AdminTableReservationBodyNew
               activeTab={activeTab}
               page={page}
               setLastPageNum={setLastPageNum}
             />
-          )}
-          {['music', 'video', 'class'].includes(activeTab) && (
+          ) : null}
+          {['music', 'video', 'class'].includes(activeTab) ? (
             <AdminDirectory activeTab={activeTab} />
-          )}
-          {activeTab === 'notice' && <BoardCreate />}
-          {activeTab === 'schedule' && <AdminSchedulerBody />}
+          ) : null}
+          {activeTab === 'notice' ? <BoardCreate /> : null}
+          {activeTab === 'schedule' ? <AdminSchedulerBody /> : null}
         </TableContainer>
-        {['teacher', 'agency', 'reservation', 'attend'].includes(activeTab) && (
+        {['teacher', 'agency', 'reservation', 'attend'].includes(activeTab) ? (
           <Pagination page={page} setPage={setPage} lastPageNum={lastPageNum} />
-        )}
+        ) : null}
       </MyPageContainer>
     </MasterContainer>
   );
