@@ -73,35 +73,35 @@ export const handleDirectoryCreate = async (input) => {
 };
 
 // (구) CREATE Video
-export const handleVideoCreate = async (formData) => {
-  try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_URL}/directory/create/video`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
-        },
-        onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          console.log(`Upload Progress: ${percentCompleted}%`);
-        },
-      }
-    );
+// export const handleVideoCreate = async (formData) => {
+//   try {
+//     const response = await axios.post(
+//       `${process.env.NEXT_PUBLIC_URL}/directory/create/video`,
+//       formData,
+//       {
+//         headers: {
+//           'Content-Type': 'multipart/form-data',
+//           Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
+//         },
+//         onUploadProgress: (progressEvent) => {
+//           const percentCompleted = Math.round(
+//             (progressEvent.loaded * 100) / progressEvent.total
+//           );
+//           console.log(`Upload Progress: ${percentCompleted}%`);
+//         },
+//       }
+//     );
 
-    // console.log('File uploaded successfully', response.data);
-    return response;
-  } catch (err) {
-    console.error('File upload failed', err);
-    return {
-      message: err.response.data.message,
-      status: err.response.status,
-    };
-  }
-};
+//     // console.log('File uploaded successfully', response.data);
+//     return response;
+//   } catch (err) {
+//     console.error('File upload failed', err);
+//     return {
+//       message: err.response.data.message,
+//       status: err.response.status,
+//     };
+//   }
+// };
 
 export const handleVideoV2Create = async (input) => {
   try {

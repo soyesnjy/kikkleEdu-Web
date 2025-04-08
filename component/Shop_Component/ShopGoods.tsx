@@ -74,7 +74,7 @@ const ShopGoods = ({ title, imgPath, tagColor, price }: ShopGoodsType) => {
     });
     // console.log(completeResponse);
     // 결제 성공
-    if (completeResponse.data.status === 'PAID') {
+    if (completeResponse.data?.status === 'PAID') {
       // const paymentComplete = completeResponse;
       Swal.fire({
         icon: 'success',
