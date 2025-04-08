@@ -103,10 +103,14 @@ const MyPage = () => {
 
   return (
     <>
-      {activeTab === 'reservation' && isLoadingReservation && <p>Loading...</p>}
-      {activeTab === 'instructor' && isLoadingInstructor && <p>Loading....</p>}
-      {activeTab === 'reservation' && errorReservation && <p>Error!</p>}
-      {activeTab === 'instructor' && errorInstructor && <p>Error!!</p>}
+      {activeTab === 'reservation' && isLoadingReservation ? (
+        <p>Loading...</p>
+      ) : null}
+      {activeTab === 'instructor' && isLoadingInstructor ? (
+        <p>Loading....</p>
+      ) : null}
+      {activeTab === 'reservation' && errorReservation ? <p>Error!</p> : null}
+      {activeTab === 'instructor' && errorInstructor ? <p>Error!!</p> : null}
       <MasterContainer>
         <MyPageContainer>
           <Header>{`마이페이지 - 기관`}</Header>
