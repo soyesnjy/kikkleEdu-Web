@@ -6,6 +6,7 @@ const TeacherSearchBar = ({ teacherClass, setTeacherClass }) => {
   // TagButton Click Handler
   const tagButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     setTeacherClass(e.currentTarget.value);
+    localStorage.setItem('teacherClassTag', teacherClass);
   };
   return (
     <SearchContainer>

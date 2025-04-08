@@ -10,7 +10,7 @@ import { mobile } from '@/store/state';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 
 import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
-import ProgramTeacherContainer from '@/component/Teacher_Componet/ProgramTeacherContainer';
+import ProgramTeacherContainer from '@/component/Teacher_Componet/ProgramTeacherCarousel';
 import EndSection from '@/component/Home_Component/EndSection';
 import LoadingModal from '@/component/Common_Component/LoadingModal';
 import ProgressiveImage from '@/component/Common_Component/ProgressiveImage';

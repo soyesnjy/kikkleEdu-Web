@@ -1,5 +1,4 @@
 'use client';
-
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams, usePathname } from 'next/navigation'; // Next.js의 useRouter 및 useParams 사용
@@ -36,24 +35,32 @@ const dummyData = {
   authorIdx: -1,
 };
 
+// React Query - 서버에서 데이터를 가져오는 API 함수
+const reactQueryFetchBoard = async ({ queryKey }) => {
+  const [, id] = queryKey;
+  const response = await handleBoardGet({
+    boardIdx: id,
+  });
+  return response.data;
+};
+
 const BoardDetail = () => {
   const router = useRouter();
   const params = useParams(); // URL의 동적 파라미터를 가져옴
   const pathname = usePathname(); // 현재 경로 가져오기
-
   const id = params?.id as string | undefined; // 'id'를 안전하게 추출
-  const [post, setPost] = useState<BoardDataType>(dummyData);
+
   const [agencyType] = useRecoilState(agencyClass);
+  const [post, setPost] = useState<BoardDataType>(dummyData);
+  const [updateFlag, setUpdateFlag] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
 
-  const [updateFlag, setUpdateFlag] = useState(false);
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-
-  const handleGoBack = () => {
+  const handleGoBack = (): void => {
     router.push('/board'); // 목록 페이지로 이동
   };
 
-  const boardUpdateHandler = async () => {
+  const boardUpdateHandler = async (): Promise<void> => {
     try {
       const res = await handleBoardUpdate({
         boardIdx: id,
@@ -88,7 +95,7 @@ const BoardDetail = () => {
       console.error(error);
     }
   };
-  const boardDeleteHandler = async () => {
+  const boardDeleteHandler = async (): Promise<void> => {
     try {
       if (confirm('삭제 하시겠습니까?') === true) {
         const res = await handleBoardDelete({
@@ -121,15 +128,6 @@ const BoardDetail = () => {
     } catch (error) {
       console.error(error);
     }
-  };
-
-  // React Query - 서버에서 데이터를 가져오는 API 함수
-  const reactQueryFetchBoard = async ({ queryKey }) => {
-    const [, id] = queryKey;
-    const response = await handleBoardGet({
-      boardIdx: id,
-    });
-    return response.data;
   };
 
   // React Query 데이터 가져오기

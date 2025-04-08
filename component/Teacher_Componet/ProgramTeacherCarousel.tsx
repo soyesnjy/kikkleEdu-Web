@@ -1,21 +1,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
 import useDisableSideMenu from '@/hook/useDisableSideMenu';
 
-const ProgramTeacherContainer = ({ mobileFlag }) => {
-  const [teacherDataArr, setTeacherDataArr] = useState([]);
+type TeacherListDataType = {
+  id: number;
+  name: string;
+  introduce: string;
+  profileImg: string;
+};
+
+const ProgramTeacherCarousel = ({ mobileFlag }) => {
+  const [teacherDataArr] = useState<TeacherListDataType[]>(
+    localStorage.getItem('teacherDataArr')
+      ? [...JSON.parse(localStorage.getItem('teacherDataArr') || '[]')]
+      : []
+  );
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [dragDistance, setDragDistance] = useState(0); // 드래그 거리 추적
 
   const router = useRouter();
-  const containerRef = useRef(null);
-  const carouselRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   useDisableSideMenu(carouselRef); // 사이드 메뉴 예외 처리
 
@@ -32,21 +43,6 @@ const ProgramTeacherContainer = ({ mobileFlag }) => {
       containerRef.current.scrollBy({ left: 300, behavior: 'smooth' });
     }
   };
-
-  // const dotActiveHandler = (index, length) => {
-  //   const scrollWidth = containerRef?.current?.scrollWidth;
-  //   const scrollLeft = containerRef?.current?.scrollLeft;
-
-  //   return (
-  //     (scrollWidth / length) * index <= scrollLeft * 1.2 &&
-  //     scrollLeft * 1.2 <=
-  //       (index === length - 1
-  //         ? scrollWidth + 150
-  //         : (scrollWidth / length) * (index + 1))
-  //   );
-  // };
-
-  // 마우스 클릭하여 드래그 시작할 때 실행
 
   const onDragStart = (e) => {
     e.preventDefault();
@@ -101,75 +97,73 @@ const ProgramTeacherContainer = ({ mobileFlag }) => {
     setIsDragging(false);
   };
 
-  useEffect(() => {
-    if (localStorage.getItem('teacherDataArr')) {
-      setTeacherDataArr([
-        ...JSON.parse(localStorage.getItem('teacherDataArr')),
-      ]);
-    }
-  }, []);
-
   return (
-    <Container ref={carouselRef}>
-      <ProgramContainer
-        length={teacherDataArr.length}
-        ref={containerRef}
-        onMouseDown={onDragStart}
-        onMouseMove={onDragMove}
-        onMouseUp={onDragEnd}
-        onMouseLeave={onDragEnd}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-      >
-        {!mobileFlag && (
-          <Button onClick={scrollLeftHandler} dir={'pre'}>
-            <span className="material-symbols-outlined">arrow_back</span>
-          </Button>
-        )}
-        {teacherDataArr.map((el) => {
-          const { name, introduce, profileImg, id } = el;
-          return (
-            <ProgramContentContainer key={`${name}-${id}`} imgpath={''}>
-              <TeacherProfileCard
-                name={name}
-                introduce={introduce}
-                imgUrl={profileImg}
-                onClick={() => {
-                  if (dragDistance < MIN_DRAG_DISTANCE) {
-                    router.push(`/teacher/${id}`);
-                  }
-                }}
-              />
-            </ProgramContentContainer>
-          );
-        })}
-        {!mobileFlag && (
-          <Button onClick={scrollRightHandler} dir={'next'}>
-            <span className="material-symbols-outlined">arrow_forward</span>
-          </Button>
-        )}
-      </ProgramContainer>
-      {/* {mobileFlag && (
-        <DotContainer>
-          {teacherDataArr.map((el, index) => {
-            const { routePath, idx } = el;
+    <TeacherListSection>
+      <MiddleSubtitleSmall>{`강사 리스트`}</MiddleSubtitleSmall>
+      <Container ref={carouselRef}>
+        <ProgramContainer
+          length={teacherDataArr.length}
+          ref={containerRef}
+          onMouseDown={onDragStart}
+          onMouseMove={onDragMove}
+          onMouseUp={onDragEnd}
+          onMouseLeave={onDragEnd}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          {!mobileFlag && (
+            <Button onClick={scrollLeftHandler} dir={'pre'}>
+              <span className="material-symbols-outlined">arrow_back</span>
+            </Button>
+          )}
+          {teacherDataArr.map((el) => {
+            const { name, introduce, profileImg, id } = el;
             return (
-              <Dot
-                key={`${routePath}-${idx}`}
-                active={
-                  dotActiveHandler(index, teacherDataArr.length) ? 'true' : null
-                }
-              />
+              <ProgramContentContainer key={`${name}-${id}`}>
+                <TeacherProfileCard
+                  name={name}
+                  introduce={introduce}
+                  imgUrl={profileImg}
+                  onClick={() => {
+                    if (dragDistance < MIN_DRAG_DISTANCE) {
+                      router.push(`/teacher/${id}`);
+                    }
+                  }}
+                />
+              </ProgramContentContainer>
             );
           })}
-        </DotContainer>
-      )} */}
-    </Container>
+          {!mobileFlag && (
+            <Button onClick={scrollRightHandler} dir={'next'}>
+              <span className="material-symbols-outlined">arrow_forward</span>
+            </Button>
+          )}
+        </ProgramContainer>
+      </Container>
+    </TeacherListSection>
   );
 };
 
-export default ProgramTeacherContainer;
+const TeacherListSection = styled.div`
+  width: 80vw;
+  padding: 0 4rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 100vw;
+    padding: 2rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+  }
+`;
 
 const Container = styled.div`
   width: 100vw;
@@ -181,8 +175,18 @@ const Container = styled.div`
   @media (max-width: 768px) {
   }
 `;
+const MiddleSubtitleSmall = styled.h2`
+  font-size: 1.5rem;
+  font-family: Pretendard;
+  font-weight: 700;
 
-const ProgramContainer = styled.div`
+  align-self: flex-start;
+`;
+
+type ProgramContainerType = {
+  length: number;
+};
+const ProgramContainer = styled.div<ProgramContainerType>`
   width: 80vw;
   display: flex;
   justify-content: ${(props) => (props.length >= 4 ? 'flex-start' : 'center')};
@@ -216,7 +220,7 @@ const ProgramContentContainer = styled.div`
   color: white;
 
   border-radius: 15px;
-  border: ${(props) => (props.selected ? '5px solid #45b26b' : 'none')};
+  border: none;
 
   display: flex;
   flex-direction: column;
@@ -234,40 +238,6 @@ const ProgramContentContainer = styled.div`
     height: 200px;
   }
 `;
-
-// const ProgramTitle = styled.div`
-//   font-family: Pretendard;
-//   font-weight: 700;
-//   font-size: 1.2rem;
-//   color: white;
-//   z-index: 1;
-// `;
-
-// const DotContainer = styled.div`
-//   display: none;
-
-//   @media (max-width: 768px) {
-//     width: 90vw;
-//     min-height: 2rem;
-//     display: flex;
-//     flex-wrap: wrap;
-//     justify-content: center;
-//     align-items: center;
-
-//     /* display: grid;
-//     grid-template-columns: repeat(12, 2fr); */
-//   }
-// `;
-
-// const Dot = styled.div`
-//   width: 10px;
-//   height: 10px;
-//   border-radius: 50%;
-//   background-color: ${({ active }) => (active ? '#4cb0b2' : '#ddd')};
-//   margin: 0 5px;
-//   transition: background-color 0.3s;
-//   cursor: pointer;
-// `;
 
 const Button = styled.button`
   width: 36px;
@@ -305,3 +275,5 @@ const Button = styled.button`
     display: none;
   }
 `;
+
+export default ProgramTeacherCarousel;

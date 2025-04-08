@@ -17,7 +17,7 @@ type TeacherDataType = {
 type TeacherGetResponseDataType = {
   message?: string;
   status: number;
-  data?: {
+  data: {
     message: string;
     data: TeacherDataType[];
   };
@@ -61,6 +61,10 @@ ${classTag ? `classTag=${classTag}&` : ''}`,
     return {
       message: err.response.data.message,
       status: err.response.status,
+      data: {
+        message: err.response.data.message,
+        data: [],
+      },
     };
   }
 };
