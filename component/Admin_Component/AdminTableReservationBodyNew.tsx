@@ -9,9 +9,9 @@ import AdminTableReservationBodyRow from './AdminTableReservationBodyRow';
 
 // React Query - 서버에서 데이터를 가져오는 API 함수
 const reactQueryFetchEvent = async ({ queryKey }) => {
-  const [, activeTab, page] = queryKey;
+  const [, page] = queryKey;
   const response = await handleReservationGet({
-    userClass: activeTab,
+    // userClass: activeTab,
     pageNum: page,
   });
   return response.data;
@@ -36,7 +36,7 @@ const AdminTableReservationBodyNew = ({ activeTab, page, setLastPageNum }) => {
 
   // React Query 데이터 가져오기
   const { data, isLoading, error } = useQuery(
-    ['events', activeTab, page], // Query Key
+    ['events', page], // Query Key
     reactQueryFetchEvent, // Query Function
     {
       enabled: activeTab === 'reservation', // 유효한 값일 때만 실행

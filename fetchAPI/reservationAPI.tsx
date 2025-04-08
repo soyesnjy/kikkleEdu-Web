@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// handleSignupCreate API 반환 데이터 타입 지정
+// READ
 type ReservationGetResponseDataType = {
   message?: string;
   status: number;
@@ -23,11 +23,10 @@ type ReservationGetResponseDataType = {
     page: string;
   };
 };
-
-// READ
-export const handleReservationGet = async (
-  query
-): Promise<ReservationGetResponseDataType> => {
+export const handleReservationGet = async (query: {
+  date?: string;
+  pageNum?: number;
+}): Promise<ReservationGetResponseDataType> => {
   const { date, pageNum } = query;
   try {
     const response = await axios.get(
@@ -58,8 +57,23 @@ ${pageNum ? `pageNum=${pageNum}&` : ''}`,
     };
   }
 };
+
 // CREATE
-export const handleReservationCreate = async (input) => {
+type ReservationGetDetailRequestDataType = {
+  agencyIdx: string | null;
+  classIdx: number;
+  reservationDate: Date[];
+  reservationTime: string;
+  reservationCand: number[];
+};
+type ReservationGetDetailResponseDataType = {
+  message?: string;
+  status: number;
+};
+
+export const handleReservationCreate = async (
+  input: ReservationGetDetailRequestDataType
+): Promise<ReservationGetDetailResponseDataType> => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_URL}/reservation/create`,
@@ -72,7 +86,7 @@ export const handleReservationCreate = async (input) => {
         withCredentials: true,
       }
     );
-    // console.log(response);
+    console.log(response);
     return response;
   } catch (err) {
     console.log('ReservationCreate API 호출 실패');
