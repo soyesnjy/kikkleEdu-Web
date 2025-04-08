@@ -1,64 +1,53 @@
-/* eslint-disable no-unreachable */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
+'use client';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-
-import { useRouter } from 'next/router';
-import { handleReservationCreate } from '@/fetchAPI/reservationAPI';
-// SweetAlert2
+import { useRouter } from 'next/navigation';
+import { useRecoilValue } from 'recoil';
+import { mobile } from '@/store/state';
 import Swal from 'sweetalert2';
-import { useRecoilState } from 'recoil';
-import { log, mobile } from '@/store/state';
 
+import { handleReservationCreate } from '@/fetchAPI/reservationAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 
-// import { useTranslation } from 'next-i18next';
-// import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-
-import 'react-phone-number-input/style.css';
-// import PhoneInput from 'react-phone-number-input';
-// import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponent';
 import Calendar from '@/component/MyPage_Component/Calendar';
 import ReservationTeacherProfileCard from '@/component/Reservation_Component/ReservationTeacherProfileCard';
 import PayModal from '@/component/MyPage_Component/PayModal';
+import 'react-phone-number-input/style.css';
+import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 
 const partTimeArr = [
   { title: '오전 (10:00~12:00)', value: '오전' },
   { title: '오후 (1:00~5:00)', value: '오후' },
   { title: '야간 (6:00~10:00)', value: '야간' },
 ];
-
 const pageTitleArr = [
   '수업 선택하기',
   '날짜/시간 선택하기',
   '강사 선택하기',
   '예약 확인하기',
 ];
+const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
 
+type GroupDatesByMonthType = {
+  [month: number]: number[];
+};
 // 날짜 월별 정리 객체 반환 메서드
-const groupDatesByMonth = (dates) => {
-  return dates.reduce((acc, date) => {
+const groupDatesByMonth = (dates: Date[]): GroupDatesByMonthType => {
+  return dates.reduce((acc, date: Date) => {
     const dateObj = new Date(date);
     const month = dateObj.getMonth() + 1; // 0부터 시작하므로 1을 더해줌
     const day = dateObj.getDate(); // 일자 추출
 
-    if (!acc[month]) {
-      acc[month] = [];
-    }
-
+    if (!acc[month]) acc[month] = [];
     acc[month].push(day);
+
     return acc;
   }, {});
 };
 
 // 날짜 -> 요일 변환 메서드
-const getUniqueWeekdays = (dateArr) => {
-  // 요일 배열
-  const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
-
+const getUniqueWeekdays = (dateArr: Date[]): string[] => {
   // 날짜 배열을 순회하면서 요일로 변환하고 중복을 제거
   const uniqueWeekdays = new Set(
     dateArr.map((dateString) => {
@@ -71,25 +60,39 @@ const getUniqueWeekdays = (dateArr) => {
   return Array.from(uniqueWeekdays);
 };
 
+type PossClassArrType = {
+  id: number;
+  title: string;
+  content: string | undefined;
+  imgUrl: string;
+};
+type PossTeacherArrType = {
+  id: number;
+  name: string;
+  introduce: string | undefined;
+  imgUrl: string;
+};
+
 // Reservation 페이지
 export default function Reservation() {
-  const [pageNumber, setPageNumber] = useState(0); // 강사 페이지 번호
-  const [isPending, setIsPending] = useState(false); // 회원가입 버튼 활성화 state
+  const [pageNumber, setPageNumber] = useState<number>(0); // 강사 페이지 번호
+  const [isPending, setIsPending] = useState<boolean>(false); // 회원가입 버튼 활성화 state
 
   // Recoil 전역 변수
-  const [login, setLogin] = useRecoilState(log);
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const mobileFlag = useRecoilValue(mobile);
 
   // (NavBar)
-  const [navText, setNavText] = useState(''); // Nav바 Text State
+  const [navText, setNavText] = useState<string>(''); // Nav바 Text State
   // (First Page)
-  const [possClassArr, setPossClassArr] = useState([]); // DB Class Select 값
-  const [selectedClass, setSelectedClass] = useState(''); // 수업 선택 State
+  const [possClassArr, setPossClassArr] = useState<PossClassArrType[]>([]); // DB Class Select 값
+  const [selectedClass, setSelectedClass] = useState<number>(-1); // 수업 선택 State
   // (Second Page)
   const [dateArr, setDateArr] = useState([]); // 날짜 선택 배열 State
-  const [partTime, setPartTime] = useState(''); // 시간 선택 State
+  const [partTime, setPartTime] = useState<string>(''); // 시간 선택 State
   // (Third Page)
-  const [possTeacherArr, setPossTeacherArr] = useState([]); // 수업 가능 강사 배열 State
+  const [possTeacherArr, setPossTeacherArr] = useState<PossTeacherArrType[]>(
+    []
+  ); // 수업 가능 강사 배열 State
   const [selectedTeacher, setSelectedTeacher] = useState([]); // 강사 선택 State
   // (Fourth Page)
   const [isOpen, setIsOpen] = useState(false);
@@ -100,58 +103,48 @@ export default function Reservation() {
   // const maxlengthStd = 15;
   // const regex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 및 한글 자모를 포함하는 정규 표현식
 
+  useLoginSessionCheck({ requireLogin: true });
+
   // 수업 DB 조회
   useEffect(() => {
     if (!possClassArr.length) {
       // Class Read API 호출 메서드
       handleClassGet({ classType: '', classDetail: true }) // 추후 기관 타입 recoil 전역변수 넣기
-        .then((res) => res.data.data)
+        .then((res) => res.data?.data || [])
         .then((data) => {
-          // console.log(data);
-          setPossClassArr([
-            ...data.map((el) => {
-              return {
-                id: el.kk_class_idx,
-                title: el.kk_class_title,
-                content: el.kk_class_content,
-                imgUrl: el.kk_class_file_path,
-              };
-            }),
-          ]);
+          const classData = data.map((el) => {
+            return {
+              id: el.kk_class_idx,
+              title: el.kk_class_title,
+              content: el.kk_class_content,
+              imgUrl: el.kk_class_file_path,
+            };
+          });
+          setPossClassArr([...classData]);
         })
         .catch(() => setPossClassArr([]));
     }
   }, []);
 
-  // 기능 잠금
-  useEffect(() => {
-    // 로그인 시 메인 페이지로 이동
-    const loginSession = JSON.parse(localStorage.getItem('log'));
-    if (!loginSession) {
-      router.replace('/login');
-      return;
-    }
-  }, [login]);
-
   // pageNumber에 따른 navText값 변경
   useEffect(() => {
+    // 2페이지 일 때 강사 목록 조회
     if (pageNumber === 2) {
       const dayArr = getUniqueWeekdays(dateArr);
       // Class Read API 호출 메서드
       handleTeacherGet({ classIdx: selectedClass, dayofweek: dayArr, partTime }) // 추후 기관 타입 recoil 전역변수 넣기
-        .then((res) => res.data.data)
+        .then((res) => res.data?.data || [])
         .then((data) => {
           // console.log(data);
-          setPossTeacherArr([
-            ...data.map((el) => {
-              return {
-                id: el.kk_teacher_idx,
-                name: el.kk_teacher_name,
-                introduce: el.kk_teacher_introduction,
-                imgUrl: el.kk_teacher_profileImg_path,
-              };
-            }),
-          ]);
+          const teacherData = data.map((el) => {
+            return {
+              id: el.kk_teacher_idx,
+              name: el.kk_teacher_name,
+              introduce: el.kk_teacher_introduction,
+              imgUrl: el.kk_teacher_profileImg_path,
+            };
+          });
+          setPossTeacherArr([...teacherData]);
         })
         .catch(() => setPossTeacherArr([]));
     }
@@ -171,21 +164,17 @@ export default function Reservation() {
     setSelectedTeacher([]);
   }, [selectedClass]);
 
-  // useEffect(() => {
-  //   console.log(selectedTeacher);
-  // }, [selectedTeacher]);
-
   // 강사 페이지 체크
   // First 페이지 체크 메서드
-  const pageCheckFirst = () => {
-    if (!selectedClass) {
+  const pageCheckFirst = (): boolean => {
+    if (selectedClass === -1) {
       alert('수업을 선택해주세요');
       return false;
     }
     return true;
   };
   // Second 페이지 체크 메서드
-  const pageCheckSecond = () => {
+  const pageCheckSecond = (): boolean => {
     if (!dateArr.length) {
       alert('날짜를 선택해주세요');
       return false;
@@ -197,7 +186,7 @@ export default function Reservation() {
     return true;
   };
   // Third 페이지 체크 메서드
-  const pageCheckThird = () => {
+  const pageCheckThird = (): boolean => {
     if (!selectedTeacher.length) {
       alert('강사를 선택해주세요');
       return false;
@@ -205,11 +194,10 @@ export default function Reservation() {
     return true;
   };
 
-  const reservationHandler = async (e) => {
+  // 예약 요청 메서드 (버튼 할당)
+  const reservationHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
     setIsPending(true);
-
     try {
       const res = await handleReservationCreate({
         agencyIdx: localStorage.getItem('userIdx'), // default userIdx === dummy 계정
@@ -234,16 +222,14 @@ export default function Reservation() {
           icon: 'error',
           title: '중복된 이메일입니다',
         });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: res.message,
-        });
       }
-
       setIsPending(false);
     } catch (error) {
       console.error('예약 요청 실패:', error);
+      Swal.fire({
+        icon: 'error',
+        title: '예약 요청 실패',
+      });
     }
   };
 
@@ -343,9 +329,9 @@ export default function Reservation() {
                         <ClassButton
                           value={id}
                           selected={selectedClass === id}
-                          onClick={(e) => {
+                          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                             e.preventDefault();
-                            setSelectedClass(Number(e.target.value));
+                            setSelectedClass(Number(e.currentTarget.value));
                           }}
                         >
                           선택하기
@@ -369,9 +355,9 @@ export default function Reservation() {
                         key={index}
                         value={value}
                         selected={partTime === value}
-                        onClick={(e) => {
+                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                           e.preventDefault();
-                          setPartTime(e.target.value);
+                          setPartTime(e.currentTarget.value);
                         }}
                       >
                         {title}
@@ -630,7 +616,11 @@ const StepContainer = styled.form`
   }
 `;
 
-const StepText = styled.div`
+type StepTextProps = {
+  seleced: boolean;
+};
+
+const StepText = styled.div<StepTextProps>`
   font-family: Pretendard;
   font-weight: ${(props) => (props.seleced ? '700' : '600')};
   font-size: ${(props) => (props.seleced ? '1.3rem' : '1rem')};
@@ -673,7 +663,11 @@ const ReservationButtonContainer = styled.div`
   }
 `;
 
-const ReservationButton = styled.button`
+type ReservationButtonProps = {
+  isPending?: boolean;
+};
+
+const ReservationButton = styled.button<ReservationButtonProps>`
   background-color: ${(props) => (props.isPending ? '#45b26b' : '#D9D9D9')};
   border: none;
   border-radius: 8px;
@@ -758,7 +752,12 @@ const PageContainer = styled.div`
   }
 `;
 
-const ClassContainer = styled.div`
+type ClassContainerProps = {
+  rowcount: number;
+  dayCheck?: boolean;
+};
+
+const ClassContainer = styled.div<ClassContainerProps>`
   display: grid;
   grid-template-columns: ${(props) =>
     props.dayCheck ? 'repeat(7, 1fr)' : 'repeat(4, 1fr)'};
@@ -775,7 +774,12 @@ const ClassContainer = styled.div`
   }
 `;
 
-const ClassButtonContainer = styled.div`
+type ClassButtonContainerProps = {
+  selected: boolean;
+  imgUrl: string;
+};
+
+const ClassButtonContainer = styled.div<ClassButtonContainerProps>`
   width: 288px;
   height: 280px;
   background: ${(props) =>
@@ -819,7 +823,12 @@ const ClassButtonSubTitle = styled.div`
   font-size: 0.7rem;
   color: white;
 `;
-const ClassButton = styled.button`
+
+type ClassButtonProps = {
+  selected: boolean;
+};
+
+const ClassButton = styled.button<ClassButtonProps>`
   display: ${(props) => (props.selected ? 'none' : 'black')};
   background-color: white;
 
@@ -849,36 +858,6 @@ const ClassButton = styled.button`
   }
 `;
 
-const TeacherButton = styled.button`
-  background-color: white;
-
-  padding: 0.5rem 1rem;
-  margin-bottom: 1rem;
-
-  border-radius: 25px;
-
-  border: 2px solid #45b26b;
-
-  color: #45b26b;
-  text-align: center;
-  text-decoration: none;
-
-  font-size: 1rem;
-  font-weight: 700;
-  font-family: Pretendard;
-
-  cursor: pointer;
-
-  transition: 0.2s;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    min-height: fit-content;
-    min-height: 53px;
-    font-size: 20px;
-  }
-`;
-
 const PartTimeButtonContainer = styled.div`
   width: 100%;
 
@@ -895,7 +874,11 @@ const PartTimeButtonContainer = styled.div`
   }
 `;
 
-const PartTimeButton = styled.button`
+type PartTimeButtonProps = {
+  selected: boolean;
+};
+
+const PartTimeButton = styled.button<PartTimeButtonProps>`
   background-color: ${(props) => (props.selected ? '#45b26b' : 'white')};
   color: ${(props) => (props.selected ? 'white' : '#45b26b')};
 
@@ -924,57 +907,18 @@ const PartTimeButton = styled.button`
   }
 `;
 
-const PayButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  gap: 1rem;
-`;
-
-const PayButton = styled.button`
-  padding: 2rem;
-  width: 507px;
-  height: 197px;
-  background-color: #45b26b;
-
-  border-radius: 25px;
-
-  border: 2px solid #45b26b;
-
-  color: white;
-  text-decoration: none;
-
-  font-size: 2.2rem;
-  font-weight: 700;
-  font-family: Pretendard;
-
-  cursor: pointer;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-
-  gap: 2rem;
-
-  transition: 0.2s;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    min-height: fit-content;
-    min-height: 53px;
-    font-size: 20px;
-  }
-`;
-
 const Form = styled.div`
   width: 70vw;
   display: flex;
   flex-direction: column;
 `;
 
-const FormRow = styled.div`
+type FormRowProps = {
+  color?: boolean;
+  bottomColor?: boolean;
+};
+
+const FormRow = styled.div<FormRowProps>`
   display: flex;
   align-items: center;
 

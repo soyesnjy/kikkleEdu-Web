@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "excute": "next build && next start",
     "deploy": "next build && next export && aws s3 sync ./out s3://soyes.toy.com"
   },
   "dependencies": {
@@ -28,7 +29,7 @@
     "eslint-config-next": "13.4.19",
     "framer-motion": "^11.1.1",
     "howler": "^2.2.4",
-    "next": "13.5.9",
+    "next": "14.2.26",
     "next-auth": "^4.24.7",
     "next-i18next": "^15.3.0",
     "next-pwa": "^5.6.0",

@@ -1,21 +1,32 @@
+'use client';
 /* eslint-disable react-hooks/exhaustive-deps */
 import styled from 'styled-components';
 
 import { useEffect, useState } from 'react';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
-import { useRouter } from 'next/router';
-import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
+import { useRouter } from 'next/navigation';
+import { useQuery } from 'react-query';
 
+import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 import TeacherSearchBar from '@/component/Home_Component/TeacherSearchBar';
 import TeacherProfileCard from '@/component/Agency_Component/TeacherProfileCard';
 import EndSection from '@/component/Home_Component/EndSection';
 
+type TeacherListDataType = {
+  id: number;
+  name: string;
+  introduce: string;
+  profileImg: string;
+};
+
 const TeacherListPage = () => {
   const [teacherClass, setTeacherClass] = useState('ballet');
-  const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
+  const [teacherDataArr, setTeacherDataArr] = useState<TeacherListDataType[]>(
+    []
+  ); // DB Class Select 값
 
   const router = useRouter();
-  useLoginSessionCheck();
+  useLoginSessionCheck({ requireLogin: true });
 
   // 로그인 세션 Clear 메서드
   const loginSessionClear = () => {
@@ -31,46 +42,54 @@ const TeacherListPage = () => {
     }
   };
 
-  // 강사 태그 조회
+  // React Query - 서버에서 데이터를 가져오는 API 함수
+  const reactQueryFetchTeacher = async ({ queryKey }) => {
+    const [, teacherClass] = queryKey;
+    const response = await handleTeacherGet({
+      classTag: teacherClass,
+    });
+
+    // 강사 권한이 없을 경우 - 401 에러 발생 시 로그인 세션 Clear
+    if (response.status === 401) {
+      alert(response.message);
+      loginSessionClear();
+      return [];
+    }
+
+    return response.data.data;
+  };
+
+  // React Query 데이터 가져오기
+  const {
+    data: teacherData,
+    isLoading,
+    error,
+  } = useQuery(
+    ['teacherData', teacherClass], // Query Key
+    reactQueryFetchTeacher, // Query Function
+    {
+      staleTime: 5000, // 5초 동안 신선한 상태 유지
+      cacheTime: 10000, // 10초 동안 캐시 유지
+      keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
+    }
+  );
+
+  // 가져온 서버 데이터를 상태에 반영
   useEffect(() => {
-    // 태그가 변경될 경우
-    if (
-      teacherClass &&
-      teacherClass !== localStorage.getItem('teacherClassTag')
-    ) {
-      localStorage.setItem('teacherClassTag', teacherClass);
-      handleTeacherGet({ classTag: teacherClass })
-        .then((res) => {
-          // 미승인 회원 처리
-          if (res.status === 401) {
-            alert(res.message);
-            loginSessionClear();
-            return;
-          }
-          return res.data.data;
-        })
-        .then((data) => {
-          const tmpArr = data.map((el) => {
-            return {
-              id: el.kk_teacher_idx,
-              name: el.kk_teacher_name,
-              introduce: el.kk_teacher_introduction,
-              profileImg: el.kk_teacher_profileImg_path,
-            };
-          });
-          setTeacherDataArr([...tmpArr]);
-          localStorage.setItem('teacherDataArr', JSON.stringify(tmpArr));
-        })
-        .catch((err) => console.error(err));
+    if (teacherData) {
+      const tmpArr = teacherData.map((el) => {
+        return {
+          id: el.kk_teacher_idx,
+          name: el.kk_teacher_name,
+          introduce: el.kk_teacher_introduction,
+          profileImg: el.kk_teacher_profileImg_path,
+        };
+      });
+      // console.log(tmpArr);
+      setTeacherDataArr([...tmpArr]);
+      localStorage.setItem('teacherDataArr', JSON.stringify(tmpArr));
     }
-    // local에 teacherDataArr값이 있는 경우
-    else if (localStorage.getItem('teacherDataArr')) {
-      setTeacherDataArr([
-        ...JSON.parse(localStorage.getItem('teacherDataArr')),
-      ]);
-      return;
-    }
-  }, [teacherClass]);
+  }, [teacherData]);
 
   return (
     <MainContainer>
@@ -89,6 +108,9 @@ const TeacherListPage = () => {
         </HeaderContent>
       </HeaderSection>
       {/* Middle Section */}
+      {/* Loading && Error Handling */}
+      {isLoading ? <div>Loading...</div> : null}
+      {error ? <div>Error...</div> : null}
       <MiddleSection>
         <MiddleContainer>
           <MiddleTitle>{`KK EDU - ballet`}</MiddleTitle>

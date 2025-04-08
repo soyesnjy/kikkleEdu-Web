@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { handleSignupDelete } from '@/fetchAPI/signupAPI';
 import Swal from 'sweetalert2';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { logoutAPI } from '@/fetchAPI/loginAPI';
 import { useRecoilState } from 'recoil';
 import { log, uid, agencyClass } from '@/store/state';

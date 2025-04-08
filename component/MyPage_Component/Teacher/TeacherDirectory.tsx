@@ -26,9 +26,9 @@ type PropsType = {
 };
 
 const TeacherDirectory = ({ activeTab }: PropsType) => {
-  const [dirDepthStack, setDirDepthStack] = useState([null]); // Directory Depth Stack
+  const [dirDepthStack, setDirDepthStack] = useState<(number | null)[]>([null]); // Directory Depth Stack
   const [selectedItems, setSelectedItems] = useState(0); // 선택된 아이템 Idx
-  const [itemUrl, setItemUrl] = useState<string>(''); // Item Url
+  const [itemUrl, setItemUrl] = useState<string | undefined>(''); // Item Url
   const [audioKey, setAudioKey] = useState(0); // 리렌더링 트리거
 
   // activeTab 값이 변경될 경우 state 초기화
@@ -98,15 +98,17 @@ const TeacherDirectory = ({ activeTab }: PropsType) => {
           <BackButton onClick={handleBackClick}>{`Back`}</BackButton>
         )}
         {/* Directory Items */}
-        {currentItems.map((item, index) => (
-          <DirctoryItem
-            key={index}
-            selected={item.kk_directory_idx === selectedItems}
-            onClick={() => handleItemClick(item)}
-          >
-            <DirctoryName>{item.kk_directory_name}</DirctoryName>
-          </DirctoryItem>
-        ))}
+        {currentItems
+          ? currentItems.map((item, index) => (
+              <DirctoryItem
+                key={index}
+                selected={item.kk_directory_idx === selectedItems}
+                onClick={() => handleItemClick(item)}
+              >
+                <DirctoryName>{item.kk_directory_name}</DirctoryName>
+              </DirctoryItem>
+            ))
+          : null}
       </DirctoryUl>
       {/* File Click */}
       {itemUrl && (

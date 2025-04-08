@@ -2,7 +2,7 @@ import { useSetRecoilState } from 'recoil';
 import { isSideMenuDisabled } from '@/store/state';
 import { useEffect } from 'react';
 
-const useDisableSideMenu = (ref: React.RefObject<HTMLElement>) => {
+const useDisableSideMenu = (ref: React.RefObject<HTMLElement | null>) => {
   const setIsSideMenuDisabled = useSetRecoilState(isSideMenuDisabled);
 
   useEffect(() => {

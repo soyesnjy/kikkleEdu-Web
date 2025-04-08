@@ -10,7 +10,7 @@ import { mobile } from '@/store/state';
 import { handleTeacherGet } from '@/fetchAPI/teacherAPI';
 
 import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
-import ProgramTeacherContainer from '@/component/Teacher_Componet/ProgramTeacherContainer';
+import ProgramTeacherContainer from '@/component/Teacher_Componet/ProgramTeacherCarousel';
 import EndSection from '@/component/Home_Component/EndSection';
 import LoadingModal from '@/component/Common_Component/LoadingModal';
 import ProgressiveImage from '@/component/Common_Component/ProgressiveImage';
@@ -57,7 +57,7 @@ const TeacherDetailPage = () => {
   const { id } = router.query; // URL의 동적 파라미터를 가져옴
 
   // 권한 체크
-  useLoginSessionCheck();
+  useLoginSessionCheck({ requireLogin: true });
 
   useEffect(() => {
     if (localStorage.getItem('teacherDataArr')) {

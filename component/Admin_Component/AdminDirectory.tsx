@@ -92,13 +92,13 @@ const AdminDirectory = ({ activeTab }: PropsType) => {
       {agencyType === 'admin' && (
         <UploadContainer>
           <AdminDirectoryUploadForm
-            directories={data.filter(
+            directories={(data ?? []).filter(
               (item) => item.kk_directory_type === 'directory'
             )}
             form={activeTab}
           />
           <AdminDirectoryUploadFormDir
-            directories={data.filter(
+            directories={(data ?? []).filter(
               (item) => item.kk_directory_type === 'directory'
             )}
             form={activeTab}
@@ -237,19 +237,19 @@ const BackButton = styled.button`
   cursor: pointer;
 `;
 
-const TrackContainer = styled.div`
-  width: 100%;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+// const TrackContainer = styled.div`
+//   width: 100%;
+//   padding: 1rem;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
 
-  @media (max-width: 768px) {
-    width: 100%;
-    padding: 0;
-  }
-`;
+//   @media (max-width: 768px) {
+//     width: 100%;
+//     padding: 0;
+//   }
+// `;
 
 const Title = styled.h1`
   width: 500px;

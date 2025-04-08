@@ -11,13 +11,16 @@ type TeacherDataType = {
   kk_teacher_location: string;
   kk_teacher_dayofweek: string;
   kk_teacher_class_titles: string;
+  kk_teacher_phoneNum?: string;
+  kk_teacher_class_idxs?: string;
+  kk_teacher_time?: string;
 };
 
 // handleSignupCreate API 반환 데이터 타입 지정
 type TeacherGetResponseDataType = {
   message?: string;
   status: number;
-  data?: {
+  data: {
     message: string;
     data: TeacherDataType[];
   };
@@ -61,6 +64,10 @@ ${classTag ? `classTag=${classTag}&` : ''}`,
     return {
       message: err.response.data.message,
       status: err.response.status,
+      data: {
+        message: err.response.data.message,
+        data: [],
+      },
     };
   }
 };

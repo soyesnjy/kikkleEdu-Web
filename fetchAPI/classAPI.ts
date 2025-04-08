@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // handleClassGet 요청 쿼리 타입 지정
 type ClassGetRequestQueryType = {
-  classDetail?: string;
+  classDetail?: boolean;
   classTag?: string;
   classType?: string;
 };
@@ -50,7 +50,9 @@ ${classType ? `classType=${classType}&` : ''}`,
   } catch (err) {
     console.error(err);
     return {
+      message: err.response.data.message,
       status: err.response.status,
+      data: { data: [] },
     };
   }
 };

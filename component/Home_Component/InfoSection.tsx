@@ -1,13 +1,14 @@
+'use client';
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 
-import { useRecoilState } from 'recoil';
-import { mobile } from '../../store/state';
+import { useRecoilValue } from 'recoil';
+import { mobile } from '@/store/state';
 import { ScrollAnimation } from '@/component/Home_Component/Scroll_Animation/ScrollAnimation';
 
 const InfoSection = () => {
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const mobileFlag = useRecoilValue(mobile);
 
   return (
     <SectionContainer>
@@ -21,7 +22,7 @@ const InfoSection = () => {
             : `소예키즈는 어린이들의 \n 창의성발달, 신체발달, \n 사회성 발달, 정서발달에 \n 가치실현을 \n 목표로 하고 있습니다.`}
         </Text>
         <Link href={'/introduce'}>
-          <Button>소예키즈 소개</Button>
+          <Button>{`소예키즈 소개`}</Button>
         </Link>
         <ScrollAnimation startingPoint="left" duration={1} repeat={true}>
           <CactusIcon />
@@ -33,7 +34,6 @@ const InfoSection = () => {
 
 export default InfoSection;
 
-// Styled Components
 const SectionContainer = styled.div`
   width: 100vw;
   height: 100vh;

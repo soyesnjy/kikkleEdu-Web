@@ -17,8 +17,21 @@
     "baseUrl": ".", // 프로젝트 루트 디렉토리를 기준으로 설정
     "paths": {
       "@/*": ["./*"] // @/ 경로를 루트 디렉토리에 매핑
-    }
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/program/index.js"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/program/index.js",
+    ".next/types/**/*.ts",
+    "component/Admin_Component/AdminTableTeacherBodyRow.js"
+  ],
+  "exclude": ["node_modules", "Regacy Pages", "pages"]
 }

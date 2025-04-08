@@ -3,7 +3,7 @@
 /* eslint-disable no-async-promise-executor */
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import {
   handleDirectoryCreate,

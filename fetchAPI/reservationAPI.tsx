@@ -1,7 +1,32 @@
 import axios from 'axios';
 
 // READ
-export const handleReservationGet = async (query) => {
+type ReservationGetResponseDataType = {
+  message?: string;
+  status: number;
+  data?: {
+    data: {
+      kk_agency_name: string;
+      kk_agency_phoneNum: string;
+      kk_class_idx: number;
+      kk_class_title: string;
+      kk_reservation_approve_status: number;
+      kk_reservation_date: string;
+      kk_reservation_idx: number;
+      kk_reservation_time: string;
+      kk_teacher_idx: number;
+      teacher_info: string;
+      total_count: number;
+    }[];
+    lastPageNum: number;
+    limit: number;
+    page: string;
+  };
+};
+export const handleReservationGet = async (query: {
+  date?: string;
+  pageNum?: number;
+}): Promise<ReservationGetResponseDataType> => {
   const { date, pageNum } = query;
   try {
     const response = await axios.get(
@@ -16,18 +41,39 @@ ${pageNum ? `pageNum=${pageNum}&` : ''}`,
         withCredentials: true,
       }
     );
-    // console.log(response.data);
+    console.log(response);
     return response;
   } catch (err) {
     console.error(err);
     return {
       message: err.response.data.message,
       status: err.response.status,
+      data: {
+        data: [],
+        lastPageNum: -1,
+        limit: -1,
+        page: '-1',
+      },
     };
   }
 };
+
 // CREATE
-export const handleReservationCreate = async (input) => {
+type ReservationGetDetailRequestDataType = {
+  agencyIdx: string | null;
+  classIdx: number;
+  reservationDate: Date[];
+  reservationTime: string;
+  reservationCand: number[];
+};
+type ReservationGetDetailResponseDataType = {
+  message?: string;
+  status: number;
+};
+
+export const handleReservationCreate = async (
+  input: ReservationGetDetailRequestDataType
+): Promise<ReservationGetDetailResponseDataType> => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_URL}/reservation/create`,
@@ -40,7 +86,7 @@ export const handleReservationCreate = async (input) => {
         withCredentials: true,
       }
     );
-    // console.log(response);
+    console.log(response);
     return response;
   } catch (err) {
     console.log('ReservationCreate API 호출 실패');

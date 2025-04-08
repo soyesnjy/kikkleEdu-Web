@@ -1,7 +1,21 @@
 import axios from 'axios';
 
+// handleSignupCreate API 반환 데이터 타입 지정
+type SignupGetResponseDataType = {
+  message?: string;
+  status: number;
+  data?: {
+    data: any[]; // 너무 많아...
+    lastPageNum: number;
+    limit: number;
+    page: string;
+  };
+};
+
 // READ
-export const handleSignupGet = async (query) => {
+export const handleSignupGet = async (
+  query
+): Promise<SignupGetResponseDataType> => {
   const { userClass, name, pageNum } = query;
   try {
     const response = await axios.get(
@@ -17,13 +31,19 @@ ${pageNum ? `pageNum=${pageNum}&` : ''}`,
         withCredentials: true,
       }
     );
-    // console.log(response.data);
+    // console.log(response);
     return response;
   } catch (err) {
     console.error(err);
     return {
       message: err.response.data.message,
       status: err.response.status,
+      data: {
+        data: [],
+        lastPageNum: -1,
+        limit: -1,
+        page: '-1',
+      },
     };
   }
 };

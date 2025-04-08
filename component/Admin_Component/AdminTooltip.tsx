@@ -41,14 +41,14 @@ type UpdateEventType = {
 
 // Props Type
 type PropsType = {
-  id: string;
+  id: string | number;
   title: string;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   event: TooltipEventType;
   handleEventClickUpdate: (event: UpdateEventType) => void; // 수정 이벤트 핸들러
   backgroundColor: string;
-  timeCalulate: (date: Date, all?: boolean) => string; // 시간 계산 함수
+  timeCalulate: (date: string, all?: boolean) => string; // 시간 계산 함수
   handleResetTooltip: () => void; // 툴팁 리셋 핸들러
   handleGroupDelete: (groupIdx: number) => void; // 그룹 삭제 핸들러
   dayArr: string[];
@@ -70,13 +70,13 @@ const AdminTooltip = ({
   colors,
 }: PropsType) => {
   const [updateIsOpen, setUpdateIsOpen] = useState(false);
-  const [updatedTitle, setUpdatedTitle] = useState('');
+  const [updatedTitle, setUpdatedTitle] = useState<string>('');
   const [updatedTeacherName, setUpdatedTeacherName] = useState('');
   const [updatedCourseName, setUpdatedCourseName] = useState('');
   const [updatedParticipants, setUpdatedParticipants] = useState(0);
   const [updatedTimes, setUpdatedTimes] = useState(0);
   const [updatedCourseTimes, setUpdatedCourseTimes] = useState(0);
-  const [updatedBackColor, setUpdatedBackColor] = useState('');
+  const [updatedBackColor, setUpdatedBackColor] = useState<string>('');
   const [updatedNotes, setUpdatedNotes] = useState('');
   const [isAllEdit, setIsAllEdit] = useState(false);
 

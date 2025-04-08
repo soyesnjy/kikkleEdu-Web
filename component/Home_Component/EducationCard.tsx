@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
@@ -28,15 +30,14 @@ export default EducationCard;
 // Styled Components
 const CardContainer = styled.div`
   width: 33%;
-  display: flex;
-  align-items: center;
-  /* background-color: white; */
+  max-width: 400px;
+
   padding: 1rem;
   border-radius: 15px;
 
+  display: flex;
+  align-items: center;
   gap: 1rem;
-
-  max-width: 400px;
 
   @media (max-width: 1080px) {
     width: 100%;
@@ -45,9 +46,9 @@ const CardContainer = styled.div`
 
 const TextContainer = styled.div`
   width: 100%;
+
   display: flex;
   flex-direction: column;
-
   gap: 0.5rem;
 
   @media (max-width: 1080px) {

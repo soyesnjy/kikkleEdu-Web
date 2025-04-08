@@ -69,7 +69,7 @@ const colors: { label: string; value: string }[] = [
 ];
 
 // Date Format String 변환 메서드 (HH:MM)
-const timeCalulate = (date: Date, all: boolean): string => {
+const timeCalulate = (date: string, all: boolean): string => {
   const dateObj = new Date(date);
 
   if (all) {
@@ -107,6 +107,24 @@ const reactQueryFetchEvent = async ({ queryKey }) => {
   return response.data;
 };
 
+type FormattedHolidayType = {
+  date: string;
+  name: string;
+};
+
+type TooltipType = {
+  visible: boolean;
+  content: {
+    id: number;
+    title?: string;
+    start?: string;
+    end?: string;
+    eventProps?: any;
+    backgroundColor?: string;
+  } | null;
+  position: { top: number; left: number };
+};
+
 const AdminSchedulerBody = () => {
   const [events, setEvents] = useState<EventType[]>([]);
   const [newEvent, setNewEvent] = useState<NewEventType>({
@@ -124,28 +142,28 @@ const AdminSchedulerBody = () => {
   const [currentDateMonth, setCurrentDateMonth] = useState<number>(
     today.getMonth() + 1
   ); // A 캘린더 currentDate Month
-  const [holidays, setHolidays] = useState([]); // 공휴일 데이터 배열 (공공데이터)
+  const [holidays, setHolidays] = useState<FormattedHolidayType[]>([]); // 공휴일 데이터 배열 (공공데이터)
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<Date>(today); // 미니 달력(B)에서 선택된 날짜
   const [selectedEventId, setSelectedEventId] = useState<number>(-1); // 선택된 eventID (이벤트 Delete 용도)
   const [scheduleForm, setScheduleForm] = useState<string>('week'); // 스케줄폼 (week || month)
-  const [tooltip, setTooltip] = useState({
+  const [tooltip, setTooltip] = useState<TooltipType>({
     visible: false,
     content: null,
     position: { top: 0, left: 0 },
   }); // Tooltip 상태
 
   const selectedDateRef = useRef<Date | null>(selectedDate); // 실시간 selectedDate 참조
-  const aCalendarRef = useRef(null); // A캘린더의 ref
-  const bCalendarRef = useRef(null); // B캘린더의 ref
+  const aCalendarRef = useRef<FullCalendar | null>(null); // A캘린더의 ref
+  const bCalendarRef = useRef<FullCalendar | null>(null); // B캘린더의 ref
 
   // 공휴일 확인 메서드
   const isHoliday = useCallback(
     (date: Date): boolean => {
       if (!holidays.length) return false;
       return holidays.some(
-        (holiday) =>
+        (holiday: FormattedHolidayType) =>
           new Date(holiday.date).toDateString() === date.toDateString()
       );
     },
@@ -187,9 +205,9 @@ const AdminSchedulerBody = () => {
       bCalendarRef.current.getApi().gotoDate(newData); // B캘린더 날짜 이동
     }
     // A 캘린더 Month 갱신
-    if (aCalendarRef?.current?.getApi()?.currentData.currentDate) {
+    if (aCalendarRef?.current?.getApi()?.getDate()) {
       setCurrentDateMonth(
-        aCalendarRef?.current?.getApi()?.currentData.currentDate.getMonth() + 1
+        aCalendarRef?.current?.getApi()?.getDate().getMonth() + 1
       );
     }
 
@@ -340,7 +358,7 @@ const AdminSchedulerBody = () => {
         info.event;
 
       // 툴팁이 켜진 경우 끄기 (토글)
-      if (tooltip.visible && tooltip.content.id === id) {
+      if (tooltip.visible && tooltip.content && tooltip.content.id === id) {
         handleResetTooltip();
         return;
       }
@@ -655,7 +673,11 @@ const AdminSchedulerBody = () => {
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   // React Query 데이터 가져오기
-  const { data, isLoading, error } = useQuery(
+  const {
+    data: eventData,
+    isLoading,
+    error,
+  } = useQuery(
     ['events', currentDateMonth, debouncedSearchQuery], // Query Key
     reactQueryFetchEvent, // Query Function
     {
@@ -675,7 +697,7 @@ const AdminSchedulerBody = () => {
     try {
       if (!holidays.length) {
         handleScheduleHolidayGet(today).then((res) => {
-          if (res.status === 200) setHolidays(res.data);
+          if (res.status === 200) setHolidays([...res.data]);
         });
       }
     } catch (err) {
@@ -685,8 +707,8 @@ const AdminSchedulerBody = () => {
 
   // 가져온 서버 데이터를 `events` 상태에 반영
   useEffect(() => {
-    if (data) setEvents(data);
-  }, [data]);
+    if (eventData) setEvents(eventData);
+  }, [eventData]);
 
   // Delete 삭제 기능
   useEffect(() => {
@@ -799,7 +821,7 @@ const AdminSchedulerBody = () => {
             // slotLabelInterval="00:10:00" // 1시간마다 라벨 표시
             allDaySlot={false}
             datesSet={handleDatesSetA} // 날짜 이동 이벤트 핸들러
-            dateClick={scheduleForm === 'week' ? openModal : null} // 날짜 클릭 시 이벤트 추가 모달 오픈
+            dateClick={scheduleForm === 'week' ? openModal : undefined} // 날짜 클릭 시 이벤트 추가 모달 오픈
             events={transformedEvents(events)} // 이벤트 데이터
             eventClick={handleOpenTooltip} // 이벤트 Click
             eventContent={renderEventCellA} // 이벤트 Cell
@@ -838,11 +860,11 @@ const AdminSchedulerBody = () => {
         >
           <AdminTooltip
             id={tooltip.content.id}
-            title={tooltip.content.title}
-            start={tooltip.content.start}
-            end={tooltip.content.end}
+            title={tooltip.content.title || ''}
+            start={tooltip.content.start || ''}
+            end={tooltip.content.end || ''}
             event={tooltip.content.eventProps}
-            backgroundColor={tooltip.content.backgroundColor}
+            backgroundColor={tooltip.content.backgroundColor || ''}
             handleEventClickUpdate={handleEventClickUpdate} // 툴팁에서 이벤트 내용 수정
             handleResetTooltip={handleResetTooltip}
             handleGroupDelete={handleGroupDelete}
