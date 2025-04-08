@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/navigation';
 import { useRecoilValue } from 'recoil';
-import { log, mobile } from '@/store/state';
+import { mobile } from '@/store/state';
 import Swal from 'sweetalert2';
 
 import { handleReservationCreate } from '@/fetchAPI/reservationAPI';

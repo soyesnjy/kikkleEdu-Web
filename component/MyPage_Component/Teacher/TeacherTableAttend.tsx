@@ -9,10 +9,20 @@ import LoadingModal from '@/component/Common_Component/LoadingModal';
 import TeacherTableAttendBody from '@/component/MyPage_Component/Teacher/TeacherTableAttendBody';
 import Pagination from '@/component/Common_Component/Pagination';
 
+type TeacherAttendType = {
+  kk_agency_name: string;
+  kk_attend_date: string;
+  kk_attend_idx: number;
+  kk_attend_status: number;
+  kk_class_title: string;
+  kk_reservation_time: string;
+  kk_teacher_name: string;
+  kk_teacher_phoneNum: string;
+  total_count: number;
+};
+
 const TeacherTableAttend = () => {
   const [page, setPage] = useState(1);
-  let tableData = [],
-    lastPageNum = [];
 
   // 출석 데이터 요청 함수
   const fetchAttendData = async () => {
@@ -35,8 +45,14 @@ const TeacherTableAttend = () => {
   });
 
   // 테이블 데이터와 마지막 페이지 번호 업데이트
-  tableData = useMemo(() => attendData?.data, [attendData]);
-  lastPageNum = useMemo(() => attendData?.lastPageNum, [attendData]);
+  const tableData: TeacherAttendType[] | undefined = useMemo(
+    () => attendData?.data,
+    [attendData]
+  );
+  const lastPageNum: number | undefined = useMemo(
+    () => attendData?.lastPageNum,
+    [attendData]
+  );
 
   if (isLoading) return <LoadingModal isOpen={isLoading} />;
   if (error) return <div>Error...</div>;

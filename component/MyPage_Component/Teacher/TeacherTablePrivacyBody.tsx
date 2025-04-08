@@ -40,21 +40,41 @@ const formatPhoneNumber = (phone: string) => {
   return `010-${lastEightDigits.slice(0, 4)}-${lastEightDigits.slice(4)}`;
 };
 
+type PossClassArrType = {
+  id: number;
+  title: string;
+};
+
+type TeacherDataType = {
+  kk_teacher_class_titles: string;
+  kk_teacher_dayofweek: string;
+  kk_teacher_education: string;
+  kk_teacher_history: string;
+  kk_teacher_idx: number;
+  kk_teacher_introduction: string;
+  kk_teacher_location: string;
+  kk_teacher_name: string;
+  kk_teacher_profileImg_path: string;
+  kk_teacher_phoneNum?: string;
+  kk_teacher_class_idxs?: string;
+  kk_teacher_time?: string;
+};
+
 const TeacherTablePrivacyBody = () => {
   const [login, setLogin] = useRecoilState(log);
   const [userId, setUserId] = useRecoilState(uid);
   const [agencyType, setAgencyType] = useRecoilState(agencyClass);
   const [mobileFlag] = useRecoilState(mobile);
 
-  const [teacherData, setTeacherData] = useState(null); // 강사 데이터
-  const [possClassArr, setPossClassArr] = useState([]);
+  const [teacherData, setTeacherData] = useState<TeacherDataType>(); // 강사 데이터
+  const [possClassArr, setPossClassArr] = useState<PossClassArrType[]>([]);
   const [teacherIdx, setTeacherIdx] = useState(0);
   const [introduce, setIntroduce] = useState('');
   const [name, setName] = useState('');
   const [phoneNum, setPhoneNum] = useState('');
-  const [possClass, setPossClass] = useState([]); // 희망 수업
-  const [possDay, setPossDay] = useState([]); // 희망 요일
-  const [possTimes, setPossTimes] = useState([]); // 희망 시간대
+  const [possClass, setPossClass] = useState<number[]>([]); // 희망 수업
+  const [possDay, setPossDay] = useState<string[]>([]); // 희망 요일
+  const [possTimes, setPossTimes] = useState<string[]>([]); // 희망 시간대
   const [location, setLocation] = useState(''); // 희망 지역
   const [history, setHistory] = useState(''); // 경력
   const [education, setEducation] = useState(''); // 학력
@@ -70,7 +90,11 @@ const TeacherTablePrivacyBody = () => {
 
     setPossClass(
       data.kk_teacher_class_idxs
-        ? [...data.kk_teacher_class_idxs.split('/').map((el) => Number(el))]
+        ? [
+            ...data.kk_teacher_class_idxs
+              .split('/')
+              .map((el: string) => Number(el)),
+          ]
         : []
     ); // 수업 추가
     setPossDay(
@@ -103,7 +127,6 @@ const TeacherTablePrivacyBody = () => {
     keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
     onError: (error) => {
       console.error(error);
-      setTeacherData([]);
     },
   });
 
@@ -112,14 +135,16 @@ const TeacherTablePrivacyBody = () => {
     if (!possClassArr.length) {
       // Class Read API 호출 메서드
       handleClassGet({})
-        .then((res) => res.data.data)
+        .then((res) => res.data?.data || [])
         .then((data) => {
           // console.log(data);
-          setPossClassArr([
-            ...data.map((el) => {
-              return { id: el.kk_class_idx, title: el.kk_class_title };
-            }),
-          ]);
+          const classData = data.map((el) => {
+            return {
+              id: el.kk_class_idx,
+              title: el.kk_class_title,
+            };
+          });
+          setPossClassArr([...classData]);
         });
     }
   }, []);
@@ -130,12 +155,6 @@ const TeacherTablePrivacyBody = () => {
       initData(data.data[0]);
     }
   }, [data]);
-
-  // useEffect(() => {
-  //   if (teacherData) {
-  //     initData(teacherData);
-  //   }
-  // }, [teacherData]);
 
   // 강사 정보 update 핸들러
   const signupUpdateHandler = async (e) => {

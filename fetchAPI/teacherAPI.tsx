@@ -11,6 +11,9 @@ type TeacherDataType = {
   kk_teacher_location: string;
   kk_teacher_dayofweek: string;
   kk_teacher_class_titles: string;
+  kk_teacher_phoneNum?: string;
+  kk_teacher_class_idxs?: string;
+  kk_teacher_time?: string;
 };
 
 // handleSignupCreate API 반환 데이터 타입 지정
