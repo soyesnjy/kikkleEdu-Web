@@ -6,6 +6,7 @@ import { useRouter, useParams, usePathname } from 'next/navigation'; // Next.js�
 import { useRecoilState } from 'recoil';
 import { agencyClass } from '@/store/state';
 import { useQuery } from 'react-query';
+import LoadingModal from '@/component/Common_Component/LoadingModal';
 
 import {
   handleBoardGet,
@@ -155,7 +156,7 @@ const BoardDetail = () => {
       {/* 헤더 섹션 */}
       <BoardHeaderSection />
       {/* Loading && Error Handling */}
-      {isLoading ? <div>Loading...</div> : null}
+      {isLoading ? <LoadingModal isOpen={isLoading} /> : null}
       {error ? <div>Error...</div> : null}
       {/* 디테일 섹션 */}
       {updateFlag ? (

@@ -17,6 +17,7 @@ import BoardHeaderSection from '@/component/Board_Component/BoardHeaderSection';
 import BoardItem from '@/component/Board_Component/BoardItem';
 import Pagination from '@/component/Common_Component/Pagination';
 import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
+import LoadingModal from '@/component/Common_Component/LoadingModal';
 
 // Teacher Data Type
 type BoardDataType = {
@@ -70,7 +71,7 @@ export default function BoardList() {
       {/* 헤더 섹션 */}
       <BoardHeaderSection />
       {/* Loading && Error Handling */}
-      {isLoading ? <div>Loading...</div> : null}
+      {isLoading ? <LoadingModal isOpen={isLoading} /> : null}
       {error ? <div>Error...</div> : null}
       {/* 게시판 */}
       <BoardContainer>
