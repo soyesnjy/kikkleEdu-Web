@@ -30,7 +30,7 @@ export default function BoardList() {
   const [lastPageNum, setLastPageNum] = useState(1);
 
   const router = useRouter();
-  useLoginSessionCheck();
+  useLoginSessionCheck({ requireLogin: true });
 
   const handleItemClick = (id: string) => {
     router.push(`/board/${id}`); // 게시글 ID로 이동

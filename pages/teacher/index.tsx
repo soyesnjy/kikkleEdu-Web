@@ -15,7 +15,7 @@ const TeacherListPage = () => {
   const [teacherDataArr, setTeacherDataArr] = useState([]); // DB Class Select 값
 
   const router = useRouter();
-  useLoginSessionCheck();
+  useLoginSessionCheck({ requireLogin: true });
 
   // 로그인 세션 Clear 메서드
   const loginSessionClear = () => {

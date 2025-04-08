@@ -1,7 +1,6 @@
 'use client';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 import AdminTab from '@/component/Admin_Component/AdminTab';
 import AdminDirectory from '@/component/Admin_Component/AdminDirectory';
@@ -13,30 +12,20 @@ import AdminTableTeacherBodyNew from '@/component/Admin_Component/AdminTableTeac
 import AdminTableAgencyBodyNew from '@/component/Admin_Component/AdminTableAgencyBodyNew';
 import AdminTableReservationBodyNew from '@/component/Admin_Component/AdminTableReservationBodyNew';
 import AdminTeacherTableAttendBodyNew from '@/component/Admin_Component/AdminTeacherTableAttendBodyNew';
+import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 
 const Administor = () => {
   const [activeTab, setActiveTab] = useState<string>('');
   const [page, setPage] = useState<number>(-1);
   const [lastPageNum, setLastPageNum] = useState<number>(1);
 
-  const router = useRouter();
-
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
 
-  useEffect(() => {
-    // 관리자 권한이 없을 경우 메인페이지로 이동
-    if (
-      localStorage.getItem('log') === null ||
-      localStorage.getItem('agencyType') === null ||
-      localStorage.getItem('agencyType') !== 'admin'
-    ) {
-      // console.log(localStorage.getItem('log'));
-      router.replace('/');
-      return;
-    }
+  useLoginSessionCheck({ requireLogin: true, requireAdmin: true });
 
+  useEffect(() => {
     // localStorage 값으로 변경
     setActiveTab(localStorage.getItem('activeTab') || 'attend');
     setPage(Number(localStorage.getItem('page')) || 1);

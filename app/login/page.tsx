@@ -11,6 +11,7 @@ import { useRecoilState } from 'recoil';
 import { log, uid, agencyClass } from '@/store/state';
 import { loginAPI } from '@/fetchAPI/loginAPI';
 import Swal from 'sweetalert2';
+import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 
 // 로그인 만료시간 설정 (hour 시간)
 const expireSetHourFunc = (hour: number) => {
@@ -113,17 +114,7 @@ export default function Login() {
       });
     }
   };
-
-  useEffect(() => {
-    const logItem = localStorage.getItem('log');
-    const loginSession: { expires: string } = logItem
-      ? JSON.parse(logItem)
-      : null;
-    if (loginSession) {
-      router.replace('/');
-      return;
-    }
-  }, [login]);
+  useLoginSessionCheck({ redirectIfLoggedIn: true });
 
   return (
     <LoginPageContainer>

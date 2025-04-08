@@ -22,7 +22,7 @@ const MyPage = () => {
   const [activeTab, setActiveTab] = useState('');
 
   const router = useRouter();
-  useLoginSessionCheck(); // 로그인 여부 확인
+  useLoginSessionCheck({ requireLogin: true }); // 로그인 여부 확인
 
   const handleTabClick = (tab: string) => setActiveTab(tab);
 

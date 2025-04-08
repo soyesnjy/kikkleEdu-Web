@@ -57,7 +57,7 @@ const TeacherDetailPage = () => {
   const { id } = router.query; // URL의 동적 파라미터를 가져옴
 
   // 권한 체크
-  useLoginSessionCheck();
+  useLoginSessionCheck({ requireLogin: true });
 
   useEffect(() => {
     if (localStorage.getItem('teacherDataArr')) {

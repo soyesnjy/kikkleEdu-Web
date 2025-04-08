@@ -17,6 +17,7 @@ import FileUploadComponent from '@/component/SignUp_Component/FileUploadComponen
 import PostBtn from '@/component/SignUp_Component/PostBtn';
 import LoadingDots from '@/component/SignUp_Component/LoadingDot';
 import Swal from 'sweetalert2';
+import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 
 const possLocalArr: string[] = ['서울', '부산', '기타'];
 const possDayArr: string[] = ['월', '화', '수', '목', '금', '토', '일'];
@@ -81,7 +82,6 @@ export default function Signup() {
   const [typeA, setTypeA] = useState<string>('');
 
   // Recoil 전역 변수
-  const [login] = useRecoilState(log);
   const [mobileFlag] = useRecoilState(mobile);
 
   const router = useRouter();
@@ -363,18 +363,7 @@ export default function Signup() {
     }
   }, []);
 
-  // 로그인 시 메인 페이지로 이동
-  useEffect(() => {
-    const logItem = localStorage.getItem('log');
-    const loginSession: { expires: string } = logItem
-      ? JSON.parse(logItem)
-      : null;
-
-    if (loginSession?.expires) {
-      router.replace('/');
-      return;
-    }
-  }, [login]);
+  useLoginSessionCheck({ redirectIfLoggedIn: true });
 
   // 비밀번호 입력 디바운싱
   useEffect(() => {

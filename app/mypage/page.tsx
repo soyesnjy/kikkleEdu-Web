@@ -30,7 +30,7 @@ const MyPage = () => {
   const [page, setPage] = useState(1);
 
   const router = useRouter();
-  useLoginSessionCheck(); // 로그인 여부 확인
+  useLoginSessionCheck({ requireLogin: true }); // 로그인 여부 확인
 
   // Tab Click Handler
   const handleTabClick = (tab) => {

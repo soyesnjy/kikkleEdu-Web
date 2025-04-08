@@ -14,6 +14,7 @@ import Calendar from '@/component/MyPage_Component/Calendar';
 import ReservationTeacherProfileCard from '@/component/Reservation_Component/ReservationTeacherProfileCard';
 import PayModal from '@/component/MyPage_Component/PayModal';
 import 'react-phone-number-input/style.css';
+import useLoginSessionCheck from '@/hook/useLoginSessionCheck';
 
 const partTimeArr = [
   { title: '오전 (10:00~12:00)', value: '오전' },
@@ -78,7 +79,6 @@ export default function Reservation() {
   const [isPending, setIsPending] = useState<boolean>(false); // 회원가입 버튼 활성화 state
 
   // Recoil 전역 변수
-  const login = useRecoilValue(log);
   const mobileFlag = useRecoilValue(mobile);
 
   // (NavBar)
@@ -103,15 +103,7 @@ export default function Reservation() {
   // const maxlengthStd = 15;
   // const regex = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글 및 한글 자모를 포함하는 정규 표현식
 
-  // 미로그인 시 메인 페이지로 이동
-  useEffect(() => {
-    const logItem = localStorage.getItem('log');
-    const loginSession = logItem ? JSON.parse(logItem) : null;
-    if (!loginSession) {
-      router.replace('/login');
-      return;
-    }
-  }, [login]);
+  useLoginSessionCheck({ requireLogin: true });
 
   // 수업 DB 조회
   useEffect(() => {
