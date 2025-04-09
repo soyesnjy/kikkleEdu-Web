@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
-import { log, mobile } from '@/store/state';
+import { mobile } from '@/store/state';
 
 import { handleSignupCreate } from '@/fetchAPI/signupAPI';
 import { handleClassGet } from '@/fetchAPI/classAPI';

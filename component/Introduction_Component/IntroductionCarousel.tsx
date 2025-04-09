@@ -1,14 +1,23 @@
-import React from 'react';
+'use client';
+import React, { useRef } from 'react';
+import styled from 'styled-components';
+
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import styled from 'styled-components';
-import IntroductionCarouselBanner from './IntroductionCarouselBanner';
-import { useState } from 'react';
+
 import { useRecoilState } from 'recoil';
 import { mobile } from '@/store/state';
 
-const slideArr = [
+import IntroductionCarouselBanner from './IntroductionCarouselBanner';
+import useDisableSideMenu from '@/hook/useDisableSideMenu';
+
+type SlideType = {
+  year: string;
+  ment: string[];
+};
+
+const slideArr: SlideType[][] = [
   [
     {
       year: '2024',
@@ -87,8 +96,7 @@ const slideArr = [
     },
   ],
 ];
-
-const slideArr_mobile = [
+const slideArr_mobile: SlideType[][] = [
   [
     {
       year: '2024',
@@ -184,7 +192,6 @@ const CustomNextArrow = ({ onClick }) => {
     </ArrowButton>
   );
 };
-
 const CustomPrevArrow = ({ onClick }) => {
   return (
     <ArrowButton onClick={onClick} style={{ left: '10px', opacity: '0.3' }}>
@@ -192,62 +199,57 @@ const CustomPrevArrow = ({ onClick }) => {
     </ArrowButton>
   );
 };
+const settings = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: false,
+  autoplaySpeed: 3000,
+  arrows: true,
+  nextArrow: <CustomNextArrow onClick={undefined} />,
+  prevArrow: <CustomPrevArrow onClick={undefined} />,
+};
 
 const IntroductionCarousel = () => {
-  const [_, setIsDragging] = useState(false);
   const [mobileFlag] = useRecoilState(mobile);
+  const carouselRef = useRef(null);
 
-  // 캐러셀 넘기기 관련 이벤트 처리
-  const handleMouseDown = () => {
-    setIsDragging(false);
-  };
-  const handleMouseMove = () => {
-    setIsDragging(true);
-  };
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: false,
-    autoplaySpeed: 3000,
-    arrows: true,
-    nextArrow: <CustomNextArrow />,
-    prevArrow: <CustomPrevArrow />,
-  };
-
+  useDisableSideMenu(carouselRef); // 사이드 메뉴 예외 처리
   return (
-    <StyledSlider {...settings}>
-      {!mobileFlag
-        ? slideArr.map((slide, index) => {
-            return (
-              <SliderItem
-                key={index}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-              >
-                <IntroductionCarouselBanner bannerDataArr={slide} />
-              </SliderItem>
-            );
-          })
-        : slideArr_mobile.map((slide, index) => {
-            return (
-              <SliderItem
-                key={index}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-              >
-                <IntroductionCarouselBanner bannerDataArr={slide} />
-              </SliderItem>
-            );
-          })}
-    </StyledSlider>
+    <CarouselContainer ref={carouselRef}>
+      <StyledSlider {...settings}>
+        {!mobileFlag
+          ? slideArr.map((slide, index) => {
+              return (
+                <SliderItem key={index}>
+                  <IntroductionCarouselBanner bannerDataArr={slide} />
+                </SliderItem>
+              );
+            })
+          : slideArr_mobile.map((slide, index) => {
+              return (
+                <SliderItem key={index}>
+                  <IntroductionCarouselBanner bannerDataArr={slide} />
+                </SliderItem>
+              );
+            })}
+      </StyledSlider>
+    </CarouselContainer>
   );
 };
 
 export default IntroductionCarousel;
+
+const CarouselContainer = styled.div`
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const StyledSlider = styled(Slider)`
   width: 1620px;

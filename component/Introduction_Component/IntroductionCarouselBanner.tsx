@@ -1,10 +1,20 @@
+'use client';
 import React from 'react';
 import styled from 'styled-components';
 
-const IntroductionCarouselBanner = ({ bannerDataArr }) => {
+type SlideType = {
+  year: string;
+  ment: string[];
+};
+
+type PropsType = {
+  bannerDataArr: SlideType[];
+};
+
+const IntroductionCarouselBanner = ({ bannerDataArr }: PropsType) => {
   return (
     <BannerContainer>
-      {bannerDataArr.map((el, index) => {
+      {bannerDataArr.map((el: SlideType, index: number) => {
         const { year, ment } = el;
         return (
           <BannerTextContainer key={index}>
