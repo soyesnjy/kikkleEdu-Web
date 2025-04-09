@@ -203,7 +203,7 @@ export default async function Home() {
             delay={0.1}
           >
             <SectionFifthtoNineth
-              backgroundColor={el.backgroundColor || '#FFFFFF'}
+              $backgroundColor={el.backgroundColor || '#FFFFFF'}
             >
               <LessonSection
                 title={title}

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // SectionFifthtoNineth 컴포넌트 Type 지정
 type SectionFifthtoNinethProps = {
-  backgroundColor: string;
+  $backgroundColor: string;
 };
 
 export const MasterContainer = styled.div`
@@ -156,7 +156,7 @@ export const SectionFifthtoNineth = styled.section<SectionFifthtoNinethProps>`
   width: 100vw;
   min-height: 50vh;
   margin: 10rem 0;
-  background-color: ${(props) => props.backgroundColor || 'white'};
+  background-color: ${(props) => props.$backgroundColor || 'white'};
   display: flex;
   justify-content: center;
   align-items: center;

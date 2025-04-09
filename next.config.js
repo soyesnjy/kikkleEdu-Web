@@ -1,11 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const withPWA = require('next-pwa')({
   dest: 'public',
+  disable: process.env.NEXT_PUBLIC_DISABLE_PWA === 'true',
   register: true,
   skipWaiting: true,
 });
 
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
   i18n: {
@@ -13,12 +13,26 @@ const nextConfig = {
     defaultLocale: 'ko',
   },
   images: {
-    // remotePatterns: [{ protocol: 'https', hostname: '*' }],
-    domains: [
-      'drive.google.com',
-      'drive.usercontent.google.com',
-      'res.cloudinary.com',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'drive.google.com',
+        // pathname: '/**' // 생략 가능
+      },
+      {
+        protocol: 'https',
+        hostname: 'drive.usercontent.google.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+      },
     ],
+    // domains: [
+    //   'drive.google.com',
+    //   'drive.usercontent.google.com',
+    //   'res.cloudinary.com',
+    // ],
     // unoptimized: true,
   },
   eslint: {
