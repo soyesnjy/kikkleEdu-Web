@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import axios from 'axios';
-
 import styled from 'styled-components';
 
 import { agencyClass, mobile } from '@/store/state';

@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-
 import styled from 'styled-components';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useQuery } from 'react-query';
@@ -23,39 +22,6 @@ import {
   handleScheduleGroupDelete,
   handleScheduleHolidayGet,
 } from '@/fetchAPI/schedulerAPI';
-
-// 이벤트(스케줄) 객체 Type
-type EventType = {
-  id: number;
-  groupIdx?: number; // 그룹 인덱스
-  start: string;
-  end: string;
-  extendedProps: {
-    teacherName: string;
-    courseName: string;
-    participants: number; // 인원수
-    times: number; // 타임수
-    courseTimes: number; // 수업시간
-    notes: string;
-  };
-  backgroundColor: string;
-  title: string;
-};
-
-// newEvent 객체 Type
-type NewEventType = {
-  title: string; //  제목
-  teacherName: string; // 강사
-  courseName: string; // 강좌명
-  participants: number; // 인원수
-  times: number; // 타임수
-  courseTimes: number; // 수업시간
-  notes: string; // 메모
-  backgroundColor: string; // 배경색
-  date: string; // 날짜
-  recursiveEndDate: string; // 반복 종료 날짜
-  isAllAdd?: boolean; // 전체 추가 여부
-};
 
 const dayArr: string[] = ['일', '월', '화', '수', '목', '금', '토'];
 const today: Date = new Date();
@@ -107,11 +73,43 @@ const reactQueryFetchEvent = async ({ queryKey }) => {
   return response.data;
 };
 
-type FormattedHolidayType = {
+// events 객체 Type
+type EventType = {
+  id: number;
+  groupIdx?: number; // 그룹 인덱스
+  start: string;
+  end: string;
+  extendedProps: {
+    teacherName: string;
+    courseName: string;
+    participants: number; // 인원수
+    times: number; // 타임수
+    courseTimes: number; // 수업시간
+    notes: string;
+  };
+  backgroundColor: string;
+  title: string;
+};
+// newEvent 객체 Type
+type NewEventType = {
+  title: string; //  제목
+  teacherName: string; // 강사
+  courseName: string; // 강좌명
+  participants: number; // 인원수
+  times: number; // 타임수
+  courseTimes: number; // 수업시간
+  notes: string; // 메모
+  backgroundColor: string; // 배경색
+  date: string; // 날짜
+  recursiveEndDate: string; // 반복 종료 날짜
+  isAllAdd?: boolean; // 전체 추가 여부
+};
+// holidays 객체 Type
+type HolidayType = {
   date: string;
   name: string;
 };
-
+// Tooltip 객체 Type
 type TooltipType = {
   visible: boolean;
   content: {
@@ -142,7 +140,7 @@ const AdminSchedulerBody = () => {
   const [currentDateMonth, setCurrentDateMonth] = useState<number>(
     today.getMonth() + 1
   ); // A 캘린더 currentDate Month
-  const [holidays, setHolidays] = useState<FormattedHolidayType[]>([]); // 공휴일 데이터 배열 (공공데이터)
+  const [holidays, setHolidays] = useState<HolidayType[]>([]); // 공휴일 데이터 배열 (공공데이터)
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<Date>(today); // 미니 달력(B)에서 선택된 날짜
@@ -163,7 +161,7 @@ const AdminSchedulerBody = () => {
     (date: Date): boolean => {
       if (!holidays.length) return false;
       return holidays.some(
-        (holiday: FormattedHolidayType) =>
+        (holiday: HolidayType) =>
           new Date(holiday.date).toDateString() === date.toDateString()
       );
     },

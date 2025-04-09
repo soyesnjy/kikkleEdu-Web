@@ -43,7 +43,7 @@ const TeacherDetailPage = () => {
 
   const router = useRouter();
   const params = useParams(); // URL의 동적 파라미터를 가져옴
-  const id = params?.id as string | undefined; // 'id'를 안전하게 추출
+  const id = params?.id;
 
   // 권한 체크
   useLoginSessionCheck({ requireLogin: true });
