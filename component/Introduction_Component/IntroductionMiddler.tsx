@@ -9,7 +9,7 @@ import { mobile } from '@/store/state';
 type PropsType = {
   title: string;
   subTitle: string;
-  $imgPath: string;
+  $imgPath?: string;
 };
 
 const IntroductionMiddler = ({ title, subTitle, $imgPath }: PropsType) => {

@@ -1,10 +1,11 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+'use client';
 import styled from 'styled-components';
 
 import { useSearchParams } from 'next/navigation';
 import { agencyClass } from '@/store/state';
 import { useRecoilValue } from 'recoil';
 import { useState, useEffect } from 'react';
+import { useQuery } from 'react-query';
 
 import ProgramHeaderSection from '@/component/Program_Componet/ProgramHeaderSection';
 import ProgramMiddleCategorySection from '@/component/Program_Componet/ProgramMiddleCategorySection';
@@ -12,67 +13,91 @@ import LessonSection from '@/component/Home_Component/LessonSection';
 import EduArtVideoComponent from '@/component/Home_Component/EduArtVideoComponent';
 import ProgramClassDetailSection from '@/component/Program_Componet/ProgramClassDetailSection';
 import EndSection from '@/component/Home_Component/EndSection';
+import LoadingModal from '@/component/Common_Component/LoadingModal';
 
 import { handleClassGet } from '@/fetchAPI/classAPI';
 
-const classDefaultArr = [
+const classDefaultArr: ClassDataType[] = [
   {
     imgPath: '',
     title: '서버 통신 실패',
-    routePath: '/',
+    content: '',
+    info: '',
+    detailPath: '',
   },
 ];
 const eduSectionData = {
-  title: '미술 교육',
-  content: '아동의 연령에 맞춘 재미있는 미술프로그램 제공합니다.',
-  features: ['원데이클래스'], // default features
-  youtubeUrl: '//www.youtube.com/embed/DvS_6HkBpY4',
+  title: '발레 교육',
+  content:
+    '소예키즈만의 특화된 발레프로그램과 기관이 원하는 형태의 프로그램 제공',
+  features: [
+    '스토리발레 (창의발레)',
+    '작품반 발레',
+    '체험형 원데이',
+    '세계의 춤',
+  ], // default features
+  youtubeUrl: '//www.youtube.com/embed/-n3X-_FmRk8',
 };
 
-const ArtProgramPage = () => {
-  const [classDataArr, setClassDataArr] = useState([]);
-  const [selectedClass, setSelectedClass] = useState({});
+// React Query - 서버에서 데이터를 가져오는 API 함수
+const reactQueryFetchClass = async ({ queryKey }) => {
+  const [,] = queryKey;
+  const response = await handleClassGet({
+    classTag: 'ballet',
+    classDetail: true,
+  });
+  return response.data;
+};
+
+type ClassDataType = {
+  title: string;
+  content: string;
+  info: string;
+  imgPath: string;
+  detailPath: string;
+};
+
+const BalletProgramPage = () => {
+  const [classDataArr, setClassDataArr] = useState<ClassDataType[]>([]);
+  const [selectedClass, setSelectedClass] = useState<ClassDataType>({
+    title: '',
+    content: 'Loading...',
+    info: 'Loading...',
+    imgPath: '',
+    detailPath: '',
+  });
   const agency = useRecoilValue(agencyClass);
 
   const searchParams = useSearchParams();
-  const cName = searchParams.get('cName');
-  // const router = useRouter();
+  const cName = searchParams ? searchParams.get('cName') : null;
 
-  // 수업 DB 조회
-  useEffect(() => {
-    // 로컬에 programClassData 값이 있는 경우
-    if (localStorage.getItem('programClassData')) {
-      setClassDataArr([
-        ...JSON.parse(localStorage.getItem('programClassData')),
-      ]);
-    } else {
-      // Class Read API 호출 메서드
-      handleClassGet({ classTag: 'art', classDetail: true })
-        .then((res) => res.data.data)
-        .then((data) => {
-          const tuningData = data.map((el) => {
+  // React Query 데이터 가져오기
+  const { data, isLoading, error } = useQuery(
+    ['BalletProgram'], // Query Key
+    reactQueryFetchClass, // Query Function
+    {
+      cacheTime: 10000, // 10초 동안 캐시 유지
+      keepPreviousData: true, // 데이터를 가져오는 동안 기존 데이터 유지
+      onSuccess: (data) => {
+        if (data) {
+          const tuningData = data.data?.map((el) => {
             return {
               title: el.kk_class_title,
-              content: el.kk_class_content,
-              info: el.kk_class_info,
-              imgPath: el.kk_class_file_path,
-              detailPath: el.kk_class_detail_path,
+              content: el.kk_class_content || '',
+              info: el.kk_class_info || '',
+              imgPath: el.kk_class_file_path || '',
+              detailPath: el.kk_class_detail_path || '',
             };
           });
-          localStorage.setItem('programClassData', JSON.stringify(tuningData));
           setClassDataArr([...tuningData]);
-        })
-        .catch((err) => {
-          console.log(err);
-          setClassDataArr(classDefaultArr);
-        });
+        }
+      },
+      onError: (error) => {
+        console.error(error);
+        setClassDataArr(classDefaultArr);
+      },
     }
-
-    // 페이지 언마운트 시 로컬 스토리지 programClassData값 제거
-    return () => {
-      localStorage.removeItem('programClassData');
-    };
-  }, []);
+  );
 
   // selectedClass 설정
   useEffect(() => {
@@ -81,30 +106,23 @@ const ArtProgramPage = () => {
       setSelectedClass({
         ...classDataArr.filter((el) => el.title === cName)[0],
       });
-      return;
     }
     // cName Query 없는 경우
     else if (classDataArr.length > 0) {
       setSelectedClass({ ...classDataArr[0] });
-      return;
     }
   }, [classDataArr, cName]);
-
-  useEffect(() => {
-    setSelectedClass({
-      ...classDataArr.filter((el) => el.title === cName)[0],
-    });
-  }, [cName]);
 
   return (
     <MainContainer>
       {/* 헤더 섹션 */}
       <ProgramHeaderSection
-        programType={`미술`}
-        description={`창의력향상을 위한 즐거운 미술클래스`}
-        backImgUrl={`/src/Program_IMG/Art/Program_Header_Art_Background_IMG.png`}
+        programType={`발레`}
+        description={`소예키즈만의 특화된 다양한 발레클래스`}
+        backImgUrl={`/src/Program_IMG/Ballet/Program_Header_Ballet_Background_IMG.png`}
       />
-
+      {isLoading ? <LoadingModal isOpen={isLoading} /> : null}
+      {error ? <p>Error...</p> : null}
       {/* 수업 카테고리 */}
       <ProgramMiddleCategorySection
         classDataArr={classDataArr}
@@ -120,22 +138,25 @@ const ArtProgramPage = () => {
           imgUrl={selectedClass?.imgPath || '/src/soyesKids_Logo.png'}
           type="program"
           info={selectedClass?.info || ''}
+          routePath={''}
         />
       </IntroSection>
-      {/* 미들 섹션 - 댄스 */}
+
+      {/* 미들 섹션 - 발레 영상 */}
       <EduArtVideoComponent
         sectionData={{
           ...eduSectionData,
-          features: classDataArr.map((el) => el.title),
+          features: classDataArr?.map((el) => el.title),
         }}
       />
       {/* 수업 Detail 섹션 */}
       <ProgramClassDetailSection
         detailImgPath={selectedClass?.detailPath}
         backImgPath={
-          '/src/Program_IMG/Art/Program_ClassDetailSection_Background_IMG.png'
+          '/src/Program_IMG/Ballet/Program_ClassDetailSection_Background_IMG.png'
         }
       />
+
       {/* 엔드 섹션 */}
       <EndSection
         Title={`For our child's healthy body \n and heart happiness`}
@@ -145,6 +166,8 @@ const ArtProgramPage = () => {
     </MainContainer>
   );
 };
+
+export default BalletProgramPage;
 
 const MainContainer = styled.div`
   width: 100%;
@@ -171,8 +194,6 @@ const IntroSection = styled.section`
   @media (max-width: 1080px) {
     height: 100%;
     flex-direction: column;
-    padding: 2rem;
+    padding: 0rem;
   }
 `;
-
-export default ArtProgramPage;

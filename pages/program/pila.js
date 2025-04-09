@@ -30,7 +30,7 @@ const eduSectionData = {
   youtubeUrl: '//www.youtube.com/embed/PM87DgX6yD8',
 };
 
-const YogaProgramPage = () => {
+const PilaProgramPage = () => {
   const [classDataArr, setClassDataArr] = useState([]);
   const [selectedClass, setSelectedClass] = useState({});
   const agency = useRecoilValue(agencyClass);
@@ -146,8 +146,6 @@ const YogaProgramPage = () => {
   );
 };
 
-export default YogaProgramPage;
-
 const MainContainer = styled.div`
   width: 100%;
   background-color: white;
@@ -176,3 +174,5 @@ const IntroSection = styled.section`
     padding: 2rem;
   }
 `;
+
+export default PilaProgramPage;
