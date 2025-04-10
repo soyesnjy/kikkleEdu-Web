@@ -1,4 +1,3 @@
-'use client';
 import { Suspense } from 'react';
 import YogaProgramPageContent from '@/component/Program_Componet/Content/YogaProgramPageContent';
 

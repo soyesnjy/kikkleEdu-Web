@@ -1,4 +1,3 @@
-'use client';
 import { Suspense } from 'react';
 import DanceProgramPageContent from '@/component/Program_Componet/Content/DanceProgramPageContent';
 
