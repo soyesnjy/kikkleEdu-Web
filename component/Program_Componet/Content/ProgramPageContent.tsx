@@ -11,25 +11,44 @@ import ProgramClassDetailSection from '@/component/Program_Componet/ProgramClass
 import EndSection from '@/component/Home_Component/EndSection';
 import LoadingModal from '@/component/Common_Component/LoadingModal';
 
-const eduSectionData = {
-  title: '필라테스',
-  content: '연령에 맞춘 매트필라테스 프로그램 제공',
-  features: ['성인필라테스'], // default features
-  youtubeUrl: '//www.youtube.com/embed/PM87DgX6yD8',
+type HeaderDataType = {
+  programType: string;
+  description: string;
+  backImgUrl: string;
 };
 
-const PilaProgramPageContent = () => {
+type EduSectionDataType = {
+  title: string;
+  content: string;
+  features: string[];
+  youtubeUrl: string;
+};
+
+type ProgramPageContentPropsData = {
+  id: string; // queryKey
+  headerData: HeaderDataType;
+  eduSectionData: EduSectionDataType;
+  backImgPath: string; // Detail Data
+};
+
+const ProgramPageContent = ({
+  id,
+  headerData,
+  eduSectionData,
+  backImgPath,
+}: ProgramPageContentPropsData) => {
   const agency = useRecoilValue(agencyClass);
   const { classDataArr, selectedClass, setSelectedClass, isLoading, error } =
-    useProgramClass('pila');
+    useProgramClass(id);
+  const { programType, description, backImgUrl } = headerData;
 
   return (
     <>
       {/* 헤더 섹션 */}
       <ProgramHeaderSection
-        programType={`필라테스`}
-        description={`매트에서 할 수 있는 다양한 필라테스 클래스`}
-        backImgUrl={`/src/Program_IMG/Pila/Program_Header_Pila_Background_IMG.png`}
+        programType={programType}
+        description={description}
+        backImgUrl={backImgUrl}
       />
       {isLoading ? <LoadingModal isOpen={isLoading} /> : null}
       {error ? <p>Error...</p> : null}
@@ -41,7 +60,6 @@ const PilaProgramPageContent = () => {
       />
 
       {/* 소개 섹션 */}
-
       <LessonSection
         title={selectedClass?.title || ''}
         subtitle={selectedClass?.content || ''}
@@ -51,7 +69,7 @@ const PilaProgramPageContent = () => {
         routePath={''}
       />
 
-      {/* 미들 섹션 */}
+      {/* 미들 섹션 - 영상 */}
       <EduArtVideoComponent
         sectionData={{
           ...eduSectionData,
@@ -61,10 +79,9 @@ const PilaProgramPageContent = () => {
       {/* 수업 Detail 섹션 */}
       <ProgramClassDetailSection
         detailImgPath={selectedClass?.detailPath}
-        backImgPath={
-          '/src/Program_IMG/Pila/Program_ClassDetailSection_Background_IMG.png'
-        }
+        backImgPath={backImgPath}
       />
+
       {/* 엔드 섹션 */}
       <EndSection
         Title={`For our child's healthy body \n and heart happiness`}
@@ -75,4 +92,4 @@ const PilaProgramPageContent = () => {
   );
 };
 
-export default PilaProgramPageContent;
+export default ProgramPageContent;
