@@ -26,24 +26,19 @@ const classDefaultArr: ClassDataType[] = [
     detailPath: '',
   },
 ];
+
 const eduSectionData = {
-  title: '발레 교육',
-  content:
-    '소예키즈만의 특화된 발레프로그램과 기관이 원하는 형태의 프로그램 제공',
-  features: [
-    '스토리발레 (창의발레)',
-    '작품반 발레',
-    '체험형 원데이',
-    '세계의 춤',
-  ], // default features
-  youtubeUrl: '//www.youtube.com/embed/-n3X-_FmRk8',
+  title: '미술 교육',
+  content: '아동의 연령에 맞춘 재미있는 미술프로그램 제공합니다.',
+  features: ['원데이클래스'], // default features
+  youtubeUrl: '//www.youtube.com/embed/DvS_6HkBpY4',
 };
 
 // React Query - 서버에서 데이터를 가져오는 API 함수
 const reactQueryFetchClass = async ({ queryKey }) => {
   const [,] = queryKey;
   const response = await handleClassGet({
-    classTag: 'ballet',
+    classTag: 'art',
     classDetail: true,
   });
   return response.data;
@@ -57,7 +52,7 @@ type ClassDataType = {
   detailPath: string;
 };
 
-const BalletProgramPage = () => {
+const ArtProgramPage = () => {
   const [classDataArr, setClassDataArr] = useState<ClassDataType[]>([]);
   const [selectedClass, setSelectedClass] = useState<ClassDataType>({
     title: '',
@@ -73,7 +68,7 @@ const BalletProgramPage = () => {
 
   // React Query 데이터 가져오기
   const { data, isLoading, error } = useQuery(
-    ['BalletProgram'], // Query Key
+    ['PilaProgram'], // Query Key
     reactQueryFetchClass, // Query Function
     {
       cacheTime: 10000, // 10초 동안 캐시 유지
@@ -117,9 +112,9 @@ const BalletProgramPage = () => {
     <MainContainer>
       {/* 헤더 섹션 */}
       <ProgramHeaderSection
-        programType={`발레`}
-        description={`소예키즈만의 특화된 다양한 발레클래스`}
-        backImgUrl={`/src/Program_IMG/Ballet/Program_Header_Ballet_Background_IMG.png`}
+        programType={`미술`}
+        description={`창의력향상을 위한 즐거운 미술클래스`}
+        backImgUrl={`/src/Program_IMG/Art/Program_Header_Art_Background_IMG.png`}
       />
       {isLoading ? <LoadingModal isOpen={isLoading} /> : null}
       {error ? <p>Error...</p> : null}
@@ -142,7 +137,7 @@ const BalletProgramPage = () => {
         />
       </IntroSection>
 
-      {/* 미들 섹션 - 영상 */}
+      {/* 미들 섹션 */}
       <EduArtVideoComponent
         sectionData={{
           ...eduSectionData,
@@ -153,10 +148,9 @@ const BalletProgramPage = () => {
       <ProgramClassDetailSection
         detailImgPath={selectedClass?.detailPath}
         backImgPath={
-          '/src/Program_IMG/Ballet/Program_ClassDetailSection_Background_IMG.png'
+          '/src/Program_IMG/Art/Program_ClassDetailSection_Background_IMG.png'
         }
       />
-
       {/* 엔드 섹션 */}
       <EndSection
         Title={`For our child's healthy body \n and heart happiness`}
@@ -196,4 +190,4 @@ const IntroSection = styled.section`
   }
 `;
 
-export default BalletProgramPage;
+export default ArtProgramPage;
