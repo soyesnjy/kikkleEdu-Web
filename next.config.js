@@ -7,7 +7,7 @@ const withPWA = require('next-pwa')({
 });
 
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   i18n: {
     locales: ['ko', 'en'],
     defaultLocale: 'ko',
