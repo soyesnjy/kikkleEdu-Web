@@ -3,14 +3,14 @@ import styled from 'styled-components';
 
 const BoardItem = ({ post, onClick }) => {
   return (
-    <TableRow isnotice={post.isNotice ? 'true' : null}>
+    <TableRow isnotice={post.isNotice ? 'true' : 'false'}>
       <TableCell>
-        {post.isNotice ? <NoticeLabel>공지</NoticeLabel> : post.number}
+        {post.isNotice ? <NoticeLabel>{`공지`}</NoticeLabel> : post.number}
       </TableCell>
       <TableCell>
         <Title onClick={onClick}>
           {post.isPrivate ? (
-            <PrivateLabel>비공개 게시글입니다</PrivateLabel>
+            <PrivateLabel>{`비공개 게시글입니다`}</PrivateLabel>
           ) : (
             post.title
           )}
@@ -33,9 +33,13 @@ const BoardItem = ({ post, onClick }) => {
 };
 
 export default BoardItem;
+type TableRowType = {
+  isnotice: string | null;
+};
 
-const TableRow = styled.tr`
-  background-color: ${(props) => (props.isnotice ? '#fdfaf8' : 'white')};
+const TableRow = styled.tr<TableRowType>`
+  background-color: ${(props) =>
+    props.isnotice === 'true' ? '#fdfaf8' : 'white'};
   border-bottom: 1px solid #ddd;
   &:hover {
     background-color: #f9f9f9;

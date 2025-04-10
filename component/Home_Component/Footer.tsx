@@ -1,20 +1,19 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
-
 import styled from 'styled-components';
-import Image from 'next/image';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { mobile } from '@/store/state';
 
 export default function Footer() {
-  const [mobileFlag, setMobileFlag] = useRecoilState(mobile);
+  const mobileFlag = useRecoilValue(mobile);
 
   return (
     <FooterContainer>
       <FooterInfo>
-        <InfoText>Kids Class Edu</InfoText>
+        <InfoText>{`Kids Class Edu`}</InfoText>
         <SocialMediaLinks>
           <SocialLink href="/">
-            <Image
+            <img
               src="/src/Footer_IMG/Footer_Icon_X_IMG.png"
               alt={'X'}
               width={24}
@@ -23,7 +22,7 @@ export default function Footer() {
             />
           </SocialLink>
           <SocialLink href="/">
-            <Image
+            <img
               src="/src/Footer_IMG/Footer_Icon_IN_IMG.png"
               alt={'X'}
               width={24}
@@ -32,7 +31,7 @@ export default function Footer() {
             />
           </SocialLink>
           <SocialLink href="/">
-            <Image
+            <img
               src="/src/Footer_IMG/Footer_Icon_FB_IMG.png"
               alt={'X'}
               width={24}
